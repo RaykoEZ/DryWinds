@@ -1,0 +1,20 @@
+!*.png
+!*.asset
+!*/Assets/AddressableAssetsData/*
+Temp/
+*.png.meta
+*.psd
+*.psd.meta
+*.pdf
+*.pdf.meta
+*.suo
+*.sln
+*.csproj
+*.cache
+*.log
+Assets/TextMesh Pro*
+Assets/Samples/*
+Assets/StreamingAssets/aa/*
+Library/
+Packages/
+UserSettings/
