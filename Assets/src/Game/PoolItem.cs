@@ -15,12 +15,7 @@ namespace Curry.Game
         public PoolItem(GameObject objRef, Transform parent) 
         {
             m_obj = Object.Instantiate(objRef, parent);
-            SetActive(false);
-        }
-
-        public void SetActive(bool setActive = true) 
-        {
-            m_obj?.SetActive(setActive);
+            m_obj.SetActive(false);
         }
     }
 }

@@ -26,19 +26,12 @@ namespace Curry.Game
         // Update is called once per frame
         void FixedUpdate()
         {
-            if (LineRenderer.positionCount < 2)
-            {
-                OnClear();
-                gameObject.SetActive(false);
-            }
-
             m_decayTimer += Time.deltaTime;
             if(m_decayTimer > m_life && !m_isDecaying) 
             {
                 m_isDecaying = true;
                 StartCoroutine(OnDecay());
-            }
-            
+            }          
         }
 
         public virtual void OverrideSetting(StrokeSetting setting) 
@@ -89,6 +82,12 @@ namespace Curry.Game
             // if no more to decay, finish loop
             while (m_isDecaying)
             {
+                if(m_segmentLengths.Count == 0) 
+                {
+                    OnClear();
+                    gameObject.SetActive(false);
+                    yield break;
+                }
                 while (decayAmount > Mathf.Epsilon && m_segmentLengths.Count > 0)
                 {
                     float lastSegmentLength = m_segmentLengths.Peek();
@@ -118,7 +117,8 @@ namespace Curry.Game
                 decayAccel *= 0.75f;
 
             }
-            yield break;
+
+
         }
 
         void TrimEndSegment(float trimLength) 

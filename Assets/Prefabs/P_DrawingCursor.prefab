@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4967061372838008695}
   - component: {fileID: 4967061372838008696}
+  - component: {fileID: 3372331741147951563}
   m_Layer: 0
   m_Name: P_DrawingCursor
   m_TagString: Untagged
@@ -45,8 +46,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Camera: {fileID: 0}
-  LineStrokeObject: {fileID: 6937999071832126887, guid: c429d02b3f4902d4591f75325c991b40, type: 3}
-  StrokeParent: {fileID: 3673900611301795882}
+  StrokePool: {fileID: 3372331741147951563}
+--- !u!114 &3372331741147951563
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4967061372838008699}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92960e44623323c428716073f49cf97a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_amountToPool: 15
+  m_poolObjectRef: {fileID: 6937999071832126887, guid: c429d02b3f4902d4591f75325c991b40, type: 3}
+  m_parent: {fileID: 3673900611301795882}
 --- !u!1 &6527648403084883071
 GameObject:
   m_ObjectHideFlags: 0
