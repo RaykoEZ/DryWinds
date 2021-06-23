@@ -2,7 +2,6 @@
 !*.asset
 !*/Assets/AddressableAssetsData/*
 Temp/
-*.png.meta
 *.psd
 *.psd.meta
 *.pdf
