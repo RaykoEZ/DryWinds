@@ -1,10 +1,13 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Curry.Events;
 
-namespace Curry.Game
+namespace Curry.Skill
 {
-    public class LineStroke : MonoBehaviour
+    // Trace is like the brush tip for paint tools but with decay behaviours
+    public class BaseTrace : MonoBehaviour
     {
         [SerializeField] LineRenderer LineRenderer = default;
         [SerializeField] EdgeCollider2D EdgeCollider = default;
@@ -13,42 +16,34 @@ namespace Curry.Game
         // Seconds to wait for next stroke decay interval
         [SerializeField] float m_decayWait = default;
         // Life of each drawn vertiex in seconds, starts to decay after this (sec)
-        [SerializeField] float m_life = default;
+        [SerializeField] float m_durability = default;
 
         protected bool m_isDecaying = false;
         protected bool m_isMakingCollider = true;
         protected Queue<Vector2> m_drawnVert = new Queue<Vector2>();
         protected Queue<Vector3> m_drawnPositions = new Queue<Vector3>();
         protected Queue<float> m_segmentLengths = new Queue<float>();
-
+          
         protected float m_decayTimer = 0f;
 
         // Update is called once per frame
         void FixedUpdate()
         {
             m_decayTimer += Time.deltaTime;
-            if(m_decayTimer > m_life && !m_isDecaying) 
+            if(m_decayTimer > m_durability && !m_isDecaying) 
             {
                 m_isDecaying = true;
                 StartCoroutine(OnDecay());
             }          
         }
 
-        public virtual void OverrideSetting(StrokeSetting setting) 
-        { 
-            
-        
-        }
-
-
-        public virtual void OnDraw(Vector2 mousePosition)
+        public virtual void OnDraw(Vector2 mousePosition, float length)
         {
             if (Input.GetMouseButton(0))
             {
                 if (!m_drawnVert.Contains(mousePosition))
                 {
-                    LogSegmentLength(mousePosition);
-
+                    EvaluateLength(length);
                     m_drawnVert.Enqueue(mousePosition);
                     m_drawnPositions.Enqueue(mousePosition);
                     LineRenderer.positionCount = m_drawnPositions.Count;
@@ -62,17 +57,18 @@ namespace Curry.Game
             }
         }
 
-        protected void LogSegmentLength(Vector2 p)
+        protected void EvaluateLength(float length)
         {
             int numP = LineRenderer.positionCount;
             if (numP == 0) 
             {
                 return;
             }
-            // Get distance between new point and previous end point, store it for later
-            Vector2 previous = LineRenderer.GetPosition(numP - 1);
-            float segmentLength = Vector2.Distance(p, previous);
-            m_segmentLengths.Enqueue(segmentLength);
+            else 
+            {
+                //store it for later
+                m_segmentLengths.Enqueue(length);
+            }
         }
 
         protected virtual IEnumerator OnDecay()
@@ -114,11 +110,9 @@ namespace Curry.Game
                 EdgeCollider.points = m_drawnVert.ToArray();
 
                 yield return new WaitForSeconds(decayAccel * m_decayWait);
-                decayAccel *= 0.75f;
+                decayAccel *= 0.5f;
 
             }
-
-
         }
 
         void TrimEndSegment(float trimLength) 

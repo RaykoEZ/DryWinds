@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 6563105090482654035}
   - component: {fileID: 1605068264929677974}
   - component: {fileID: 346624158060485392}
-  - component: {fileID: 1427187312149939653}
+  - component: {fileID: 8327469527283527605}
   m_Layer: 0
-  m_Name: P_Stroke
+  m_Name: P_BaseTrace
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -127,7 +127,7 @@ LineRenderer:
     textureMode: 0
     shadowBias: 0.5
     generateLightingData: 0
-  m_UseWorldSpace: 0
+  m_UseWorldSpace: 1
   m_Loop: 0
 --- !u!68 &346624158060485392
 EdgeCollider2D:
@@ -145,13 +145,13 @@ EdgeCollider2D:
   m_Offset: {x: 0, y: 0}
   m_EdgeRadius: 0.025
   m_Points:
-  - {x: -1.1379006, y: 0.38752997}
-  - {x: -0.13790065, y: 0.38752997}
+  - {x: 0, y: 0}
+  - {x: 0, y: 0}
   m_AdjacentStartPoint: {x: 0, y: 0}
   m_AdjacentEndPoint: {x: 0, y: 0}
   m_UseAdjacentStartPoint: 0
   m_UseAdjacentEndPoint: 0
---- !u!114 &1427187312149939653
+--- !u!114 &8327469527283527605
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -160,11 +160,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 6937999071832126887}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e7beb06aa590be4b8e4aae2bc10db4a, type: 3}
+  m_Script: {fileID: 11500000, guid: d4902fe81710101469cae2dcf62341a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   LineRenderer: {fileID: 1605068264929677974}
   EdgeCollider: {fileID: 346624158060485392}
-  m_decayPerInterval: 0.1
+  m_decayPerInterval: 0.05
   m_decayWait: 0.05
-  m_life: 3
+  m_durability: 3
+  m_OnSPCost:
+    m_eventToTrigger: {fileID: 11400000, guid: 5201a97c9b24b49459fe3dc304a77a66, type: 2}

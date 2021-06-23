@@ -1,0 +1,7 @@
+{
+    "Name": "Basic",
+    "SpCost" : 1.0,
+    "Durability" : 3.0,
+    "ContactDamage" : 0,
+    "SpeedScale" : 0
+}

@@ -5,16 +5,18 @@ using UnityEngine;
 namespace Curry.Game
 {    
     // Instantiates and enable/disables a type of object when notified
-    public class ObjectPool : MonoBehaviour
+    public class ObjectPool
     {
-        [SerializeField] protected int m_amountToPool = default;
-        [SerializeField] GameObject m_poolObjectRef = default;
-        [SerializeField] Transform m_parent = default;
+        protected int m_amountToPool = default;
+        protected GameObject m_poolObjectRef = default;
+        protected Transform m_parent = default;
         protected List<PoolItem> m_pool = new List<PoolItem>();
 
-        void Start()
+        public ObjectPool(int numToPool, GameObject poolObj, Transform parent) 
         {
-            if(m_amountToPool > 0 && m_poolObjectRef != null) 
+            m_amountToPool = numToPool;
+            m_poolObjectRef = poolObj;
+            if (m_amountToPool > 0 && m_poolObjectRef != null)
             {
                 MakePool(m_amountToPool, m_poolObjectRef, m_parent);
             }
