@@ -2,12 +2,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Curry.Events;
+using Curry.Game;
 
 namespace Curry.Skill
 {
     // Trace is like the brush tip for paint tools but with decay behaviours
-    public class BaseTrace : MonoBehaviour
+    public class BaseTrace : Interactable
     {
         [SerializeField] LineRenderer LineRenderer = default;
         [SerializeField] EdgeCollider2D EdgeCollider = default;
@@ -18,12 +18,15 @@ namespace Curry.Skill
         // Life of each drawn vertiex in seconds, starts to decay after this (sec)
         [SerializeField] float m_durability = default;
 
+        [SerializeField] protected CollisionStats m_collisionStats = default;
+
+        public override CollisionStats CollisionStats { get { return m_collisionStats; } }
+
         protected bool m_isDecaying = false;
         protected bool m_isMakingCollider = true;
         protected Queue<Vector2> m_drawnVert = new Queue<Vector2>();
         protected Queue<Vector3> m_drawnPositions = new Queue<Vector3>();
-        protected Queue<float> m_segmentLengths = new Queue<float>();
-          
+        protected Queue<float> m_segmentLengths = new Queue<float>();       
         protected float m_decayTimer = 0f;
 
         // Update is called once per frame
@@ -56,6 +59,7 @@ namespace Curry.Skill
                 }
             }
         }
+
 
         protected void EvaluateLength(float length)
         {

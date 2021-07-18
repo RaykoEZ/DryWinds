@@ -6,27 +6,17 @@ using UnityEngine;
 namespace Curry.Game
 {
     [Serializable]
-    public class PlayerStats
+    public class PlayerStats : CharacterStats
     {
-        [SerializeField] float m_hp;
-        [SerializeField] float m_sp;
-        [SerializeField] float m_spRegenPerSec;
-        [SerializeField] float m_moveSpeed;
-        bool m_isDirty = false;
+        [SerializeField] protected float m_spRegenPerSec = default;
 
-        public bool IsDirty { get { return m_isDirty; } }
-
-        public float HP { get { return m_hp; } set { m_hp = value; m_isDirty = true; } }
-        public float SP { get { return m_sp; } set { m_sp = value; m_isDirty = true; } }
         public float SPRegenPerSec { get { return m_spRegenPerSec; } set { m_spRegenPerSec = value; m_isDirty = true; } }
-        public float MoveSpeed { get { return m_moveSpeed; } set { m_moveSpeed = value; m_isDirty = true; } }
-
-        public PlayerStats(float hp, float sp, float spPerSec, float moveSpeed) 
+        
+        public PlayerStats(float stamina, float sp, float spPerSec)
         {
-            m_hp = hp;
+            m_stamina = stamina;
             m_sp = sp;
             m_spRegenPerSec = spPerSec;
-            m_moveSpeed = moveSpeed;
         }
     }
 }

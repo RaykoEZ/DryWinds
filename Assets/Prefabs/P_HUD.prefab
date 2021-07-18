@@ -46,9 +46,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2136a2789fdfe2f4e91005148d709deb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_player: {fileID: 0}
   m_spBar: {fileID: 626140728266948564}
-  m_hpBar: {fileID: 8544006369084495104}
+  m_stamBar: {fileID: 8544006369084495104}
 --- !u!1 &5274790547052766387
 GameObject:
   m_ObjectHideFlags: 0
@@ -59,7 +58,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5274790547052766386}
   m_Layer: 0
-  m_Name: HPBar
+  m_Name: StaminaBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

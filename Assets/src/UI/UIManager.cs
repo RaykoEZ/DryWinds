@@ -8,7 +8,7 @@ namespace Curry.UI
     public class UIManager : MonoBehaviour
     {
         [SerializeField] ResourceBar m_spBar = default;
-        [SerializeField] ResourceBar m_hpBar = default;
+        [SerializeField] ResourceBar m_stamBar = default;
         PlayerContext m_playerContext = default;
 
         public void Init(PlayerContextFactory contextFactory)
@@ -29,11 +29,11 @@ namespace Curry.UI
 
         void UpdateUI() 
         {
-            m_hpBar.SetMaxValue(m_playerContext.BaseStats.HP);
-            m_hpBar.SetBarValue(m_playerContext.CurrentStats.HP);
+            m_stamBar.SetMaxValue(m_playerContext.PlayerStats.MaxStamina);
+            m_stamBar.SetBarValue(m_playerContext.PlayerStats.Stamina);
 
-            m_spBar.SetMaxValue(m_playerContext.BaseStats.SP);
-            m_spBar.SetBarValue(m_playerContext.CurrentStats.SP);
+            m_spBar.SetMaxValue(m_playerContext.PlayerStats.MaxSP);
+            m_spBar.SetBarValue(m_playerContext.PlayerStats.SP);
         }
     }
 }
