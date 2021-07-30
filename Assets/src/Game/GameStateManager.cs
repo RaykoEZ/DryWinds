@@ -10,7 +10,6 @@ namespace Curry.Game
     {
         [SerializeField] UIManager m_playerUI = default;
         [SerializeField] Player m_player = default;
-        [SerializeField] Camera m_mainCamera = default;
         [SerializeField] GameEventHandler m_gameEventListener = default;
 
         PlayerContextFactory m_playerContextFactory = default;
@@ -23,7 +22,7 @@ namespace Curry.Game
             PlayerContextFactory playerContextFactory = new PlayerContextFactory();
             m_playerContextFactory = playerContextFactory;
             m_playerUI.Init(playerContextFactory);
-            m_player.Init(playerContextFactory, m_mainCamera);
+            m_player.Init(playerContextFactory);
         }
 
         void OnDisable()

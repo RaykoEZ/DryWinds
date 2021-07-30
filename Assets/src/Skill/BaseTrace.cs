@@ -42,22 +42,19 @@ namespace Curry.Skill
 
         public virtual void OnDraw(Vector2 mousePosition, float length)
         {
-            if (Input.GetMouseButton(0))
+            if (!m_drawnVert.Contains(mousePosition))
             {
-                if (!m_drawnVert.Contains(mousePosition))
-                {
-                    EvaluateLength(length);
-                    m_drawnVert.Enqueue(mousePosition);
-                    m_drawnPositions.Enqueue(mousePosition);
-                    LineRenderer.positionCount = m_drawnPositions.Count;
-                    LineRenderer.SetPosition(LineRenderer.positionCount - 1, mousePosition);
+                EvaluateLength(length);
+                m_drawnVert.Enqueue(mousePosition);
+                m_drawnPositions.Enqueue(mousePosition);
+                LineRenderer.positionCount = m_drawnPositions.Count;
+                LineRenderer.SetPosition(LineRenderer.positionCount - 1, mousePosition);
 
-                    if (EdgeCollider != null && m_isMakingCollider && m_drawnVert.Count > 1)
-                    {
-                        EdgeCollider.points = m_drawnVert.ToArray();
-                    }
+                if (EdgeCollider != null && m_isMakingCollider && m_drawnVert.Count > 1)
+                {
+                    EdgeCollider.points = m_drawnVert.ToArray();
                 }
-            }
+            }      
         }
 
 

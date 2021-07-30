@@ -1,18 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace Curry.Game
 {
-    public class MovementHandler
+    public class MovementHandler : MonoBehaviour
     {
-        public virtual void Move(Rigidbody2D rb, float speed, Vector2 dir) 
+        [SerializeField] Rigidbody2D m_rigidbody = default;
+
+        public virtual void Dash(float speed, float charge)
         {
-            rb?.AddForce(dir * speed, ForceMode2D.Force);
-        }
-        public virtual void Dash(Rigidbody2D rb, float speed, Vector2 dir)
-        {
-            rb?.AddForce(dir * speed, ForceMode2D.Impulse);
+            Vector2 mousePos = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
+            Vector2 dir = mousePos - m_rigidbody.position;
+            float speedMod = speed * Mathf.Clamp(charge, 1.0f, 3.0f);
+            m_rigidbody?.AddForce(dir.normalized * speedMod, ForceMode2D.Impulse);
         }
     }
 }

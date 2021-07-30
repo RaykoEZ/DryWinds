@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using Curry.Skill;
 using Curry.Events;
 
@@ -11,14 +12,12 @@ namespace Curry.Game
         [SerializeField] protected PlayerContext m_playerContext = default;
         [SerializeField] BaseTracerBrush m_brush = default;
 
-        protected Camera m_cam = default;
         protected int m_currentTraceIndex = 0;
         protected float m_spRegenTimer = 0f;
-        protected float m_dashTimer = 0f;
         protected PlayerContextFactory m_playerContextFactory = default;
-        protected MovementHandler m_movementController = new MovementHandler();
 
-        protected PlayerStats Stats { get { return m_playerContext.PlayerStats; } }
+        public BaseTracerBrush CurrentBrush { get { return m_brush; } }
+        public PlayerStats Stats { get { return m_playerContext.PlayerStats; } }
         public override CollisionStats CollisionStats { get { return m_playerContext.CurrentCollisionStats; } }
 
         protected virtual void Update()
@@ -28,25 +27,14 @@ namespace Curry.Game
                 m_playerContextFactory.UpdateContext(m_playerContext);
             }
 
-            OnPlayerTrace();
-            Vector2 mousePos = m_cam.ScreenToWorldPoint(Input.mousePosition);
-            Vector2 dir = mousePos - m_rigidbody.position;
-
-            if (Input.GetMouseButtonDown(1))
-            {
-                OnPlayerDash(m_playerContext.PlayerStats.Speed, dir.normalized);
-            }
-
             OnSPRegen();
         }
 
-        public void Init(PlayerContextFactory contextFactory, Camera cam)
+        public void Init(PlayerContextFactory contextFactory)
         {
             m_playerContextFactory = contextFactory;
             m_playerContextFactory.UpdateContext(m_playerContext);
             m_playerContextFactory.Listen(OnPlayerContextUpdate);
-            m_cam = cam;
-            m_brush.Init(cam);
             m_brush.EquipTrace(m_playerContext.EquippedTrace);
         }
 
@@ -98,21 +86,6 @@ namespace Curry.Game
 
         public override void OnDefeat()
         {
-        }
-
-        protected virtual void OnPlayerMove(float speed, Vector2 dir)
-        {
-            m_movementController.Move(m_rigidbody, m_playerContext.PlayerStats.Speed, dir);
-        }
-
-        protected virtual void OnPlayerDash(float speed, Vector2 dir)
-        {
-            m_movementController.Dash(m_rigidbody, m_playerContext.PlayerStats.Speed, dir);
-        }
-
-        protected virtual void OnPlayerTrace() 
-        {
-            m_brush.Draw(m_playerContext.PlayerStats);
         }
 
         protected void OnSPRegen() 

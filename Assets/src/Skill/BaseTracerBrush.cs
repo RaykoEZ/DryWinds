@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using Curry.Game;
 
 namespace Curry.Skill
@@ -9,7 +10,6 @@ namespace Curry.Skill
     {
         [SerializeField] PoolManager m_poolManager = default;
 
-        protected Camera m_cam = default;
         protected BaseTrace m_currentTracer = default;
         protected string m_currentTraceId = default;
         protected ObjectPool m_currentPool = default;
@@ -17,11 +17,6 @@ namespace Curry.Skill
         protected Vector2 m_previousMousePos = default;
 
         TraceStats m_currentTraceStat = default;
-
-        public virtual void Init(Camera cam) 
-        {
-            m_cam = cam;
-        }
 
         public void EquipTrace(TraceAsset trace) 
         {
@@ -52,14 +47,10 @@ namespace Curry.Skill
                 return;
             }
 
-            // current trace stroke ended?
-            if (Input.GetMouseButtonDown(0)) 
-            {
-                OnTraceEnd();
-            }
+            Vector2 mousePosition = Camera.main.ScreenToWorldPoint
+                (Mouse.current.position.ReadValue());
 
-            Vector2 mousePosition = m_cam.ScreenToWorldPoint(Input.mousePosition);
-            if (Input.GetMouseButton(0) && mousePosition != m_previousMousePos)
+            if (mousePosition != m_previousMousePos)
             {
                 float length = m_previousMousePos == null ? 0f : Vector2.Distance(mousePosition, m_previousMousePos);
                 float SPCost = m_currentTraceStat.SpCostScale * length;

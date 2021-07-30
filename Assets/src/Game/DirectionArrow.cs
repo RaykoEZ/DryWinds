@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace Curry.Game
 {
@@ -22,7 +23,7 @@ namespace Curry.Game
         // Update is called once per frame
         void Update()
         {
-            Vector2 mousePos = m_cam.ScreenToWorldPoint(Input.mousePosition);
+            Vector2 mousePos = m_cam.ScreenToWorldPoint(Mouse.current.position.ReadValue());
             if (m_linePosition[0] != m_origin.position ||
                 m_mousePos != mousePos) 
             {
