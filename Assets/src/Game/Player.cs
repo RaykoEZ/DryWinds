@@ -22,6 +22,7 @@ namespace Curry.Game
 
         protected virtual void Update()
         {
+
             if (m_playerContext.IsDirty) 
             {
                 m_playerContextFactory.UpdateContext(m_playerContext);

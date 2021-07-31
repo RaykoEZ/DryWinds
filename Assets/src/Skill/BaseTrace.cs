@@ -9,14 +9,14 @@ namespace Curry.Skill
     // Trace is like the brush tip for paint tools but with decay behaviours
     public class BaseTrace : Interactable
     {
-        [SerializeField] LineRenderer LineRenderer = default;
-        [SerializeField] EdgeCollider2D EdgeCollider = default;
+        [SerializeField] protected LineRenderer LineRenderer = default;
+        [SerializeField] protected EdgeCollider2D EdgeCollider = default;
         // Units length to decay per decay interval.
-        [SerializeField] float m_decayPerInterval = default;
+        [SerializeField] protected float m_decayPerInterval = default;
         // Seconds to wait for next stroke decay interval
-        [SerializeField] float m_decayWait = default;
+        [SerializeField] protected float m_decayWait = default;
         // Life of each drawn vertiex in seconds, starts to decay after this (sec)
-        [SerializeField] float m_durability = default;
+        [SerializeField] protected float m_durability = default;
 
         [SerializeField] protected CollisionStats m_collisionStats = default;
 
@@ -30,7 +30,7 @@ namespace Curry.Skill
         protected float m_decayTimer = 0f;
 
         // Update is called once per frame
-        void FixedUpdate()
+        protected virtual void FixedUpdate()
         {
             m_decayTimer += Time.deltaTime;
             if(m_decayTimer > m_durability && !m_isDecaying) 
@@ -40,15 +40,15 @@ namespace Curry.Skill
             }          
         }
 
-        public virtual void OnDraw(Vector2 mousePosition, float length)
+        public virtual void OnDraw(Vector2 targetPosition, float length)
         {
-            if (!m_drawnVert.Contains(mousePosition))
+            if (!m_drawnVert.Contains(targetPosition))
             {
                 EvaluateLength(length);
-                m_drawnVert.Enqueue(mousePosition);
-                m_drawnPositions.Enqueue(mousePosition);
+                m_drawnVert.Enqueue(targetPosition);
+                m_drawnPositions.Enqueue(targetPosition);
                 LineRenderer.positionCount = m_drawnPositions.Count;
-                LineRenderer.SetPosition(LineRenderer.positionCount - 1, mousePosition);
+                LineRenderer.SetPosition(LineRenderer.positionCount - 1, targetPosition);
 
                 if (EdgeCollider != null && m_isMakingCollider && m_drawnVert.Count > 1)
                 {
@@ -82,7 +82,6 @@ namespace Curry.Skill
                 if(m_segmentLengths.Count == 0) 
                 {
                     OnClear();
-                    gameObject.SetActive(false);
                     yield break;
                 }
                 while (decayAmount > Mathf.Epsilon && m_segmentLengths.Count > 0)
@@ -155,6 +154,8 @@ namespace Curry.Skill
             {
                 EdgeCollider.Reset();
             }
+
+            gameObject.SetActive(false);
         }
     }
 }
