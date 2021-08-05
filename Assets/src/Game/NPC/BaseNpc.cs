@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Curry.Game
 {
-    public class BaseNpc : Interactable
+    public class BaseNpc : BaseCharacter
     {
         [SerializeField] protected CollisionStats m_collision = default;
         [SerializeField] protected CharacterStats m_stats = default;
@@ -13,7 +13,7 @@ namespace Curry.Game
         protected Transform m_target = default;
         
         public override CollisionStats CollisionStats { get { return m_collision; } }
-        public CharacterStats CurrentStats { get { return m_stats; } }
+        public override CharacterStats CurrentStats { get { return m_stats; } }
         public Transform Target { get { return m_target; } set { m_target = value; } }
 
         protected float m_attackTimer = 0f;
@@ -34,22 +34,14 @@ namespace Curry.Game
             m_rigidbody?.AddForce(dir.normalized * m_stats.Speed, ForceMode2D.Impulse);
         }
 
-        public override void OnTakeDamage(float damage)
+        protected override void OnClash(Collision2D collision) 
         {
-            m_stats.Stamina -= damage;
-
-            if (m_stats.Stamina <= 0f)
-            {
-                OnDefeat();
-            }
+            base.OnClash(collision);
         }
 
-        protected override void OnTouch(Interactable incomingInteraction) 
+        public override void OnKnockback(Vector2 direction, float knockback) 
         {
-            if(incomingInteraction.Relations == ObjectRelations.Player) 
-            {
-                incomingInteraction.OnTakeDamage(CollisionStats.ContactDamage);
-            }
+            base.OnKnockback(direction, knockback);
         }
 
         public override void OnDefeat()

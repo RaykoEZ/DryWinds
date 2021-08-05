@@ -52,7 +52,6 @@ namespace Curry.Game
         public virtual void Dash(float speed)
         {
             StartCoroutine(OnDashCD());
-            Debug.Log(m_dashWindupTimer);
             float chargeFactor = Mathf.Max(
             0.5f,
             (Mathf.Min(m_dashWindupTimer, m_maxWindupTime)) / m_maxWindupTime);

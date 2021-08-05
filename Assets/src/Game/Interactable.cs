@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Curry.Util;
 
 namespace Curry.Game
 {
@@ -24,21 +25,24 @@ namespace Curry.Game
 
         protected virtual void OnCollisionEnter2D(Collision2D collision)
         {
+            OnClash(collision);         
+        }
+
+        protected virtual void OnClash(Collision2D collision)
+        {
             Interactable incomingInterable = collision.gameObject.GetComponent<Interactable>();
             if (incomingInterable != null)
             {
                 ContactPoint2D contact = collision.GetContact(0);
                 Vector2 dir = contact.normal.normalized;
-                float vFactor = ((incomingInterable.m_rigidbody.velocity.sqrMagnitude) / (m_rigidbody.velocity.sqrMagnitude + 0.1f));
-                vFactor += 0.1f;
-                vFactor = Mathf.Min(vFactor, 1.5f);
-                OnKnockback(dir, vFactor * incomingInterable.CollisionStats.Knockback);
+                float vFactor = InteractionUtil.ScaleFactior(
+                    incomingInterable.m_rigidbody.velocity.sqrMagnitude,
+                    m_rigidbody.velocity.sqrMagnitude,
+                    0.2f,
+                    1.5f);
 
-                OnTouch(incomingInterable);
+                OnKnockback(dir, vFactor * incomingInterable.CollisionStats.Knockback);
             }
-        }
-        protected virtual void OnTouch(Interactable incomingInteraction)
-        {
         }
 
         public virtual void OnKnockback(Vector2 direction, float knockback)
@@ -47,7 +51,7 @@ namespace Curry.Game
         }
 
 
-        public virtual void OnTakeDamage(float damage) 
+        protected virtual void OnTakeDamage(float damage) 
         {          
         }
 

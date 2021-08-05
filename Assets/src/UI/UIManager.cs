@@ -29,11 +29,11 @@ namespace Curry.UI
 
         void UpdateUI() 
         {
-            m_stamBar.SetMaxValue(m_playerContext.PlayerStats.MaxStamina);
-            m_stamBar.SetBarValue(m_playerContext.PlayerStats.Stamina);
+            m_stamBar.SetMaxValue(m_playerContext.CharacterStats.MaxStamina);
+            m_stamBar.SetBarValue(m_playerContext.CharacterStats.Stamina);
 
-            m_spBar.SetMaxValue(m_playerContext.PlayerStats.MaxSP);
-            m_spBar.SetBarValue(m_playerContext.PlayerStats.SP);
+            m_spBar.SetMaxValue(m_playerContext.CharacterStats.MaxSP);
+            m_spBar.SetBarValue(m_playerContext.CharacterStats.SP);
         }
     }
 }

@@ -7,7 +7,7 @@ using Curry.Events;
 
 namespace Curry.Game
 {
-    public class Player : Interactable
+    public class Player : BaseCharacter
     {
         [SerializeField] protected PlayerContext m_playerContext = default;
         [SerializeField] BaseTracerBrush m_brush = default;
@@ -17,12 +17,11 @@ namespace Curry.Game
         protected PlayerContextFactory m_playerContextFactory = default;
 
         public BaseTracerBrush CurrentBrush { get { return m_brush; } }
-        public PlayerStats Stats { get { return m_playerContext.PlayerStats; } }
+        public override CharacterStats CurrentStats { get { return m_playerContext.CharacterStats; } }
         public override CollisionStats CollisionStats { get { return m_playerContext.CurrentCollisionStats; } }
 
         protected virtual void Update()
         {
-
             if (m_playerContext.IsDirty) 
             {
                 m_playerContextFactory.UpdateContext(m_playerContext);
@@ -67,22 +66,26 @@ namespace Curry.Game
             ChangeTrace(newIndex);
         }
 
-        public override void OnTakeDamage(float damage)
+        protected override void OnTakeDamage(float damage)
         {
-            m_playerContext.PlayerStats.Stamina -= damage;
+            m_playerContext.CharacterStats.Stamina -= damage;
 
-            if (m_playerContext.PlayerStats.Stamina <= 0f) 
+            if (m_playerContext.CharacterStats.Stamina <= 0f) 
             {
                 OnDefeat();
             }
         }
 
-        protected override void OnTouch(Interactable incomingInteraction)
+        protected override void OnClash(Collision2D collision)
         {
-            if (incomingInteraction.Relations == ObjectRelations.Hostile)
+            Interactable incomingInterable = collision.gameObject.GetComponent<Interactable>();
+
+            if (incomingInterable.Relations == ObjectRelations.Hostile)
             {
-                incomingInteraction.OnTakeDamage(CollisionStats.ContactDamage);
+                OnTakeDamage(incomingInterable.CollisionStats.ContactDamage);
             }
+
+            base.OnClash(collision);
         }
 
         public override void OnDefeat()
@@ -93,13 +96,13 @@ namespace Curry.Game
         {
             m_spRegenTimer += Time.deltaTime;
             if (m_spRegenTimer >= 1.0f &&
-                m_playerContext.PlayerStats.SP < m_playerContext.PlayerStats.MaxSP) 
+                m_playerContext.CharacterStats.SP < m_playerContext.CharacterStats.MaxSP) 
             {
                 m_spRegenTimer = 0f;
-                m_playerContext.PlayerStats.SP = 
+                m_playerContext.CharacterStats.SP = 
                     Mathf.Min(
-                        m_playerContext.PlayerStats.MaxSP,
-                        m_playerContext.PlayerStats.SP + m_playerContext.PlayerStats.SPRegenPerSec);
+                        m_playerContext.CharacterStats.MaxSP,
+                        m_playerContext.CharacterStats.SP + m_playerContext.CharacterStats.SPRegenPerSec);
             }
         }
 

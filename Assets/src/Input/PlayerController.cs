@@ -19,7 +19,7 @@ namespace Curry.Input
         {
             if (Mouse.current.leftButton.isPressed)
             {
-                m_player.CurrentBrush.Draw(m_player.Stats);
+                m_player.CurrentBrush.Draw(m_player.CurrentStats);
             }
         }
 
@@ -41,7 +41,7 @@ namespace Curry.Input
                         {
                             m_anim.OnDashRelease();
                             // Dash when rmb released
-                            m_dashController.Dash(m_player.Stats.Speed);
+                            m_dashController.Dash(m_player.CurrentStats.Speed);
                         }
                         break;
                     default:

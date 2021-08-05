@@ -9,7 +9,7 @@ namespace Curry.Game
     public class PlayerContext : IGameContext
     {
         [SerializeField] CollisionStats m_currentCollisionStats = default;
-        [SerializeField] PlayerStats m_playerStats = default;
+        [SerializeField] CharacterStats m_playerStats = default;
         [SerializeField] TraceInventory m_traceInventory = default;
         [SerializeField] TraceAsset m_equippedTrace = default;
         bool m_isDirty = false;
@@ -18,7 +18,7 @@ namespace Curry.Game
             get 
             {
                 return m_isDirty ||
-                    PlayerStats.IsDirty ||
+                    CharacterStats.IsDirty ||
                     m_currentCollisionStats.IsDirty;
             } 
         }
@@ -29,7 +29,7 @@ namespace Curry.Game
             get { return m_currentCollisionStats; } 
             set { m_currentCollisionStats = value; m_isDirty = true; } 
         }
-        public PlayerStats PlayerStats
+        public CharacterStats CharacterStats
         {
             get
             {
@@ -69,12 +69,12 @@ namespace Curry.Game
 
         public PlayerContext(
             CollisionStats baseCollisionStats,
-            PlayerStats currentStats, 
+            CharacterStats currentStats, 
             TraceInventory inventory, 
             TraceAsset trace) 
         {
             CurrentCollisionStats = baseCollisionStats;
-            PlayerStats = currentStats;
+            CharacterStats = currentStats;
             TraceInventory = inventory;
             EquippedTrace = trace;
         }
@@ -100,7 +100,6 @@ namespace Curry.Game
         public void Unlisten(OnPlayerContextUpdate callback) 
         {
             m_onContextUpdate -= callback;
-
         }
 
         public PlayerContext Context()
