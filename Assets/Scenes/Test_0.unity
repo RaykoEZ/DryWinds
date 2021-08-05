@@ -150,8 +150,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: -5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 1119185572}
-  m_RootOrder: 2
+  m_Father: {fileID: 0}
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &218808827
 GameObject:
@@ -350,7 +350,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1119185572}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &276075518 stripped
 Transform:
@@ -544,7 +544,6 @@ RectTransform:
   m_Children:
   - {fileID: 519420032}
   - {fileID: 276075518}
-  - {fileID: 25043411}
   - {fileID: 1552093609}
   - {fileID: 1284718377}
   - {fileID: 234546718}
@@ -584,7 +583,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1119185572}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -932,13 +931,17 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 826281917603678357, guid: ea9ee902703f1ff42bac00a64f21ba55, type: 3}
+      propertyPath: m_LinearDrag
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 897198343347735774, guid: ea9ee902703f1ff42bac00a64f21ba55, type: 3}
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 897198343347735775, guid: ea9ee902703f1ff42bac00a64f21ba55, type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 897198343347735775, guid: ea9ee902703f1ff42bac00a64f21ba55, type: 3}
       propertyPath: m_LocalPosition.x
@@ -992,10 +995,26 @@ PrefabInstance:
       propertyPath: m_parent
       value: 
       objectReference: {fileID: 25043411}
+    - target: {fileID: 2631110182353634818, guid: ea9ee902703f1ff42bac00a64f21ba55, type: 3}
+      propertyPath: m_ReceiveShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2631110182353634820, guid: ea9ee902703f1ff42bac00a64f21ba55, type: 3}
+      propertyPath: m_Constraints
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2631110182353634820, guid: ea9ee902703f1ff42bac00a64f21ba55, type: 3}
+      propertyPath: m_GravityScale
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3416723388571200510, guid: ea9ee902703f1ff42bac00a64f21ba55, type: 3}
       propertyPath: m_camera
       value: 
       objectReference: {fileID: 519420031}
+    - target: {fileID: 3555703971000866244, guid: ea9ee902703f1ff42bac00a64f21ba55, type: 3}
+      propertyPath: m_DynamicOccludee
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5581561233186251948, guid: ea9ee902703f1ff42bac00a64f21ba55, type: 3}
       propertyPath: m_parent
       value: 

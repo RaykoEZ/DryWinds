@@ -44,10 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83ac3cf1b5f76a04d99953cd983310e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_camera: {fileID: 0}
   m_poolManager: {fileID: 9009991038235426016}
-  m_onTraceCost:
-    m_eventToTrigger: {fileID: 11400000, guid: a7573b6491560eb4ebbc594817af2d42, type: 2}
 --- !u!114 &9009991038235426016
 MonoBehaviour:
   m_ObjectHideFlags: 0

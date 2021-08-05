@@ -125,7 +125,7 @@ namespace Curry.Skill
             Vector2[] vertList = m_drawnVert.ToArray();
             Vector3[] posList = m_drawnPositions.ToArray();
             float[] lengthList = m_segmentLengths.ToArray();
-            // lerp last vertex to new position, shrinking theis segment by $$decayAmount.
+            // lerp last vertex to new position, shrinking this segment by $$decayAmount.
             Vector2 vlast = vertList[0];
             Vector2 vSecondLast = vertList[1];
             float t = trimLength / lengthList[0];

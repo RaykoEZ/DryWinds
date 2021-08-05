@@ -16,6 +16,7 @@ namespace Curry.Game
         {
             m_amountToPool = numToPool;
             m_poolObjectRef = poolObj;
+            m_parent = parent;
             if (m_amountToPool > 0 && m_poolObjectRef != null)
             {
                 MakePool(m_amountToPool, m_poolObjectRef, m_parent);

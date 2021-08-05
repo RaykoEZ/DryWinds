@@ -12,18 +12,11 @@ namespace Curry.Input
     public class PlayerController : MonoBehaviour
     {
         [SerializeField] Player m_player = default;
-        [SerializeField] MovementHandler m_movementController = default;
+        [SerializeField] DashHandler m_dashController = default;
         [SerializeField] AnimatorHandler m_anim = default;
-        [SerializeField] DashTrace m_dashTrace = default;
-        float m_dashChargeTime = 0f;
+
         void Update()
         {
-            // When rmb held, charge dash guage
-            if (Mouse.current.rightButton.isPressed) 
-            {
-                m_dashChargeTime += 2f * Time.deltaTime;
-            }
-
             if (Mouse.current.leftButton.isPressed)
             {
                 m_player.CurrentBrush.Draw(m_player.Stats);
@@ -31,28 +24,24 @@ namespace Curry.Input
         }
 
 
-        public void OnDashTrigger(InputAction.CallbackContext c) 
+        public void OnDashTrigger(InputAction.CallbackContext c)
         {
-            if (c.interaction is PressInteraction)
+            if (c.interaction is PressInteraction && m_dashController.IsDashAvailable)
             {
                 switch (c.phase)
                 {
                     case InputActionPhase.Performed:
-                        if (Mouse.current.rightButton.isPressed) 
+                        if (Mouse.current.rightButton.isPressed)
                         {
                             // trigger dash windup anim on rmb press
                             m_anim.OnDashWindUp();
+                            m_dashController.DashWindup();
                         }
-                        else 
+                        else
                         {
                             m_anim.OnDashRelease();
                             // Dash when rmb released
-                            Vector2 targetPos = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
-                            m_dashTrace.OnDraw(m_player.gameObject.transform.position, targetPos);
-                            m_movementController.Dash(m_player.Stats.Speed, m_dashChargeTime);
-                            m_dashChargeTime = 0f;
-                            
-                            // trigger dash release anim
+                            m_dashController.Dash(m_player.Stats.Speed);
                         }
                         break;
                     default:
@@ -76,5 +65,6 @@ namespace Curry.Input
                 }
             }
         }
+
     }
 }

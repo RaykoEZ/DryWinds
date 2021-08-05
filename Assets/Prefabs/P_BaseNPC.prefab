@@ -55,9 +55,11 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: -0.043852866, y: 0.5053242}
-      - {x: -0.4193703, y: 0.02831617}
-      - {x: 0.36291844, y: 0.026573122}
+    - - {x: 0.4679571, y: 0.8193866}
+      - {x: 0.0021732077, y: 0.8217537}
+      - {x: -0.49030805, y: 0.8354417}
+      - {x: -0.5171758, y: -0.040723026}
+      - {x: 0.47798377, y: -0.04821928}
 --- !u!212 &7550112727666132728
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -132,7 +134,7 @@ MonoBehaviour:
     m_stamina: 30
     m_sp: 20
     m_speed: 5
-  m_attackInterval: 1
+  m_attackInterval: 0
 --- !u!1001 &6407115502891255756
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -206,7 +208,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2593139629673016019, guid: ee850e72963a50c44945d372a872712a, type: 3}
       propertyPath: m_LinearDrag
-      value: 1
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 2593139629673016019, guid: ee850e72963a50c44945d372a872712a, type: 3}
       propertyPath: m_Constraints

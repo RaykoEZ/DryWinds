@@ -21,7 +21,7 @@ namespace Curry.Game
         protected virtual void Update() 
         {
             m_attackTimer += Time.deltaTime;
-            if(m_attackTimer >= m_attackInterval && m_target != null) 
+            if(m_attackTimer >= m_attackInterval && m_target != null && m_attackInterval > 0) 
             {
                 m_attackTimer = 0f;
                 OnAttack();
