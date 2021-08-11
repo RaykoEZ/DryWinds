@@ -19,5 +19,11 @@ namespace Curry.Game
             m_contactDamage = contactDamage;
             m_knockback = knockback;
         }
+
+        public CollisionStats(CollisionStats stats)
+        {
+            m_contactDamage = stats.ContactDamage;
+            m_knockback = stats.Knockback;
+        }
     }
 }

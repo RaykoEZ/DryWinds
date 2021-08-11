@@ -5,28 +5,34 @@ using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Interactions;
 using UnityEngine.Animations;
 using Curry.Game;
-using Curry.Skill;
 
 namespace Curry.Input
 {
     public class PlayerController : MonoBehaviour
     {
         [SerializeField] Player m_player = default;
-        [SerializeField] DashHandler m_dashController = default;
+        [SerializeField] SkillHandler m_skillHandler = default;
         [SerializeField] AnimatorHandler m_anim = default;
+
+        private void Start()
+        {
+            m_skillHandler.Init(m_player);
+        }
 
         void Update()
         {
             if (Mouse.current.leftButton.isPressed)
             {
-                m_player.CurrentBrush.Draw(m_player.CurrentStats);
+                Vector2 pos = m_player.CurrentCamera.
+                    ScreenToWorldPoint(Mouse.current.position.ReadValue());
+
+                m_player.CurrentBrush.Draw(m_player.CurrentStats, pos);
             }
         }
 
-
         public void OnDashTrigger(InputAction.CallbackContext c)
         {
-            if (c.interaction is PressInteraction && m_dashController.IsDashAvailable)
+            if (c.interaction is PressInteraction)
             {
                 switch (c.phase)
                 {
@@ -35,13 +41,15 @@ namespace Curry.Input
                         {
                             // trigger dash windup anim on rmb press
                             m_anim.OnDashWindUp();
-                            m_dashController.DashWindup();
+                            m_skillHandler.DashWindup();
                         }
                         else
                         {
                             m_anim.OnDashRelease();
+                            Vector2 pos = m_player.CurrentCamera.
+                                ScreenToWorldPoint(Mouse.current.position.ReadValue());
                             // Dash when rmb released
-                            m_dashController.Dash(m_player.CurrentStats.Speed);
+                            m_skillHandler.Dash(pos);
                         }
                         break;
                     default:

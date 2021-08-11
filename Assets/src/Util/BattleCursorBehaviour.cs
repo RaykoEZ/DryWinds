@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 
 namespace Curry.Util
 {
+    // Not using for now
     public class BattleCursorBehaviour : MonoBehaviour
     {
         [SerializeField] SpriteRenderer Sprite = default;

@@ -17,15 +17,21 @@ namespace Curry.Game
     public class Interactable : MonoBehaviour
     {
         [SerializeField] protected Rigidbody2D m_rigidbody = default;
+        [SerializeField] protected Collider2D m_hurtBox = default;
         [SerializeField] protected ObjectRelations m_relations = default;
         CollisionStats m_defaultCollisionStats = new CollisionStats(0f, 5f);
-
-        public virtual CollisionStats CollisionStats { get { return m_defaultCollisionStats; } }
+         
+        public Rigidbody2D RigidBody { get { return m_rigidbody; } }
+        public Collider2D HurtBox { get { return m_hurtBox; } }
         public ObjectRelations Relations { get { return m_relations; } }
+        public virtual CollisionStats CollisionStats { get { return m_defaultCollisionStats; } }
 
         protected virtual void OnCollisionEnter2D(Collision2D collision)
         {
-            OnClash(collision);         
+            if(collision.otherCollider == m_hurtBox) 
+            {
+                OnClash(collision);
+            }
         }
 
         protected virtual void OnClash(Collision2D collision)
@@ -51,7 +57,7 @@ namespace Curry.Game
         }
 
 
-        protected virtual void OnTakeDamage(float damage) 
+        public virtual void OnTakeDamage(float damage) 
         {          
         }
 

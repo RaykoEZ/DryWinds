@@ -67,16 +67,24 @@ namespace Curry.Game
         }
         #endregion
 
+        public PlayerContext(PlayerContext c) 
+        {
+            m_currentCollisionStats = new CollisionStats(c.m_currentCollisionStats);
+            m_playerStats = new CharacterStats(c.m_playerStats);
+            m_traceInventory = c.m_traceInventory;
+            m_equippedTrace = c.m_equippedTrace;
+        }
+
         public PlayerContext(
             CollisionStats baseCollisionStats,
             CharacterStats currentStats, 
             TraceInventory inventory, 
             TraceAsset trace) 
         {
-            CurrentCollisionStats = baseCollisionStats;
-            CharacterStats = currentStats;
-            TraceInventory = inventory;
-            EquippedTrace = trace;
+            m_currentCollisionStats = baseCollisionStats;
+            m_playerStats = currentStats;
+            m_traceInventory = inventory;
+            m_equippedTrace = trace;
         }
     }
 
@@ -88,7 +96,7 @@ namespace Curry.Game
 
         public void UpdateContext(PlayerContext context)
         {
-            m_context = context;
+            m_context =  new PlayerContext(context);
             m_onContextUpdate?.Invoke(m_context);
         }
 

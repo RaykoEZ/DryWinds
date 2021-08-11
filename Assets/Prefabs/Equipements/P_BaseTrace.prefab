@@ -67,6 +67,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_rigidbody: {fileID: 1566882391774294694}
+  m_hurtBox: {fileID: 0}
   m_relations: 0
   LineRenderer: {fileID: 9087464718448856407}
   EdgeCollider: {fileID: 346624158060485392}
@@ -75,7 +76,7 @@ MonoBehaviour:
   m_durability: 3
   m_collisionStats:
     m_contactDamage: 0
-    m_knockback: 1
+    m_knockback: 0.1
 --- !u!50 &1566882391774294694
 Rigidbody2D:
   serializedVersion: 4

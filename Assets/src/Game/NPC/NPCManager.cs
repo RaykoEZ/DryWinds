@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Curry.Game
 {
-    public class NPCManager : MonoBehaviour
+    public class NpcManager : MonoBehaviour
     {
         [SerializeField] protected GameObject m_npcRef = default;
         [SerializeField] protected Transform m_parent = default;

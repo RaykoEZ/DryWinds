@@ -23,5 +23,14 @@ namespace Curry.Game
         public float Speed { get { return m_speed; } set { m_speed = value; m_isDirty = true; } }
         public float SPRegenPerSec { get { return m_spRegenPerSec; } set { m_spRegenPerSec = value; m_isDirty = true; } }
 
+        public CharacterStats(CharacterStats stat) 
+        {
+            m_maxStamina = stat.MaxStamina;
+            m_maxSp = stat.MaxSP;
+            m_stamina = stat.Stamina;
+            m_sp = stat.SP;
+            m_speed = stat.Speed;
+            m_spRegenPerSec = stat.SPRegenPerSec;
+        }
     }
 }

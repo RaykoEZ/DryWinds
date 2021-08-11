@@ -9,11 +9,12 @@ namespace Curry.Events
     public class RegionExitTrigger : MonoBehaviour
     {
         [SerializeField] protected CurryGameEventTrigger m_trigger = default;
+        [SerializeField] Collider2D m_region = default;
 
         protected virtual void OnTriggerExit2D(Collider2D collision)
         {
             Interactable interactable = collision.gameObject.GetComponent<Interactable>();
-            if (interactable != null) 
+            if (interactable != null && !m_region.bounds.Contains(interactable.RigidBody.position)) 
             {
                 Dictionary<string, object> args = new Dictionary<string, object>
                 { {"exitingObject", interactable}};

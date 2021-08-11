@@ -39,7 +39,7 @@ namespace Curry.Skill
             m_currentTracer = null;
         }
 
-        public virtual void Draw(CharacterStats stats)
+        public virtual void Draw(CharacterStats stats, Vector2 drawTo)
         {
             // don't draw when we are switching tracers
             if (m_equipingTrace) 
@@ -47,8 +47,7 @@ namespace Curry.Skill
                 return;
             }
 
-            Vector2 mousePosition = Camera.main.ScreenToWorldPoint
-                (Mouse.current.position.ReadValue());
+            Vector2 mousePosition = drawTo;
 
             if (mousePosition != m_previousMousePos)
             {

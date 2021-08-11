@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Curry.Skill;
-using Curry.Events;
 
 namespace Curry.Game
 {
@@ -15,7 +14,9 @@ namespace Curry.Game
         protected int m_currentTraceIndex = 0;
         protected float m_spRegenTimer = 0f;
         protected PlayerContextFactory m_playerContextFactory = default;
+        protected Camera m_cam = default;
 
+        public Camera CurrentCamera { get { return m_cam; } }
         public BaseTracerBrush CurrentBrush { get { return m_brush; } }
         public override CharacterStats CurrentStats { get { return m_playerContext.CharacterStats; } }
         public override CollisionStats CollisionStats { get { return m_playerContext.CurrentCollisionStats; } }
@@ -30,12 +31,13 @@ namespace Curry.Game
             OnSPRegen();
         }
 
-        public void Init(PlayerContextFactory contextFactory)
+        public void Init(PlayerContextFactory contextFactory, Camera cam)
         {
             m_playerContextFactory = contextFactory;
             m_playerContextFactory.UpdateContext(m_playerContext);
             m_playerContextFactory.Listen(OnPlayerContextUpdate);
             m_brush.EquipTrace(m_playerContext.EquippedTrace);
+            m_cam = cam;
         }
 
         public void Shutdown() 
@@ -64,28 +66,6 @@ namespace Curry.Game
         {
             int newIndex = m_currentTraceIndex - 1;
             ChangeTrace(newIndex);
-        }
-
-        protected override void OnTakeDamage(float damage)
-        {
-            m_playerContext.CharacterStats.Stamina -= damage;
-
-            if (m_playerContext.CharacterStats.Stamina <= 0f) 
-            {
-                OnDefeat();
-            }
-        }
-
-        protected override void OnClash(Collision2D collision)
-        {
-            Interactable incomingInterable = collision.gameObject.GetComponent<Interactable>();
-
-            if (incomingInterable.Relations == ObjectRelations.Hostile)
-            {
-                OnTakeDamage(incomingInterable.CollisionStats.ContactDamage);
-            }
-
-            base.OnClash(collision);
         }
 
         public override void OnDefeat()

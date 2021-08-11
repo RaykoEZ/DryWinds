@@ -14,6 +14,11 @@ namespace Curry.Game
             m_animator.SetTrigger("DashTrigger");
         }
 
+        public void OnDashCancel() 
+        { 
+        
+        }
+
         public void OnDashRelease() 
         {
             m_animator.SetBool("DashCharging", false);

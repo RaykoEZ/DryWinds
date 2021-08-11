@@ -8,9 +8,10 @@ namespace Curry.Game
 {
     public class GameStateManager : MonoBehaviour
     {
-        [SerializeField] UIManager m_playerUI = default;
+        [SerializeField] PlayerHUDManager m_playerUI = default;
         [SerializeField] Player m_player = default;
         [SerializeField] GameEventHandler m_gameEventListener = default;
+        [SerializeField] Camera m_mainCamera = default;
 
         PlayerContextFactory m_playerContextFactory = default;
 
@@ -22,7 +23,11 @@ namespace Curry.Game
             PlayerContextFactory playerContextFactory = new PlayerContextFactory();
             m_playerContextFactory = playerContextFactory;
             m_playerUI.Init(playerContextFactory);
-            m_player.Init(playerContextFactory);
+            m_player.Init(playerContextFactory, m_mainCamera);
+
+            // Setup Iframe collision ignore
+            int iframeLayer = LayerMask.NameToLayer("IFrame");
+            Physics.IgnoreLayerCollision(0, iframeLayer, true);
         }
 
         void OnDisable()
