@@ -75,14 +75,13 @@ namespace Curry.Game
         protected void OnSPRegen() 
         {
             m_spRegenTimer += Time.deltaTime;
-            if (m_spRegenTimer >= 1.0f &&
-                m_playerContext.CharacterStats.SP < m_playerContext.CharacterStats.MaxSP) 
+            if (m_playerContext.CharacterStats.SP < m_playerContext.CharacterStats.MaxSP) 
             {
-                m_spRegenTimer = 0f;
                 m_playerContext.CharacterStats.SP = 
                     Mathf.Min(
                         m_playerContext.CharacterStats.MaxSP,
-                        m_playerContext.CharacterStats.SP + m_playerContext.CharacterStats.SPRegenPerSec);
+                        m_playerContext.CharacterStats.SP + m_spRegenTimer * m_playerContext.CharacterStats.SPRegenPerSec);
+                m_spRegenTimer = 0f;
             }
         }
 

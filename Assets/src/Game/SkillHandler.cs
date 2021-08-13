@@ -6,9 +6,11 @@ using Curry.Skill;
 
 namespace Curry.Game
 {
+
     public class SkillHandler : MonoBehaviour
     {
         [SerializeField] BaseSkill m_skill = default;
+        public BaseSkill CurrentSkill { get { return m_skill; } }
 
         public bool IsSkillAvailable
         {
@@ -23,12 +25,12 @@ namespace Curry.Game
             m_skill.Init(user);
         }
 
-        public virtual void DashWindup()
+        public virtual void SkillWindup()
         {
             m_skill.SkillWindup();
         }
 
-        public virtual void Dash(Vector2 targetPos)
+        public virtual void ActivateSkill(Vector2 targetPos)
         {
             SkillTargetParam param = new SkillTargetParam(targetPos);
             m_skill.Activate(param);

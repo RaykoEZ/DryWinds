@@ -66,9 +66,9 @@ MonoBehaviour:
   m_hitBox: {fileID: 4048156830801403012}
   m_targetOptions: 4
   m_cooldownTime: 1
-  m_maxUseCount: 2
-  m_maxWindupTime: 0.5
-  m_spCost: 5
+  m_maxWindupTime: 1
+  m_spCost: 10
+  m_chargeDuration: 0.2
 --- !u!95 &8596796697600054897
 Animator:
   serializedVersion: 3
@@ -125,7 +125,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2631099041285634434, guid: 37893dc4b509ef54eb4ac85481a3fb8d, type: 3}
       propertyPath: m_EdgeRadius
-      value: 1
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 2631099041285634438, guid: 37893dc4b509ef54eb4ac85481a3fb8d, type: 3}
       propertyPath: m_Emitting
@@ -133,7 +133,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2631099041285634438, guid: 37893dc4b509ef54eb4ac85481a3fb8d, type: 3}
       propertyPath: m_Parameters.widthMultiplier
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 2631099041285634432, guid: 37893dc4b509ef54eb4ac85481a3fb8d, type: 3}

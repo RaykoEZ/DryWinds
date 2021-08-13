@@ -6,7 +6,7 @@
             "id": "ad142658-e7e9-48ef-95f2-68b5b0f3e2b2",
             "actions": [
                 {
-                    "name": "Dash",
+                    "name": "DashSkill",
                     "type": "Button",
                     "id": "da906083-8a20-4e98-b7b3-a838dbb13b67",
                     "expectedControlType": "Button",
@@ -30,7 +30,7 @@
                     "interactions": "Press(behavior=2)",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "Dash",
+                    "action": "DashSkill",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

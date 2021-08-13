@@ -34,23 +34,23 @@ namespace Curry.Skill
         [SerializeField] protected Collider2D m_hitBox = default;
         [SerializeField] protected TargetOptions m_targetOptions = default;
         [SerializeField] protected float m_cooldownTime = default;
-        [SerializeField] protected int m_maxUseCount = default;
         [SerializeField] protected float m_maxWindupTime = default;
         [SerializeField] protected float m_spCost = default;
 
         protected bool m_onCD = false;
         protected bool m_isWindingUp = false;
-        protected int m_currentUses = 0;
         protected float m_windupTimer = 0f;
         protected BaseCharacter m_user = default;
         protected Coroutine m_currentSkill = default;
         protected Coroutine m_currentWindup = default;
 
+        public float MaxWindUpTime { get { return m_maxWindupTime; } }
+
         public virtual bool SkillUsable
         {
             get
             {
-                return m_currentUses > 0 && 
+                return !m_onCD &&
                     m_user?.CurrentStats.SP >= m_spCost;
             }
         }
@@ -61,12 +61,11 @@ namespace Curry.Skill
         {
             m_user = user;
             m_hitBox.enabled = hitBoxOn;
-            m_currentUses = m_maxUseCount;
         }
 
         public virtual void SkillWindup()
         {
-            if(m_maxWindupTime == 0 || m_windupTimer >= m_maxWindupTime) 
+            if(!SkillUsable || m_maxWindupTime == 0) 
             {
                 return;
             }
@@ -90,7 +89,6 @@ namespace Curry.Skill
             if (SkillUsable && m_user != null)
             {
                 m_onCD = true;
-                m_currentUses = Mathf.Max(0, --m_currentUses);
                 m_user.CurrentStats.SP = Mathf.Max(0f, m_user.CurrentStats.SP - m_spCost);
                 StartCoroutine(OnCooldown());
                 m_currentSkill = StartCoroutine(SkillEffect(target));
@@ -130,7 +128,7 @@ namespace Curry.Skill
         {
             //start cooldown and reset skill states
             yield return new WaitForSeconds(m_cooldownTime);
-            m_currentUses = Mathf.Min(++m_currentUses, m_maxUseCount);
+            Debug.Log("Cd end");
             m_onCD = false;
         }
 

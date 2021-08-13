@@ -4,9 +4,8 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Interactions;
 using UnityEngine.Animations;
-using Curry.Game;
 
-namespace Curry.Input
+namespace Curry.Game
 {
     public class PlayerController : MonoBehaviour
     {
@@ -32,6 +31,11 @@ namespace Curry.Input
 
         public void OnDashTrigger(InputAction.CallbackContext c)
         {
+            if (!m_skillHandler.IsSkillAvailable) 
+            {
+                return;
+            }
+
             if (c.interaction is PressInteraction)
             {
                 switch (c.phase)
@@ -41,7 +45,7 @@ namespace Curry.Input
                         {
                             // trigger dash windup anim on rmb press
                             m_anim.OnDashWindUp();
-                            m_skillHandler.DashWindup();
+                            m_skillHandler.SkillWindup();
                         }
                         else
                         {
@@ -49,7 +53,7 @@ namespace Curry.Input
                             Vector2 pos = m_player.CurrentCamera.
                                 ScreenToWorldPoint(Mouse.current.position.ReadValue());
                             // Dash when rmb released
-                            m_skillHandler.Dash(pos);
+                            m_skillHandler.ActivateSkill(pos);
                         }
                         break;
                     default:

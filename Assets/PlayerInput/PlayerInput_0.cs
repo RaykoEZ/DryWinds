@@ -21,7 +21,7 @@ namespace Curry.Input
             ""id"": ""ad142658-e7e9-48ef-95f2-68b5b0f3e2b2"",
             ""actions"": [
                 {
-                    ""name"": ""Dash"",
+                    ""name"": ""DashSkill"",
                     ""type"": ""Button"",
                     ""id"": ""da906083-8a20-4e98-b7b3-a838dbb13b67"",
                     ""expectedControlType"": ""Button"",
@@ -45,7 +45,7 @@ namespace Curry.Input
                     ""interactions"": ""Press(behavior=2)"",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""Dash"",
+                    ""action"": ""DashSkill"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -634,7 +634,7 @@ namespace Curry.Input
 }");
             // Player
             m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
-            m_Player_Dash = m_Player.FindAction("Dash", throwIfNotFound: true);
+            m_Player_DashSkill = m_Player.FindAction("DashSkill", throwIfNotFound: true);
             m_Player_Draw = m_Player.FindAction("Draw", throwIfNotFound: true);
             // UI
             m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
@@ -697,13 +697,13 @@ namespace Curry.Input
         // Player
         private readonly InputActionMap m_Player;
         private IPlayerActions m_PlayerActionsCallbackInterface;
-        private readonly InputAction m_Player_Dash;
+        private readonly InputAction m_Player_DashSkill;
         private readonly InputAction m_Player_Draw;
         public struct PlayerActions
         {
             private @PlayerInput_0 m_Wrapper;
             public PlayerActions(@PlayerInput_0 wrapper) { m_Wrapper = wrapper; }
-            public InputAction @Dash => m_Wrapper.m_Player_Dash;
+            public InputAction @DashSkill => m_Wrapper.m_Player_DashSkill;
             public InputAction @Draw => m_Wrapper.m_Player_Draw;
             public InputActionMap Get() { return m_Wrapper.m_Player; }
             public void Enable() { Get().Enable(); }
@@ -714,9 +714,9 @@ namespace Curry.Input
             {
                 if (m_Wrapper.m_PlayerActionsCallbackInterface != null)
                 {
-                    @Dash.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDash;
-                    @Dash.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDash;
-                    @Dash.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDash;
+                    @DashSkill.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDashSkill;
+                    @DashSkill.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDashSkill;
+                    @DashSkill.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDashSkill;
                     @Draw.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDraw;
                     @Draw.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDraw;
                     @Draw.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDraw;
@@ -724,9 +724,9 @@ namespace Curry.Input
                 m_Wrapper.m_PlayerActionsCallbackInterface = instance;
                 if (instance != null)
                 {
-                    @Dash.started += instance.OnDash;
-                    @Dash.performed += instance.OnDash;
-                    @Dash.canceled += instance.OnDash;
+                    @DashSkill.started += instance.OnDashSkill;
+                    @DashSkill.performed += instance.OnDashSkill;
+                    @DashSkill.canceled += instance.OnDashSkill;
                     @Draw.started += instance.OnDraw;
                     @Draw.performed += instance.OnDraw;
                     @Draw.canceled += instance.OnDraw;
@@ -886,7 +886,7 @@ namespace Curry.Input
         }
         public interface IPlayerActions
         {
-            void OnDash(InputAction.CallbackContext context);
+            void OnDashSkill(InputAction.CallbackContext context);
             void OnDraw(InputAction.CallbackContext context);
         }
         public interface IUIActions
