@@ -15,7 +15,6 @@ namespace Curry.Skill
         Enemy = 1 << 2,
     }
 
-    [Serializable]
     public class SkillTargetParam
     {
         Vector2 m_targetPos = default;
@@ -32,10 +31,7 @@ namespace Curry.Skill
     {
         [SerializeField] protected Animator m_animator = default;
         [SerializeField] protected Collider2D m_hitBox = default;
-        [SerializeField] protected TargetOptions m_targetOptions = default;
-        [SerializeField] protected float m_cooldownTime = default;
-        [SerializeField] protected float m_maxWindupTime = default;
-        [SerializeField] protected float m_spCost = default;
+        [SerializeField] protected SkillProperty m_skillProperty = default;
 
         protected bool m_onCD = false;
         protected bool m_isWindingUp = false;
@@ -44,14 +40,14 @@ namespace Curry.Skill
         protected Coroutine m_currentSkill = default;
         protected Coroutine m_currentWindup = default;
 
-        public float MaxWindUpTime { get { return m_maxWindupTime; } }
+        public float MaxWindUpTime { get { return m_skillProperty.MaxWindupTime; } }
 
         public virtual bool SkillUsable
         {
             get
             {
                 return !m_onCD &&
-                    m_user?.CurrentStats.SP >= m_spCost;
+                    m_user?.CurrentStats.SP >= m_skillProperty.SpCost;
             }
         }
 
@@ -65,7 +61,7 @@ namespace Curry.Skill
 
         public virtual void SkillWindup()
         {
-            if(!SkillUsable || m_maxWindupTime == 0) 
+            if(!SkillUsable || m_skillProperty.MaxWindupTime == 0) 
             {
                 return;
             }
@@ -83,13 +79,13 @@ namespace Curry.Skill
 
         // The logics and interactions of the skill on each target
         /// @param target: initial target for skill
-        public virtual void Activate(SkillTargetParam target = null) 
+        public virtual void Execute(SkillTargetParam target = null) 
         {
             m_isWindingUp = false;
             if (SkillUsable && m_user != null)
             {
                 m_onCD = true;
-                m_user.CurrentStats.SP = Mathf.Max(0f, m_user.CurrentStats.SP - m_spCost);
+                m_user.CurrentStats.SP = Mathf.Max(0f, m_user.CurrentStats.SP - m_skillProperty.SpCost);
                 StartCoroutine(OnCooldown());
                 m_currentSkill = StartCoroutine(SkillEffect(target));
             }
@@ -127,8 +123,7 @@ namespace Curry.Skill
         protected virtual IEnumerator OnCooldown() 
         {
             //start cooldown and reset skill states
-            yield return new WaitForSeconds(m_cooldownTime);
-            Debug.Log("Cd end");
+            yield return new WaitForSeconds(m_skillProperty.CooldownTime);
             m_onCD = false;
         }
 

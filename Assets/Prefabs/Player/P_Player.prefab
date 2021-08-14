@@ -51,18 +51,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_rigidbody: {fileID: 826281917603678357}
   m_hurtBox: {fileID: 54977025414749079}
-  m_relations: 0
+  m_relations: 3
   m_playerContext:
     m_currentCollisionStats:
-      m_contactDamage: 5
+      m_contactDamage: 0
       m_knockback: 3
     m_playerStats:
       m_maxStamina: 100
       m_maxSp: 100
       m_stamina: 100
       m_sp: 100
-      m_speed: 1.5
+      m_speed: 10
       m_spRegenPerSec: 5
+      m_hitRecoveryTime: 0.75
     m_traceInventory: {fileID: 2105121062297059468}
     m_equippedTrace: {fileID: 11400000, guid: d249897879c08434f8c6722634c46ac1, type: 2}
   m_brush: {fileID: 7303586878393847328}
@@ -95,7 +96,7 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDrag: 5
+  m_LinearDrag: 3
   m_AngularDrag: 0
   m_GravityScale: 0
   m_Material: {fileID: 0}
@@ -267,6 +268,7 @@ MonoBehaviour:
   m_player: {fileID: 6580273533904613876}
   m_skillHandler: {fileID: 7914702964136947398}
   m_anim: {fileID: 7869645759159708107}
+  m_movementAction: {fileID: -5037352003540691882, guid: 82b300ceb3c136247a87054a5fd03e4f, type: 3}
 --- !u!114 &7914702964136947398
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -488,6 +490,22 @@ PrefabInstance:
     - target: {fileID: 4048156830801403011, guid: 7fdf6cff9c0eb9642870a1ddc3aba327, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4048156830801403012, guid: 7fdf6cff9c0eb9642870a1ddc3aba327, type: 3}
+      propertyPath: m_Radius
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4048156830801403012, guid: 7fdf6cff9c0eb9642870a1ddc3aba327, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4048156830801403012, guid: 7fdf6cff9c0eb9642870a1ddc3aba327, type: 3}
+      propertyPath: m_Offset.x
+      value: 0.030000031
+      objectReference: {fileID: 0}
+    - target: {fileID: 4048156830801403012, guid: 7fdf6cff9c0eb9642870a1ddc3aba327, type: 3}
+      propertyPath: m_Offset.y
+      value: 0.01338923
       objectReference: {fileID: 0}
     - target: {fileID: 4048156830801403013, guid: 7fdf6cff9c0eb9642870a1ddc3aba327, type: 3}
       propertyPath: m_Name

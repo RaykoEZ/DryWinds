@@ -1,14 +1,10 @@
 ﻿using System.Collections;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using Curry.Game;
 
 namespace Curry.Skill
 {
-    // NOTE TO SELF: IN THE FUTURE, DASH TRAIL AND HIT BOX LOGICS NEED TO
-    // MOVE INTO STATEMACHINE BEHAVIOUR FOR MORE CONTROL DURING SKILL ANIMATION
-
-    public class ChargeAttack : BaseSkill 
+    public class ChargeAttack : BaseSkill, IHitboxEffect 
     {
         [SerializeField] protected float m_chargeDuration = default;
 
@@ -18,7 +14,25 @@ namespace Curry.Skill
             m_animator.SetBool("WindingUp", true);
         }
 
-        public override void Activate(SkillTargetParam target = null)
+        protected virtual void OnTriggerEnter2D(Collider2D col) 
+        {
+            BaseCharacter hit = col.gameObject.GetComponent<BaseCharacter>();
+            OnHit(hit);
+        }
+
+        public void OnHit(BaseCharacter hit)
+        {
+            if (hit == null || (hit.Relations & m_skillProperty.TargetOptions) == ObjectRelations.None)
+            {
+                return;
+            }
+
+            Vector2 diff = hit.RigidBody.position - m_user.RigidBody.position;
+            hit.OnKnockback(diff.normalized, m_skillProperty.Knockback);
+            hit.OnTakeDamage(m_skillProperty.StaminaDamage);
+        }
+
+        public override void Execute(SkillTargetParam target = null)
         {
             if(target == null) 
             { 
@@ -26,14 +40,14 @@ namespace Curry.Skill
             }
 
             m_animator.SetTrigger("SkillTrigger");
-            base.Activate(target);
+            base.Execute(target);
         }
 
         protected override IEnumerator SkillEffect(SkillTargetParam target = null)
         {
             float chargeFactor = Mathf.Max(
-            0.5f,
-            (Mathf.Min(m_windupTimer, m_maxWindupTime)) / m_maxWindupTime);
+            0.4f,
+            (Mathf.Min(m_windupTimer, m_skillProperty.MaxWindupTime)) / m_skillProperty.MaxWindupTime);
             Vector2 mousePos = target.TargetPos;
 
             m_windupTimer = 0f;

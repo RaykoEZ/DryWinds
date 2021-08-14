@@ -6,6 +6,8 @@ using Curry.Skill;
 
 namespace Curry.Game
 {
+    public delegate void OnPlayerTakeDamage(float damage);
+
     public class Player : BaseCharacter
     {
         [SerializeField] protected PlayerContext m_playerContext = default;
@@ -15,6 +17,8 @@ namespace Curry.Game
         protected float m_spRegenTimer = 0f;
         protected PlayerContextFactory m_playerContextFactory = default;
         protected Camera m_cam = default;
+
+        public event OnPlayerTakeDamage OnHitStun;
 
         public Camera CurrentCamera { get { return m_cam; } }
         public BaseTracerBrush CurrentBrush { get { return m_brush; } }
@@ -66,6 +70,12 @@ namespace Curry.Game
         {
             int newIndex = m_currentTraceIndex - 1;
             ChangeTrace(newIndex);
+        }
+
+        public override void OnTakeDamage(float damage)
+        {
+            base.OnTakeDamage(damage);
+            OnHitStun?.Invoke(damage);
         }
 
         public override void OnDefeat()

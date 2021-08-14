@@ -1,4 +1,4 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Curry.Util;
@@ -7,10 +7,13 @@ namespace Curry.Game
 {
     // Player: does not damage player
     // Hostile: damages player
+    [Flags]
     public enum ObjectRelations 
     {
-        Player,
-        Hostile
+        None = 0,
+        Player = 1,
+        Ally = 1 << 1,
+        Enemy = 1 << 2
     }
 
     // A basic script for a collidable object 

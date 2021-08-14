@@ -30,10 +30,15 @@ namespace Curry.Game
             m_skill.SkillWindup();
         }
 
+        public virtual void InterruptWindup() 
+        {
+            m_skill.CancelWindup();
+        }
+
         public virtual void ActivateSkill(Vector2 targetPos)
         {
             SkillTargetParam param = new SkillTargetParam(targetPos);
-            m_skill.Activate(param);
+            m_skill.Execute(param);
         }
     }
 }

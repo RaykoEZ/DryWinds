@@ -47,6 +47,7 @@ MonoBehaviour:
   m_npc: {fileID: 7557477938998303306}
   m_anim: {fileID: 4052941514383100218}
   m_skillHandler: {fileID: 1658453411247593517}
+  m_attackInterval: 1
 --- !u!114 &1658453411247593517
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -205,17 +206,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_rigidbody: {fileID: 8869289004023852319}
   m_hurtBox: {fileID: 368594841113657428}
-  m_relations: 1
+  m_relations: 4
   m_collision:
-    m_contactDamage: 10
+    m_contactDamage: 0
     m_knockback: 2
   m_stats:
     m_maxStamina: 30
     m_maxSp: 20
     m_stamina: 30
     m_sp: 20
-    m_speed: 1
+    m_speed: 3
     m_spRegenPerSec: 0
+    m_hitRecoveryTime: 0.5
 --- !u!1 &7597001706235312769
 GameObject:
   m_ObjectHideFlags: 0
@@ -310,8 +312,12 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1162902964026411203, guid: 7fdf6cff9c0eb9642870a1ddc3aba327, type: 3}
-      propertyPath: m_chargeDuration
-      value: 0.2
+      propertyPath: m_skillProperty.SpCost
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1162902964026411203, guid: 7fdf6cff9c0eb9642870a1ddc3aba327, type: 3}
+      propertyPath: m_skillProperty.TargetOptions
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4048156830801403011, guid: 7fdf6cff9c0eb9642870a1ddc3aba327, type: 3}
       propertyPath: m_RootOrder
@@ -363,7 +369,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4048156830801403012, guid: 7fdf6cff9c0eb9642870a1ddc3aba327, type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4048156830801403012, guid: 7fdf6cff9c0eb9642870a1ddc3aba327, type: 3}
       propertyPath: m_Offset.x
@@ -468,7 +474,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2593139629673016019, guid: ee850e72963a50c44945d372a872712a, type: 3}
       propertyPath: m_LinearDrag
-      value: 5
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2593139629673016019, guid: ee850e72963a50c44945d372a872712a, type: 3}
       propertyPath: m_Constraints

@@ -3,35 +3,52 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Interactions;
-using UnityEngine.Animations;
 
 namespace Curry.Game
 {
-    public class PlayerController : MonoBehaviour
+    public class PlayerInputHandler : MonoBehaviour
     {
         [SerializeField] Player m_player = default;
         [SerializeField] SkillHandler m_skillHandler = default;
         [SerializeField] AnimatorHandler m_anim = default;
+        [SerializeField] InputActionReference m_movementAction = default;
 
-        private void Start()
+        protected Coroutine m_currentInputRecovery;
+        protected bool m_disableInput = false;
+
+        void Start()
         {
             m_skillHandler.Init(m_player);
+            m_player.OnHitStun += OnHitStun;
         }
 
         void Update()
         {
-            if (Mouse.current.leftButton.isPressed)
+            if (!m_disableInput) 
             {
-                Vector2 pos = m_player.CurrentCamera.
-                    ScreenToWorldPoint(Mouse.current.position.ReadValue());
+                if (Mouse.current.leftButton.isPressed)
+                {
+                    Vector2 pos = m_player.CurrentCamera.
+                        ScreenToWorldPoint(Mouse.current.position.ReadValue());
 
-                m_player.CurrentBrush.Draw(m_player.CurrentStats, pos);
+                    m_player.CurrentBrush.Draw(m_player.CurrentStats, pos);
+                }
+
+                if (m_movementAction.action.ReadValue<Vector2>().sqrMagnitude > 0)
+                {
+                    OnMovement(m_movementAction.action.ReadValue<Vector2>());
+                }
             }
+        }
+
+        public void OnMovement(Vector2 dir) 
+        {
+            m_player.RigidBody.AddForce(dir * m_player.CurrentStats.Speed, ForceMode2D.Force);           
         }
 
         public void OnDashTrigger(InputAction.CallbackContext c)
         {
-            if (!m_skillHandler.IsSkillAvailable) 
+            if (!m_skillHandler.IsSkillAvailable || m_disableInput) 
             {
                 return;
             }
@@ -76,6 +93,26 @@ namespace Curry.Game
                         break;
                 }
             }
+        }
+      
+        protected void OnHitStun(float damage) 
+        {
+            // Interrupt the input stun and reapply the stun timer
+            if (m_currentInputRecovery != null) 
+            {
+                StopCoroutine(m_currentInputRecovery);
+            }
+            m_skillHandler.InterruptWindup();
+            m_anim.OnTakeDamage();
+            m_currentInputRecovery = StartCoroutine(RecoverInput());
+        }
+
+        protected virtual IEnumerator RecoverInput() 
+        {
+            m_disableInput = true;
+            yield return new WaitForSeconds(m_player.CurrentStats.HitRecoveryTime);
+            m_disableInput = false;
+            m_currentInputRecovery = null;
         }
 
     }

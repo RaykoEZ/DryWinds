@@ -35,6 +35,14 @@ namespace Curry.Input
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Movement"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""17f7ca2b-fff2-41d7-8bee-7346cc9e9e7f"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -59,6 +67,61 @@ namespace Curry.Input
                     ""action"": ""Draw"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""WASD"",
+                    ""id"": ""89e7e5e0-06bf-4d5f-bf19-06494e27d421"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": ""Press"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Movement"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""9ef09c89-9200-46c7-ba80-34d53b767a19"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""d816c86b-34e1-4c97-ba46-7b27145a46f7"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""3b438b72-9961-4a53-a4bf-e5f8699feb3a"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""b5defcac-0323-4085-a6d7-9b9fd456767a"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         },
@@ -636,6 +699,7 @@ namespace Curry.Input
             m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
             m_Player_DashSkill = m_Player.FindAction("DashSkill", throwIfNotFound: true);
             m_Player_Draw = m_Player.FindAction("Draw", throwIfNotFound: true);
+            m_Player_Movement = m_Player.FindAction("Movement", throwIfNotFound: true);
             // UI
             m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
             m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -699,12 +763,14 @@ namespace Curry.Input
         private IPlayerActions m_PlayerActionsCallbackInterface;
         private readonly InputAction m_Player_DashSkill;
         private readonly InputAction m_Player_Draw;
+        private readonly InputAction m_Player_Movement;
         public struct PlayerActions
         {
             private @PlayerInput_0 m_Wrapper;
             public PlayerActions(@PlayerInput_0 wrapper) { m_Wrapper = wrapper; }
             public InputAction @DashSkill => m_Wrapper.m_Player_DashSkill;
             public InputAction @Draw => m_Wrapper.m_Player_Draw;
+            public InputAction @Movement => m_Wrapper.m_Player_Movement;
             public InputActionMap Get() { return m_Wrapper.m_Player; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -720,6 +786,9 @@ namespace Curry.Input
                     @Draw.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDraw;
                     @Draw.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDraw;
                     @Draw.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDraw;
+                    @Movement.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMovement;
+                    @Movement.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMovement;
+                    @Movement.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMovement;
                 }
                 m_Wrapper.m_PlayerActionsCallbackInterface = instance;
                 if (instance != null)
@@ -730,6 +799,9 @@ namespace Curry.Input
                     @Draw.started += instance.OnDraw;
                     @Draw.performed += instance.OnDraw;
                     @Draw.canceled += instance.OnDraw;
+                    @Movement.started += instance.OnMovement;
+                    @Movement.performed += instance.OnMovement;
+                    @Movement.canceled += instance.OnMovement;
                 }
             }
         }
@@ -888,6 +960,7 @@ namespace Curry.Input
         {
             void OnDashSkill(InputAction.CallbackContext context);
             void OnDraw(InputAction.CallbackContext context);
+            void OnMovement(InputAction.CallbackContext context);
         }
         public interface IUIActions
         {

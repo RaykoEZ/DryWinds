@@ -12,6 +12,7 @@ namespace Curry.Game
         [SerializeField] protected float m_sp = default;
         [SerializeField] protected float m_speed = default;
         [SerializeField] protected float m_spRegenPerSec = default;
+        [SerializeField] protected float m_hitRecoveryTime = default;
 
         protected bool m_isDirty = false;
         public bool IsDirty { get { return m_isDirty; } }
@@ -22,15 +23,17 @@ namespace Curry.Game
         public float SP { get { return m_sp; } set { m_sp = value; m_isDirty = true; } }
         public float Speed { get { return m_speed; } set { m_speed = value; m_isDirty = true; } }
         public float SPRegenPerSec { get { return m_spRegenPerSec; } set { m_spRegenPerSec = value; m_isDirty = true; } }
+        public float HitRecoveryTime { get { return (m_hitRecoveryTime * MaxStamina) / (Stamina + 0.2f * MaxStamina); } set { m_hitRecoveryTime = value; m_isDirty = true; } }
 
         public CharacterStats(CharacterStats stat) 
         {
-            m_maxStamina = stat.MaxStamina;
-            m_maxSp = stat.MaxSP;
-            m_stamina = stat.Stamina;
-            m_sp = stat.SP;
-            m_speed = stat.Speed;
-            m_spRegenPerSec = stat.SPRegenPerSec;
+            m_maxStamina = stat.m_maxStamina;
+            m_maxSp = stat.m_maxSp;
+            m_stamina = stat.m_stamina;
+            m_sp = stat.m_sp;
+            m_speed = stat.m_speed;
+            m_spRegenPerSec = stat.m_spRegenPerSec;
+            m_hitRecoveryTime = stat.m_hitRecoveryTime;
         }
     }
 }

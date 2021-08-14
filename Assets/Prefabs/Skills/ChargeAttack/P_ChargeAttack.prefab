@@ -44,7 +44,7 @@ CircleCollider2D:
   m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -64,11 +64,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_animator: {fileID: 8596796697600054897}
   m_hitBox: {fileID: 4048156830801403012}
-  m_targetOptions: 4
-  m_cooldownTime: 1
-  m_maxWindupTime: 1
-  m_spCost: 10
-  m_chargeDuration: 0.2
+  m_skillProperty:
+    TargetOptions: 4
+    SpCost: 10
+    CooldownTime: 1
+    MaxWindupTime: 0.5
+    StaminaDamage: 10
+    SpDamage: 0
+    Knockback: 5
+  m_chargeDuration: 0.03
 --- !u!95 &8596796697600054897
 Animator:
   serializedVersion: 3
