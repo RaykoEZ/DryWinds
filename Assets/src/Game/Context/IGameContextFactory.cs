@@ -10,6 +10,4 @@
 
         public T Context();
     }
-
-
 }

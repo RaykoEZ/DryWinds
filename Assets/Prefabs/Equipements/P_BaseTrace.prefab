@@ -11,9 +11,10 @@ GameObject:
   - component: {fileID: 6563105090482654035}
   - component: {fileID: 346624158060485392}
   - component: {fileID: 8327469527283527605}
-  - component: {fileID: 1566882391774294694}
   - component: {fileID: 9087464718448856407}
-  m_Layer: 0
+  - component: {fileID: 6249534485216099116}
+  - component: {fileID: 3837881217764659054}
+  m_Layer: 6
   m_Name: P_BaseTrace
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -48,7 +49,7 @@ EdgeCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
-  m_EdgeRadius: 0.05
+  m_EdgeRadius: 0.1
   m_Points: []
   m_AdjacentStartPoint: {x: 0, y: 0}
   m_AdjacentEndPoint: {x: 0, y: 0}
@@ -66,38 +67,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4902fe81710101469cae2dcf62341a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_rigidbody: {fileID: 1566882391774294694}
-  m_hurtBox: {fileID: 0}
-  m_relations: 0
+  m_animator: {fileID: 6249534485216099116}
+  m_hitBox: {fileID: 346624158060485392}
+  m_skillProperty:
+    Name: BaseTrace
+    TargetOptions: -1
+    SpCost: 1
+    CooldownTime: 0
+    MaxWindupTime: 0
+    StaminaDamage: 0
+    SpDamage: 0
+    Knockback: 2
   LineRenderer: {fileID: 9087464718448856407}
-  EdgeCollider: {fileID: 346624158060485392}
   m_decayPerInterval: 0.05
   m_decayWait: 0.05
   m_durability: 3
-  m_collisionStats:
-    m_contactDamage: 0
-    m_knockback: 0.1
---- !u!50 &1566882391774294694
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6937999071832126887}
-  m_BodyType: 0
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 7
 --- !u!120 &9087464718448856407
 LineRenderer:
   m_ObjectHideFlags: 0
@@ -141,7 +125,7 @@ LineRenderer:
   m_Positions: []
   m_Parameters:
     serializedVersion: 3
-    widthMultiplier: 0.1
+    widthMultiplier: 0.2
     widthCurve:
       serializedVersion: 2
       m_Curve:
@@ -194,3 +178,43 @@ LineRenderer:
     generateLightingData: 0
   m_UseWorldSpace: 0
   m_Loop: 0
+--- !u!95 &6249534485216099116
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6937999071832126887}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!50 &3837881217764659054
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6937999071832126887}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 7

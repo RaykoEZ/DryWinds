@@ -6,41 +6,13 @@ using Curry.Skill;
 namespace Curry.Game
 {
     [Serializable]
-    public class PlayerContext : IGameContext
+    public class PlayerContext : CharacterContext
     {
-        [SerializeField] CollisionStats m_currentCollisionStats = default;
-        [SerializeField] CharacterStats m_playerStats = default;
         [SerializeField] TraceInventory m_traceInventory = default;
         [SerializeField] TraceAsset m_equippedTrace = default;
-        bool m_isDirty = false;
-
-        public bool IsDirty { 
-            get 
-            {
-                return m_isDirty ||
-                    CharacterStats.IsDirty ||
-                    m_currentCollisionStats.IsDirty;
-            } 
-        }
 
         #region Player Stats Properties
-        public CollisionStats CurrentCollisionStats 
-        { 
-            get { return m_currentCollisionStats; } 
-            set { m_currentCollisionStats = value; m_isDirty = true; } 
-        }
-        public CharacterStats CharacterStats
-        {
-            get
-            {
-                return m_playerStats;
-            }
-            set
-            {
-                m_playerStats = value;
-                m_isDirty = true;
-            }
-        }
+
         public TraceInventory TraceInventory
         {
             get
@@ -67,25 +39,12 @@ namespace Curry.Game
         }
         #endregion
 
-        public PlayerContext(PlayerContext c) 
+        public PlayerContext(PlayerContext c) : base(c)
         {
-            m_currentCollisionStats = new CollisionStats(c.m_currentCollisionStats);
-            m_playerStats = new CharacterStats(c.m_playerStats);
             m_traceInventory = c.m_traceInventory;
             m_equippedTrace = c.m_equippedTrace;
         }
 
-        public PlayerContext(
-            CollisionStats baseCollisionStats,
-            CharacterStats currentStats, 
-            TraceInventory inventory, 
-            TraceAsset trace) 
-        {
-            m_currentCollisionStats = baseCollisionStats;
-            m_playerStats = currentStats;
-            m_traceInventory = inventory;
-            m_equippedTrace = trace;
-        }
     }
 
     public delegate void OnPlayerContextUpdate(PlayerContext c);

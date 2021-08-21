@@ -11,9 +11,8 @@ namespace Curry.Game
     public enum ObjectRelations 
     {
         None = 0,
-        Player = 1,
-        Ally = 1 << 1,
-        Enemy = 1 << 2
+        Ally = 1,
+        Enemy = 1 << 1
     }
 
     // A basic script for a collidable object 

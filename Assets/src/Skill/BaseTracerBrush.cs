@@ -10,19 +10,17 @@ namespace Curry.Skill
     {
         [SerializeField] PoolManager m_poolManager = default;
 
-        protected BaseTrace m_currentTracer = default;
+        protected BaseTrace m_currentTracerBehaviour = default;
         protected string m_currentTraceId = default;
         protected ObjectPool m_currentPool = default;
+        protected bool m_isDrawing = false;
         protected bool m_equipingTrace = false;
-        protected Vector2 m_previousMousePos = default;
+        protected Vector2 m_previousDrawPos = default;
 
-        TraceStats m_currentTraceStat = default;
-
-        public void EquipTrace(TraceAsset trace) 
+        public void EquipTracer(TraceAsset trace) 
         {
             m_equipingTrace = true;
             m_currentTraceId = trace.name;
-            m_currentTraceStat = trace.TraceStats;
             if (m_poolManager.ContainsPool(m_currentTraceId)) 
             {
                 m_currentPool = m_poolManager.GetPool(m_currentTraceId);
@@ -36,7 +34,7 @@ namespace Curry.Skill
 
         public virtual void OnTraceEnd() 
         {
-            m_currentTracer = null;
+            m_isDrawing = false;
         }
 
         public virtual void Draw(CharacterStats stats, Vector2 drawTo)
@@ -47,15 +45,23 @@ namespace Curry.Skill
                 return;
             }
 
-            Vector2 mousePosition = drawTo;
-
-            if (mousePosition != m_previousMousePos)
+            // start a new stroke if we hold LMB and is moving
+            if (!m_isDrawing)
             {
-                float length = m_previousMousePos == null ? 0f : Vector2.Distance(mousePosition, m_previousMousePos);
-                float SPCost = m_currentTraceStat.SpCostScale * length;
+                // make new stroke, can be pooled objects in the future
+                GameObject newTraceBehaviour = m_currentPool?.GetItem();
+                m_currentTracerBehaviour = newTraceBehaviour.GetComponent<BaseTrace>();
+            }
+
+            if (drawTo != m_previousDrawPos)
+            {
+                float length = m_previousDrawPos == null ? 0f : Vector2.Distance(drawTo, m_previousDrawPos);
+                float SPCost = m_currentTracerBehaviour.SkillProperties.SpCost * length;
                 if (stats.SP >= SPCost)
                 {
-                    BeginDraw(mousePosition, length);
+                    m_isDrawing = true;
+                    m_currentTracerBehaviour.OnDraw(drawTo, length);
+                    m_currentTracerBehaviour.gameObject.SetActive(true);
                     stats.SP -= SPCost;
                 }
                 else
@@ -64,21 +70,7 @@ namespace Curry.Skill
                 }
             }
             //update mousePos log
-            m_previousMousePos = mousePosition;
-        }
-
-        void BeginDraw(Vector2 mousePos, float length)
-        {
-            // start a new stroke if we hold LMB and is moving
-            if (m_currentTracer == null)
-            {
-                // make new stroke, can be pooled objects in the future
-                GameObject newStroke = m_currentPool?.GetItem();
-                m_currentTracer = newStroke.GetComponent<BaseTrace>();
-            }
-
-            m_currentTracer.OnDraw(mousePos, length);
-            m_currentTracer.gameObject.SetActive(true);
+            m_previousDrawPos = drawTo;
         }
 
     }

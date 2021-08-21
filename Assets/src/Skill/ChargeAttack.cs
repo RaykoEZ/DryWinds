@@ -14,19 +14,8 @@ namespace Curry.Skill
             m_animator.SetBool("WindingUp", true);
         }
 
-        protected virtual void OnTriggerEnter2D(Collider2D col) 
+        public override void OnHit(Interactable hit)
         {
-            BaseCharacter hit = col.gameObject.GetComponent<BaseCharacter>();
-            OnHit(hit);
-        }
-
-        public void OnHit(BaseCharacter hit)
-        {
-            if (hit == null || (hit.Relations & m_skillProperty.TargetOptions) == ObjectRelations.None)
-            {
-                return;
-            }
-
             Vector2 diff = hit.RigidBody.position - m_user.RigidBody.position;
             hit.OnKnockback(diff.normalized, m_skillProperty.Knockback);
             hit.OnTakeDamage(m_skillProperty.StaminaDamage);
@@ -62,7 +51,7 @@ namespace Curry.Skill
             float t = 0f;
             Vector2 dir = targetPos - origin;
             Rigidbody2D rb = m_user.RigidBody;
-            while (t < m_chargeDuration)
+            while (t < m_chargeDuration && m_skillActive)
             {
                 rb.AddForce(dir.normalized * chargeCoeff * m_user.CurrentStats.Speed, ForceMode2D.Impulse);
                 t += Time.deltaTime;
@@ -70,15 +59,15 @@ namespace Curry.Skill
             }
 
             t = 0f;
-            float dragSum = 0f;
-            while (t < m_chargeDuration)
+            float oldDrag = rb.drag;
+            while (t < m_chargeDuration && m_skillActive)
             {
                 rb.drag += 0.5f;
-                dragSum += 0.5f;
                 t += Time.deltaTime;
                 yield return null;
             }
-            rb.drag -= dragSum;
+            rb.drag = oldDrag;
+            EndSkillEffect();
         }
 
         public override void StopIframe() 

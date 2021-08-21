@@ -43,7 +43,8 @@ namespace Curry.Game
 
         public void OnMovement(Vector2 dir) 
         {
-            m_player.RigidBody.AddForce(dir * m_player.CurrentStats.Speed, ForceMode2D.Force);           
+            float drag = m_player.RigidBody.drag;
+            m_player.RigidBody.AddForce( dir * m_player.CurrentStats.Speed * drag);           
         }
 
         public void OnDashTrigger(InputAction.CallbackContext c)
@@ -114,6 +115,5 @@ namespace Curry.Game
             m_disableInput = false;
             m_currentInputRecovery = null;
         }
-
     }
 }

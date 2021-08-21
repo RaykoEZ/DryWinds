@@ -40,7 +40,7 @@ namespace Curry.Game
             m_playerContextFactory = contextFactory;
             m_playerContextFactory.UpdateContext(m_playerContext);
             m_playerContextFactory.Listen(OnPlayerContextUpdate);
-            m_brush.EquipTrace(m_playerContext.EquippedTrace);
+            m_brush.EquipTracer(m_playerContext.EquippedTrace);
             m_cam = cam;
         }
 
@@ -56,7 +56,7 @@ namespace Curry.Game
             {
                 m_playerContext.EquippedTrace = newTrace;
                 m_currentTraceIndex = index;
-                m_brush.EquipTrace(m_playerContext.EquippedTrace);
+                m_brush.EquipTracer(m_playerContext.EquippedTrace);
             }
         }
 

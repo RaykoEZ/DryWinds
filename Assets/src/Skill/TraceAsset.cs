@@ -8,10 +8,7 @@ namespace Curry.Skill
 
     public class TraceAsset : ScriptableObject
     {
-        [SerializeField] TraceStats m_stats = default;
         [SerializeField] GameObject m_prefabRef = default;
-
-        public TraceStats TraceStats { get { return m_stats; } }
         public GameObject Prefab { get { return m_prefabRef; } }
     }
 }

@@ -51,19 +51,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_rigidbody: {fileID: 826281917603678357}
   m_hurtBox: {fileID: 54977025414749079}
-  m_relations: 3
+  m_relations: 1
   m_playerContext:
-    m_currentCollisionStats:
+    m_collisionStats:
       m_contactDamage: 0
       m_knockback: 3
-    m_playerStats:
+    m_characterStats:
       m_maxStamina: 100
       m_maxSp: 100
       m_stamina: 100
       m_sp: 100
-      m_speed: 10
-      m_spRegenPerSec: 5
-      m_hitRecoveryTime: 0.75
+      m_speed: 1
+      m_spRegenPerSec: 1
+      m_hitRecoveryTime: 0.5
     m_traceInventory: {fileID: 2105121062297059468}
     m_equippedTrace: {fileID: 11400000, guid: d249897879c08434f8c6722634c46ac1, type: 2}
   m_brush: {fileID: 7303586878393847328}
@@ -96,7 +96,7 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDrag: 3
+  m_LinearDrag: 2
   m_AngularDrag: 0
   m_GravityScale: 0
   m_Material: {fileID: 0}
@@ -447,6 +447,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4535971923027645082}
     m_Modifications:
+    - target: {fileID: 1162902964026411203, guid: 7fdf6cff9c0eb9642870a1ddc3aba327, type: 3}
+      propertyPath: m_skillProperty.TargetOptions
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4048156830801403011, guid: 7fdf6cff9c0eb9642870a1ddc3aba327, type: 3}
       propertyPath: m_RootOrder
       value: 1

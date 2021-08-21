@@ -5,9 +5,17 @@ using Curry.Util;
 
 namespace Curry.Game
 {
+    public delegate void OnCharacterInterrupt();
     public abstract class BaseCharacter : Interactable
     {
         public abstract CharacterStats CurrentStats { get; }
+
+        public event OnCharacterInterrupt OnInterrupt;
+
+        public virtual void OnCharcterInterrupt() 
+        {
+            OnInterrupt?.Invoke();
+        }
 
         protected override void OnClash(Collision2D collision)
         {
@@ -20,10 +28,9 @@ namespace Curry.Game
                 if (incomingInterable.Relations != Relations)
                 {
                     float staminaRating = (CurrentStats.MaxStamina / Mathf.Max(1f, CurrentStats.Stamina));
-                    staminaRating = Mathf.Min(12f, staminaRating);
+                    staminaRating = Mathf.Min(15f, staminaRating);
 
                     OnKnockback(dir, staminaRating * incomingInterable.CollisionStats.Knockback);
-                    OnTakeDamage(incomingInterable.CollisionStats.ContactDamage);
                 }
                 else
                 {
@@ -35,11 +42,6 @@ namespace Curry.Game
         public override void OnTakeDamage(float damage)
         {
             CurrentStats.Stamina = Mathf.Max(CurrentStats.Stamina - damage, 0f);
-
-            if (CurrentStats.Stamina <= 0f)
-            {
-                OnDefeat();
-            }
         }
 
         public override void OnKnockback(Vector2 direction, float knockback)

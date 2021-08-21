@@ -24,8 +24,7 @@ namespace Curry.Game
         public float Speed { get { return m_speed; } set { m_speed = value; m_isDirty = true; } }
         public float SPRegenPerSec { get { return m_spRegenPerSec; } set { m_spRegenPerSec = value; m_isDirty = true; } }
         public float HitRecoveryTime { get { return (m_hitRecoveryTime * MaxStamina) / (Stamina + 0.2f * MaxStamina); } set { m_hitRecoveryTime = value; m_isDirty = true; } }
-
-        public CharacterStats(CharacterStats stat) 
+        public CharacterStats(CharacterStats stat)
         {
             m_maxStamina = stat.m_maxStamina;
             m_maxSp = stat.m_maxSp;
@@ -35,5 +34,46 @@ namespace Curry.Game
             m_spRegenPerSec = stat.m_spRegenPerSec;
             m_hitRecoveryTime = stat.m_hitRecoveryTime;
         }
+
+        #region Modifier Operators
+        public static CharacterStats operator +(CharacterStats a, CharacterStats b) 
+        {
+            CharacterStats ret = new CharacterStats(a);
+            ret.m_maxStamina += b.m_maxStamina;
+            ret.m_maxSp += b.m_maxSp;
+            ret.m_stamina += b.m_stamina;
+            ret.m_sp += b.m_sp;
+            ret.m_speed += b.m_speed;
+            ret.m_spRegenPerSec += b.m_spRegenPerSec;
+            ret.m_hitRecoveryTime += b.m_hitRecoveryTime;
+            return ret;
+        }
+
+        public static CharacterStats operator -(CharacterStats a, CharacterStats b)
+        {
+            CharacterStats ret = new CharacterStats(a);
+            ret.m_maxStamina -= b.m_maxStamina;
+            ret.m_maxSp -= b.m_maxSp;
+            ret.m_stamina -= b.m_stamina;
+            ret.m_sp -= b.m_sp;
+            ret.m_speed -= b.m_speed;
+            ret.m_spRegenPerSec -= b.m_spRegenPerSec;
+            ret.m_hitRecoveryTime -= b.m_hitRecoveryTime;
+            return ret;
+        }
+
+        public static CharacterStats operator *(CharacterStats a, CharacterStats mult)
+        {
+            CharacterStats ret = new CharacterStats(a);
+            ret.m_maxStamina *= mult.m_maxStamina;
+            ret.m_maxSp *= mult.m_maxSp;
+            ret.m_stamina *= mult.m_stamina;
+            ret.m_sp *= mult.m_sp;
+            ret.m_speed *= mult.m_speed;
+            ret.m_spRegenPerSec *= mult.m_spRegenPerSec;
+            ret.m_hitRecoveryTime *= mult.m_hitRecoveryTime;
+            return ret;
+        }
+        #endregion
     }
 }

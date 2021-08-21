@@ -23,6 +23,12 @@ namespace Curry.Game
         public void Init(BaseCharacter user)
         {
             m_skill.Init(user);
+            user.OnInterrupt += InterruptSkill;
+        }
+
+        public void InterruptSkill() 
+        {
+            m_skill.EndSkillEffect();
         }
 
         public virtual void SkillWindup()

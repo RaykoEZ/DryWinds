@@ -12,7 +12,7 @@ namespace Curry.Game
         [SerializeField] protected CollisionStats m_collision = default;
         [SerializeField] protected CharacterStats m_stats = default;
         
-        protected Transform m_target = default; 
+        protected Transform m_target = default;
 
         public override CollisionStats CollisionStats { get { return m_collision; } }
         public override CharacterStats CurrentStats { get { return m_stats; } }

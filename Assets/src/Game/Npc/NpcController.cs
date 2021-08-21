@@ -9,8 +9,8 @@ namespace Curry.Game
         [SerializeField] protected BaseNpc m_npc = default;
         [SerializeField] protected Animator m_anim = default;
         [SerializeField] protected SkillHandler m_skillHandler = default;
-        [SerializeField] float m_attackInterval = default;
-        protected float m_attackTimer = 0f;
+        [SerializeField] float m_actionInterval = default;
+        protected float m_actionTimer = 0f;
         protected bool m_attacking = false;
         protected virtual void Start() 
         {
@@ -21,15 +21,15 @@ namespace Curry.Game
 
         protected virtual void Update() 
         {
-            if (m_attackInterval != 0f && !m_attacking && m_attackTimer > m_attackInterval) 
+            if (m_actionInterval != 0f && !m_attacking && m_actionTimer > m_actionInterval) 
             {
                 m_attacking = true;
-                m_attackTimer = 0f;
+                m_actionTimer = 0f;
                 OnSkill();
             }
             else 
             {
-                m_attackTimer += Time.deltaTime;
+                m_actionTimer += Time.deltaTime;
             }
         }
 
