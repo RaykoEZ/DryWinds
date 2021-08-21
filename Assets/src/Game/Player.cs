@@ -1,38 +1,47 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using Curry.Skill;
-using Curry.Events;
 
 namespace Curry.Game
 {
-    public class Player : MonoBehaviour
+    public delegate void OnPlayerTakeDamage(float damage);
+
+    public class Player : BaseCharacter
     {
-        [SerializeField] protected Camera m_cam = default;
         [SerializeField] protected PlayerContext m_playerContext = default;
         [SerializeField] BaseTracerBrush m_brush = default;
 
         protected int m_currentTraceIndex = 0;
-        protected float m_regenTimer = 0f;
-        protected Vector2 m_previousMousePos = default;
+        protected float m_spRegenTimer = 0f;
         protected PlayerContextFactory m_playerContextFactory = default;
+        protected Camera m_cam = default;
 
-        void Update()
+        public event OnPlayerTakeDamage OnHitStun;
+
+        public Camera CurrentCamera { get { return m_cam; } }
+        public BaseTracerBrush CurrentBrush { get { return m_brush; } }
+        public override CharacterStats CurrentStats { get { return m_playerContext.CharacterStats; } }
+        public override CollisionStats CollisionStats { get { return m_playerContext.CurrentCollisionStats; } }
+
+        protected virtual void Update()
         {
             if (m_playerContext.IsDirty) 
             {
                 m_playerContextFactory.UpdateContext(m_playerContext);
             }
-            OnPlayerTrace();
+
             OnSPRegen();
         }
 
-        public void Init(PlayerContextFactory contextFactory)
+        public void Init(PlayerContextFactory contextFactory, Camera cam)
         {
             m_playerContextFactory = contextFactory;
             m_playerContextFactory.UpdateContext(m_playerContext);
             m_playerContextFactory.Listen(OnPlayerContextUpdate);
-            m_brush.EquipTrace(m_playerContext.CurrentTrace);
+            m_brush.EquipTrace(m_playerContext.EquippedTrace);
+            m_cam = cam;
         }
 
         public void Shutdown() 
@@ -45,9 +54,9 @@ namespace Curry.Game
             TraceAsset newTrace = m_playerContext.TraceInventory.GetTrace(index);
             if (newTrace != null)
             {
-                m_playerContext.CurrentTrace = newTrace;
+                m_playerContext.EquippedTrace = newTrace;
                 m_currentTraceIndex = index;
-                m_brush.EquipTrace(m_playerContext.CurrentTrace);
+                m_brush.EquipTrace(m_playerContext.EquippedTrace);
             }
         }
 
@@ -63,41 +72,26 @@ namespace Curry.Game
             ChangeTrace(newIndex);
         }
 
-        protected void OnPlayerTrace() 
+        public override void OnTakeDamage(float damage)
         {
-            // current trace stroke ended?
-            if (Input.GetMouseButtonDown(0))
-            {
-                m_brush.OnTraceEnd();
-            }
+            base.OnTakeDamage(damage);
+            OnHitStun?.Invoke(damage);
+        }
 
-            Vector2 mousePosition = m_cam.ScreenToWorldPoint(Input.mousePosition);
-            if (Input.GetMouseButton(0) && mousePosition != m_previousMousePos)
-            {
-                float length = m_previousMousePos == null ? 0f : Vector2.Distance(mousePosition, m_previousMousePos);
-                float SPCost = m_playerContext.CurrentTrace.TraceStats.SpCostScale * length;
-                if (m_playerContext.CurrentStats.SP >= SPCost) 
-                {
-                    m_brush.Draw(mousePosition, length);
-                    m_playerContext.CurrentStats.SP -= SPCost;
-                }
-                else 
-                {
-                    m_brush.OnTraceEnd();
-                }
-            }
-            //update mousePos log
-            m_previousMousePos = mousePosition;
+        public override void OnDefeat()
+        {
         }
 
         protected void OnSPRegen() 
         {
-            m_regenTimer += Time.deltaTime;
-            if (m_regenTimer >= 1.0f && m_playerContext.CurrentStats.SP < m_playerContext.BaseStats.SP) 
+            m_spRegenTimer += Time.deltaTime;
+            if (m_playerContext.CharacterStats.SP < m_playerContext.CharacterStats.MaxSP) 
             {
-                m_regenTimer = 0f;
-                float newSum = m_playerContext.CurrentStats.SP + m_playerContext.CurrentStats.SPRegenPerSec;
-                m_playerContext.CurrentStats.SP = Mathf.Min(m_playerContext.BaseStats.SP, newSum);
+                m_playerContext.CharacterStats.SP = 
+                    Mathf.Min(
+                        m_playerContext.CharacterStats.MaxSP,
+                        m_playerContext.CharacterStats.SP + m_spRegenTimer * m_playerContext.CharacterStats.SPRegenPerSec);
+                m_spRegenTimer = 0f;
             }
         }
 

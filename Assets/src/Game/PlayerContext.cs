@@ -8,36 +8,36 @@ namespace Curry.Game
     [Serializable]
     public class PlayerContext : IGameContext
     {
-        [SerializeField] PlayerStats m_baseStats;
-        [SerializeField] PlayerStats m_currentStats;
-        [SerializeField] TraceInventory m_traceInventory;
-        [SerializeField] TraceAsset m_currentTrace;
+        [SerializeField] CollisionStats m_currentCollisionStats = default;
+        [SerializeField] CharacterStats m_playerStats = default;
+        [SerializeField] TraceInventory m_traceInventory = default;
+        [SerializeField] TraceAsset m_equippedTrace = default;
         bool m_isDirty = false;
 
-        public bool IsDirty { get { return m_isDirty || BaseStats.IsDirty || CurrentStats.IsDirty; } }
+        public bool IsDirty { 
+            get 
+            {
+                return m_isDirty ||
+                    CharacterStats.IsDirty ||
+                    m_currentCollisionStats.IsDirty;
+            } 
+        }
 
         #region Player Stats Properties
-        public PlayerStats BaseStats
-        {
-            get
-            {
-                return m_baseStats;
-            }
-            set
-            {
-                m_baseStats = value;
-                m_isDirty = true;
-            }
+        public CollisionStats CurrentCollisionStats 
+        { 
+            get { return m_currentCollisionStats; } 
+            set { m_currentCollisionStats = value; m_isDirty = true; } 
         }
-        public PlayerStats CurrentStats
+        public CharacterStats CharacterStats
         {
             get
             {
-                return m_currentStats;
+                return m_playerStats;
             }
             set
             {
-                m_currentStats = value;
+                m_playerStats = value;
                 m_isDirty = true;
             }
         }
@@ -53,26 +53,38 @@ namespace Curry.Game
                 m_isDirty = true;
             }
         }
-        public TraceAsset CurrentTrace
+        public TraceAsset EquippedTrace
         {
             get
             {
-                return m_currentTrace;
+                return m_equippedTrace;
             }
             set
             {
-                m_currentTrace = value;
+                m_equippedTrace = value;
                 m_isDirty = true;
             }
         }
         #endregion
 
-        public PlayerContext(PlayerStats baseStats, PlayerStats currentStats, TraceInventory inventory, TraceAsset trace) 
+        public PlayerContext(PlayerContext c) 
         {
-            BaseStats = baseStats;
-            CurrentStats = currentStats;
-            TraceInventory = inventory;
-            CurrentTrace = trace;
+            m_currentCollisionStats = new CollisionStats(c.m_currentCollisionStats);
+            m_playerStats = new CharacterStats(c.m_playerStats);
+            m_traceInventory = c.m_traceInventory;
+            m_equippedTrace = c.m_equippedTrace;
+        }
+
+        public PlayerContext(
+            CollisionStats baseCollisionStats,
+            CharacterStats currentStats, 
+            TraceInventory inventory, 
+            TraceAsset trace) 
+        {
+            m_currentCollisionStats = baseCollisionStats;
+            m_playerStats = currentStats;
+            m_traceInventory = inventory;
+            m_equippedTrace = trace;
         }
     }
 
@@ -84,7 +96,7 @@ namespace Curry.Game
 
         public void UpdateContext(PlayerContext context)
         {
-            m_context = context;
+            m_context =  new PlayerContext(context);
             m_onContextUpdate?.Invoke(m_context);
         }
 
@@ -96,7 +108,6 @@ namespace Curry.Game
         public void Unlisten(OnPlayerContextUpdate callback) 
         {
             m_onContextUpdate -= callback;
-
         }
 
         public PlayerContext Context()

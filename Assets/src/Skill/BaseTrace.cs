@@ -2,32 +2,35 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Curry.Events;
+using Curry.Game;
 
 namespace Curry.Skill
 {
     // Trace is like the brush tip for paint tools but with decay behaviours
-    public class BaseTrace : MonoBehaviour
+    public class BaseTrace : Interactable
     {
-        [SerializeField] LineRenderer LineRenderer = default;
-        [SerializeField] EdgeCollider2D EdgeCollider = default;
+        [SerializeField] protected LineRenderer LineRenderer = default;
+        [SerializeField] protected EdgeCollider2D EdgeCollider = default;
         // Units length to decay per decay interval.
-        [SerializeField] float m_decayPerInterval = default;
+        [SerializeField] protected float m_decayPerInterval = default;
         // Seconds to wait for next stroke decay interval
-        [SerializeField] float m_decayWait = default;
+        [SerializeField] protected float m_decayWait = default;
         // Life of each drawn vertiex in seconds, starts to decay after this (sec)
-        [SerializeField] float m_durability = default;
+        [SerializeField] protected float m_durability = default;
+
+        [SerializeField] protected CollisionStats m_collisionStats = default;
+
+        public override CollisionStats CollisionStats { get { return m_collisionStats; } }
 
         protected bool m_isDecaying = false;
         protected bool m_isMakingCollider = true;
         protected Queue<Vector2> m_drawnVert = new Queue<Vector2>();
         protected Queue<Vector3> m_drawnPositions = new Queue<Vector3>();
-        protected Queue<float> m_segmentLengths = new Queue<float>();
-          
+        protected Queue<float> m_segmentLengths = new Queue<float>();       
         protected float m_decayTimer = 0f;
 
         // Update is called once per frame
-        void FixedUpdate()
+        protected virtual void FixedUpdate()
         {
             m_decayTimer += Time.deltaTime;
             if(m_decayTimer > m_durability && !m_isDecaying) 
@@ -37,25 +40,23 @@ namespace Curry.Skill
             }          
         }
 
-        public virtual void OnDraw(Vector2 mousePosition, float length)
+        public virtual void OnDraw(Vector2 targetPosition, float length)
         {
-            if (Input.GetMouseButton(0))
+            if (!m_drawnVert.Contains(targetPosition))
             {
-                if (!m_drawnVert.Contains(mousePosition))
-                {
-                    EvaluateLength(length);
-                    m_drawnVert.Enqueue(mousePosition);
-                    m_drawnPositions.Enqueue(mousePosition);
-                    LineRenderer.positionCount = m_drawnPositions.Count;
-                    LineRenderer.SetPosition(LineRenderer.positionCount - 1, mousePosition);
+                EvaluateLength(length);
+                m_drawnVert.Enqueue(targetPosition);
+                m_drawnPositions.Enqueue(targetPosition);
+                LineRenderer.positionCount = m_drawnPositions.Count;
+                LineRenderer.SetPosition(LineRenderer.positionCount - 1, targetPosition);
 
-                    if (EdgeCollider != null && m_isMakingCollider && m_drawnVert.Count > 1)
-                    {
-                        EdgeCollider.points = m_drawnVert.ToArray();
-                    }
+                if (EdgeCollider != null && m_isMakingCollider && m_drawnVert.Count > 1)
+                {
+                    EdgeCollider.points = m_drawnVert.ToArray();
                 }
-            }
+            }      
         }
+
 
         protected void EvaluateLength(float length)
         {
@@ -81,7 +82,6 @@ namespace Curry.Skill
                 if(m_segmentLengths.Count == 0) 
                 {
                     OnClear();
-                    gameObject.SetActive(false);
                     yield break;
                 }
                 while (decayAmount > Mathf.Epsilon && m_segmentLengths.Count > 0)
@@ -125,7 +125,7 @@ namespace Curry.Skill
             Vector2[] vertList = m_drawnVert.ToArray();
             Vector3[] posList = m_drawnPositions.ToArray();
             float[] lengthList = m_segmentLengths.ToArray();
-            // lerp last vertex to new position, shrinking theis segment by $$decayAmount.
+            // lerp last vertex to new position, shrinking this segment by $$decayAmount.
             Vector2 vlast = vertList[0];
             Vector2 vSecondLast = vertList[1];
             float t = trimLength / lengthList[0];
@@ -154,6 +154,8 @@ namespace Curry.Skill
             {
                 EdgeCollider.Reset();
             }
+
+            gameObject.SetActive(false);
         }
     }
 }

@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 
 namespace Curry.Util
 {
+    // Not using for now
     public class BattleCursorBehaviour : MonoBehaviour
     {
         [SerializeField] SpriteRenderer Sprite = default;
@@ -25,7 +27,7 @@ namespace Curry.Util
 
         void Update()
         {
-            Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Vector3 mousePos = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
             mousePos.z = 0.0f;
             transform.position = mousePos;
         }
