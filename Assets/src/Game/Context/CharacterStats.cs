@@ -74,6 +74,20 @@ namespace Curry.Game
             ret.m_hitRecoveryTime *= mult.m_hitRecoveryTime;
             return ret;
         }
+
+        public static CharacterStats operator /(CharacterStats a, CharacterStats div)
+        {
+            CharacterStats ret = new CharacterStats(a);
+            ret.m_maxStamina /= div.m_maxStamina;
+            ret.m_maxSp /= div.m_maxSp;
+            ret.m_stamina /= div.m_stamina;
+            ret.m_sp /= div.m_sp;
+            ret.m_speed /= div.m_speed;
+            ret.m_spRegenPerSec /= div.m_spRegenPerSec;
+            ret.m_hitRecoveryTime /= div.m_hitRecoveryTime;
+            return ret;
+        }
+
         #endregion
     }
 }

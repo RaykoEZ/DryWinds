@@ -72,6 +72,13 @@ namespace Curry.Game
                 a.m_characterStats * mult.m_characterStats,
                 a.m_collisionStats * mult.m_collisionStats);
         }
+
+        public static CharacterContext operator /(CharacterContext a, CharacterContext div)
+        {
+            return new CharacterContext(
+                a.m_characterStats / div.m_characterStats,
+                a.m_collisionStats / div.m_collisionStats);
+        }
     }
 
 

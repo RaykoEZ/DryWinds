@@ -13,12 +13,12 @@ namespace Curry.UI
 
         public void Init(PlayerContextFactory contextFactory)
         {
-            contextFactory.Listen(OnPlayerStatUpdate);
+            contextFactory.OnUpdate += OnPlayerStatUpdate;
         }
 
         public void Shutdown(PlayerContextFactory contextFactory) 
         {
-            contextFactory.Unlisten(OnPlayerStatUpdate);
+            contextFactory.OnUpdate -= OnPlayerStatUpdate;
         }
 
         void OnPlayerStatUpdate(PlayerContext c) 

@@ -42,6 +42,11 @@ namespace Curry.Game
             return new CollisionStats(
                 a.m_contactDamage * b.m_contactDamage, a.m_knockback * b.m_knockback);
         }
+        public static CollisionStats operator /(CollisionStats a, CollisionStats b)
+        {
+            return new CollisionStats(
+                a.m_contactDamage / b.m_contactDamage, a.m_knockback / b.m_knockback);
+        }
         #endregion
     }
 }

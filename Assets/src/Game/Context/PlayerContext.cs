@@ -51,29 +51,14 @@ namespace Curry.Game
     public class PlayerContextFactory : IGameContextFactory<PlayerContext> 
     {
         PlayerContext m_context;
-        OnPlayerContextUpdate m_onContextUpdate = default;
+        public event OnContextUpdate<PlayerContext> OnUpdate;
+
+        public PlayerContext Context { get { return new PlayerContext(m_context); } }
 
         public void UpdateContext(PlayerContext context)
         {
             m_context =  new PlayerContext(context);
-            m_onContextUpdate?.Invoke(m_context);
-        }
-
-        public void Listen(OnPlayerContextUpdate callback) 
-        {
-            m_onContextUpdate += callback;
-        }
-
-        public void Unlisten(OnPlayerContextUpdate callback) 
-        {
-            m_onContextUpdate -= callback;
-        }
-
-        public PlayerContext Context()
-        {
-            return m_context;
+            OnUpdate?.Invoke(m_context);
         }
     }
-
-
 }

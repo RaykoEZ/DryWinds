@@ -11,6 +11,7 @@ namespace Curry.Game
     public class Player : BaseCharacter
     {
         [SerializeField] protected PlayerContext m_playerContext = default;
+        [SerializeField] protected CharacterStatsManager m_statsManager = default;
         [SerializeField] BaseTracerBrush m_brush = default;
 
         protected int m_currentTraceIndex = 0;
@@ -38,15 +39,16 @@ namespace Curry.Game
         public void Init(PlayerContextFactory contextFactory, Camera cam)
         {
             m_playerContextFactory = contextFactory;
+            m_statsManager.Init((IGameContextFactory<CharacterContext>)contextFactory);
             m_playerContextFactory.UpdateContext(m_playerContext);
-            m_playerContextFactory.Listen(OnPlayerContextUpdate);
+            m_playerContextFactory.OnUpdate += OnPlayerContextUpdate;
             m_brush.EquipTracer(m_playerContext.EquippedTrace);
             m_cam = cam;
         }
 
         public void Shutdown() 
         {
-            m_playerContextFactory.Unlisten(OnPlayerContextUpdate);
+            m_playerContextFactory.OnUpdate -= OnPlayerContextUpdate;
         }
 
         public void ChangeTrace(int index)
