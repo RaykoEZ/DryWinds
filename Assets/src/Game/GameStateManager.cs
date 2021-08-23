@@ -11,19 +11,18 @@ namespace Curry.Game
         [SerializeField] PlayerHUDManager m_playerUI = default;
         [SerializeField] Player m_player = default;
         [SerializeField] GameEventHandler m_gameEventListener = default;
-        [SerializeField] Camera m_mainCamera = default;
 
-        PlayerContextFactory m_playerContextFactory = default;
+        CharacterContextFactory m_playerContextFactory = default;
 
         // Start is called before the first frame update
         void Start()
         {
             m_gameEventListener.OnPlayerKnockout += OnPlayerKnockout;
 
-            PlayerContextFactory playerContextFactory = new PlayerContextFactory();
+            CharacterContextFactory playerContextFactory = new CharacterContextFactory();
             m_playerContextFactory = playerContextFactory;
             m_playerUI.Init(playerContextFactory);
-            m_player.Init(playerContextFactory, m_mainCamera);
+            m_player.Init(playerContextFactory);
 
             // Setup Iframe collision ignore
             int iframeLayer = LayerMask.NameToLayer("IFrame");

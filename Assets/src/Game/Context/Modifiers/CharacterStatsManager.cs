@@ -3,28 +3,43 @@ using UnityEngine;
 
 namespace Curry.Game
 {
+    public delegate void OnCharacterStatsUpdate(CharacterContext c);
     public class CharacterStatsManager : MonoBehaviour
     {
-        Dictionary<ModifierOpType, CharacterModifierContainer> m_baseMods =
+        [SerializeField] protected CharacterContext m_baseStats;
+
+        protected Dictionary<ModifierOpType, CharacterModifierContainer> m_baseMods =
             new Dictionary<ModifierOpType, CharacterModifierContainer>();
 
-        Dictionary<ModifierOpType, CharacterModifierContainer> m_globalMods =
+        protected Dictionary<ModifierOpType, CharacterModifierContainer> m_globalMods =
             new Dictionary<ModifierOpType, CharacterModifierContainer>();
 
-        CharacterContext m_baseStats;
-        CharacterContext m_effectiveStats;
+        protected IGameContextFactory<CharacterContext> m_contextFactoryRef = default;
+        protected CharacterContext m_currentStats;
 
-        public virtual CharacterContext BaseStats { get { return m_baseStats; } }
-        public virtual CharacterContext EffectiveStats { get { return m_effectiveStats; } }
+        public virtual CharacterContext BaseStats { get { return new CharacterContext(m_baseStats); } }
+        public virtual CharacterContext CurrentStats { get { return m_currentStats; } }
 
         protected virtual void Update() 
         {
+            if (CurrentStats.IsDirty)
+            {
+                m_contextFactoryRef.UpdateContext(CurrentStats);
+            }
+
             OnTimeElapsed(Time.deltaTime);
         }
 
         public virtual void Init(IGameContextFactory<CharacterContext> contextFactory) 
         {
-            contextFactory.OnUpdate += OnContextUpdated;
+            m_contextFactoryRef = contextFactory;
+            m_contextFactoryRef.OnUpdate += OnContextUpdated;
+            m_contextFactoryRef.UpdateContext(BaseStats);
+        }
+
+        public virtual void Shutdown() 
+        {
+            m_contextFactoryRef.OnUpdate -= OnContextUpdated;
         }
 
         public virtual void Shutdown(IGameContextFactory<CharacterContext> contextFactory) 
@@ -43,6 +58,7 @@ namespace Curry.Game
             if (!m_baseMods.ContainsKey(modifier.Type)) 
             {
                 m_baseMods.Add(modifier.Type, new CharacterModifierContainer());
+                m_baseMods[modifier.Type].OnValueChange += UpdateStats;
                 m_baseMods[modifier.Type].OnModExpire += OnModifierExpire;
             }
 
@@ -74,14 +90,30 @@ namespace Curry.Game
             {
                 kvp.Value.OnTimeElapsed(dt);
             }
-
-
         }
 
         protected virtual void UpdateStats() 
         {
-            //to do
-
+            if (m_baseMods.TryGetValue(ModifierOpType.Multiply, out CharacterModifierContainer baseMult) && 
+                baseMult.OverallValue != null) 
+            {
+                m_currentStats *= baseMult.OverallValue;
+            }
+            if (m_baseMods.TryGetValue(ModifierOpType.Add, out CharacterModifierContainer baseAdder) 
+                && baseAdder.OverallValue != null)
+            {
+                m_currentStats += baseAdder.OverallValue;
+            }
+            if (m_globalMods.TryGetValue(ModifierOpType.Add, out CharacterModifierContainer globalMult) && 
+                globalMult.OverallValue != null)
+            {
+                m_currentStats *= globalMult.OverallValue;
+            }
+            if (m_globalMods.TryGetValue(ModifierOpType.Add, out CharacterModifierContainer globalAdder) && 
+                globalAdder.OverallValue != null)
+            {
+                m_currentStats += globalAdder.OverallValue;
+            }
         }
 
         protected virtual void OnModifierExpire(ContextModifier<CharacterContext> mod) 
@@ -92,7 +124,7 @@ namespace Curry.Game
 
         protected virtual void OnContextUpdated(CharacterContext c) 
         {
-            m_baseStats = c;
+            m_currentStats = c;
             UpdateStats();
         }
     }

@@ -48,7 +48,7 @@ namespace Curry.Game
             m_attacking = false;
         }
 
-        protected virtual void OnTakeDamage() 
+        protected virtual void OnTakeDamage(float damage) 
         { 
         
         }

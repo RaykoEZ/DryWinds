@@ -53,7 +53,7 @@ namespace Curry.Skill
             Rigidbody2D rb = m_user.RigidBody;
             while (t < m_chargeDuration && m_skillActive)
             {
-                rb.AddForce(dir.normalized * chargeCoeff * m_user.CurrentStats.Speed, ForceMode2D.Impulse);
+                rb.AddForce(dir.normalized * chargeCoeff * m_user.BaseStats.Speed, ForceMode2D.Impulse);
                 t += Time.deltaTime;
                 yield return null;
             }

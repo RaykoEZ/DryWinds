@@ -45,7 +45,6 @@ namespace Curry.Skill
                 return;
             }
 
-            hit.OnCharcterInterrupt();
             Vector2 dir = col.GetContact(0).normal.normalized;
             hit.OnKnockback(-dir , m_skillProperty.Knockback);
         }
@@ -55,8 +54,10 @@ namespace Curry.Skill
             yield break;
         }
 
-        public virtual void OnDraw(Vector2 targetPosition, float length)
+        public override void Execute(SkillTargetParam target)
         {
+            Vector2 targetPosition = target.TargetPos;
+            float length = (float)target.Payload["length"];
             if (!m_drawnVert.Contains(targetPosition))
             {
                 EvaluateLength(length);
@@ -69,7 +70,7 @@ namespace Curry.Skill
                 {
                     m_edgeCollider.points = m_drawnVert.ToArray();
                 }
-            }      
+            }
         }
 
 
@@ -130,7 +131,24 @@ namespace Curry.Skill
             }
         }
 
-        void TrimEndSegment(float trimLength) 
+        protected virtual void OnClear()
+        {
+            m_isDecaying = false;
+            m_decayTimer = 0f;
+            LineRenderer.positionCount = 0;
+            m_drawnVert.Clear();
+            m_drawnPositions.Clear();
+            m_segmentLengths.Clear();
+
+            if (m_isMakingCollider)
+            {
+                m_edgeCollider.points = m_drawnVert.ToArray();
+            }
+
+            gameObject.SetActive(false);
+        }
+
+        protected void TrimEndSegment(float trimLength) 
         {
             if(m_segmentLengths.Count < 1) 
             { 
@@ -153,24 +171,6 @@ namespace Curry.Skill
             m_drawnVert = new Queue<Vector2>(vertList);
             m_drawnPositions = new Queue<Vector3>(posList);
             m_segmentLengths = new Queue<float>(lengthList);
-        }
-
-
-        protected virtual void OnClear()
-        {
-            m_isDecaying = false;
-            m_decayTimer = 0f;
-            LineRenderer.positionCount = 0;
-            m_drawnVert.Clear();
-            m_drawnPositions.Clear();
-            m_segmentLengths.Clear();
-
-            if (m_isMakingCollider)
-            {
-                m_edgeCollider.points = m_drawnVert.ToArray();
-            }
-
-            gameObject.SetActive(false);
         }
     }
 }

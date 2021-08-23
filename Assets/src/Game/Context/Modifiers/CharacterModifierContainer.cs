@@ -5,9 +5,10 @@ namespace Curry.Game
     public class CharacterModifierContainer 
     {
         List<ContextModifier<CharacterContext>> m_modifiers;
-        List<ContextModifier<CharacterContext>> m_toRemove;
 
         public event OnModifierExpire<CharacterContext> OnModExpire;
+        public event OnModifierValueChange OnValueChange;
+
         CharacterContext m_overallValue;
 
         public CharacterContext OverallValue { get { return m_overallValue; } }
@@ -32,6 +33,7 @@ namespace Curry.Game
                 return;
             }
             mod.OnModifierExpire += OnModifierExpire;
+            mod.OnValueChange += OnModifierValueChanged;
             m_modifiers.Add(mod);
 
             if (m_overallValue == null) 
@@ -51,9 +53,9 @@ namespace Curry.Game
                 return;
             }
 
-            m_toRemove.Add(mod);
-
             mod.OnModifierExpire -= OnModifierExpire;
+            mod.OnValueChange -= OnModifierValueChanged;
+
             m_modifiers.Remove(mod);
 
             if(m_overallValue != null) 
@@ -62,6 +64,29 @@ namespace Curry.Game
             }
 
             OnModExpire?.Invoke(mod);
+        }
+
+        protected virtual void OnModifierValueChanged() 
+        {
+            if (m_modifiers.Count == 0) 
+            {
+                return;
+            }
+            else
+            {
+                m_overallValue = m_modifiers[0].Value;
+            }
+
+            if (m_modifiers.Count > 1) 
+            {
+                // Apply all modifiera to base
+                for (int i = 1; i < m_modifiers.Count; ++i)
+                {
+                    m_overallValue = m_modifiers[i].Apply(m_overallValue);
+                }
+            }
+
+            OnValueChange?.Invoke();
         }
     }
 }

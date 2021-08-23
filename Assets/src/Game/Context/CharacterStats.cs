@@ -17,11 +17,11 @@ namespace Curry.Game
         protected bool m_isDirty = false;
         public bool IsDirty { get { return m_isDirty; } }
 
-        public float MaxStamina { get { return m_maxStamina; } set { m_maxStamina = value; m_isDirty = true; } }
-        public float MaxSP { get { return m_maxSp; } set { m_maxSp = value; m_isDirty = true; } }
-        public float Stamina { get { return m_stamina; } set { m_stamina = value; m_isDirty = true; } }
-        public float SP { get { return m_sp; } set { m_sp = value; m_isDirty = true; } }
-        public float Speed { get { return m_speed; } set { m_speed = value; m_isDirty = true; } }
+        public float MaxStamina { get { return m_maxStamina; } set { m_maxStamina = Mathf.Max(1f, value); m_isDirty = true; } }
+        public float MaxSP { get { return m_maxSp; } set { m_maxSp = Mathf.Max(0f, value); m_isDirty = true; } }
+        public float Stamina { get { return m_stamina; } set { m_stamina = Mathf.Min(MaxStamina, value); m_isDirty = true; } }
+        public float SP { get { return m_sp; } set { m_sp = Mathf.Min(MaxSP, value); m_isDirty = true; } }
+        public float Speed { get { return m_speed; } set { m_speed = Mathf.Clamp(value, 0f, 5f); m_isDirty = true; } }
         public float SPRegenPerSec { get { return m_spRegenPerSec; } set { m_spRegenPerSec = value; m_isDirty = true; } }
         public float HitRecoveryTime { get { return (m_hitRecoveryTime * MaxStamina) / (Stamina + 0.2f * MaxStamina); } set { m_hitRecoveryTime = value; m_isDirty = true; } }
         public CharacterStats(CharacterStats stat)

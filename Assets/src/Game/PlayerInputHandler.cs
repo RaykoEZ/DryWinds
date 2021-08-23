@@ -1,8 +1,8 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Interactions;
+using Curry.Skill;
 
 namespace Curry.Game
 {
@@ -12,6 +12,7 @@ namespace Curry.Game
         [SerializeField] SkillHandler m_skillHandler = default;
         [SerializeField] AnimatorHandler m_anim = default;
         [SerializeField] InputActionReference m_movementAction = default;
+        [SerializeField] BaseTraceBrush m_brush = default;
 
         protected Coroutine m_currentInputRecovery;
         protected bool m_disableInput = false;
@@ -19,7 +20,9 @@ namespace Curry.Game
         void Start()
         {
             m_skillHandler.Init(m_player);
-            m_player.OnHitStun += OnHitStun;
+            m_player.OnTakingDamage += OnHitStun;
+            m_player.OnActionInterrupt += OnInterrupt;
+
         }
 
         void Update()
@@ -28,10 +31,7 @@ namespace Curry.Game
             {
                 if (Mouse.current.leftButton.isPressed)
                 {
-                    Vector2 pos = m_player.CurrentCamera.
-                        ScreenToWorldPoint(Mouse.current.position.ReadValue());
-
-                    m_player.CurrentBrush.Draw(m_player.CurrentStats, pos);
+                    OnDraw();
                 }
 
                 if (m_movementAction.action.ReadValue<Vector2>().sqrMagnitude > 0)
@@ -44,7 +44,7 @@ namespace Curry.Game
         public void OnMovement(Vector2 dir) 
         {
             float drag = m_player.RigidBody.drag;
-            m_player.RigidBody.AddForce( dir * m_player.CurrentStats.Speed * drag);           
+            m_player.RigidBody.AddForce( dir * m_player.BaseStats.Speed * drag);           
         }
 
         public void OnDashTrigger(InputAction.CallbackContext c)
@@ -80,6 +80,7 @@ namespace Curry.Game
             }
         }
 
+        #region drawing brush
         public void OnDrawTrigger(InputAction.CallbackContext c)
         {
             if (c.interaction is PressInteraction)
@@ -88,14 +89,37 @@ namespace Curry.Game
                 {
                     case InputActionPhase.Performed:
                         // Finished a brush stroke
-                        m_player.CurrentBrush.OnTraceEnd();
+                        m_brush.OnTraceEnd();
                         break;
                     default:
                         break;
                 }
             }
         }
-      
+
+        public void OnDraw() 
+        {
+            Vector2 pos = m_player.CurrentCamera.
+                            ScreenToWorldPoint(Mouse.current.position.ReadValue());
+
+            m_brush.Draw(m_player.CurrentStats, pos);
+        }
+
+        public void ChangeTrace(int index)
+        {
+            m_brush.ChangeTrace(index);
+        }
+        public void NextTrace()
+        {
+            m_brush.NextTrace();
+        }
+
+        public void PreviousTrace()
+        {
+            m_brush.PreviousTrace();
+        }
+        #endregion
+
         protected void OnHitStun(float damage) 
         {
             // Interrupt the input stun and reapply the stun timer
@@ -103,15 +127,20 @@ namespace Curry.Game
             {
                 StopCoroutine(m_currentInputRecovery);
             }
-            m_skillHandler.InterruptWindup();
+            OnInterrupt();
             m_anim.OnTakeDamage();
             m_currentInputRecovery = StartCoroutine(RecoverInput());
+        }
+
+        protected void OnInterrupt() 
+        {
+            m_skillHandler.InterruptSkill();
         }
 
         protected virtual IEnumerator RecoverInput() 
         {
             m_disableInput = true;
-            yield return new WaitForSeconds(m_player.CurrentStats.HitRecoveryTime);
+            yield return new WaitForSeconds(m_player.BaseStats.HitRecoveryTime);
             m_disableInput = false;
             m_currentInputRecovery = null;
         }

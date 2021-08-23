@@ -23,12 +23,6 @@ namespace Curry.Game
         public void Init(BaseCharacter user)
         {
             m_skill.Init(user);
-            user.OnInterrupt += InterruptSkill;
-        }
-
-        public void InterruptSkill() 
-        {
-            m_skill.EndSkillEffect();
         }
 
         public virtual void SkillWindup()
@@ -36,15 +30,21 @@ namespace Curry.Game
             m_skill.SkillWindup();
         }
 
-        public virtual void InterruptWindup() 
-        {
-            m_skill.CancelWindup();
-        }
-
         public virtual void ActivateSkill(Vector2 targetPos)
         {
             SkillTargetParam param = new SkillTargetParam(targetPos);
             m_skill.Execute(param);
+        }
+        public void InterruptSkill()
+        {
+            if (m_skill.IsWindingUp)
+            {
+                m_skill.CancelWindup();
+            }
+            else
+            {
+                m_skill.EndSkillEffect();
+            }
         }
     }
 }

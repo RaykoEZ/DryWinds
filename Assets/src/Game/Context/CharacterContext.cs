@@ -21,7 +21,7 @@ namespace Curry.Game
         }
 
         #region Character Stats Properties
-        public CollisionStats CurrentCollisionStats
+        public CollisionStats CollisionStats
         {
             get { return m_collisionStats; }
             set { m_collisionStats = value; m_isDirty = true; }

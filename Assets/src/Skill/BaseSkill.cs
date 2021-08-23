@@ -18,12 +18,15 @@ namespace Curry.Skill
     public class SkillTargetParam
     {
         Vector2 m_targetPos = default;
+        Dictionary<string, object> m_payload;
 
         public Vector2 TargetPos { get { return m_targetPos; } }
+        public Dictionary<string, object> Payload { get { return m_payload; } }
 
-        public SkillTargetParam(Vector2 pos) 
+        public SkillTargetParam(Vector2 pos, Dictionary<string, object> payload = null) 
         {
             m_targetPos = pos;
+            m_payload = payload;
         }
     }
 
@@ -43,6 +46,7 @@ namespace Curry.Skill
 
         public SkillProperty SkillProperties { get { return m_skillProperty; } }
         public float MaxWindUpTime { get { return m_skillProperty.MaxWindupTime; } }
+        public bool IsWindingUp { get { return m_isWindingUp; } }
 
         public virtual bool SkillUsable
         {
@@ -113,10 +117,15 @@ namespace Curry.Skill
             {
                 m_onCD = true;
                 m_skillActive = true;
-                m_user.CurrentStats.SP = Mathf.Max(0f, m_user.CurrentStats.SP - m_skillProperty.SpCost);
+                ConsumeResource();
                 StartCoroutine(OnCooldown());
                 m_currentSkill = StartCoroutine(SkillEffect(target));
             }
+        }
+
+        protected virtual void ConsumeResource() 
+        {
+            m_user.CurrentStats.SP = Mathf.Max(0f, m_user.CurrentStats.SP - m_skillProperty.SpCost);
         }
 
         public virtual void CancelWindup() 

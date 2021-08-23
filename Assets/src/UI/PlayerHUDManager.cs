@@ -9,19 +9,19 @@ namespace Curry.UI
     {
         [SerializeField] ResourceBar m_spBar = default;
         [SerializeField] ResourceBar m_stamBar = default;
-        PlayerContext m_playerContext = default;
+        CharacterContext m_playerContext = default;
 
-        public void Init(PlayerContextFactory contextFactory)
+        public void Init(CharacterContextFactory contextFactory)
         {
             contextFactory.OnUpdate += OnPlayerStatUpdate;
         }
 
-        public void Shutdown(PlayerContextFactory contextFactory) 
+        public void Shutdown(CharacterContextFactory contextFactory) 
         {
             contextFactory.OnUpdate -= OnPlayerStatUpdate;
         }
 
-        void OnPlayerStatUpdate(PlayerContext c) 
+        void OnPlayerStatUpdate(CharacterContext c) 
         {
             m_playerContext = c;
             UpdateUI();

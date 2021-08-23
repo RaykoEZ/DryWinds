@@ -26,7 +26,7 @@ namespace Curry.Game
         public Rigidbody2D RigidBody { get { return m_rigidbody; } }
         public Collider2D HurtBox { get { return m_hurtBox; } }
         public ObjectRelations Relations { get { return m_relations; } }
-        public virtual CollisionStats CollisionStats { get { return m_defaultCollisionStats; } }
+        public virtual CollisionStats BaseCollisionStats { get { return m_defaultCollisionStats; } }
 
         protected virtual void OnCollisionEnter2D(Collision2D collision)
         {
@@ -49,7 +49,7 @@ namespace Curry.Game
                     0.2f,
                     1.5f);
 
-                OnKnockback(dir, vFactor * incomingInterable.CollisionStats.Knockback);
+                OnKnockback(dir, vFactor * incomingInterable.BaseCollisionStats.Knockback);
             }
         }
 

@@ -10,9 +10,14 @@ namespace Curry.Game
     }
 
     public delegate void OnModifierExpire<T>(ContextModifier<T> modifier) where T:IGameContext;
+    public delegate void OnModifierValueChange();
+
     public abstract class ContextModifier<T> where T : IGameContext
     {
         public event OnModifierExpire<T> OnModifierExpire;
+        // Used to notify a change in modifier values
+        public event OnModifierValueChange OnValueChange;
+
         // Name of the modifier, e.g. a skill/item name
         protected string m_name;
         // The value of modifiers

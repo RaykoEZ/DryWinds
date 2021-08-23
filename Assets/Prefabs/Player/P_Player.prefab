@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 54977025414749079}
   - component: {fileID: 826281917603678357}
   - component: {fileID: 3614885880137598129}
+  - component: {fileID: 8378189346840365758}
   m_Layer: 0
   m_Name: P_Player
   m_TagString: Untagged
@@ -52,21 +53,7 @@ MonoBehaviour:
   m_rigidbody: {fileID: 826281917603678357}
   m_hurtBox: {fileID: 54977025414749079}
   m_relations: 1
-  m_playerContext:
-    m_collisionStats:
-      m_contactDamage: 0
-      m_knockback: 3
-    m_characterStats:
-      m_maxStamina: 100
-      m_maxSp: 100
-      m_stamina: 100
-      m_sp: 100
-      m_speed: 1
-      m_spRegenPerSec: 1
-      m_hitRecoveryTime: 0.5
-    m_traceInventory: {fileID: 2105121062297059468}
-    m_equippedTrace: {fileID: 11400000, guid: d249897879c08434f8c6722634c46ac1, type: 2}
-  m_brush: {fileID: 7303586878393847328}
+  m_statsManager: {fileID: 8378189346840365758}
 --- !u!58 &54977025414749079
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -118,6 +105,30 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myRigidbody: {fileID: 826281917603678357}
   myCollider: {fileID: 54977025414749079}
+--- !u!114 &8378189346840365758
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 897198343347735774}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1cc72c2d6010ab64ebc7a597826d014b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_baseStats:
+    m_collisionStats:
+      m_contactDamage: 1
+      m_knockback: 3
+    m_characterStats:
+      m_maxStamina: 100
+      m_maxSp: 100
+      m_stamina: 100
+      m_sp: 100
+      m_speed: 1
+      m_spRegenPerSec: 5
+      m_hitRecoveryTime: 1
 --- !u!1 &897198344060202836
 GameObject:
   m_ObjectHideFlags: 0
@@ -269,6 +280,7 @@ MonoBehaviour:
   m_skillHandler: {fileID: 7914702964136947398}
   m_anim: {fileID: 7869645759159708107}
   m_movementAction: {fileID: -5037352003540691882, guid: 82b300ceb3c136247a87054a5fd03e4f, type: 3}
+  m_brush: {fileID: 7303586878393847328}
 --- !u!114 &7914702964136947398
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -340,6 +352,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9593ce0140526845bcdc7c07da62121, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_equippedTraceIndex: 0
   m_traceList:
   - {fileID: 11400000, guid: d249897879c08434f8c6722634c46ac1, type: 2}
   - {fileID: 11400000, guid: a4e441803a272a247bc4e788f414c7bc, type: 2}
