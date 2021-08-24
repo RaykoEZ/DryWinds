@@ -35,6 +35,17 @@ namespace Curry.Game
             m_hitRecoveryTime = stat.m_hitRecoveryTime;
         }
 
+        public CharacterStats() 
+        {
+            m_maxStamina = 0f;
+            m_maxSp = 0f;
+            m_stamina = 0f;
+            m_sp = 0f;
+            m_speed = 0f;
+            m_spRegenPerSec = 0f;
+            m_hitRecoveryTime = 0f;
+        }
+
         #region Modifier Operators
         public static CharacterStats operator +(CharacterStats a, CharacterStats b) 
         {

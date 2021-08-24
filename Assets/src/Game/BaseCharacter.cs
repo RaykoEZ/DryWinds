@@ -54,9 +54,25 @@ namespace Curry.Game
               OnActionInterrupt?.Invoke();
         }
 
-    public override void OnKnockback(Vector2 direction, float knockback)
+        public override void OnKnockback(Vector2 direction, float knockback)
         {
             m_rigidbody.AddForce(knockback * direction, ForceMode2D.Impulse);
+        }
+
+        public virtual void ApplyModifier(ContextModifier<CharacterContext> mod, bool baseStatMod = true) 
+        {
+            if(mod.Type == ModifierOpType.Special) 
+            {
+                m_statsManager.AddSpecialModifier(mod);
+            }
+            else if (baseStatMod) 
+            {
+                m_statsManager.AddBaseModifier(mod);
+            }
+            else 
+            {
+                m_statsManager.AddGlobalModifier(mod);
+            }
         }
     }
 }

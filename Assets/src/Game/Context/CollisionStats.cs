@@ -13,6 +13,11 @@ namespace Curry.Game
         public bool IsDirty { get { return m_isDirty; } }
         public float ContactDamage { get { return m_contactDamage; } set { m_contactDamage = value; m_isDirty = true; } }
         public float Knockback { get { return m_knockback; } set { m_knockback = value; m_isDirty = true; } }
+        public CollisionStats() 
+        {
+            m_contactDamage = 0f;
+            m_knockback = 0f;
+        }
 
         public CollisionStats(float contactDamage, float knockback) 
         {

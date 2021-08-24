@@ -1,6 +1,8 @@
+using System;
 
 namespace Curry.Game
 {
+    [Serializable]
     public class CharacterAdder : ContextModifier<CharacterContext>
     {
         public override ModifierOpType Type { get { return ModifierOpType.Add; } }
@@ -34,6 +36,7 @@ namespace Curry.Game
         }
     }
 
+    [Serializable]
     public class CharacterMultiplier : ContextModifier<CharacterContext>
     {
         public override ModifierOpType Type { get { return ModifierOpType.Multiply; } }

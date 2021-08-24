@@ -47,6 +47,8 @@ namespace Curry.Game
             contextFactory.OnUpdate -= OnContextUpdated;
         }
 
+
+
         // Add a modifier on the base stats
         public virtual void AddBaseModifier(ContextModifier<CharacterContext> modifier) 
         { 
@@ -58,7 +60,7 @@ namespace Curry.Game
             if (!m_baseMods.ContainsKey(modifier.Type)) 
             {
                 m_baseMods.Add(modifier.Type, new CharacterModifierContainer());
-                m_baseMods[modifier.Type].OnValueChange += UpdateStats;
+                m_baseMods[modifier.Type].OnEffectTrigger += UpdateStats;
                 m_baseMods[modifier.Type].OnModExpire += OnModifierExpire;
             }
 
@@ -84,11 +86,16 @@ namespace Curry.Game
             UpdateStats();
         }
 
+        public virtual void AddSpecialModifier(ContextModifier<CharacterContext> modifier) 
+        { 
+        
+        }
+
         protected virtual void OnTimeElapsed(float dt) 
         { 
             foreach(KeyValuePair<ModifierOpType, CharacterModifierContainer> kvp in m_baseMods) 
             {
-                kvp.Value.OnTimeElapsed(dt);
+                kvp.Value.OnTimeElapsed(dt, CurrentStats);
             }
         }
 

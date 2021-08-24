@@ -40,10 +40,16 @@ namespace Curry.Game
         }
         #endregion
 
+        public CharacterContext() 
+        {
+            m_characterStats = new CharacterStats();
+            m_collisionStats = new CollisionStats();
+        }
+
         public CharacterContext(CharacterContext c)
         {
-            m_collisionStats = new CollisionStats(c.m_collisionStats);
             m_characterStats = new CharacterStats(c.m_characterStats);
+            m_collisionStats = new CollisionStats(c.m_collisionStats);
         }
 
         public CharacterContext(CharacterStats character, CollisionStats collision)

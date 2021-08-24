@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Curry.Game
 {
@@ -7,7 +8,8 @@ namespace Curry.Game
         List<ContextModifier<CharacterContext>> m_modifiers;
 
         public event OnModifierExpire<CharacterContext> OnModExpire;
-        public event OnModifierValueChange OnValueChange;
+        public event OnModifierChainReaction<CharacterContext> OnModChain;
+        public event OnModifierTrigger OnEffectTrigger;
 
         CharacterContext m_overallValue;
 
@@ -18,11 +20,11 @@ namespace Curry.Game
             m_modifiers = new List<ContextModifier<CharacterContext>>();
         }
 
-        public virtual void OnTimeElapsed(float dt) 
+        public virtual void OnTimeElapsed(float dt, CharacterContext current) 
         {
             foreach (ContextModifier<CharacterContext> mod in m_modifiers)
             {
-                mod.OnTimeElapsed(dt);
+                mod.OnTimeElapsed(dt, current);
             }
         }
 
@@ -33,7 +35,7 @@ namespace Curry.Game
                 return;
             }
             mod.OnModifierExpire += OnModifierExpire;
-            mod.OnValueChange += OnModifierValueChanged;
+            mod.OnTrigger += OnModifierEffectTrigger;
             m_modifiers.Add(mod);
 
             if (m_overallValue == null) 
@@ -54,7 +56,7 @@ namespace Curry.Game
             }
 
             mod.OnModifierExpire -= OnModifierExpire;
-            mod.OnValueChange -= OnModifierValueChanged;
+            mod.OnTrigger -= OnModifierEffectTrigger;
 
             m_modifiers.Remove(mod);
 
@@ -66,9 +68,15 @@ namespace Curry.Game
             OnModExpire?.Invoke(mod);
         }
 
-        protected virtual void OnModifierValueChanged() 
+        protected virtual void OnModifierEffectTrigger() 
         {
-            if (m_modifiers.Count == 0) 
+            UpdateModifierValue();
+            OnEffectTrigger?.Invoke();
+        }
+
+        protected virtual void UpdateModifierValue() 
+        {
+            if (m_modifiers.Count == 0)
             {
                 return;
             }
@@ -77,7 +85,7 @@ namespace Curry.Game
                 m_overallValue = m_modifiers[0].Value;
             }
 
-            if (m_modifiers.Count > 1) 
+            if (m_modifiers.Count > 1)
             {
                 // Apply all modifiera to base
                 for (int i = 1; i < m_modifiers.Count; ++i)
@@ -85,8 +93,6 @@ namespace Curry.Game
                     m_overallValue = m_modifiers[i].Apply(m_overallValue);
                 }
             }
-
-            OnValueChange?.Invoke();
         }
     }
 }
