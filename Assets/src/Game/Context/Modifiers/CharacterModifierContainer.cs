@@ -8,7 +8,7 @@ namespace Curry.Game
         List<ContextModifier<CharacterContext>> m_modifiers;
 
         public event OnModifierExpire<CharacterContext> OnModExpire;
-        public event OnModifierChainReaction<CharacterContext> OnModChain;
+        public event OnModifierChain<CharacterContext> OnModChain;
         public event OnModifierTrigger OnEffectTrigger;
 
         CharacterContext m_overallValue;
@@ -36,6 +36,7 @@ namespace Curry.Game
             }
             mod.OnModifierExpire += OnModifierExpire;
             mod.OnTrigger += OnModifierEffectTrigger;
+            mod.OnModifierChain += OnModChain;
             m_modifiers.Add(mod);
 
             if (m_overallValue == null) 
@@ -57,6 +58,7 @@ namespace Curry.Game
 
             mod.OnModifierExpire -= OnModifierExpire;
             mod.OnTrigger -= OnModifierEffectTrigger;
+            mod.OnModifierChain -= OnModChain;
 
             m_modifiers.Remove(mod);
 
@@ -93,6 +95,11 @@ namespace Curry.Game
                     m_overallValue = m_modifiers[i].Apply(m_overallValue);
                 }
             }
+        }
+
+        protected virtual void OnModifierChain(ContextModifier<CharacterContext> newModifier, bool isBaseModifier = true) 
+        {
+            OnModChain?.Invoke(newModifier, isBaseModifier);
         }
     }
 }

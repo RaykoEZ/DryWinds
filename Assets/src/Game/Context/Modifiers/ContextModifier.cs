@@ -12,7 +12,7 @@ namespace Curry.Game
     }
 
     public delegate void OnModifierExpire<T>(ContextModifier<T> modifier) where T:IGameContext;
-    public delegate void OnModifierChainReaction<T>(ContextModifier<T> modifier, bool isBaseModifier = true) where T : IGameContext;
+    public delegate void OnModifierChain<T>(ContextModifier<T> newModifier, bool isBaseModifier = true) where T : IGameContext;
     public delegate void OnModifierTrigger();
 
     [Serializable]
@@ -24,9 +24,10 @@ namespace Curry.Game
         [SerializeField] protected T m_value;
         // duration of the modifier in seconds
         [SerializeField] protected float m_duration = default;
-        
+         
         public event OnModifierExpire<T> OnModifierExpire;
-        public event OnModifierChainReaction<T> OnModifierChain;
+        // Used to apply additional modifiers from a modifier's effect
+        public event OnModifierChain<T> OnModifierChain;
         // Used to notify a change in modifier values
         public event OnModifierTrigger OnTrigger;
 
@@ -58,6 +59,11 @@ namespace Curry.Game
         protected virtual void OnExpire() 
         {
             OnModifierExpire?.Invoke(this);
+        }
+
+        protected virtual void OnChain(ContextModifier<T> newModifier, bool isBaseModifier = true) 
+        {
+            OnModifierChain?.Invoke(newModifier, isBaseModifier);
         }
 
         protected virtual void TriggerEffect(CharacterContext current) 

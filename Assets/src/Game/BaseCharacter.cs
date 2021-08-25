@@ -61,18 +61,12 @@ namespace Curry.Game
 
         public virtual void ApplyModifier(ContextModifier<CharacterContext> mod, bool baseStatMod = true) 
         {
-            if(mod.Type == ModifierOpType.Special) 
+            if (mod == null)
             {
-                m_statsManager.AddSpecialModifier(mod);
+                return;
             }
-            else if (baseStatMod) 
-            {
-                m_statsManager.AddBaseModifier(mod);
-            }
-            else 
-            {
-                m_statsManager.AddGlobalModifier(mod);
-            }
+
+            m_statsManager.AddModifier(mod, baseStatMod);
         }
     }
 }

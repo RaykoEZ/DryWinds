@@ -86,6 +86,4 @@ namespace Curry.Game
                 a.m_collisionStats / div.m_collisionStats);
         }
     }
-
-
 }

@@ -50,6 +50,5 @@ namespace Curry.Game
             m_timer = 0f;
             base.TriggerEffect(current);
         }
-
     }
 }
