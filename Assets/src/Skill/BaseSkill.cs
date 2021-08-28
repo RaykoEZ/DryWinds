@@ -115,17 +115,16 @@ namespace Curry.Skill
             m_isWindingUp = false;
             if (SkillUsable && m_user != null)
             {
-                m_onCD = true;
                 m_skillActive = true;
-                ConsumeResource();
+                ConsumeResource(m_skillProperty.SpCost);
                 StartCoroutine(OnCooldown());
                 m_currentSkill = StartCoroutine(SkillEffect(target));
             }
         }
 
-        protected virtual void ConsumeResource() 
+        protected virtual void ConsumeResource(float val) 
         {
-            m_user.CurrentStats.SP = Mathf.Max(0f, m_user.CurrentStats.SP - m_skillProperty.SpCost);
+            m_user.OnLoseSp(val);
         }
 
         public virtual void CancelWindup() 
@@ -156,6 +155,7 @@ namespace Curry.Skill
 
         protected virtual IEnumerator OnCooldown() 
         {
+            m_onCD = true;
             //start cooldown and reset skill states
             yield return new WaitForSeconds(m_skillProperty.CooldownTime);
             m_onCD = false;

@@ -9,7 +9,7 @@ namespace Curry.Skill
     // Trace is like the brush tip for paint tools but with decay behaviours
     public class BaseTrace : BaseSkill
     {
-        [SerializeField] protected LineRenderer LineRenderer = default;
+        [SerializeField] protected LineRenderer m_lineRenderer = default;
         // Units length to decay per decay interval.
         [SerializeField] protected float m_decayPerInterval = default;
         // Seconds to wait for next stroke decay interval
@@ -23,8 +23,8 @@ namespace Curry.Skill
         protected Queue<Vector3> m_drawnPositions = new Queue<Vector3>();
         protected Queue<float> m_segmentLengths = new Queue<float>();       
         protected float m_decayTimer = 0f;
-        protected EdgeCollider2D m_edgeCollider { get{ return (EdgeCollider2D)m_hitBox; } }
 
+        protected EdgeCollider2D m_edgeCollider { get{ return (EdgeCollider2D)m_hitBox; } }
         // Update is called once per frame
         protected virtual void FixedUpdate()
         {
@@ -56,27 +56,33 @@ namespace Curry.Skill
 
         public override void Execute(SkillTargetParam target)
         {
-            Vector2 targetPosition = target.TargetPos;
             float length = (float)target.Payload["length"];
+            if (m_user?.CurrentStats.SP < length * m_skillProperty.SpCost)
+            {
+                return;
+            }
+
+            Vector2 targetPosition = target.TargetPos;
             if (!m_drawnVert.Contains(targetPosition))
             {
                 EvaluateLength(length);
                 m_drawnVert.Enqueue(targetPosition);
                 m_drawnPositions.Enqueue(targetPosition);
-                LineRenderer.positionCount = m_drawnPositions.Count;
-                LineRenderer.SetPosition(LineRenderer.positionCount - 1, targetPosition);
+                m_lineRenderer.positionCount = m_drawnPositions.Count;
+                m_lineRenderer.SetPosition(m_lineRenderer.positionCount - 1, targetPosition);
 
                 if (m_edgeCollider != null && m_isMakingCollider && m_drawnVert.Count > 1)
                 {
                     m_edgeCollider.points = m_drawnVert.ToArray();
                 }
-            }
-        }
 
+                ConsumeResource(SkillProperties.SpCost * length);
+            }  
+        }
 
         protected void EvaluateLength(float length)
         {
-            int numP = LineRenderer.positionCount;
+            int numP = m_lineRenderer.positionCount;
             if (numP == 0) 
             {
                 return;
@@ -121,8 +127,8 @@ namespace Curry.Skill
                 // With acceleration
                 decayAmount += m_decayPerInterval;
                 // Update line renderer and collider after decay
-                LineRenderer.positionCount = m_drawnPositions.Count;
-                LineRenderer.SetPositions(m_drawnPositions.ToArray());
+                m_lineRenderer.positionCount = m_drawnPositions.Count;
+                m_lineRenderer.SetPositions(m_drawnPositions.ToArray());
                 m_edgeCollider.points = m_drawnVert.ToArray();
 
                 yield return new WaitForSeconds(decayAccel * m_decayWait);
@@ -135,7 +141,7 @@ namespace Curry.Skill
         {
             m_isDecaying = false;
             m_decayTimer = 0f;
-            LineRenderer.positionCount = 0;
+            m_lineRenderer.positionCount = 0;
             m_drawnVert.Clear();
             m_drawnPositions.Clear();
             m_segmentLengths.Clear();

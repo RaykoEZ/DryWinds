@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Curry.Game
 {
     [Serializable]
-    public class EffectOverTimeModifier : ContextModifier<CharacterContext>
+    public class EffectOverTimeModifier : CharactertModifier
     {
         [SerializeField] protected float m_interval = default;
         protected float m_timer = 0f;
@@ -13,7 +13,7 @@ namespace Curry.Game
 
         public EffectOverTimeModifier(
             string name, 
-            CharacterContext value, 
+            CharacterModifierProperty value, 
             float duration, 
             float triggerInterval,
             Action<CharacterContext> trigger):
@@ -34,12 +34,12 @@ namespace Curry.Game
             base.OnTimeElapsed(dt, current);
         }
 
-        public override CharacterContext Apply(CharacterContext baseVal)
+        public override CharacterModifierProperty Apply(CharacterModifierProperty baseVal)
         {
             return baseVal;
         }
 
-        public override CharacterContext Revert(CharacterContext baseVal) 
+        public override CharacterModifierProperty Revert(CharacterModifierProperty baseVal) 
         {
             return baseVal;
         }

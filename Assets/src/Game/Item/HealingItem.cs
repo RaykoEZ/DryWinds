@@ -8,7 +8,7 @@ namespace Curry.Game
         public override bool ActivateEffect(BaseCharacter hit) 
         {
             bool ret = hit.CurrentStats.Stamina < hit.CurrentStats.MaxStamina;
-            hit.CurrentStats.Stamina += m_healAmount;
+            hit.OnHeal(m_healAmount);
             return ret;
         }
     }

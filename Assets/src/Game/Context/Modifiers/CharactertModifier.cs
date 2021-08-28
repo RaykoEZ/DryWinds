@@ -11,41 +11,41 @@ namespace Curry.Game
         Special
     }
 
-    public delegate void OnModifierExpire<T>(ContextModifier<T> modifier) where T:IGameContext;
-    public delegate void OnModifierChain<T>(ContextModifier<T> newModifier, bool isBaseModifier = true) where T : IGameContext;
+    public delegate void OnModifierExpire(CharactertModifier modifier);
+    public delegate void OnModifierChain(CharactertModifier newModifier);
     public delegate void OnModifierTrigger();
 
     [Serializable]
-    public abstract class ContextModifier<T> where T : IGameContext
+    public abstract class CharactertModifier
     {
         // Name of the modifier, e.g. a skill/item name
         [SerializeField] protected string m_name;
         // The value of modifiers
-        [SerializeField] protected T m_value;
         // duration of the modifier in seconds
         [SerializeField] protected float m_duration = default;
-         
-        public event OnModifierExpire<T> OnModifierExpire;
+        [SerializeField] protected CharacterModifierProperty m_value;
+
+        public event OnModifierExpire OnModifierExpire;
         // Used to apply additional modifiers from a modifier's effect
-        public event OnModifierChain<T> OnModifierChain;
+        public event OnModifierChain OnModifierChain;
         // Used to notify a change in modifier values
         public event OnModifierTrigger OnTrigger;
 
         public string Name { get { return m_name; } }
-        public T Value { get { return m_value; } }
+        public virtual CharacterModifierProperty Value { get { return m_value; } }
 
         public float Duration { get { return m_duration; } }
         public abstract ModifierOpType Type { get; }
 
-        public ContextModifier(string name, T value, float duration)
+        public CharactertModifier(string name, CharacterModifierProperty value, float duration)
         {
             m_name = name;
             m_value = value;
             m_duration = duration;
         }
 
-        public abstract T Apply(T baseVal);
-        public abstract T Revert(T baseVal);
+        public abstract CharacterModifierProperty Apply(CharacterModifierProperty baseVal);
+        public abstract CharacterModifierProperty Revert(CharacterModifierProperty baseVal);
 
         public virtual void OnTimeElapsed(float dt, CharacterContext current) 
         {
@@ -61,9 +61,9 @@ namespace Curry.Game
             OnModifierExpire?.Invoke(this);
         }
 
-        protected virtual void OnChain(ContextModifier<T> newModifier, bool isBaseModifier = true) 
+        protected virtual void OnChain(CharactertModifier newModifier) 
         {
-            OnModifierChain?.Invoke(newModifier, isBaseModifier);
+            OnModifierChain?.Invoke(newModifier);
         }
 
         protected virtual void TriggerEffect(CharacterContext current) 

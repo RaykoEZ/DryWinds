@@ -6,25 +6,32 @@ namespace Curry.Game
     public delegate void OnCharacterStatsUpdate(CharacterContext c);
     public class CharacterStatsManager : MonoBehaviour
     {
-        [SerializeField] protected CharacterContext m_baseStats;
+        [SerializeField] protected CharacterContext m_initStats;
 
-        protected Dictionary<ModifierOpType, CharacterModifierContainer> m_baseMods =
-            new Dictionary<ModifierOpType, CharacterModifierContainer>();
+        protected CharacterModifierContainer m_multipliers = new CharacterModifierContainer(1f);
+        protected CharacterModifierContainer m_adders = new CharacterModifierContainer(0f);
 
-        protected Dictionary<ModifierOpType, CharacterModifierContainer> m_globalMods =
-            new Dictionary<ModifierOpType, CharacterModifierContainer>();
-
-        protected CharacterModifierContainer m_specialMods = new CharacterModifierContainer();
-
+        protected CharacterModifierContainer m_specialMods = new CharacterModifierContainer(0f);
         protected IGameContextFactory<CharacterContext> m_contextFactoryRef = default;
-        protected CharacterContext m_currentStats;
 
-        public virtual CharacterContext BaseStats { get { return new CharacterContext(m_baseStats); } }
-        public virtual CharacterContext CurrentStats { get { return m_currentStats; } }
+        protected CharacterContext m_current;
+        public CharacterContext BaseStats { get { return new CharacterContext(m_initStats); } }
+        // Stats after modifiers
+        public virtual CharacterContext PreModifierStats { get { return new CharacterContext(m_current); } }
+        // Stats after modifiers
+        public virtual CharacterContext CurrentStats { get { return CalculateModifiedStats(); } }
 
         protected virtual void Start() 
         {
-            m_specialMods.OnEffectTrigger += ApplyStatModifiers;
+            m_multipliers.OnEffectTrigger += UpdateStats;
+            m_multipliers.OnModChain += AddModifier;
+            m_multipliers.OnModExpire += OnModifierExpire;
+
+            m_adders.OnEffectTrigger += UpdateStats;
+            m_adders.OnModChain += AddModifier;
+            m_adders.OnModExpire += OnModifierExpire;
+
+            m_specialMods.OnEffectTrigger += UpdateStats;
             m_specialMods.OnModChain += AddModifier;
             m_specialMods.OnModExpire += OnModifierExpire;
         }
@@ -32,9 +39,9 @@ namespace Curry.Game
         protected virtual void Update() 
         {
             //  if stats modified, update context for everyone
-            if (m_currentStats.IsDirty)
+            if (m_current.IsDirty)
             {
-                m_contextFactoryRef.UpdateContext(m_currentStats);
+                UpdateStats();
             }
 
             OnTimeElapsed(Time.deltaTime);
@@ -43,105 +50,88 @@ namespace Curry.Game
         public virtual void Init(IGameContextFactory<CharacterContext> contextFactory) 
         {
             m_contextFactoryRef = contextFactory;
-            m_contextFactoryRef.OnUpdate += OnContextUpdated;
-            m_contextFactoryRef.UpdateContext(BaseStats);
+            m_current = new CharacterContext(m_initStats);
+            m_contextFactoryRef.UpdateContext(m_initStats);
         }
 
         public virtual void Shutdown() 
         {
-            m_contextFactoryRef.OnUpdate -= OnContextUpdated;
-        }
+            m_multipliers.OnEffectTrigger -= UpdateStats;
+            m_multipliers.OnModChain -= AddModifier;
+            m_multipliers.OnModExpire -= OnModifierExpire;
 
-        public virtual void AddModifier(ContextModifier<CharacterContext> mod, bool baseStatMod = true) 
+            m_adders.OnEffectTrigger -= UpdateStats;
+            m_adders.OnModChain -= AddModifier;
+            m_adders.OnModExpire -= OnModifierExpire;
+
+            m_specialMods.OnEffectTrigger -= UpdateStats;
+            m_specialMods.OnModChain -= AddModifier;
+            m_specialMods.OnModExpire -= OnModifierExpire;
+        }
+        
+        public virtual void TakeDamage(float val) 
         {
-            if (mod.Type == ModifierOpType.Special) 
-            {
-                AddSpecialModifier(mod);
-            }
-            else if (baseStatMod) 
-            {
-                AddBaseModifier(mod);
-            }
-            else 
-            {
-                AddGlobalModifier(mod);
-            }
-            ApplyStatModifiers();
+            m_current.CharacterStats.Stamina -= val;
         }
-
-        // Add a modifier on the base stats
-        public virtual void AddBaseModifier(ContextModifier<CharacterContext> modifier) 
-        { 
-            if (!m_baseMods.ContainsKey(modifier.Type)) 
-            {
-                m_baseMods.Add(modifier.Type, new CharacterModifierContainer());
-                m_baseMods[modifier.Type].OnEffectTrigger += ApplyStatModifiers;
-                m_baseMods[modifier.Type].OnModExpire += OnModifierExpire;
-            }
-            m_baseMods[modifier.Type].Add(modifier);
-        }
-
-        // Add a modifier that will operate on the modifier base context.
-        public virtual void AddGlobalModifier(ContextModifier<CharacterContext> modifier)
+        public virtual void Heal(float val) 
         {
-            if (!m_globalMods.ContainsKey(modifier.Type))
-            {
-                m_globalMods.Add(modifier.Type, new CharacterModifierContainer());
-                m_globalMods[modifier.Type].OnEffectTrigger += ApplyStatModifiers;
-                m_globalMods[modifier.Type].OnModExpire += OnModifierExpire;
-            }
-            m_globalMods[modifier.Type].Add(modifier);
+            m_current.CharacterStats.Stamina += val;
+        }
+        public virtual void LoseSp(float val) 
+        {
+            m_current.CharacterStats.SP -= val;
+        }
+        public virtual void GainSp(float val)
+        {
+            m_current.CharacterStats.SP += val;
         }
 
-        protected  virtual void AddSpecialModifier(ContextModifier<CharacterContext> modifier) 
+        protected virtual CharacterContext CalculateModifiedStats()
         {
-            m_specialMods.Add(modifier);
+            CharacterModifierProperty mult = m_multipliers.OverallValue;
+            CharacterModifierProperty add = m_adders.OverallValue;
+            return (m_current * mult) + add;
+        }
+
+        protected virtual void UpdateStats()
+        {
+            //Set effective stat back to base stats
+            m_contextFactoryRef.UpdateContext(CalculateModifiedStats());
+        }
+
+        public virtual void AddModifier(CharactertModifier mod) 
+        {
+            CharacterModifierContainer modifierContainer;
+            switch (mod.Type)
+            {
+                case ModifierOpType.Add:
+                    modifierContainer = m_adders;
+                    break;
+                case ModifierOpType.Multiply:
+                    modifierContainer = m_multipliers;
+                    break;
+                case ModifierOpType.Special:
+                    modifierContainer = m_specialMods;
+                    break;
+                default:
+                    return;
+            }
+
+            modifierContainer?.Add(mod);
+            UpdateStats();
         }
 
         protected virtual void OnTimeElapsed(float dt) 
-        { 
-            foreach(KeyValuePair<ModifierOpType, CharacterModifierContainer> kvp in m_baseMods) 
-            {
-                kvp.Value.OnTimeElapsed(dt, CurrentStats);
-            }
-
+        {
+            m_multipliers.OnTimeElapsed(dt, CurrentStats);
+            m_adders.OnTimeElapsed(dt, CurrentStats);
             m_specialMods.OnTimeElapsed(dt, CurrentStats);
         }
 
-        protected virtual void ApplyStatModifiers()
-        {
-            if (m_baseMods.TryGetValue(ModifierOpType.Multiply, out CharacterModifierContainer baseMult) && 
-                baseMult.OverallValue != null) 
-            {
-                m_currentStats *= baseMult.OverallValue;
-            }
-            if (m_baseMods.TryGetValue(ModifierOpType.Add, out CharacterModifierContainer baseAdder) &&
-                baseAdder.OverallValue != null)
-            {
-                m_currentStats += baseAdder.OverallValue;
-            }
-            if (m_globalMods.TryGetValue(ModifierOpType.Multiply, out CharacterModifierContainer globalMult) && 
-                globalMult.OverallValue != null)
-            {
-                m_currentStats *= globalMult.OverallValue;
-            }
-            if (m_globalMods.TryGetValue(ModifierOpType.Add, out CharacterModifierContainer globalAdder) && 
-                globalAdder.OverallValue != null)
-            {
-                m_currentStats += globalAdder.OverallValue;
-            }
-            m_contextFactoryRef.UpdateContext(CurrentStats);
-        }
-
-        protected virtual void OnModifierExpire(ContextModifier<CharacterContext> mod) 
+        protected virtual void OnModifierExpire(CharactertModifier mod) 
         {
             Debug.Log($"{mod.Name}'s effect expired.");
-            ApplyStatModifiers();
-        }
-
-        protected virtual void OnContextUpdated(CharacterContext c) 
-        {
-            m_currentStats = c;
+            UpdateStats();
         }
     }
 }

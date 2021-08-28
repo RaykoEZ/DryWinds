@@ -20,6 +20,7 @@ namespace Curry.Game
         void Start()
         {
             m_skillHandler.Init(m_player);
+            m_brush.Init(m_player);
             m_player.OnTakingDamage += OnHitStun;
             m_player.OnActionInterrupt += OnInterrupt;
 
@@ -44,7 +45,7 @@ namespace Curry.Game
         public void OnMovement(Vector2 dir) 
         {
             float drag = m_player.RigidBody.drag;
-            m_player.RigidBody.AddForce( dir * m_player.BaseStats.Speed * drag);           
+            m_player.RigidBody.AddForce( dir * m_player.CurrentStats.Speed * drag);           
         }
 
         public void OnDashTrigger(InputAction.CallbackContext c)
@@ -140,7 +141,7 @@ namespace Curry.Game
         protected virtual IEnumerator RecoverInput() 
         {
             m_disableInput = true;
-            yield return new WaitForSeconds(m_player.BaseStats.HitRecoveryTime);
+            yield return new WaitForSeconds(m_player.CurrentStats.HitRecoveryTime);
             m_disableInput = false;
             m_currentInputRecovery = null;
         }

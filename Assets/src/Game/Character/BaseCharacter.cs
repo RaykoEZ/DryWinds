@@ -10,16 +10,12 @@ namespace Curry.Game
     public abstract class BaseCharacter : Interactable
     {
         [SerializeField] protected CharacterStatsManager m_statsManager = default;
-
         public virtual CharacterStats BaseStats { get { return m_statsManager.BaseStats.CharacterStats; } }
-        public override CollisionStats BaseCollisionStats { get { return m_statsManager.BaseStats.CollisionStats; } }
-
         public virtual CharacterStats CurrentStats { get { return m_statsManager.CurrentStats.CharacterStats; } }
-        public virtual CollisionStats CurrentCollisionStats { get { return m_statsManager.CurrentStats.CollisionStats; } }
+        public override CollisionStats CurrentCollisionStats { get { return m_statsManager.CurrentStats.CharacterStats.CollisionStats; } }
 
         public event OnCharacterTakeDamage OnTakingDamage;
         public event OnCharacterInterrupt OnActionInterrupt;
-
 
         protected override void OnClash(Collision2D collision)
         {
@@ -34,24 +30,49 @@ namespace Curry.Game
                     float staminaRating = (CurrentStats.MaxStamina / Mathf.Max(1f, CurrentStats.Stamina));
                     staminaRating = Mathf.Min(5f, staminaRating);
 
-                    OnKnockback(dir, staminaRating * incomingInterable.BaseCollisionStats.Knockback);
+                    OnKnockback(dir, staminaRating * incomingInterable.CurrentCollisionStats.Knockback);
                 }
                 else
                 {
-                    OnKnockback(dir, incomingInterable.BaseCollisionStats.Knockback);
+                    OnKnockback(dir, incomingInterable.CurrentCollisionStats.Knockback);
                 }
             }
         }
 
+        public virtual void Init(CharacterContextFactory contextFactory) 
+        {
+            m_statsManager.Init(contextFactory);
+        }
+
+        public virtual void Shutdown() 
+        {
+            m_statsManager.Shutdown();
+        }
+
         public override void OnTakeDamage(float damage)
         {
-            CurrentStats.Stamina = Mathf.Max(CurrentStats.Stamina - damage, 0f);
+            m_statsManager.TakeDamage(damage);
             OnTakingDamage?.Invoke(damage);
+        }
+
+        public virtual void OnHeal(float val) 
+        {
+            m_statsManager.Heal(val);
+        }
+
+        public virtual void OnLoseSp(float val)
+        {
+            m_statsManager.LoseSp(val);
+
+        }
+        public virtual void OnGainSp(float val)
+        {
+            m_statsManager.GainSp(val);
         }
 
         public virtual void OnInterrupt() 
         {
-              OnActionInterrupt?.Invoke();
+            OnActionInterrupt?.Invoke();
         }
 
         public override void OnKnockback(Vector2 direction, float knockback)
@@ -59,14 +80,14 @@ namespace Curry.Game
             m_rigidbody.AddForce(knockback * direction, ForceMode2D.Impulse);
         }
 
-        public virtual void ApplyModifier(ContextModifier<CharacterContext> mod, bool baseStatMod = true) 
+        public virtual void ApplyModifier(CharactertModifier mod) 
         {
             if (mod == null)
             {
                 return;
             }
 
-            m_statsManager.AddModifier(mod, baseStatMod);
+            m_statsManager.AddModifier(mod);
         }
     }
 }

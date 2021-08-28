@@ -6,7 +6,6 @@ using Curry.Skill;
 
 namespace Curry.Game
 {
-
     public class SkillHandler : MonoBehaviour
     {
         [SerializeField] BaseSkill m_skill = default;

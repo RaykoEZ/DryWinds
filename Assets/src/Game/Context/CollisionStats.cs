@@ -25,6 +25,11 @@ namespace Curry.Game
             m_knockback = knockback;
         }
 
+        public CollisionStats(float val)
+        {
+            m_contactDamage = val;
+            m_knockback = val;
+        }
         public CollisionStats(CollisionStats stats)
         {
             m_contactDamage = stats.ContactDamage;
@@ -35,22 +40,23 @@ namespace Curry.Game
         public static CollisionStats operator +(CollisionStats a, CollisionStats b) 
         {
             return new CollisionStats(
-                a.m_contactDamage + b.m_contactDamage, a.m_knockback + b.m_knockback);
+                Mathf.Max(0f, a.m_contactDamage + b.m_contactDamage), Mathf.Max(0f, a.m_knockback + b.m_knockback));
         }
         public static CollisionStats operator -(CollisionStats a, CollisionStats b)
         {
             return new CollisionStats(
-                a.m_contactDamage - b.m_contactDamage, a.m_knockback - b.m_knockback);
+                Mathf.Max(0f, a.m_contactDamage - b.m_contactDamage), Mathf.Max(0f, a.m_knockback - b.m_knockback));
         }
         public static CollisionStats operator *(CollisionStats a, CollisionStats b)
         {
             return new CollisionStats(
-                a.m_contactDamage * b.m_contactDamage, a.m_knockback * b.m_knockback);
+                Mathf.Max(0f, a.m_contactDamage * b.m_contactDamage), Mathf.Max(0f, a.m_knockback * b.m_knockback));
         }
         public static CollisionStats operator /(CollisionStats a, CollisionStats b)
         {
             return new CollisionStats(
-                a.m_contactDamage / b.m_contactDamage, a.m_knockback / b.m_knockback);
+                Mathf.Approximately(b.m_contactDamage, 0f) ? a.m_contactDamage : a.m_contactDamage / b.m_contactDamage,
+                Mathf.Approximately(b.m_knockback, 0f) ? a.m_knockback : a.m_knockback / b.m_knockback);
         }
         #endregion
     }

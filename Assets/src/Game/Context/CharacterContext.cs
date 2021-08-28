@@ -6,7 +6,6 @@ namespace Curry.Game
     [Serializable]
     public class CharacterContext : IGameContext
     {
-        [SerializeField] protected CollisionStats m_collisionStats = default;
         [SerializeField] protected CharacterStats m_characterStats = default;
         protected bool m_isDirty = false;
 
@@ -15,17 +14,11 @@ namespace Curry.Game
             get
             {
                 return m_isDirty ||
-                    CharacterStats.IsDirty ||
-                    m_collisionStats.IsDirty;
+                    CharacterStats.IsDirty;
             }
         }
 
         #region Character Stats Properties
-        public CollisionStats CollisionStats
-        {
-            get { return m_collisionStats; }
-            set { m_collisionStats = value; m_isDirty = true; }
-        }
         public CharacterStats CharacterStats
         {
             get
@@ -43,47 +36,40 @@ namespace Curry.Game
         public CharacterContext() 
         {
             m_characterStats = new CharacterStats();
-            m_collisionStats = new CollisionStats();
+        }
+
+        public CharacterContext(float val)
+        {
+            m_characterStats = new CharacterStats(val);
+        }
+        public CharacterContext(CharacterStats c)
+        {
+            m_characterStats = new CharacterStats(c);
         }
 
         public CharacterContext(CharacterContext c)
         {
             m_characterStats = new CharacterStats(c.m_characterStats);
-            m_collisionStats = new CollisionStats(c.m_collisionStats);
         }
 
-        public CharacterContext(CharacterStats character, CollisionStats collision)
+        public static CharacterContext operator +(CharacterContext a, CharacterModifierProperty b) 
         {
-            m_characterStats = new CharacterStats(character);
-            m_collisionStats = new CollisionStats(collision);
+            return new CharacterContext(a.CharacterStats + b);
         }
 
-        public static CharacterContext operator +(CharacterContext a, CharacterContext b) 
+        public static CharacterContext operator -(CharacterContext a, CharacterModifierProperty b)
         {
-            return new CharacterContext(
-                a.m_characterStats + b.m_characterStats, 
-                a.m_collisionStats + b.m_collisionStats);
+            return new CharacterContext(a.CharacterStats - b);
         }
 
-        public static CharacterContext operator -(CharacterContext a, CharacterContext b)
+        public static CharacterContext operator *(CharacterContext a, CharacterModifierProperty b)
         {
-            return new CharacterContext(
-                a.m_characterStats - b.m_characterStats,
-                a.m_collisionStats - b.m_collisionStats);
+            return new CharacterContext(a.CharacterStats * b);
         }
 
-        public static CharacterContext operator *(CharacterContext a, CharacterContext mult)
+        public static CharacterContext operator /(CharacterContext a, CharacterModifierProperty b)
         {
-            return new CharacterContext(
-                a.m_characterStats * mult.m_characterStats,
-                a.m_collisionStats * mult.m_collisionStats);
-        }
-
-        public static CharacterContext operator /(CharacterContext a, CharacterContext div)
-        {
-            return new CharacterContext(
-                a.m_characterStats / div.m_characterStats,
-                a.m_collisionStats / div.m_collisionStats);
+            return new CharacterContext(a.CharacterStats / b);
         }
     }
 }

@@ -13,7 +13,6 @@ namespace Curry.Game
         protected CharacterContextFactory m_contextFactory = new CharacterContextFactory();
 
         public Transform Target { get { return m_target; } set { m_target = value; } }
-
         public event OnDefeat OnDefeated;
 
         protected virtual void Start() 

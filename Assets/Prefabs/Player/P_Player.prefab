@@ -117,10 +117,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1cc72c2d6010ab64ebc7a597826d014b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_baseStats:
-    m_collisionStats:
-      m_contactDamage: 1
-      m_knockback: 3
+  m_initStats:
     m_characterStats:
       m_maxStamina: 100
       m_maxSp: 100
@@ -129,6 +126,9 @@ MonoBehaviour:
       m_speed: 1
       m_spRegenPerSec: 5
       m_hitRecoveryTime: 1
+      m_collisionStats:
+        m_contactDamage: 0
+        m_knockback: 5
 --- !u!1 &897198344060202836
 GameObject:
   m_ObjectHideFlags: 0
@@ -418,6 +418,10 @@ PrefabInstance:
     - target: {fileID: 4967061372838008699, guid: 224ba29651e730143b9ed9ac3a9b7f63, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6136109222725637740, guid: 224ba29651e730143b9ed9ac3a9b7f63, type: 3}
+      propertyPath: m_minLength
+      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 6136109222725637740, guid: 224ba29651e730143b9ed9ac3a9b7f63, type: 3}
       propertyPath: m_poolManager

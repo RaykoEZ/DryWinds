@@ -72,13 +72,13 @@ MonoBehaviour:
   m_skillProperty:
     Name: BaseTrace
     TargetOptions: -1
-    SpCost: 1
+    SpCost: 2
     CooldownTime: 0
     MaxWindupTime: 0
     StaminaDamage: 0
     SpDamage: 0
     Knockback: 2
-  LineRenderer: {fileID: 9087464718448856407}
+  m_lineRenderer: {fileID: 9087464718448856407}
   m_decayPerInterval: 0.05
   m_decayWait: 0.05
   m_durability: 3

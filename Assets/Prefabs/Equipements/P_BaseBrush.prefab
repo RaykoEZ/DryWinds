@@ -45,6 +45,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_poolManager: {fileID: 9009991038235426016}
+  m_inventory: {fileID: 0}
+  m_cooldownTime: 1
 --- !u!114 &9009991038235426016
 MonoBehaviour:
   m_ObjectHideFlags: 0

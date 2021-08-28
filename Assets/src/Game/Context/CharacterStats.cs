@@ -13,9 +13,10 @@ namespace Curry.Game
         [SerializeField] protected float m_speed = default;
         [SerializeField] protected float m_spRegenPerSec = default;
         [SerializeField] protected float m_hitRecoveryTime = default;
+        [SerializeField] protected CollisionStats m_collisionStats = default;
 
         protected bool m_isDirty = false;
-        public bool IsDirty { get { return m_isDirty; } }
+        public bool IsDirty { get { return m_isDirty || m_collisionStats.IsDirty; } }
 
         public float MaxStamina { get { return m_maxStamina; } set { m_maxStamina = Mathf.Max(1f, value); m_isDirty = true; } }
         public float MaxSP { get { return m_maxSp; } set { m_maxSp = Mathf.Max(0f, value); m_isDirty = true; } }
@@ -24,6 +25,12 @@ namespace Curry.Game
         public float Speed { get { return m_speed; } set { m_speed = Mathf.Clamp(value, 0f, 5f); m_isDirty = true; } }
         public float SPRegenPerSec { get { return m_spRegenPerSec; } set { m_spRegenPerSec = value; m_isDirty = true; } }
         public float HitRecoveryTime { get { return (m_hitRecoveryTime * MaxStamina) / (Stamina + 0.2f * MaxStamina); } set { m_hitRecoveryTime = value; m_isDirty = true; } }
+
+        public CollisionStats CollisionStats
+        {
+            get { return m_collisionStats; }
+            set { m_collisionStats = value; m_isDirty = true; }
+        }
         public CharacterStats(CharacterStats stat)
         {
             m_maxStamina = stat.m_maxStamina;
@@ -33,8 +40,19 @@ namespace Curry.Game
             m_speed = stat.m_speed;
             m_spRegenPerSec = stat.m_spRegenPerSec;
             m_hitRecoveryTime = stat.m_hitRecoveryTime;
+            m_collisionStats = stat.m_collisionStats;
         }
-
+        public CharacterStats(float val)
+        {
+            m_maxStamina = val;
+            m_maxSp = val;
+            m_stamina = val;
+            m_sp = val;
+            m_speed = val;
+            m_spRegenPerSec = val;
+            m_hitRecoveryTime = val;
+            m_collisionStats = new CollisionStats(val);
+        }
         public CharacterStats() 
         {
             m_maxStamina = 0f;
@@ -44,58 +62,61 @@ namespace Curry.Game
             m_speed = 0f;
             m_spRegenPerSec = 0f;
             m_hitRecoveryTime = 0f;
+            m_collisionStats = new CollisionStats(0f);
+
         }
 
         #region Modifier Operators
-        public static CharacterStats operator +(CharacterStats a, CharacterStats b) 
+        public static CharacterStats operator +(CharacterStats a, CharacterModifierProperty b) 
         {
             CharacterStats ret = new CharacterStats(a);
-            ret.m_maxStamina += b.m_maxStamina;
-            ret.m_maxSp += b.m_maxSp;
-            ret.m_stamina += b.m_stamina;
-            ret.m_sp += b.m_sp;
-            ret.m_speed += b.m_speed;
-            ret.m_spRegenPerSec += b.m_spRegenPerSec;
-            ret.m_hitRecoveryTime += b.m_hitRecoveryTime;
+            ret.m_maxStamina += b.MaxStamina;
+            ret.m_maxSp += b.MaxSP;
+            ret.m_speed += b.Speed;
+            ret.m_spRegenPerSec += b.SPRegenPerSec;
+            ret.m_hitRecoveryTime += b.HitRecoveryTime;
+            ret.m_collisionStats += new CollisionStats(b.ContactDamage, b.Knockback);
             return ret;
         }
 
-        public static CharacterStats operator -(CharacterStats a, CharacterStats b)
+        public static CharacterStats operator -(CharacterStats a, CharacterModifierProperty b)
         {
             CharacterStats ret = new CharacterStats(a);
-            ret.m_maxStamina -= b.m_maxStamina;
-            ret.m_maxSp -= b.m_maxSp;
-            ret.m_stamina -= b.m_stamina;
-            ret.m_sp -= b.m_sp;
-            ret.m_speed -= b.m_speed;
-            ret.m_spRegenPerSec -= b.m_spRegenPerSec;
-            ret.m_hitRecoveryTime -= b.m_hitRecoveryTime;
+            ret.m_maxStamina -= b.MaxStamina;
+            ret.m_maxSp -= b.MaxSP;
+            ret.m_speed -= b.Speed;
+            ret.m_spRegenPerSec -= b.SPRegenPerSec;
+            ret.m_hitRecoveryTime -= b.HitRecoveryTime;
+            ret.m_collisionStats -= new CollisionStats(b.ContactDamage, b.Knockback);
             return ret;
         }
 
-        public static CharacterStats operator *(CharacterStats a, CharacterStats mult)
+        public static CharacterStats operator *(CharacterStats a, CharacterModifierProperty b)
         {
             CharacterStats ret = new CharacterStats(a);
-            ret.m_maxStamina *= mult.m_maxStamina;
-            ret.m_maxSp *= mult.m_maxSp;
-            ret.m_stamina *= mult.m_stamina;
-            ret.m_sp *= mult.m_sp;
-            ret.m_speed *= mult.m_speed;
-            ret.m_spRegenPerSec *= mult.m_spRegenPerSec;
-            ret.m_hitRecoveryTime *= mult.m_hitRecoveryTime;
+            ret.m_maxStamina *= b.MaxStamina;
+            ret.m_maxSp *= b.MaxSP;
+            ret.m_speed *= b.Speed;
+            ret.m_spRegenPerSec *= b.SPRegenPerSec;
+            ret.m_hitRecoveryTime *= b.HitRecoveryTime;
+            ret.m_collisionStats *= new CollisionStats(b.ContactDamage, b.Knockback);
             return ret;
         }
 
-        public static CharacterStats operator /(CharacterStats a, CharacterStats div)
+        public static CharacterStats operator /(CharacterStats a, CharacterModifierProperty b)
         {
             CharacterStats ret = new CharacterStats(a);
-            ret.m_maxStamina /= div.m_maxStamina;
-            ret.m_maxSp /= div.m_maxSp;
-            ret.m_stamina /= div.m_stamina;
-            ret.m_sp /= div.m_sp;
-            ret.m_speed /= div.m_speed;
-            ret.m_spRegenPerSec /= div.m_spRegenPerSec;
-            ret.m_hitRecoveryTime /= div.m_hitRecoveryTime;
+            ret.m_maxStamina /= Mathf.Approximately(b.MaxStamina, 0f) ? 1f : b.MaxStamina;
+            ret.m_maxSp /= Mathf.Approximately(b.MaxSP, 0f)? 1f : b.MaxSP;
+            ret.m_speed /= Mathf.Approximately(b.Speed, 0f) ? 1f : b.Speed;
+            ret.m_spRegenPerSec /= Mathf.Approximately(b.SPRegenPerSec, 0f) ? 1f : b.SPRegenPerSec;
+            ret.m_hitRecoveryTime /= Mathf.Approximately(b.HitRecoveryTime, 0f) ? 1f : b.HitRecoveryTime;
+            ret.m_collisionStats /= new CollisionStats
+                (
+                    b.ContactDamage,
+                    b.Knockback
+                );
+
             return ret;
         }
 
