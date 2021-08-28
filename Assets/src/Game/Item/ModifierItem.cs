@@ -6,8 +6,7 @@ namespace Curry.Game
     {
         [SerializeField] protected float m_duration = default;
         [SerializeField] protected CharacterModifierProperty m_modifierValue = default;
-        protected virtual CharactertModifier Modifier 
-        { get; set; }
+        protected virtual CharactertModifier Modifier { get; set; }
 
         public override bool ActivateEffect(BaseCharacter hit)
         {

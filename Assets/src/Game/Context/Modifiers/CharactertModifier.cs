@@ -47,7 +47,7 @@ namespace Curry.Game
         public abstract CharacterModifierProperty Apply(CharacterModifierProperty baseVal);
         public abstract CharacterModifierProperty Revert(CharacterModifierProperty baseVal);
 
-        public virtual void OnTimeElapsed(float dt, CharacterContext current) 
+        public virtual void OnTimeElapsed(float dt) 
         {
             m_duration -= dt;
             if(m_duration <= 0f) 
@@ -66,7 +66,7 @@ namespace Curry.Game
             OnModifierChain?.Invoke(newModifier);
         }
 
-        protected virtual void TriggerEffect(CharacterContext current) 
+        protected virtual void TriggerEffect() 
         {
             OnTrigger?.Invoke();
         }

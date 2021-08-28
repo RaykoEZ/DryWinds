@@ -8,7 +8,7 @@ namespace Curry.Game
     {
         [SerializeField] protected float m_interval = default;
         protected float m_timer = 0f;
-        protected Action<CharacterContext> m_triggerAction = default;
+        protected Action m_triggerAction = default;
         public override ModifierOpType Type { get { return ModifierOpType.Special;} }
 
         public EffectOverTimeModifier(
@@ -16,22 +16,22 @@ namespace Curry.Game
             CharacterModifierProperty value, 
             float duration, 
             float triggerInterval,
-            Action<CharacterContext> trigger):
+            Action trigger):
             base(name, value, duration)
         {
             m_interval = triggerInterval;
             m_triggerAction = trigger;
         }
 
-        public override void OnTimeElapsed(float dt, CharacterContext current)
+        public override void OnTimeElapsed(float dt)
         {
             m_timer += dt;
             if(m_timer >= m_interval) 
             {
-                TriggerEffect(current);
+                TriggerEffect();
             }
 
-            base.OnTimeElapsed(dt, current);
+            base.OnTimeElapsed(dt);
         }
 
         public override CharacterModifierProperty Apply(CharacterModifierProperty baseVal)
@@ -44,11 +44,11 @@ namespace Curry.Game
             return baseVal;
         }
 
-        protected override void TriggerEffect(CharacterContext current) 
+        protected override void TriggerEffect() 
         {
-            m_triggerAction?.Invoke(current);
+            m_triggerAction?.Invoke();
             m_timer = 0f;
-            base.TriggerEffect(current);
+            base.TriggerEffect();
         }
     }
 }

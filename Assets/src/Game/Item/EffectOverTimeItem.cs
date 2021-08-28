@@ -16,6 +16,6 @@ namespace Curry.Game
                 OnEffectTrigger);
         }
 
-        protected abstract void OnEffectTrigger(CharacterContext current);
+        protected abstract void OnEffectTrigger();
     }
 }

@@ -123,9 +123,9 @@ namespace Curry.Game
 
         protected virtual void OnTimeElapsed(float dt) 
         {
-            m_multipliers.OnTimeElapsed(dt, CurrentStats);
-            m_adders.OnTimeElapsed(dt, CurrentStats);
-            m_specialMods.OnTimeElapsed(dt, CurrentStats);
+            m_multipliers.OnTimeElapsed(dt);
+            m_adders.OnTimeElapsed(dt);
+            m_specialMods.OnTimeElapsed(dt);
         }
 
         protected virtual void OnModifierExpire(CharactertModifier mod) 
