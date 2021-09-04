@@ -24,7 +24,7 @@ namespace Curry.Game
         public float SP { get { return m_sp; } set { m_sp = Mathf.Min(MaxSP, value); m_isDirty = true; } }
         public float Speed { get { return m_speed; } set { m_speed = Mathf.Clamp(value, 0f, 5f); m_isDirty = true; } }
         public float SPRegenPerSec { get { return m_spRegenPerSec; } set { m_spRegenPerSec = value; m_isDirty = true; } }
-        public float HitRecoveryTime { get { return (m_hitRecoveryTime * MaxStamina) / (Stamina + 0.2f * MaxStamina); } set { m_hitRecoveryTime = value; m_isDirty = true; } }
+        public float HitRecoveryTime { get { return m_hitRecoveryTime * Mathf.Min(Mathf.Log10(m_maxStamina/(m_stamina + 1f)), 5f ); } set { m_hitRecoveryTime = value; m_isDirty = true; } }
 
         public CollisionStats CollisionStats
         {

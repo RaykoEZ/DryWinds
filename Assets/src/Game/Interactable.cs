@@ -43,7 +43,7 @@ namespace Curry.Game
             {
                 ContactPoint2D contact = collision.GetContact(0);
                 Vector2 dir = contact.normal.normalized;
-                float vFactor = InteractionUtil.ScaleFactior(
+                float vFactor = GameUtil.ScaleFactior(
                     incomingInterable.m_rigidbody.velocity.sqrMagnitude,
                     m_rigidbody.velocity.sqrMagnitude,
                     0.2f,
