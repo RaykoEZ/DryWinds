@@ -47,7 +47,8 @@ MonoBehaviour:
   m_npc: {fileID: 7557477938998303306}
   m_anim: {fileID: 4052941514383100218}
   m_skillHandler: {fileID: 1658453411247593517}
-  m_actionInterval: 2
+  m_detector: {fileID: 2498299348684587035}
+  m_actionInterval: 0
 --- !u!114 &1658453411247593517
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -92,6 +93,68 @@ Transform:
   m_Father: {fileID: 6053750748373758017}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &6077240187856294326
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1459826822461578454}
+  - component: {fileID: 7856266967142227805}
+  - component: {fileID: 2498299348684587035}
+  m_Layer: 0
+  m_Name: DetectionRange
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1459826822461578454
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6077240187856294326}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 6053750748373758017}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!58 &7856266967142227805
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6077240187856294326}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0.25}
+  serializedVersion: 2
+  m_Radius: 2
+--- !u!114 &2498299348684587035
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6077240187856294326}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ff44df4348b8324db275c57b138f3ae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_range: {fileID: 7856266967142227805}
+  m_reactionTime: 1
 --- !u!60 &368594841113657428
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -422,6 +485,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 930445917095065485, guid: ee850e72963a50c44945d372a872712a, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -5
+      objectReference: {fileID: 0}
     - target: {fileID: 2117372932101258829, guid: ee850e72963a50c44945d372a872712a, type: 3}
       propertyPath: m_Enabled
       value: 1

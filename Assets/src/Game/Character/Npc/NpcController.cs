@@ -9,12 +9,15 @@ namespace Curry.Game
         [SerializeField] protected BaseNpc m_npc = default;
         [SerializeField] protected Animator m_anim = default;
         [SerializeField] protected SkillHandler m_skillHandler = default;
+        [SerializeField] protected DetectionHandler m_detector = default;
+
         [SerializeField] float m_actionInterval = default;
         protected float m_actionTimer = 0f;
         protected bool m_attacking = false;
         protected virtual void Start() 
         {
             m_skillHandler.Init(m_npc);
+            m_detector.OnDetected += OnCharacterDetected;
             m_npc.OnTakingDamage += OnTakeDamage;
             m_npc.OnDefeated += OnDefeat;
         }
@@ -31,6 +34,11 @@ namespace Curry.Game
             {
                 m_actionTimer += Time.deltaTime;
             }
+        }
+
+        protected void OnCharacterDetected(BaseCharacter character) 
+        {
+            Debug.Log("detected" + character);
         }
 
         protected virtual void OnSkill()

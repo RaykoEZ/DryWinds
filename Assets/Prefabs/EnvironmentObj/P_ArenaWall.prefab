@@ -169,3 +169,4 @@ MonoBehaviour:
   m_hurtBox: {fileID: 1935210196506923571}
   m_relations: 0
   m_initScale: 10
+  m_duration: 5
