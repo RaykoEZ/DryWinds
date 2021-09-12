@@ -6,15 +6,6 @@ using Curry.Game;
 
 namespace Curry.Skill
 {
-    [Flags]
-    public enum TargetOptions 
-    { 
-        None = 0,
-        Self = 1,
-        Ally = 1 << 1,
-        Enemy = 1 << 2,
-    }
-
     public class SkillTargetParam
     {
         Vector2 m_targetPos = default;

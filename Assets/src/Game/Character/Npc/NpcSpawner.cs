@@ -8,7 +8,6 @@ namespace Curry.Game
     {
         [SerializeField] protected GameObject m_npcRef = default;
         [SerializeField] protected Transform m_parent = default;
-        [SerializeField] protected Transform m_target = default;
         [SerializeField] protected float m_autoSpawnInterval = default;
         [SerializeField] protected int m_spawnCap = default;
         protected float m_spawnTimer = 0f;
@@ -29,17 +28,9 @@ namespace Curry.Game
         
         }
 
-        public virtual void Spawn(Transform target = null)
+        public virtual void Spawn()
         {
             GameObject obj = Instantiate(m_npcRef, m_parent);
-            if (target == null)
-            {
-                obj.GetComponent<BaseNpc>().Target = m_target;
-            }
-            else 
-            {
-                obj.GetComponent<BaseNpc>().Target = target;
-            }
 
             m_npcObjs.Add(obj);
         }

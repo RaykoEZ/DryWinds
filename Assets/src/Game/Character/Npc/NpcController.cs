@@ -10,55 +10,75 @@ namespace Curry.Game
         [SerializeField] protected Animator m_anim = default;
         [SerializeField] protected SkillHandler m_skillHandler = default;
         [SerializeField] protected DetectionHandler m_detector = default;
+        protected Coroutine m_movingCall;
+        protected Coroutine m_skillCall;
 
-        [SerializeField] float m_actionInterval = default;
-        protected float m_actionTimer = 0f;
-        protected bool m_attacking = false;
+        public event OnCharacterDetected OnDetectCharacter;
+        public event OnCharacterDetected OnCharacterExitDetection;
+
+        public event OnCharacterTakeDamage OnTakingDamage;
+        public BaseNpc Npc { get { return m_npc; } }
+
         protected virtual void Start() 
         {
             m_skillHandler.Init(m_npc);
             m_detector.OnDetected += OnCharacterDetected;
+            m_detector.OnExitDetection += OnExitDetectionRange;
+
             m_npc.OnTakingDamage += OnTakeDamage;
             m_npc.OnDefeated += OnDefeat;
-        }
-
-        protected virtual void Update() 
-        {
-            if (m_actionInterval != 0f && !m_attacking && m_actionTimer > m_actionInterval) 
-            {
-                m_attacking = true;
-                m_actionTimer = 0f;
-                OnSkill();
-            }
-            else 
-            {
-                m_actionTimer += Time.deltaTime;
-            }
         }
 
         protected void OnCharacterDetected(BaseCharacter character) 
         {
             Debug.Log("detected" + character);
+            OnDetectCharacter?.Invoke(character);
         }
 
-        protected virtual void OnSkill()
+        protected void OnExitDetectionRange(BaseCharacter character)
         {
-            StartCoroutine(WindupSkill());
+            Debug.Log("exited" + character);
+            OnCharacterExitDetection?.Invoke(character);
         }
 
-        protected virtual IEnumerator WindupSkill() 
+        public virtual void UseSkill(Vector3 target)
+        {
+            if (m_skillCall != null) 
+            {
+                StopCoroutine(m_skillCall);
+            }
+
+            m_skillCall = StartCoroutine(WindupSkill(target));
+        }
+
+        public virtual void MoveTo(Vector2 targetPos) 
+        {
+            if (m_movingCall != null)
+            {
+                StopCoroutine(m_movingCall);
+            }
+            m_movingCall = StartCoroutine(OnMove(targetPos));
+        }
+
+        protected virtual IEnumerator OnMove(Vector2 targetPos) 
+        {
+            m_movingCall = null;
+            yield return null;
+        }  
+
+        protected virtual IEnumerator WindupSkill(Vector3 target) 
         {
             m_anim.SetBool("WindingUp", true);
             m_skillHandler.SkillWindup();
             yield return new WaitForSeconds(m_skillHandler.CurrentSkill.MaxWindUpTime);
             m_anim.SetBool("WindingUp", false);
-            m_skillHandler.ActivateSkill(m_npc.Target.position);
-            m_attacking = false;
+            m_skillHandler.ActivateSkill(target);
+            m_skillCall = null;
         }
 
         protected virtual void OnTakeDamage(float damage) 
-        { 
-        
+        {
+            OnTakingDamage?.Invoke(damage);
         }
 
         protected virtual void OnDefeat() 

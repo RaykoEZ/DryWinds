@@ -6,11 +6,11 @@ using Curry.Util;
 namespace Curry.Game
 {
     // Player: does not damage player
-    // Hostile: damages player
+    // Enemy: damages player
     [Flags]
     public enum ObjectRelations 
     {
-        None = 0,
+        None,
         Ally = 1,
         Enemy = 1 << 1
     }
