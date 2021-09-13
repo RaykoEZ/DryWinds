@@ -4,13 +4,11 @@ using UnityEngine;
 
 namespace Curry.Game
 {
-    public delegate void OnNpcTakeDamage();
     public delegate void OnDefeat();
 
     public class BaseNpc : BaseCharacter
     {
         protected CharacterContextFactory m_contextFactory = new CharacterContextFactory();
-
         public event OnDefeat OnDefeated;
         protected virtual void Start()
         {

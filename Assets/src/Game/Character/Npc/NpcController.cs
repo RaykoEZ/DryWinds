@@ -8,7 +8,7 @@ namespace Curry.Game
     {
         [SerializeField] protected BaseNpc m_npc = default;
         [SerializeField] protected Animator m_anim = default;
-        [SerializeField] protected SkillHandler m_skillHandler = default;
+        [SerializeField] protected BasicSkillHandler m_skillHandler = default;
         [SerializeField] protected DetectionHandler m_detector = default;
         protected Coroutine m_movingCall;
         protected Coroutine m_skillCall;
@@ -21,7 +21,6 @@ namespace Curry.Game
 
         protected virtual void Start() 
         {
-            m_skillHandler.Init(m_npc);
             m_detector.OnDetected += OnCharacterDetected;
             m_detector.OnExitDetection += OnExitDetectionRange;
 

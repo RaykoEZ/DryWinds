@@ -1,9 +1,11 @@
 ﻿using UnityEngine;
+using Curry.Skill;
 
 namespace Curry.Game
 {
     public abstract class AiStateMachine : MonoBehaviour 
     {
+        [SerializeField] protected SkillInventoryManager m_skills = default;
         [SerializeField] protected NpcController m_controller = default;
         [SerializeField] protected AiState m_idle = default;
 

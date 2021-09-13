@@ -9,18 +9,20 @@ namespace Curry.Game
     public class PlayerInputHandler : MonoBehaviour
     {
         [SerializeField] Player m_player = default;
-        [SerializeField] SkillHandler m_skillHandler = default;
+        [SerializeField] SkillInventoryManager m_skillInventories = default;
+        [SerializeField] BasicSkillHandler m_skillHandler = default;
+        [SerializeField] DrawSkillBrush m_brush = default;
         [SerializeField] AnimatorHandler m_anim = default;
+
         [SerializeField] InputActionReference m_movementAction = default;
-        [SerializeField] BaseTraceBrush m_brush = default;
 
         protected Coroutine m_currentInputRecovery;
         protected bool m_disableInput = false;
 
         void Start()
         {
-            m_skillHandler.Init(m_player);
-            m_brush.Init(m_player);
+            m_skillHandler.InitSkill(m_skillInventories.CurrentBasicSkill, m_player);
+            m_brush.Init(m_player, m_skillInventories.CurrentDrawSkill);
             m_player.OnTakingDamage += OnHitStun;
             m_player.OnActionInterrupt += OnInterrupt;
 
@@ -48,7 +50,7 @@ namespace Curry.Game
             m_player.RigidBody.AddForce( dir * m_player.CurrentStats.Speed * drag);           
         }
 
-        public void OnDashTrigger(InputAction.CallbackContext c)
+        public void OnBasicSkill(InputAction.CallbackContext c)
         {
             if (!m_skillHandler.IsSkillAvailable || m_disableInput) 
             {
@@ -61,7 +63,7 @@ namespace Curry.Game
                 {
                     case InputActionPhase.Performed:
                         if (Mouse.current.rightButton.isPressed)
-                        {
+                        {                            
                             // trigger dash windup anim on rmb press
                             m_anim.OnDashWindUp();
                             m_skillHandler.SkillWindup();
@@ -82,7 +84,7 @@ namespace Curry.Game
         }
 
         #region drawing brush
-        public void OnDrawTrigger(InputAction.CallbackContext c)
+        public void OnDrawSkill(InputAction.CallbackContext c)
         {
             if (c.interaction is PressInteraction)
             {
@@ -90,7 +92,7 @@ namespace Curry.Game
                 {
                     case InputActionPhase.Performed:
                         // Finished a brush stroke
-                        m_brush.OnTraceEnd();
+                        m_brush.OnDrawEnd();
                         break;
                     default:
                         break;
@@ -103,21 +105,24 @@ namespace Curry.Game
             Vector2 pos = m_player.CurrentCamera.
                             ScreenToWorldPoint(Mouse.current.position.ReadValue());
 
-            m_brush.Draw(m_player.CurrentStats, pos);
+            m_brush.ActivateSkill(pos);
         }
 
         public void ChangeTrace(int index)
         {
-            m_brush.ChangeTrace(index);
+            Asset skill = m_skillInventories.ChangeDrawSkill(index);
+            m_brush.PrepareSkill(skill);
         }
         public void NextTrace()
         {
-            m_brush.NextTrace();
+            Asset skill = m_skillInventories.NextDrawSkill();
+            m_brush.PrepareSkill(skill);
         }
 
         public void PreviousTrace()
         {
-            m_brush.PreviousTrace();
+            Asset skill = m_skillInventories.PreviousDrawSkill();
+            m_brush.PrepareSkill(skill);
         }
         #endregion
 

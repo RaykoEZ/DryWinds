@@ -7,6 +7,8 @@ namespace Curry.Game
     [CreateAssetMenu(menuName = "Curry/AiState/Skill", order = 0)]
     public class AiSkill : AiState
     {
+        [SerializeField] GameObject m_skillPrefab = default;
+
         public override void OnEnter(NpcController controller)
         {
             throw new NotImplementedException();

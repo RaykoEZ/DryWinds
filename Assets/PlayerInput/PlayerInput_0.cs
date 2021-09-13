@@ -21,7 +21,7 @@ namespace Curry.Input
             ""id"": ""ad142658-e7e9-48ef-95f2-68b5b0f3e2b2"",
             ""actions"": [
                 {
-                    ""name"": ""DashSkill"",
+                    ""name"": ""BasicSkill"",
                     ""type"": ""Button"",
                     ""id"": ""da906083-8a20-4e98-b7b3-a838dbb13b67"",
                     ""expectedControlType"": ""Button"",
@@ -29,7 +29,7 @@ namespace Curry.Input
                     ""interactions"": """"
                 },
                 {
-                    ""name"": ""Draw"",
+                    ""name"": ""DrawSkill"",
                     ""type"": ""Button"",
                     ""id"": ""8a8de55e-3cda-48d6-b162-2dc862edab26"",
                     ""expectedControlType"": ""Button"",
@@ -53,7 +53,7 @@ namespace Curry.Input
                     ""interactions"": ""Press(behavior=2)"",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""DashSkill"",
+                    ""action"": ""BasicSkill"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -64,7 +64,7 @@ namespace Curry.Input
                     ""interactions"": ""Press(behavior=1)"",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""Draw"",
+                    ""action"": ""DrawSkill"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -697,8 +697,8 @@ namespace Curry.Input
 }");
             // Player
             m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
-            m_Player_DashSkill = m_Player.FindAction("DashSkill", throwIfNotFound: true);
-            m_Player_Draw = m_Player.FindAction("Draw", throwIfNotFound: true);
+            m_Player_BasicSkill = m_Player.FindAction("BasicSkill", throwIfNotFound: true);
+            m_Player_DrawSkill = m_Player.FindAction("DrawSkill", throwIfNotFound: true);
             m_Player_Movement = m_Player.FindAction("Movement", throwIfNotFound: true);
             // UI
             m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
@@ -761,15 +761,15 @@ namespace Curry.Input
         // Player
         private readonly InputActionMap m_Player;
         private IPlayerActions m_PlayerActionsCallbackInterface;
-        private readonly InputAction m_Player_DashSkill;
-        private readonly InputAction m_Player_Draw;
+        private readonly InputAction m_Player_BasicSkill;
+        private readonly InputAction m_Player_DrawSkill;
         private readonly InputAction m_Player_Movement;
         public struct PlayerActions
         {
             private @PlayerInput_0 m_Wrapper;
             public PlayerActions(@PlayerInput_0 wrapper) { m_Wrapper = wrapper; }
-            public InputAction @DashSkill => m_Wrapper.m_Player_DashSkill;
-            public InputAction @Draw => m_Wrapper.m_Player_Draw;
+            public InputAction @BasicSkill => m_Wrapper.m_Player_BasicSkill;
+            public InputAction @DrawSkill => m_Wrapper.m_Player_DrawSkill;
             public InputAction @Movement => m_Wrapper.m_Player_Movement;
             public InputActionMap Get() { return m_Wrapper.m_Player; }
             public void Enable() { Get().Enable(); }
@@ -780,12 +780,12 @@ namespace Curry.Input
             {
                 if (m_Wrapper.m_PlayerActionsCallbackInterface != null)
                 {
-                    @DashSkill.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDashSkill;
-                    @DashSkill.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDashSkill;
-                    @DashSkill.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDashSkill;
-                    @Draw.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDraw;
-                    @Draw.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDraw;
-                    @Draw.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDraw;
+                    @BasicSkill.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnBasicSkill;
+                    @BasicSkill.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnBasicSkill;
+                    @BasicSkill.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnBasicSkill;
+                    @DrawSkill.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDrawSkill;
+                    @DrawSkill.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDrawSkill;
+                    @DrawSkill.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDrawSkill;
                     @Movement.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMovement;
                     @Movement.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMovement;
                     @Movement.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMovement;
@@ -793,12 +793,12 @@ namespace Curry.Input
                 m_Wrapper.m_PlayerActionsCallbackInterface = instance;
                 if (instance != null)
                 {
-                    @DashSkill.started += instance.OnDashSkill;
-                    @DashSkill.performed += instance.OnDashSkill;
-                    @DashSkill.canceled += instance.OnDashSkill;
-                    @Draw.started += instance.OnDraw;
-                    @Draw.performed += instance.OnDraw;
-                    @Draw.canceled += instance.OnDraw;
+                    @BasicSkill.started += instance.OnBasicSkill;
+                    @BasicSkill.performed += instance.OnBasicSkill;
+                    @BasicSkill.canceled += instance.OnBasicSkill;
+                    @DrawSkill.started += instance.OnDrawSkill;
+                    @DrawSkill.performed += instance.OnDrawSkill;
+                    @DrawSkill.canceled += instance.OnDrawSkill;
                     @Movement.started += instance.OnMovement;
                     @Movement.performed += instance.OnMovement;
                     @Movement.canceled += instance.OnMovement;
@@ -958,8 +958,8 @@ namespace Curry.Input
         }
         public interface IPlayerActions
         {
-            void OnDashSkill(InputAction.CallbackContext context);
-            void OnDraw(InputAction.CallbackContext context);
+            void OnBasicSkill(InputAction.CallbackContext context);
+            void OnDrawSkill(InputAction.CallbackContext context);
             void OnMovement(InputAction.CallbackContext context);
         }
         public interface IUIActions

@@ -6,7 +6,7 @@ using Curry.Game;
 
 namespace Curry.Skill
 {
-    public class SkillTargetParam
+    public class SkillParam
     {
         Vector2 m_targetPos = default;
         Dictionary<string, object> m_payload;
@@ -14,7 +14,7 @@ namespace Curry.Skill
         public Vector2 TargetPos { get { return m_targetPos; } }
         public Dictionary<string, object> Payload { get { return m_payload; } }
 
-        public SkillTargetParam(Vector2 pos, Dictionary<string, object> payload = null) 
+        public SkillParam(Vector2 pos, Dictionary<string, object> payload = null) 
         {
             m_targetPos = pos;
             m_payload = payload;
@@ -29,7 +29,7 @@ namespace Curry.Skill
 
         protected bool m_onCD = false;
         protected bool m_isWindingUp = false;
-        protected bool m_skillActive = false;
+        protected bool m_skillEffectActive = false;
         protected float m_windupTimer = 0f;
         protected BaseCharacter m_user = default;
         protected Coroutine m_currentSkill = default;
@@ -47,7 +47,7 @@ namespace Curry.Skill
                     m_user?.CurrentStats.SP >= m_skillProperty.SpCost;
             }
         }
-        protected abstract IEnumerator SkillEffect(SkillTargetParam target = null);
+        protected abstract IEnumerator SkillEffect(SkillParam target = null);
 
         protected virtual void OnTriggerEnter2D(Collider2D col)
         {
@@ -83,33 +83,35 @@ namespace Curry.Skill
 
         public virtual void SkillWindup()
         {
-            if(!SkillUsable || m_skillProperty.MaxWindupTime == 0) 
+            if (!SkillUsable || m_skillProperty.MaxWindupTime == 0) 
             {
                 return;
             }
 
             // reset windup timer if player charges again before skill activation
-            if(m_currentWindup != null) 
+            if (m_currentWindup != null) 
             {
                 m_windupTimer = 0f;
                 StopCoroutine(m_currentWindup);
             }
 
             m_isWindingUp = true;
+            gameObject.SetActive(true);
             m_currentWindup = StartCoroutine(OnWindup());
         }
 
         // The logics and interactions of the skill on each target
         /// @param target: initial target for skill
-        public virtual void Execute(SkillTargetParam target = null) 
+        public virtual void Execute(SkillParam target) 
         {
             m_isWindingUp = false;
             if (SkillUsable && m_user != null)
             {
-                m_skillActive = true;
+                m_skillEffectActive = true;
                 ConsumeResource(m_skillProperty.SpCost);
                 StartCoroutine(OnCooldown());
                 m_currentSkill = StartCoroutine(SkillEffect(target));
+                StartCoroutine(OnSkillFinish());
             }
         }
 
@@ -131,7 +133,7 @@ namespace Curry.Skill
 
         public virtual void EndSkillEffect()
         {
-            m_skillActive = false;
+            m_skillEffectActive = false;
         }
 
         protected virtual IEnumerator OnWindup() 
@@ -150,6 +152,12 @@ namespace Curry.Skill
             //start cooldown and reset skill states
             yield return new WaitForSeconds(m_skillProperty.CooldownTime);
             m_onCD = false;
+        }
+
+        protected virtual IEnumerator OnSkillFinish()
+        {
+            yield return new WaitUntil(() => { return !m_skillEffectActive && !m_onCD; });
+            gameObject.SetActive(false);
         }
 
         public virtual void StartIframe() 

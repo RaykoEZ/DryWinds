@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace Curry.Game
 {
+    public delegate void OnCharacterHeal(float heal);
     public delegate void OnCharacterTakeDamage(float damage);
     public delegate void OnCharacterInterrupt();
     public abstract class BaseCharacter : Interactable
@@ -13,6 +14,7 @@ namespace Curry.Game
         public virtual CharacterStats CurrentStats { get { return m_statsManager.CurrentStats.CharacterStats; } }
         public override CollisionStats CurrentCollisionStats { get { return m_statsManager.CurrentStats.CharacterStats.CollisionStats; } }
 
+        public event OnCharacterHeal OnHealing;
         public event OnCharacterTakeDamage OnTakingDamage;
         public event OnCharacterInterrupt OnActionInterrupt;
 
@@ -57,6 +59,7 @@ namespace Curry.Game
         public virtual void OnHeal(float val) 
         {
             m_statsManager.Heal(val);
+            OnHealing?.Invoke(val);
         }
 
         public virtual void OnLoseSp(float val)

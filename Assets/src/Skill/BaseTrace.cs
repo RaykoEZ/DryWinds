@@ -49,12 +49,12 @@ namespace Curry.Skill
             hit.OnKnockback(-dir , m_skillProperty.Knockback);
         }
 
-        protected override IEnumerator SkillEffect(SkillTargetParam target = null) 
+        protected override IEnumerator SkillEffect(SkillParam target = null) 
         {
             yield break;
         }
 
-        public override void Execute(SkillTargetParam target)
+        public override void Execute(SkillParam target)
         {
             float length = (float)target.Payload["length"];
             if (m_user?.CurrentStats.SP < length * m_skillProperty.SpCost)

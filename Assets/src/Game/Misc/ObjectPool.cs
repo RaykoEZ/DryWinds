@@ -24,7 +24,7 @@ namespace Curry.Game
         }
 
         // Start is called before the first frame update
-        public virtual void MakePool(int numToPool, GameObject objRef, Transform parent)
+        protected virtual void MakePool(int numToPool, GameObject objRef, Transform parent)
         {
             for(int i = 0; i < numToPool; ++i) 
             {

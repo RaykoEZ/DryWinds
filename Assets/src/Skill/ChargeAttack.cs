@@ -21,7 +21,7 @@ namespace Curry.Skill
             hit.OnTakeDamage(m_skillProperty.StaminaDamage);
         }
 
-        public override void Execute(SkillTargetParam target = null)
+        public override void Execute(SkillParam target = null)
         {
             if(target == null) 
             { 
@@ -32,7 +32,7 @@ namespace Curry.Skill
             base.Execute(target);
         }
 
-        protected override IEnumerator SkillEffect(SkillTargetParam target = null)
+        protected override IEnumerator SkillEffect(SkillParam target = null)
         {
             float chargeFactor = Mathf.Max(
             0.4f,
@@ -51,7 +51,7 @@ namespace Curry.Skill
             float t = 0f;
             Vector2 dir = targetPos - origin;
             Rigidbody2D rb = m_user.RigidBody;
-            while (t < m_chargeDuration && m_skillActive)
+            while (t < m_chargeDuration && m_skillEffectActive)
             {
                 rb.AddForce(dir.normalized * chargeCoeff * m_user.CurrentStats.Speed, ForceMode2D.Impulse);
                 t += Time.deltaTime;
@@ -60,12 +60,13 @@ namespace Curry.Skill
 
             t = 0f;
             float oldDrag = rb.drag;
-            while (t < m_chargeDuration && m_skillActive)
+            while (t < m_chargeDuration && m_skillEffectActive)
             {
                 rb.drag += 0.5f;
                 t += Time.deltaTime;
                 yield return null;
             }
+
             rb.drag = oldDrag;
             EndSkillEffect();
         }
