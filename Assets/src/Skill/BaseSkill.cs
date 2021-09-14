@@ -18,12 +18,15 @@ namespace Curry.Skill
     public class SkillTargetParam
     {
         Vector2 m_targetPos = default;
+        Dictionary<string, object> m_payload;
 
         public Vector2 TargetPos { get { return m_targetPos; } }
+        public Dictionary<string, object> Payload { get { return m_payload; } }
 
-        public SkillTargetParam(Vector2 pos) 
+        public SkillTargetParam(Vector2 pos, Dictionary<string, object> payload = null) 
         {
             m_targetPos = pos;
+            m_payload = payload;
         }
     }
 
@@ -35,12 +38,15 @@ namespace Curry.Skill
 
         protected bool m_onCD = false;
         protected bool m_isWindingUp = false;
+        protected bool m_skillActive = false;
         protected float m_windupTimer = 0f;
         protected BaseCharacter m_user = default;
         protected Coroutine m_currentSkill = default;
         protected Coroutine m_currentWindup = default;
 
+        public SkillProperty SkillProperties { get { return m_skillProperty; } }
         public float MaxWindUpTime { get { return m_skillProperty.MaxWindupTime; } }
+        public bool IsWindingUp { get { return m_isWindingUp; } }
 
         public virtual bool SkillUsable
         {
@@ -50,8 +56,33 @@ namespace Curry.Skill
                     m_user?.CurrentStats.SP >= m_skillProperty.SpCost;
             }
         }
-
         protected abstract IEnumerator SkillEffect(SkillTargetParam target = null);
+
+        protected virtual void OnTriggerEnter2D(Collider2D col)
+        {
+            Interactable hit = col.gameObject.GetComponent<Interactable>();
+
+            if(hit == null || (hit.Relations & m_skillProperty.TargetOptions) == ObjectRelations.None) 
+            {
+                return;
+            }
+            OnHit(hit);
+        }
+
+        protected virtual void OnCollisionEnter2D(Collision2D col)
+        {
+            Interactable hit = col.gameObject.GetComponent<Interactable>();
+
+            if (hit == null || (hit.Relations & m_skillProperty.TargetOptions) == ObjectRelations.None)
+            {
+                return;
+            }
+            OnHit(hit);
+        }
+
+        public virtual void OnHit(Interactable hit) 
+        {        
+        }
 
         public virtual void Init(BaseCharacter user, bool hitBoxOn = false) 
         {
@@ -84,11 +115,16 @@ namespace Curry.Skill
             m_isWindingUp = false;
             if (SkillUsable && m_user != null)
             {
-                m_onCD = true;
-                m_user.CurrentStats.SP = Mathf.Max(0f, m_user.CurrentStats.SP - m_skillProperty.SpCost);
+                m_skillActive = true;
+                ConsumeResource(m_skillProperty.SpCost);
                 StartCoroutine(OnCooldown());
                 m_currentSkill = StartCoroutine(SkillEffect(target));
             }
+        }
+
+        protected virtual void ConsumeResource(float val) 
+        {
+            m_user.OnLoseSp(val);
         }
 
         public virtual void CancelWindup() 
@@ -102,12 +138,9 @@ namespace Curry.Skill
             m_windupTimer = 0f;
         }
 
-        public virtual void InterruptSkill()
+        public virtual void EndSkillEffect()
         {
-            if(m_currentSkill != null) 
-            {
-                StopCoroutine(m_currentSkill);
-            }
+            m_skillActive = false;
         }
 
         protected virtual IEnumerator OnWindup() 
@@ -122,6 +155,7 @@ namespace Curry.Skill
 
         protected virtual IEnumerator OnCooldown() 
         {
+            m_onCD = true;
             //start cooldown and reset skill states
             yield return new WaitForSeconds(m_skillProperty.CooldownTime);
             m_onCD = false;
@@ -139,6 +173,5 @@ namespace Curry.Skill
             m_user.gameObject.layer = 0;
         }
     }
-
 
 }

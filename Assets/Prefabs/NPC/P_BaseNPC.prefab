@@ -47,7 +47,7 @@ MonoBehaviour:
   m_npc: {fileID: 7557477938998303306}
   m_anim: {fileID: 4052941514383100218}
   m_skillHandler: {fileID: 1658453411247593517}
-  m_attackInterval: 1
+  m_actionInterval: 2
 --- !u!114 &1658453411247593517
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -192,6 +192,30 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &6927984868378902487
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8869289004023852315}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1cc72c2d6010ab64ebc7a597826d014b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_initStats:
+    m_characterStats:
+      m_maxStamina: 50
+      m_maxSp: 50
+      m_stamina: 50
+      m_sp: 50
+      m_speed: 1
+      m_spRegenPerSec: 0
+      m_hitRecoveryTime: 5
+      m_collisionStats:
+        m_contactDamage: 0
+        m_knockback: 3
 --- !u!114 &7557477938998303306
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -206,18 +230,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_rigidbody: {fileID: 8869289004023852319}
   m_hurtBox: {fileID: 368594841113657428}
-  m_relations: 4
-  m_collision:
-    m_contactDamage: 0
-    m_knockback: 2
-  m_stats:
-    m_maxStamina: 30
-    m_maxSp: 20
-    m_stamina: 30
-    m_sp: 20
-    m_speed: 3
-    m_spRegenPerSec: 0
-    m_hitRecoveryTime: 0.5
+  m_relations: 2
+  m_statsManager: {fileID: 6927984868378902487}
 --- !u!1 &7597001706235312769
 GameObject:
   m_ObjectHideFlags: 0
@@ -474,7 +488,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2593139629673016019, guid: ee850e72963a50c44945d372a872712a, type: 3}
       propertyPath: m_LinearDrag
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2593139629673016019, guid: ee850e72963a50c44945d372a872712a, type: 3}
       propertyPath: m_Constraints
@@ -486,7 +500,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2593139629673016023, guid: ee850e72963a50c44945d372a872712a, type: 3}
       propertyPath: m_Name
-      value: P_BaseNpc
+      value: P_BaseNPC
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 2593139629673015980, guid: ee850e72963a50c44945d372a872712a, type: 3}

@@ -7,20 +7,15 @@ using Curry.Game;
 namespace Curry.Skill
 {
     // Trace is like the brush tip for paint tools but with decay behaviours
-    public class BaseTrace : Interactable
+    public class BaseTrace : BaseSkill
     {
-        [SerializeField] protected LineRenderer LineRenderer = default;
-        [SerializeField] protected EdgeCollider2D EdgeCollider = default;
+        [SerializeField] protected LineRenderer m_lineRenderer = default;
         // Units length to decay per decay interval.
         [SerializeField] protected float m_decayPerInterval = default;
         // Seconds to wait for next stroke decay interval
         [SerializeField] protected float m_decayWait = default;
         // Life of each drawn vertiex in seconds, starts to decay after this (sec)
         [SerializeField] protected float m_durability = default;
-
-        [SerializeField] protected CollisionStats m_collisionStats = default;
-
-        public override CollisionStats CollisionStats { get { return m_collisionStats; } }
 
         protected bool m_isDecaying = false;
         protected bool m_isMakingCollider = true;
@@ -29,6 +24,7 @@ namespace Curry.Skill
         protected Queue<float> m_segmentLengths = new Queue<float>();       
         protected float m_decayTimer = 0f;
 
+        protected EdgeCollider2D m_edgeCollider { get{ return (EdgeCollider2D)m_hitBox; } }
         // Update is called once per frame
         protected virtual void FixedUpdate()
         {
@@ -40,27 +36,53 @@ namespace Curry.Skill
             }          
         }
 
-        public virtual void OnDraw(Vector2 targetPosition, float length)
+        protected override void OnCollisionEnter2D(Collision2D col)
         {
+            BaseCharacter hit = col.gameObject.GetComponent<BaseCharacter>();
+
+            if (hit == null || (hit.Relations & m_skillProperty.TargetOptions) == ObjectRelations.None)
+            {
+                return;
+            }
+
+            Vector2 dir = col.GetContact(0).normal.normalized;
+            hit.OnKnockback(-dir , m_skillProperty.Knockback);
+        }
+
+        protected override IEnumerator SkillEffect(SkillTargetParam target = null) 
+        {
+            yield break;
+        }
+
+        public override void Execute(SkillTargetParam target)
+        {
+            float length = (float)target.Payload["length"];
+            if (m_user?.CurrentStats.SP < length * m_skillProperty.SpCost)
+            {
+                return;
+            }
+
+            Vector2 targetPosition = target.TargetPos;
             if (!m_drawnVert.Contains(targetPosition))
             {
                 EvaluateLength(length);
                 m_drawnVert.Enqueue(targetPosition);
                 m_drawnPositions.Enqueue(targetPosition);
-                LineRenderer.positionCount = m_drawnPositions.Count;
-                LineRenderer.SetPosition(LineRenderer.positionCount - 1, targetPosition);
+                m_lineRenderer.positionCount = m_drawnPositions.Count;
+                m_lineRenderer.SetPosition(m_lineRenderer.positionCount - 1, targetPosition);
 
-                if (EdgeCollider != null && m_isMakingCollider && m_drawnVert.Count > 1)
+                if (m_edgeCollider != null && m_isMakingCollider && m_drawnVert.Count > 1)
                 {
-                    EdgeCollider.points = m_drawnVert.ToArray();
+                    m_edgeCollider.points = m_drawnVert.ToArray();
                 }
-            }      
-        }
 
+                ConsumeResource(SkillProperties.SpCost * length);
+            }  
+        }
 
         protected void EvaluateLength(float length)
         {
-            int numP = LineRenderer.positionCount;
+            int numP = m_lineRenderer.positionCount;
             if (numP == 0) 
             {
                 return;
@@ -105,9 +127,9 @@ namespace Curry.Skill
                 // With acceleration
                 decayAmount += m_decayPerInterval;
                 // Update line renderer and collider after decay
-                LineRenderer.positionCount = m_drawnPositions.Count;
-                LineRenderer.SetPositions(m_drawnPositions.ToArray());
-                EdgeCollider.points = m_drawnVert.ToArray();
+                m_lineRenderer.positionCount = m_drawnPositions.Count;
+                m_lineRenderer.SetPositions(m_drawnPositions.ToArray());
+                m_edgeCollider.points = m_drawnVert.ToArray();
 
                 yield return new WaitForSeconds(decayAccel * m_decayWait);
                 decayAccel *= 0.5f;
@@ -115,7 +137,24 @@ namespace Curry.Skill
             }
         }
 
-        void TrimEndSegment(float trimLength) 
+        protected virtual void OnClear()
+        {
+            m_isDecaying = false;
+            m_decayTimer = 0f;
+            m_lineRenderer.positionCount = 0;
+            m_drawnVert.Clear();
+            m_drawnPositions.Clear();
+            m_segmentLengths.Clear();
+
+            if (m_isMakingCollider)
+            {
+                m_edgeCollider.points = m_drawnVert.ToArray();
+            }
+
+            gameObject.SetActive(false);
+        }
+
+        protected void TrimEndSegment(float trimLength) 
         {
             if(m_segmentLengths.Count < 1) 
             { 
@@ -138,24 +177,6 @@ namespace Curry.Skill
             m_drawnVert = new Queue<Vector2>(vertList);
             m_drawnPositions = new Queue<Vector3>(posList);
             m_segmentLengths = new Queue<float>(lengthList);
-        }
-
-
-        protected virtual void OnClear()
-        {
-            m_isDecaying = false;
-            m_decayTimer = 0f;
-            LineRenderer.positionCount = 0;
-            m_drawnVert.Clear();
-            m_drawnPositions.Clear();
-            m_segmentLengths.Clear();
-
-            if (m_isMakingCollider)
-            {
-                EdgeCollider.Reset();
-            }
-
-            gameObject.SetActive(false);
         }
     }
 }

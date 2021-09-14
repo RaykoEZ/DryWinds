@@ -11,9 +11,8 @@ namespace Curry.Game
     public enum ObjectRelations 
     {
         None = 0,
-        Player = 1,
-        Ally = 1 << 1,
-        Enemy = 1 << 2
+        Ally = 1,
+        Enemy = 1 << 1
     }
 
     // A basic script for a collidable object 
@@ -27,7 +26,7 @@ namespace Curry.Game
         public Rigidbody2D RigidBody { get { return m_rigidbody; } }
         public Collider2D HurtBox { get { return m_hurtBox; } }
         public ObjectRelations Relations { get { return m_relations; } }
-        public virtual CollisionStats CollisionStats { get { return m_defaultCollisionStats; } }
+        public virtual CollisionStats CurrentCollisionStats { get { return m_defaultCollisionStats; } }
 
         protected virtual void OnCollisionEnter2D(Collision2D collision)
         {
@@ -44,13 +43,13 @@ namespace Curry.Game
             {
                 ContactPoint2D contact = collision.GetContact(0);
                 Vector2 dir = contact.normal.normalized;
-                float vFactor = InteractionUtil.ScaleFactior(
+                float vFactor = GameUtil.ScaleFactior(
                     incomingInterable.m_rigidbody.velocity.sqrMagnitude,
                     m_rigidbody.velocity.sqrMagnitude,
                     0.2f,
                     1.5f);
 
-                OnKnockback(dir, vFactor * incomingInterable.CollisionStats.Knockback);
+                OnKnockback(dir, vFactor * incomingInterable.CurrentCollisionStats.Knockback);
             }
         }
 

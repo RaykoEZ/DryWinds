@@ -23,7 +23,7 @@ namespace Curry.Game
             m_npc.OnTakingDamage -= OnNpcStaminaUpdate;
         }
 
-        void OnNpcStaminaUpdate()
+        void OnNpcStaminaUpdate(float damage)
         {
             m_uiAnim.OnShow();
             m_stamBar.SetBarValue(m_npc.CurrentStats.Stamina);

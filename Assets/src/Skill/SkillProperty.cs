@@ -6,6 +6,7 @@ namespace Curry.Skill
     [Serializable]
     public struct SkillProperty 
     {
+        public string Name;
         public ObjectRelations TargetOptions;
         public float SpCost;
         public float CooldownTime;

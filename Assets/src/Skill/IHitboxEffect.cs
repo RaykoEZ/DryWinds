@@ -4,6 +4,6 @@ namespace Curry.Skill
 {
     public interface IHitboxEffect
     {
-        public void OnHit(BaseCharacter target);
+        public void OnHit(Interactable target);
     }
 }
