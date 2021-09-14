@@ -5,26 +5,26 @@ using UnityEngine;
 namespace Curry.Game
 {    
     // Instantiates and enable/disables a type of object when notified
-    public class ObjectPool
+    public class ObjectPool<T> : IObjectPool<T> where T: MonoBehaviour, IPoolable
     {
         protected int m_amountToPool = default;
-        protected GameObject m_poolObjectRef = default;
+        protected T m_poolObjectRef = default;
         protected Transform m_parent = default;
-        protected List<PoolItem> m_pool = new List<PoolItem>();
-
-        public ObjectPool(int numToPool, GameObject poolObj, Transform parent) 
+        protected Queue<T> m_pool = new Queue<T>();
+        protected List<T> m_inUse = new List<T>();
+        public ObjectPool(int numToPool, T poolObj, Transform parent) 
         {
             m_amountToPool = numToPool;
             m_poolObjectRef = poolObj;
             m_parent = parent;
             if (m_amountToPool > 0 && m_poolObjectRef != null)
             {
-                MakePool(m_amountToPool, m_poolObjectRef, m_parent);
+                FillPool(m_amountToPool, m_poolObjectRef, m_parent);
             }
         }
 
         // Start is called before the first frame update
-        protected virtual void MakePool(int numToPool, GameObject objRef, Transform parent)
+        protected virtual void FillPool(int numToPool, T objRef, Transform parent)
         {
             for(int i = 0; i < numToPool; ++i) 
             {
@@ -32,26 +32,50 @@ namespace Curry.Game
             }
         }
 
-        protected virtual PoolItem MakePoolItem(GameObject objRef, Transform parent) 
+        protected virtual T MakePoolItem(T objRef, Transform parent) 
         {
-            PoolItem item = new PoolItem(objRef, parent);
-            m_pool.Add(item);
+            T item = Object.Instantiate(objRef, parent);
+            item.Prepare();
+            item.Origin = this;
+            item.gameObject.SetActive(false);
+            m_pool.Enqueue(item);
             return item;
         }
 
-        public virtual GameObject GetItem()
+        public virtual T GetItemFromPool()
         {
-            foreach(PoolItem item in m_pool) 
+            T newObj;
+            if (m_pool.Count == 0) 
             {
-                if (!item.IsActive) 
-                {
-                    return item.Obj;
-                }
+                newObj = MakePoolItem(m_poolObjectRef, m_parent);
+            }
+            else 
+            {
+                newObj = m_pool.Dequeue();
             }
 
+            newObj.gameObject.SetActive(true);
+            m_inUse.Add(newObj);
             // no more available, make new into pool
-            PoolItem newItem = MakePoolItem(m_poolObjectRef, m_parent);
-            return newItem.Obj;
+            return newObj;
+        }
+
+        public virtual void ReturnToPool(T obj) 
+        {
+            obj.gameObject.SetActive(false);
+            if (m_inUse.Remove(obj)) 
+            {
+                m_pool.Enqueue(obj);
+            }
+        }
+
+        public virtual void ReturnToPool(object instance)
+        {
+            // if instance is a poolable, return it to pool.
+            if (instance is T)
+            {
+                ReturnToPool(instance as T);
+            }
         }
     }
 }

@@ -7,9 +7,10 @@ using Curry.Game;
 namespace Curry.Skill
 {
     // Trace is like the brush tip for paint tools but with decay behaviours
-    public class BaseTrace : BaseSkill
+    public class BaseTrace : Interactable
     {
         [SerializeField] protected LineRenderer m_lineRenderer = default;
+        [SerializeField] protected EdgeCollider2D m_edgeCollider = default;
         // Units length to decay per decay interval.
         [SerializeField] protected float m_decayPerInterval = default;
         // Seconds to wait for next stroke decay interval
@@ -24,7 +25,6 @@ namespace Curry.Skill
         protected Queue<float> m_segmentLengths = new Queue<float>();       
         protected float m_decayTimer = 0f;
 
-        protected EdgeCollider2D m_edgeCollider { get{ return (EdgeCollider2D)m_hitBox; } }
         // Update is called once per frame
         protected virtual void FixedUpdate()
         {
@@ -40,29 +40,15 @@ namespace Curry.Skill
         {
             BaseCharacter hit = col.gameObject.GetComponent<BaseCharacter>();
 
-            if (hit == null || (hit.Relations & m_skillProperty.TargetOptions) == ObjectRelations.None)
+            if (hit == null || (hit.Relations & m_relations) == ObjectRelations.None)
             {
-                return;
+                Vector2 dir = col.GetContact(0).normal.normalized;
+                hit.OnKnockback(-dir, CurrentCollisionStats.Knockback);
             }
-
-            Vector2 dir = col.GetContact(0).normal.normalized;
-            hit.OnKnockback(-dir , m_skillProperty.Knockback);
         }
 
-        protected override IEnumerator SkillEffect(SkillParam target = null) 
+        public virtual void Execute(Vector2 targetPosition, float length)
         {
-            yield break;
-        }
-
-        public override void Execute(SkillParam target)
-        {
-            float length = (float)target.Payload["length"];
-            if (m_user?.CurrentStats.SP < length * m_skillProperty.SpCost)
-            {
-                return;
-            }
-
-            Vector2 targetPosition = target.TargetPos;
             if (!m_drawnVert.Contains(targetPosition))
             {
                 EvaluateLength(length);
@@ -76,7 +62,6 @@ namespace Curry.Skill
                     m_edgeCollider.points = m_drawnVert.ToArray();
                 }
 
-                ConsumeResource(SkillProperties.SpCost * length);
             }  
         }
 
@@ -150,8 +135,7 @@ namespace Curry.Skill
             {
                 m_edgeCollider.points = m_drawnVert.ToArray();
             }
-
-            gameObject.SetActive(false);
+            ReturnToPool();
         }
 
         protected void TrimEndSegment(float trimLength) 

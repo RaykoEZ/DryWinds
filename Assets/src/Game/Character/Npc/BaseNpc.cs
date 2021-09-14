@@ -23,6 +23,7 @@ namespace Curry.Game
         public override void OnDefeat()
         {
             OnDefeated?.Invoke();
+            base.OnDefeat();
         }
     }
 }

@@ -40,7 +40,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6431847256417144376}
   - component: {fileID: 8562595953941160831}
-  - component: {fileID: 1658453411247593517}
   - component: {fileID: 4616489978129765166}
   m_Layer: 0
   m_Name: Controller
@@ -77,21 +76,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_npc: {fileID: 7557477938998303306}
   m_anim: {fileID: 4052941514383100218}
-  m_skillHandler: {fileID: 1658453411247593517}
+  m_skillHandler:
+    m_skills:
+      m_skillList: []
   m_detector: {fileID: 2498299348684587035}
---- !u!114 &1658453411247593517
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1272379081076532926}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1aa80649727c62d408024c6f06dc886b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_poolManager: {fileID: 4616489978129765166}
 --- !u!114 &4616489978129765166
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -4,20 +4,20 @@ using UnityEngine;
 
 namespace Curry.Game
 {
-    public class PoolManager : MonoBehaviour
+    public class InteractablePoolManager : MonoBehaviour
     {
         [SerializeField] int m_numToPool = default;
         [SerializeField] Transform m_parent = default;
-        Dictionary<string, ObjectPool> m_pools = new Dictionary<string, ObjectPool>();
+        Dictionary<string, ObjectPool<Interactable>> m_pools = new Dictionary<string, ObjectPool<Interactable>>();
 
-        public ObjectPool AddPool(string poolId, GameObject objRef) 
+        public ObjectPool<Interactable> AddPool(string poolId, Interactable objRef) 
         {
-            ObjectPool pool = new ObjectPool(m_numToPool, objRef, m_parent);
+            ObjectPool<Interactable> pool = new ObjectPool<Interactable>(m_numToPool, objRef, m_parent);
             m_pools.Add(poolId, pool);
             return pool;
         }
 
-        public ObjectPool GetPool(string poolId) 
+        public ObjectPool<Interactable> GetPool(string poolId) 
         {
             return m_pools[poolId];
         }

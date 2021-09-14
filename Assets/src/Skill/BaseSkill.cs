@@ -34,6 +34,7 @@ namespace Curry.Skill
         protected BaseCharacter m_user = default;
         protected Coroutine m_currentSkill = default;
         protected Coroutine m_currentWindup = default;
+        protected Coroutine m_coolDown = default;
 
         public SkillProperty SkillProperties { get { return m_skillProperty; } }
         public float MaxWindUpTime { get { return m_skillProperty.MaxWindupTime; } }
@@ -72,7 +73,7 @@ namespace Curry.Skill
         }
 
         public virtual void OnHit(Interactable hit) 
-        {        
+        {      
         }
 
         public virtual void Init(BaseCharacter user, bool hitBoxOn = false) 
@@ -96,22 +97,28 @@ namespace Curry.Skill
             }
 
             m_isWindingUp = true;
-            gameObject.SetActive(true);
             m_currentWindup = StartCoroutine(OnWindup());
         }
 
         // The logics and interactions of the skill on each target
         /// @param target: initial target for skill
-        public virtual void Execute(SkillParam target) 
+        public virtual void Execute(SkillParam target = null) 
         {
             m_isWindingUp = false;
             if (SkillUsable && m_user != null)
             {
                 m_skillEffectActive = true;
                 ConsumeResource(m_skillProperty.SpCost);
-                StartCoroutine(OnCooldown());
+                CoolDown();
                 m_currentSkill = StartCoroutine(SkillEffect(target));
-                StartCoroutine(OnSkillFinish());
+            }
+        }
+
+        protected virtual void CoolDown() 
+        {
+            if(m_coolDown == null) 
+            {
+                m_coolDown = StartCoroutine(OnCooldown());
             }
         }
 
@@ -151,13 +158,8 @@ namespace Curry.Skill
             m_onCD = true;
             //start cooldown and reset skill states
             yield return new WaitForSeconds(m_skillProperty.CooldownTime);
+            m_coolDown = null;
             m_onCD = false;
-        }
-
-        protected virtual IEnumerator OnSkillFinish()
-        {
-            yield return new WaitUntil(() => { return !m_skillEffectActive && !m_onCD; });
-            gameObject.SetActive(false);
         }
 
         public virtual void StartIframe() 

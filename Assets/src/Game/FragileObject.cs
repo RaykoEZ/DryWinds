@@ -38,12 +38,6 @@ namespace Curry.Game
             }
         }
 
-        public override void OnDefeat()
-        {
-            // Should return to a pool and play a disappearing animation.
-            Destroy(gameObject);
-        }
-
         IEnumerator IFrameCounter() 
         {
             m_isInvincible = true;

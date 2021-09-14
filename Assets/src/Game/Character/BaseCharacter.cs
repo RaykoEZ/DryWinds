@@ -76,6 +76,10 @@ namespace Curry.Game
         {
             OnActionInterrupt?.Invoke();
         }
+        public override void OnDefeat()
+        {
+            base.OnDefeat();
+        }
 
         public override void OnKnockback(Vector2 direction, float knockback)
         {

@@ -8,7 +8,7 @@ namespace Curry.Game
     {
         [SerializeField] protected BaseNpc m_npc = default;
         [SerializeField] protected Animator m_anim = default;
-        [SerializeField] protected BasicSkillHandler m_skillHandler = default;
+        [SerializeField] protected SkillHandler m_skillHandler = default;
         [SerializeField] protected DetectionHandler m_detector = default;
         protected Coroutine m_movingCall;
         protected Coroutine m_skillCall;
@@ -69,7 +69,7 @@ namespace Curry.Game
         {
             m_anim.SetBool("WindingUp", true);
             m_skillHandler.SkillWindup();
-            yield return new WaitForSeconds(m_skillHandler.CurrentSkill.MaxWindUpTime);
+            yield return new WaitForSeconds(m_skillHandler.CurrentSkillProperties.MaxWindupTime);
             m_anim.SetBool("WindingUp", false);
             m_skillHandler.ActivateSkill(target);
             m_skillCall = null;
