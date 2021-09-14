@@ -11,10 +11,15 @@ namespace Curry.Game
 
         bool m_isInvincible = false;
         protected int m_currentDurability = 1;
-        
-        protected virtual void Start() 
+
+        protected virtual void Start()
         {
-            m_currentDurability = m_durability;     
+            Prepare();
+        }
+
+        public override void Prepare()
+        {
+            m_currentDurability = m_durability;
         }
 
         protected override void OnClash(Collision2D collision)

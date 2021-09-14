@@ -72,7 +72,14 @@ namespace Curry.Game
 
         public virtual void OnDefeat() 
         {
-            ReturnToPool();
+            if (Origin != null) 
+            {
+                ReturnToPool();
+            }
+            else 
+            {
+                Destroy(gameObject);
+            }
         }
 
         

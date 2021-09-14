@@ -47,6 +47,11 @@ namespace Curry.Skill
             }
         }
 
+        public override void Prepare()
+        {
+            ResetAll();
+        }
+
         public virtual void Execute(Vector2 targetPosition, float length)
         {
             if (!m_drawnVert.Contains(targetPosition))
@@ -124,6 +129,12 @@ namespace Curry.Skill
 
         protected virtual void OnClear()
         {
+            ResetAll();
+            ReturnToPool();
+        }
+
+        protected virtual void ResetAll() 
+        {
             m_isDecaying = false;
             m_decayTimer = 0f;
             m_lineRenderer.positionCount = 0;
@@ -135,7 +146,6 @@ namespace Curry.Skill
             {
                 m_edgeCollider.points = m_drawnVert.ToArray();
             }
-            ReturnToPool();
         }
 
         protected void TrimEndSegment(float trimLength) 

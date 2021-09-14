@@ -18,26 +18,9 @@ namespace Curry.Game
         public event OnCharacterTakeDamage OnTakingDamage;
         public event OnCharacterInterrupt OnActionInterrupt;
 
-        protected override void OnClash(Collision2D collision)
+        public override void OnKnockback(Vector2 direction, float knockback)
         {
-            Interactable incomingInterable = collision.gameObject.GetComponent<Interactable>();
-            if(incomingInterable != null) 
-            {
-                ContactPoint2D contact = collision.GetContact(0);
-                Vector2 dir = contact.normal.normalized;
-
-                if (incomingInterable.Relations != Relations)
-                {
-                    float staminaRating = (CurrentStats.MaxStamina / Mathf.Max(1f, CurrentStats.Stamina));
-                    staminaRating = Mathf.Min(5f, staminaRating);
-
-                    OnKnockback(dir, staminaRating * incomingInterable.CurrentCollisionStats.Knockback);
-                }
-                else
-                {
-                    OnKnockback(dir, incomingInterable.CurrentCollisionStats.Knockback);
-                }
-            }
+            m_rigidbody.AddForce(knockback * direction, ForceMode2D.Impulse);
         }
 
         public virtual void Init(CharacterContextFactory contextFactory) 
@@ -81,11 +64,6 @@ namespace Curry.Game
             base.OnDefeat();
         }
 
-        public override void OnKnockback(Vector2 direction, float knockback)
-        {
-            m_rigidbody.AddForce(knockback * direction, ForceMode2D.Impulse);
-        }
-
         public virtual void ApplyModifier(CharactertModifier mod) 
         {
             if (mod == null)
@@ -94,6 +72,28 @@ namespace Curry.Game
             }
 
             m_statsManager.AddModifier(mod);
+        }
+
+        protected override void OnClash(Collision2D collision)
+        {
+            Interactable incomingInterable = collision.gameObject.GetComponent<Interactable>();
+            if (incomingInterable != null)
+            {
+                ContactPoint2D contact = collision.GetContact(0);
+                Vector2 dir = contact.normal.normalized;
+
+                if (incomingInterable.Relations != Relations)
+                {
+                    float staminaRating = (CurrentStats.MaxStamina / Mathf.Max(1f, CurrentStats.Stamina));
+                    staminaRating = Mathf.Min(5f, staminaRating);
+
+                    OnKnockback(dir, staminaRating * incomingInterable.CurrentCollisionStats.Knockback);
+                }
+                else
+                {
+                    OnKnockback(dir, incomingInterable.CurrentCollisionStats.Knockback);
+                }
+            }
         }
     }
 }

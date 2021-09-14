@@ -10,7 +10,7 @@ namespace Curry.Game
     {
         protected CharacterContextFactory m_contextFactory = new CharacterContextFactory();
         public event OnDefeat OnDefeated;
-        protected virtual void Start()
+        protected virtual void OnEnable()
         {
             m_statsManager.Init(m_contextFactory);
         }

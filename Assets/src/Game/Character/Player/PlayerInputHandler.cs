@@ -10,7 +10,7 @@ namespace Curry.Game
     {
         [SerializeField] Player m_player = default;
         [SerializeField] SkillHandler m_basicSkillHandler = default;
-        [SerializeField] BaseDrawSkill m_brush = default;
+        [SerializeField] SkillHandler m_drawSkillHandler = default;
         [SerializeField] AnimatorHandler m_anim = default;
 
         [SerializeField] InputActionReference m_movementAction = default;
@@ -21,7 +21,7 @@ namespace Curry.Game
         void Start()
         {
             m_basicSkillHandler.Init(m_player);
-            m_brush.Init(m_player);
+            m_drawSkillHandler.Init(m_player);
             m_player.OnTakingDamage += OnHitStun;
             m_player.OnActionInterrupt += OnInterrupt;
 
@@ -91,7 +91,7 @@ namespace Curry.Game
                 {
                     case InputActionPhase.Performed:
                         // Finished a brush stroke
-                        m_brush.OnDrawEnd();
+                        m_drawSkillHandler.InterruptSkill();
                         break;
                     default:
                         break;
@@ -104,7 +104,7 @@ namespace Curry.Game
             Vector2 pos = m_player.CurrentCamera.
                             ScreenToWorldPoint(Mouse.current.position.ReadValue());
             SkillParam param = new SkillParam(pos);
-            m_brush.Execute(param);
+            m_drawSkillHandler.ActivateSkill(param);
         }
 
         public void ChangeTrace(int index)

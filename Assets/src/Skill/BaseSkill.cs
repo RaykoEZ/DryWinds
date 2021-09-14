@@ -29,7 +29,7 @@ namespace Curry.Skill
 
         protected bool m_onCD = false;
         protected bool m_isWindingUp = false;
-        protected bool m_skillEffectActive = false;
+        protected bool m_skillInProgress = false;
         protected float m_windupTimer = 0f;
         protected BaseCharacter m_user = default;
         protected Coroutine m_currentSkill = default;
@@ -39,6 +39,7 @@ namespace Curry.Skill
         public SkillProperty SkillProperties { get { return m_skillProperty; } }
         public float MaxWindUpTime { get { return m_skillProperty.MaxWindupTime; } }
         public bool IsWindingUp { get { return m_isWindingUp; } }
+        public bool InProgress { get { return m_skillInProgress; } }
 
         public virtual bool SkillUsable
         {
@@ -107,7 +108,7 @@ namespace Curry.Skill
             m_isWindingUp = false;
             if (SkillUsable && m_user != null)
             {
-                m_skillEffectActive = true;
+                m_skillInProgress = true;
                 ConsumeResource(m_skillProperty.SpCost);
                 CoolDown();
                 m_currentSkill = StartCoroutine(SkillEffect(target));
@@ -140,7 +141,7 @@ namespace Curry.Skill
 
         public virtual void EndSkillEffect()
         {
-            m_skillEffectActive = false;
+            m_skillInProgress = false;
         }
 
         protected virtual IEnumerator OnWindup() 

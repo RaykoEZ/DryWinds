@@ -281,7 +281,10 @@ MonoBehaviour:
     m_skills:
       m_skillList:
       - {fileID: 4287930917383304955}
-  m_brush: {fileID: 7928301209698729496}
+  m_drawSkillHandler:
+    m_skills:
+      m_skillList:
+      - {fileID: 7928301209698729496}
   m_anim: {fileID: 7869645759159708107}
   m_movementAction: {fileID: -5037352003540691882, guid: 82b300ceb3c136247a87054a5fd03e4f, type: 3}
 --- !u!114 &7869645759159708107

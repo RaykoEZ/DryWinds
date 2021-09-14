@@ -7,9 +7,8 @@ namespace Curry.Skill
 {
     public class BaseDrawSkill : BaseSkill
     {
-        [SerializeField] protected Asset m_trace = default;
+        [SerializeField] protected PrefabAsset m_trace = default;
         [SerializeField] protected InteractableInstanceManager m_instanceManager = default;
-        protected bool m_isDrawing = false;
         protected Vector2 m_previousDrawPos;
         protected BaseTrace m_currentTracerBehaviour;
         public virtual float CooldownTime { get { return m_skillProperty.CooldownTime; } }
@@ -29,28 +28,28 @@ namespace Curry.Skill
             // If we cannot use skill, end here
             if (!SkillUsable)
             {
-                OnDrawEnd();
+                EndSkillEffect();
                 return;
             }
             
-            // start a new stroke if we hold LMB and is moving
-            if (!m_isDrawing)
+            // start a new stroke if we hold LMB (already drawing) and is moving
+            if (!m_skillInProgress)
             {
                 // make new stroke
                 m_currentTracerBehaviour = m_instanceManager.GetInstanceFromCurrentPool() as BaseTrace;
             }
-            float length = !m_isDrawing ? 0f : Vector2.Distance(param.TargetPos, m_previousDrawPos);
+            float length = !m_skillInProgress ? 0f : Vector2.Distance(param.TargetPos, m_previousDrawPos);
             float totalCost = length * SkillProperties.SpCost;
             //update mousePos log
             m_previousDrawPos = param.TargetPos;
             ConsumeResource(totalCost);
             m_currentTracerBehaviour.Execute(param.TargetPos, length);
-            m_isDrawing = true;
+            m_skillInProgress = true;
         }
 
-        public virtual void OnDrawEnd()
+        public override void EndSkillEffect()
         {
-            m_isDrawing = false;
+            base.EndSkillEffect();
             CoolDown();
         }
     }

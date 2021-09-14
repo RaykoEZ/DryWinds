@@ -51,7 +51,7 @@ namespace Curry.Skill
             float t = 0f;
             Vector2 dir = targetPos - origin;
             Rigidbody2D rb = m_user.RigidBody;
-            while (t < m_chargeDuration && m_skillEffectActive)
+            while (t < m_chargeDuration && m_skillInProgress)
             {
                 rb.AddForce(dir.normalized * chargeCoeff * m_user.CurrentStats.Speed, ForceMode2D.Impulse);
                 t += Time.deltaTime;
@@ -60,7 +60,7 @@ namespace Curry.Skill
 
             t = 0f;
             float oldDrag = rb.drag;
-            while (t < m_chargeDuration && m_skillEffectActive)
+            while (t < m_chargeDuration && m_skillInProgress)
             {
                 rb.drag += 0.5f;
                 t += Time.deltaTime;
