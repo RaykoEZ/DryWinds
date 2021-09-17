@@ -6,11 +6,11 @@ using Curry.Skill;
 
 namespace Curry.Game
 {
-    public class PlayerInputHandler : MonoBehaviour
+    public class PlayerController : MonoBehaviour
     {
         [SerializeField] Player m_player = default;
-        [SerializeField] SkillHandler m_basicSkillHandler = default;
-        [SerializeField] SkillHandler m_drawSkillHandler = default;
+        [SerializeField] SkillHandler m_basicSkills = default;
+        [SerializeField] SkillHandler m_drawSkills = default;
         [SerializeField] AnimatorHandler m_anim = default;
 
         [SerializeField] InputActionReference m_movementAction = default;
@@ -20,8 +20,8 @@ namespace Curry.Game
 
         void Start()
         {
-            m_basicSkillHandler.Init(m_player);
-            m_drawSkillHandler.Init(m_player);
+            m_basicSkills.Init(m_player);
+            m_drawSkills.Init(m_player);
             m_player.OnTakingDamage += OnHitStun;
             m_player.OnActionInterrupt += OnInterrupt;
 
@@ -51,7 +51,7 @@ namespace Curry.Game
 
         public void OnBasicSkill(InputAction.CallbackContext c)
         {
-            if (!m_basicSkillHandler.IsSkillAvailable || m_disableInput) 
+            if (!m_basicSkills.IsSkillAvailable || m_disableInput) 
             {
                 return;
             }
@@ -65,7 +65,7 @@ namespace Curry.Game
                         {                            
                             // trigger dash windup anim on rmb press
                             m_anim.OnDashWindUp();
-                            m_basicSkillHandler.SkillWindup();
+                            m_basicSkills.SkillWindup();
                         }
                         else
                         {
@@ -73,7 +73,7 @@ namespace Curry.Game
                             Vector2 pos = m_player.CurrentCamera.
                                 ScreenToWorldPoint(Mouse.current.position.ReadValue());
                             // Dash when rmb released
-                            m_basicSkillHandler.ActivateSkill(pos);
+                            m_basicSkills.ActivateSkill(pos);
                         }
                         break;
                     default:
@@ -91,7 +91,7 @@ namespace Curry.Game
                 {
                     case InputActionPhase.Performed:
                         // Finished a brush stroke
-                        m_drawSkillHandler.InterruptSkill();
+                        m_drawSkills.InterruptSkill();
                         break;
                     default:
                         break;
@@ -104,7 +104,7 @@ namespace Curry.Game
             Vector2 pos = m_player.CurrentCamera.
                             ScreenToWorldPoint(Mouse.current.position.ReadValue());
             SkillParam param = new SkillParam(pos);
-            m_drawSkillHandler.ActivateSkill(param);
+            m_drawSkills.ActivateSkill(param);
         }
 
         public void ChangeTrace(int index)
@@ -135,7 +135,7 @@ namespace Curry.Game
 
         protected void OnInterrupt() 
         {
-            m_basicSkillHandler.InterruptSkill();
+            m_basicSkills.InterruptSkill();
         }
 
         protected virtual IEnumerator RecoverInput() 

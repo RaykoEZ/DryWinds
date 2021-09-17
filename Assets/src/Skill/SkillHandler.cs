@@ -24,6 +24,11 @@ namespace Curry.Skill
             get { return CurrentSkill.SkillProperties; }
         }
 
+        public List<SkillProperty> SkillStats
+        {
+            get { return m_skills.SkillStats; }
+        }
+
         protected BaseSkill CurrentSkill
         {
             get { return m_skills.EquippedSkill; }
@@ -31,7 +36,7 @@ namespace Curry.Skill
 
         public void Init(BaseCharacter user, bool hitBoxOn = false)
         {
-            foreach(BaseSkill skill in m_skills.SkillList) 
+            foreach(BaseSkill skill in m_skills.Skills) 
             {
                 skill.Init(user, hitBoxOn);
             }

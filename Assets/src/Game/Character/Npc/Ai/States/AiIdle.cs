@@ -9,12 +9,10 @@ namespace Curry.Game
     {
         public override void OnEnter(NpcController controller)
         {
-            throw new NotImplementedException();
         }
 
         public override void OnUpdate(NpcController controller)
         {
-            throw new NotImplementedException();
         }
     }
 }
