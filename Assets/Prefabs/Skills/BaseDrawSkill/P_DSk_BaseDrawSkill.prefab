@@ -122,7 +122,7 @@ GameObject:
   - component: {fileID: 5751947333654081878}
   - component: {fileID: 5751947333654081876}
   m_Layer: 0
-  m_Name: P_BaseDrawSkill
+  m_Name: P_DSk_BaseDrawSkill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

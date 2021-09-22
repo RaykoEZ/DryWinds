@@ -76,11 +76,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_npc: {fileID: 7557477938998303306}
   m_anim: {fileID: 4052941514383100218}
-  m_skillHandler:
-    m_skills:
-      m_skillList:
-      - {fileID: 1686276639154692087}
-  m_detector: {fileID: 2498299348684587035}
 --- !u!114 &4616489978129765166
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -187,7 +182,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_range: {fileID: 7856266967142227805}
-  m_reactionTime: 1
 --- !u!60 &368594841113657428
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -312,6 +306,8 @@ MonoBehaviour:
       m_collisionStats:
         m_contactDamage: 0
         m_knockback: 3
+    m_skillNames:
+    - ChargeAttack
 --- !u!114 &7557477938998303306
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -328,6 +324,8 @@ MonoBehaviour:
   m_hurtBox: {fileID: 368594841113657428}
   m_relations: 2
   m_statsManager: {fileID: 6927984868378902487}
+  m_averageReactionTime: 0.5
+  m_detector: {fileID: 0}
 --- !u!1 &7597001706235312769
 GameObject:
   m_ObjectHideFlags: 0
@@ -472,17 +470,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4048156830801403011, guid: 7fdf6cff9c0eb9642870a1ddc3aba327, type: 3}
   m_PrefabInstance: {fileID: 524015966885107508}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1686276639154692087 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1162902964026411203, guid: 7fdf6cff9c0eb9642870a1ddc3aba327, type: 3}
-  m_PrefabInstance: {fileID: 524015966885107508}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eee07547ef13b0f46a708d498a881750, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &6407115502891255756
 PrefabInstance:
   m_ObjectHideFlags: 0

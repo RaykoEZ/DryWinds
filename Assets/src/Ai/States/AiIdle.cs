@@ -8,15 +8,6 @@ namespace Curry.Ai
     [CreateAssetMenu(menuName = "Curry/AiState/Idle", order = 0)]
     public class AiIdle : AiState
     {
-        public override bool ExitCondition(NpcWorldState args)
-        {
-            throw new NotImplementedException();
-        }
-        public override bool PreCondition(NpcWorldState args)
-        {
-            throw new NotImplementedException();
-        }
-
         public override void OnEnter(NpcController controller, NpcWorldState state)
         {
 

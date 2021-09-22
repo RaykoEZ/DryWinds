@@ -28,33 +28,39 @@ namespace Curry.Skill
             // If we cannot use skill, end here
             if (!SkillUsable)
             {
-                EndSkillEffect();
+                OnSkillFinish();
                 return;
             }
 
             if (param is VectorParam posParam) 
             {
                 // start a new stroke if we hold LMB (already drawing) and is moving
-                if (!m_skillInProgress)
+                if (!ActionInProgress)
                 {
                     // make new stroke
                     m_currentTracerBehaviour = m_instanceManager.GetInstanceFromCurrentPool() as BaseTrace;
                 }
-                float length = !m_skillInProgress ? 0f : Vector2.Distance(posParam.Target, m_previousDrawPos);
+                float length = !ActionInProgress ? 0f : Vector2.Distance(posParam.Target, m_previousDrawPos);
                 float totalCost = length * SkillProperties.SpCost;
                 //update mousePos log
                 m_previousDrawPos = posParam.Target;
                 ConsumeResource(totalCost);
                 m_currentTracerBehaviour.Execute(posParam.Target, length);
-                m_skillInProgress = true;
+                ActionInProgress = true;
             }
 
         }
 
-        public override void EndSkillEffect()
+        public override void Interrupt()
         {
-            base.EndSkillEffect();
             CoolDown();
+            base.Interrupt();
+        }
+
+        protected override void OnSkillFinish()
+        {
+            CoolDown();
+            base.OnSkillFinish();
         }
     }
 }

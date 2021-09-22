@@ -6,21 +6,31 @@ namespace Curry.Ai
 {
     public delegate void OnAiStateTransition(AiState next);
     [Serializable]
-    public abstract class AiState : ScriptableObject, IAiAction
+    public abstract class AiState : ScriptableObject, IAiGoal
     {
         [SerializeField] protected float m_basePriority = default;
         public event OnAiStateTransition OnTransition;
         public event OnActionFinish OnFinish;
-        public bool ActionInProgress { get; private set; }
+        public virtual bool PreCondition(NpcWorldState args) 
+        {
+            return true;
+        }
 
-        public abstract bool PreCondition(NpcWorldState args);
-        public abstract bool ExitCondition(NpcWorldState args);
+        public virtual float Priority(NpcWorldState args) 
+        {
+            return m_basePriority;
+        }
 
         public abstract void OnEnter(NpcController controller, NpcWorldState state);
         public abstract void OnUpdate(NpcController controller, NpcWorldState state);
         public virtual void TransitionTo(AiState next) 
         {
             OnTransition?.Invoke(next);
+        }
+
+        protected virtual void OnActionFinished() 
+        {
+            OnFinish?.Invoke();
         }
     }
 }

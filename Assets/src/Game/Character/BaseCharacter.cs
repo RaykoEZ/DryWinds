@@ -14,8 +14,6 @@ namespace Curry.Game
         public virtual CharacterStats CurrentStats { get { return m_statsManager.CurrentStats.CharacterStats; } }
         public override CollisionStats CurrentCollisionStats { get { return m_statsManager.CurrentStats.CharacterStats.CollisionStats; } }
 
-
-
         public event OnCharacterHeal OnHealing;
         public event OnCharacterTakeDamage OnTakingDamage;
         public event OnCharacterInterrupt OnActionInterrupt;

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using Curry.Game;
 
 namespace Curry.Ai
@@ -7,6 +8,7 @@ namespace Curry.Ai
     {
         [SerializeField] protected NpcController m_controller = default;
         [SerializeField] protected AiState m_idle = default;
+        [SerializeField] protected List<AiState> m_otherStates = default;
 
         public event OnAiStateTransition OnTransition;
         protected AiState m_current;

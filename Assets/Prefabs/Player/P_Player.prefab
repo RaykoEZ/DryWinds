@@ -130,6 +130,8 @@ MonoBehaviour:
       m_collisionStats:
         m_contactDamage: 0
         m_knockback: 5
+    m_skillNames:
+    - ChargeAttack
 --- !u!1 &897198344060202836
 GameObject:
   m_ObjectHideFlags: 0

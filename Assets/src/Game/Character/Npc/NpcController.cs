@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,41 +10,22 @@ namespace Curry.Game
     {
         [SerializeField] protected BaseNpc m_npc = default;
         [SerializeField] protected Animator m_anim = default;
-        [SerializeField] protected DetectionHandler m_detector = default;
+
         protected Coroutine m_movingCall;
         protected Coroutine m_skillCall;
-
-        public event OnCharacterDetected OnDetectCharacter;
-        public event OnCharacterDetected OnCharacterExitDetection;
-
         public event OnCharacterTakeDamage OnTakingDamage;
         public BaseNpc Npc { get { return m_npc; } }
 
         protected virtual void Start() 
         {
-            m_detector.OnDetected += OnCharacterDetected;
-            m_detector.OnExitDetection += OnExitDetectionRange;
-
             m_npc.OnTakingDamage += OnTakeDamage;
             m_npc.OnDefeated += OnDefeat;
-        }
-
-        protected void OnCharacterDetected(BaseCharacter character) 
-        {
-            Debug.Log("detected" + character);
-            OnDetectCharacter?.Invoke(character);
-        }
-
-        protected void OnExitDetectionRange(BaseCharacter character)
-        {
-            Debug.Log("exited" + character);
-            OnCharacterExitDetection?.Invoke(character);
         }
 
         public virtual void ActivateSkill(ITargetable<Vector2> target, BaseSkill skill)
         {
             // Do not overlap skill calls
-            if (m_skillCall != null) 
+            if (m_skillCall != null)
             {
                 return;
             }
@@ -52,17 +34,27 @@ namespace Curry.Game
         }
 
         public virtual void Wander()
-        { 
-        
+        {
+
         }
 
-        public virtual void MoveTo(Vector2 targetPos) 
+        public virtual void MoveTo(Vector2 targetPos)
         {
             if (m_movingCall != null)
             {
                 StopCoroutine(m_movingCall);
             }
             m_movingCall = StartCoroutine(OnMove(targetPos));
+        }
+
+        protected virtual void OnTakeDamage(float damage)
+        {
+            OnTakingDamage?.Invoke(damage);
+        }
+
+        protected virtual void OnDefeat()
+        {
+
         }
 
         protected virtual IEnumerator OnMove(Vector2 targetPos) 
@@ -80,16 +72,6 @@ namespace Curry.Game
             VectorParam param = new VectorParam(target);
             skill.Execute(param);
             m_skillCall = null;
-        }
-
-        protected virtual void OnTakeDamage(float damage) 
-        {
-            OnTakingDamage?.Invoke(damage);
-        }
-
-        protected virtual void OnDefeat() 
-        { 
-
         }
     }
 }

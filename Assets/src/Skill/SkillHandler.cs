@@ -65,14 +65,7 @@ namespace Curry.Skill
 
         public virtual void InterruptSkill()
         {
-            if (CurrentSkill.IsWindingUp)
-            {
-                CurrentSkill.CancelWindup();
-            }
-            else
-            {
-                CurrentSkill.EndSkillEffect();
-            }
+            CurrentSkill.Interrupt();
         }
 
         public bool IsSkillAvailable(int index) 

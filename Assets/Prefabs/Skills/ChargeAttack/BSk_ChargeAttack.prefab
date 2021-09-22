@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1162902964026411203}
   - component: {fileID: 8596796697600054897}
   m_Layer: 0
-  m_Name: P_ChargeAttack
+  m_Name: BSk_ChargeAttack
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
