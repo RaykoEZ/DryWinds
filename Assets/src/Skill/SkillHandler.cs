@@ -11,7 +11,7 @@ namespace Curry.Skill
         [SerializeField] SkillInventory m_skills = default;
         protected BaseCharacter m_userRef;
 
-        public bool IsSkillAvailable
+        public bool IsCurrentSkillAvailable
         {
             get
             {
@@ -24,11 +24,10 @@ namespace Curry.Skill
             get { return CurrentSkill.SkillProperties; }
         }
 
-        public List<SkillProperty> SkillStats
+        public List<BaseSkill> AllSkills
         {
-            get { return m_skills.SkillStats; }
+            get { return m_skills.Skills; }
         }
-
         protected BaseSkill CurrentSkill
         {
             get { return m_skills.EquippedSkill; }
@@ -47,11 +46,18 @@ namespace Curry.Skill
             CurrentSkill.SkillWindup();
         }
 
-        public virtual void ActivateSkill(Vector2 targetPos, Dictionary<string, object> payload = null)
-        {
-            SkillParam param = new SkillParam(targetPos, payload);
+        public virtual void ActivateSkill(ITargetable<Vector2> target, bool isDirection = false, Dictionary<string, object> payload = null)
+        {           
+            VectorParam param = new VectorParam(target, payload);
             CurrentSkill.Execute(param);
         }
+
+        public virtual void ActivateSkill(ITargetable<BaseCharacter> target, bool isDirection = false, Dictionary<string, object> payload = null)
+        {
+            CharacterParam param = new CharacterParam(target, payload);
+            CurrentSkill.Execute(param);
+        }
+
         public virtual void ActivateSkill(SkillParam param)
         {
             CurrentSkill.Execute(param);
@@ -67,6 +73,16 @@ namespace Curry.Skill
             {
                 CurrentSkill.EndSkillEffect();
             }
+        }
+
+        public bool IsSkillAvailable(int index) 
+        {
+            if (index >= m_skills.Skills.Count) 
+            {
+                return false;
+            }
+
+            return m_skills.GetSkill(index).SkillUsable;
         }
 
         //skill swap ops

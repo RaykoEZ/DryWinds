@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Curry.Game;
 
@@ -9,6 +8,7 @@ namespace Curry.Skill
     {
         [SerializeField] protected PrefabAsset m_trace = default;
         [SerializeField] protected InteractableInstanceManager m_instanceManager = default;
+
         protected Vector2 m_previousDrawPos;
         protected BaseTrace m_currentTracerBehaviour;
         public virtual float CooldownTime { get { return m_skillProperty.CooldownTime; } }
@@ -31,20 +31,24 @@ namespace Curry.Skill
                 EndSkillEffect();
                 return;
             }
-            
-            // start a new stroke if we hold LMB (already drawing) and is moving
-            if (!m_skillInProgress)
+
+            if (param is VectorParam posParam) 
             {
-                // make new stroke
-                m_currentTracerBehaviour = m_instanceManager.GetInstanceFromCurrentPool() as BaseTrace;
+                // start a new stroke if we hold LMB (already drawing) and is moving
+                if (!m_skillInProgress)
+                {
+                    // make new stroke
+                    m_currentTracerBehaviour = m_instanceManager.GetInstanceFromCurrentPool() as BaseTrace;
+                }
+                float length = !m_skillInProgress ? 0f : Vector2.Distance(posParam.Target, m_previousDrawPos);
+                float totalCost = length * SkillProperties.SpCost;
+                //update mousePos log
+                m_previousDrawPos = posParam.Target;
+                ConsumeResource(totalCost);
+                m_currentTracerBehaviour.Execute(posParam.Target, length);
+                m_skillInProgress = true;
             }
-            float length = !m_skillInProgress ? 0f : Vector2.Distance(param.TargetPos, m_previousDrawPos);
-            float totalCost = length * SkillProperties.SpCost;
-            //update mousePos log
-            m_previousDrawPos = param.TargetPos;
-            ConsumeResource(totalCost);
-            m_currentTracerBehaviour.Execute(param.TargetPos, length);
-            m_skillInProgress = true;
+
         }
 
         public override void EndSkillEffect()

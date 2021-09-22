@@ -277,11 +277,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_player: {fileID: 6580273533904613876}
-  m_basicSkillHandler:
+  m_basicSkills:
     m_skills:
       m_skillList:
       - {fileID: 4287930917383304955}
-  m_drawSkillHandler:
+  m_drawSkills:
     m_skills:
       m_skillList:
       - {fileID: 7928301209698729496}

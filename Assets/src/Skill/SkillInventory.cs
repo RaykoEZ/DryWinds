@@ -12,19 +12,6 @@ namespace Curry.Skill
         protected int m_equippedIndex = 0;
         [SerializeField] protected List<BaseSkill> m_skillList = default;
 
-        public List<SkillProperty> SkillStats 
-        { 
-            get 
-            {
-                List<SkillProperty> ret = new List<SkillProperty>();
-                foreach(BaseSkill skill in m_skillList) 
-                {
-                    ret.Add(skill.SkillProperties);
-                }
-                return ret; 
-            } 
-        }
-
         public List<BaseSkill> Skills { get { return m_skillList; } }
 
         public int EquippedTraceIndex { 

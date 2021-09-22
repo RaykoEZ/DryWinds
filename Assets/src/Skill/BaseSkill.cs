@@ -1,26 +1,10 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Curry.Game;
 
 namespace Curry.Skill
 {
-    public class SkillParam
-    {
-        Vector2 m_targetPos = default;
-        Dictionary<string, object> m_payload;
-
-        public Vector2 TargetPos { get { return m_targetPos; } }
-        public Dictionary<string, object> Payload { get { return m_payload; } }
-
-        public SkillParam(Vector2 pos, Dictionary<string, object> payload = null) 
-        {
-            m_targetPos = pos;
-            m_payload = payload;
-        }
-    }
-
     public abstract class BaseSkill : MonoBehaviour
     {
         [SerializeField] protected Animator m_animator = default;
@@ -49,7 +33,7 @@ namespace Curry.Skill
                     m_user?.CurrentStats.SP >= m_skillProperty.SpCost;
             }
         }
-        protected abstract IEnumerator SkillEffect(SkillParam target = null);
+        protected abstract IEnumerator SkillEffect(SkillParam target);
 
         protected virtual void OnTriggerEnter2D(Collider2D col)
         {
@@ -103,7 +87,7 @@ namespace Curry.Skill
 
         // The logics and interactions of the skill on each target
         /// @param target: initial target for skill
-        public virtual void Execute(SkillParam target = null) 
+        public virtual void Execute(SkillParam target)
         {
             m_isWindingUp = false;
             if (SkillUsable && m_user != null)

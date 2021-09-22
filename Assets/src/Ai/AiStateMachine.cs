@@ -1,13 +1,8 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
+using Curry.Game;
 
-namespace Curry.Game
+namespace Curry.Ai
 {
-    public class AiPlanner 
-    { 
-        
-    }
-
     public abstract class AiStateMachine : MonoBehaviour 
     {
         [SerializeField] protected NpcController m_controller = default;
@@ -16,7 +11,7 @@ namespace Curry.Game
         public event OnAiStateTransition OnTransition;
         protected AiState m_current;
         protected AiState m_previous;
-
+        bool m_transitionInProgress = false;
         protected virtual void Start() 
         {
             TransitionTo(m_idle);
@@ -24,16 +19,21 @@ namespace Curry.Game
 
         protected virtual void Update() 
         {
-            m_current.OnUpdate(m_controller);
-            Evaluate();
+            if (!m_transitionInProgress) 
+            {
+                NpcWorldState state = new NpcWorldState();
+                m_current.OnUpdate(m_controller, state);
+            }
+            EvaluateGoal();
         }
 
         // Determine state changes or additional behaviour
-        protected abstract void Evaluate();
+        protected abstract void EvaluateGoal();
 
         protected virtual void TransitionTo(AiState next)
         {
             m_previous = m_current;
+            m_transitionInProgress = true;
             m_current.TransitionTo(next);
         }
 
@@ -45,9 +45,12 @@ namespace Curry.Game
             }
             OnTransition?.Invoke(next);
 
+            m_transitionInProgress = false;
             m_current = next;
             m_current.OnTransition += OnTransitionFinished;
-            m_current.OnEnter(m_controller);
+            NpcWorldState state = new NpcWorldState();
+
+            m_current.OnEnter(m_controller, state);
         }
     }
 

@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using Curry.Game;
 
-namespace Curry.Game
+namespace Curry.Ai
 {
     public class HunterStateMachine : AiStateMachine 
     {
-        [SerializeField] protected AiState m_chase = default;
-        [SerializeField] protected AiState m_skill = default;
+        [SerializeField] protected AiState m_movement = default;
+        [SerializeField] protected AiState m_performSkill = default;
 
         protected HashSet<BaseCharacter> m_enemies = new HashSet<BaseCharacter>();
         protected HashSet<BaseCharacter> m_allies = new HashSet<BaseCharacter>();
@@ -18,7 +19,7 @@ namespace Curry.Game
             m_controller.OnCharacterExitDetection += OnTargetLost;
         }
 
-        protected override void Evaluate()
+        protected override void EvaluateGoal()
         {
 
         }

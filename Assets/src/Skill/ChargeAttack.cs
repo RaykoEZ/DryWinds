@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 using Curry.Game;
 
@@ -32,16 +33,19 @@ namespace Curry.Skill
             base.Execute(target);
         }
 
-        protected override IEnumerator SkillEffect(SkillParam target = null)
+        protected override IEnumerator SkillEffect(SkillParam target)
         {
-            float chargeFactor = Mathf.Max(
-            0.4f,
-            (Mathf.Min(m_windupTimer, m_skillProperty.MaxWindupTime)) / m_skillProperty.MaxWindupTime);
-            Vector2 mousePos = target.TargetPos;
+            if(target is VectorParam posParam) 
+            {
+                float chargeFactor = Mathf.Max(
+                    0.4f,
+                    (Mathf.Min(m_windupTimer, m_skillProperty.MaxWindupTime)) / m_skillProperty.MaxWindupTime);
+                Vector2 mousePos = posParam.Target;
 
-            m_windupTimer = 0f;
-            m_animator.SetBool("WindingUp", false);
-            StartCoroutine(DashMotion(m_user.RigidBody.position, mousePos, chargeFactor));
+                m_windupTimer = 0f;
+                m_animator.SetBool("WindingUp", false);
+                StartCoroutine(DashMotion(m_user.RigidBody.position, mousePos, chargeFactor));
+            }
 
             yield return null;
         }

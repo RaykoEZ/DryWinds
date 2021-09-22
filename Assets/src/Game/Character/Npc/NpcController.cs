@@ -9,7 +9,6 @@ namespace Curry.Game
     {
         [SerializeField] protected BaseNpc m_npc = default;
         [SerializeField] protected Animator m_anim = default;
-        [SerializeField] protected SkillHandler m_basicSkills = default;
         [SerializeField] protected DetectionHandler m_detector = default;
         protected Coroutine m_movingCall;
         protected Coroutine m_skillCall;
@@ -19,10 +18,6 @@ namespace Curry.Game
 
         public event OnCharacterTakeDamage OnTakingDamage;
         public BaseNpc Npc { get { return m_npc; } }
-        public List<SkillProperty> SkillStats 
-        { 
-            get { return m_basicSkills.SkillStats; }
-        }
 
         protected virtual void Start() 
         {
@@ -45,19 +40,20 @@ namespace Curry.Game
             OnCharacterExitDetection?.Invoke(character);
         }
 
-        public virtual void ChangeSkill(int skillIndex) 
+        public virtual void ActivateSkill(ITargetable<Vector2> target, BaseSkill skill)
         {
-            m_basicSkills.ChangeSkill(skillIndex);
-        }
-
-        public virtual void ActivateSkill(Vector3 target)
-        {
+            // Do not overlap skill calls
             if (m_skillCall != null) 
             {
-                StopCoroutine(m_skillCall);
+                return;
             }
 
-            m_skillCall = StartCoroutine(WindupSkill(target));
+            m_skillCall = StartCoroutine(WindupSkill(target, skill));
+        }
+
+        public virtual void Wander()
+        { 
+        
         }
 
         public virtual void MoveTo(Vector2 targetPos) 
@@ -75,13 +71,14 @@ namespace Curry.Game
             yield return null;
         }  
 
-        protected virtual IEnumerator WindupSkill(Vector3 target) 
+        protected virtual IEnumerator WindupSkill(ITargetable<Vector2> target, BaseSkill skill) 
         {
             m_anim.SetBool("WindingUp", true);
-            m_basicSkills.SkillWindup();
-            yield return new WaitForSeconds(m_basicSkills.CurrentSkillProperties.MaxWindupTime);
+            skill.SkillWindup();
+            yield return new WaitForSeconds(skill.SkillProperties.MaxWindupTime);
             m_anim.SetBool("WindingUp", false);
-            m_basicSkills.ActivateSkill(target);
+            VectorParam param = new VectorParam(target);
+            skill.Execute(param);
             m_skillCall = null;
         }
 

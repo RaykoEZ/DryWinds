@@ -51,7 +51,7 @@ namespace Curry.Game
 
         public void OnBasicSkill(InputAction.CallbackContext c)
         {
-            if (!m_basicSkills.IsSkillAvailable || m_disableInput) 
+            if (!m_basicSkills.IsCurrentSkillAvailable || m_disableInput) 
             {
                 return;
             }
@@ -72,8 +72,9 @@ namespace Curry.Game
                             m_anim.OnDashRelease();
                             Vector2 pos = m_player.CurrentCamera.
                                 ScreenToWorldPoint(Mouse.current.position.ReadValue());
+                            TargetPosition target = new TargetPosition(pos);
                             // Dash when rmb released
-                            m_basicSkills.ActivateSkill(pos);
+                            m_basicSkills.ActivateSkill(target);
                         }
                         break;
                     default:
@@ -103,7 +104,8 @@ namespace Curry.Game
         {
             Vector2 pos = m_player.CurrentCamera.
                             ScreenToWorldPoint(Mouse.current.position.ReadValue());
-            SkillParam param = new SkillParam(pos);
+            TargetPosition target = new TargetPosition(pos);
+            VectorParam param = new VectorParam(target);
             m_drawSkills.ActivateSkill(param);
         }
 

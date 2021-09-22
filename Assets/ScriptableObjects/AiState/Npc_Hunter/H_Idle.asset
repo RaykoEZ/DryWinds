@@ -12,6 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ed4221cafb5f604c94bf1b0e7daa877, type: 3}
   m_Name: H_Idle
   m_EditorClassIdentifier: 
-  m_detectCharacter: {fileID: 11400000, guid: 86cdbc43f9f093a458e93d0e1cde4336, type: 2}
-  m_skill: {fileID: 11400000, guid: 470bf20990b7cd749888eda0a1633684, type: 2}
-  m_chase: {fileID: 11400000, guid: 5e2246434d1c42b40a41bdb774b9abdf, type: 2}
+  m_basePriority: 0.5

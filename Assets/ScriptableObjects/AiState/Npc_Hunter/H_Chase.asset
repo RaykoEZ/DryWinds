@@ -12,6 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79762b3a4c6df9841a3612431cc9706f, type: 3}
   m_Name: H_Chase
   m_EditorClassIdentifier: 
-  m_idle: {fileID: 11400000, guid: 54014485234b0c84bbc07e44fa267cb9, type: 2}
-  m_detectCharacter: {fileID: 11400000, guid: 86cdbc43f9f093a458e93d0e1cde4336, type: 2}
-  m_skill: {fileID: 11400000, guid: 470bf20990b7cd749888eda0a1633684, type: 2}
+  m_basePriority: 1
