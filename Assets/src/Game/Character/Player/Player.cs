@@ -24,7 +24,7 @@ namespace Curry.Game
 
         protected void OnSPRegen() 
         {
-            m_statsManager.GainSp(Time.deltaTime * CurrentStats.SPRegenPerSec);
+            m_statusManager.GainSp(Time.deltaTime * CurrentStats.SPRegenPerSec);
         }
 
     }

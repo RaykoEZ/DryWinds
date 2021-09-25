@@ -54,7 +54,13 @@ MonoBehaviour:
   m_rigidbody: {fileID: 826281917603678357}
   m_hurtBox: {fileID: 54977025414749079}
   m_relations: 1
-  m_statsManager: {fileID: 8378189346840365758}
+  m_statusManager: {fileID: 8378189346840365758}
+  m_basicSkills:
+    m_skills:
+      m_skillList: []
+  m_drawSkills:
+    m_skills:
+      m_skillList: []
 --- !u!58 &54977025414749079
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -130,8 +136,14 @@ MonoBehaviour:
       m_collisionStats:
         m_contactDamage: 0
         m_knockback: 5
-    m_skillNames:
-    - ChargeAttack
+    m_basicSkillRefs:
+    - m_AssetGUID: 7fdf6cff9c0eb9642870a1ddc3aba327
+      m_SubObjectName: 
+      m_SubObjectType: 
+    m_drawSkillRefs:
+    - m_AssetGUID: 2b4559809b5866343bf6cfccc130056a
+      m_SubObjectName: 
+      m_SubObjectType: 
 --- !u!1 &897198344060202836
 GameObject:
   m_ObjectHideFlags: 0
@@ -377,15 +389,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5751947333654081877, guid: 2b4559809b5866343bf6cfccc130056a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 918.3679
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5751947333654081877, guid: 2b4559809b5866343bf6cfccc130056a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 672.3613
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5751947333654081877, guid: 2b4559809b5866343bf6cfccc130056a, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -61.420013
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5751947333654081877, guid: 2b4559809b5866343bf6cfccc130056a, type: 3}
       propertyPath: m_LocalRotation.w

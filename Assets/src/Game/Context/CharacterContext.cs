@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
-using Curry.Skill;
+using UnityEngine.AddressableAssets;
 
 namespace Curry.Game
 {
@@ -9,8 +9,8 @@ namespace Curry.Game
     public class CharacterContext : IGameContext
     {
         [SerializeField] protected CharacterStats m_characterStats = default;
-        [SerializeField] protected List<string> m_basicSkillNames = default;
-        [SerializeField] protected List<string> m_drawSkillNames = default;
+        [SerializeField] protected List<AssetReference> m_basicSkillRefs = default;
+        [SerializeField] protected List<AssetReference> m_drawSkillRefs = default;
 
         protected bool m_isDirty = false;
 
@@ -37,22 +37,22 @@ namespace Curry.Game
             }
         }
 
-        public List<string> BasicSkillNames
+        public List<AssetReference> BasicSkillAssetRefs
         {
-            get { return new List<string>(m_basicSkillNames); }
+            get { return new List<AssetReference>(m_basicSkillRefs); }
             set
             {
-                m_basicSkillNames = value;
+                m_basicSkillRefs = value;
                 m_isDirty = true;
             }
         }
 
-        public List<string> DrawSkillNames
+        public List<AssetReference> DrawSkilllAssetRefs
         {
-            get { return new List<string>(m_drawSkillNames); }
+            get { return new List<AssetReference>(m_drawSkillRefs); }
             set
             {
-                m_drawSkillNames = value;
+                m_drawSkillRefs = value;
                 m_isDirty = true;
             }
         }
@@ -61,56 +61,56 @@ namespace Curry.Game
         public CharacterContext() 
         {
             m_characterStats = new CharacterStats();
-            m_basicSkillNames = new List<string>();
-            m_drawSkillNames = new List<string>();
+            m_basicSkillRefs = new List<AssetReference>();
+            m_drawSkillRefs = new List<AssetReference>();
         }
 
         public CharacterContext(float val, 
-            List<string> skillNames = null, 
-            List<string> drawNames = null
+            List<AssetReference> skills = null, 
+            List<AssetReference> draws = null
             )
         {
             m_characterStats = new CharacterStats(val);
-            m_basicSkillNames = skillNames == null ? new List<string>() : skillNames;
-            m_drawSkillNames = drawNames == null ? new List<string>() : drawNames;
+            m_basicSkillRefs = skills == null ? new List<AssetReference>() : skills;
+            m_drawSkillRefs = draws == null ? new List<AssetReference>() : draws;
         }
 
         public CharacterContext(CharacterStats c, 
-            List<string> skillNames = null,
-             List<string> drawNames = null
+            List<AssetReference> skills = null,
+             List<AssetReference> draws = null
             )
         {
             m_characterStats = new CharacterStats(c);
-            m_basicSkillNames = skillNames == null? new List<string>() : skillNames;
-            m_drawSkillNames = drawNames == null ? new List<string>() : drawNames;
+            m_basicSkillRefs = skills == null? new List<AssetReference>() : skills;
+            m_drawSkillRefs = draws == null ? new List<AssetReference>() : draws;
 
         }
 
         public CharacterContext(CharacterContext c)
         {
             m_characterStats = new CharacterStats(c.m_characterStats);
-            m_basicSkillNames = new List<string>(c.m_basicSkillNames);
-            m_drawSkillNames = new List<string>(c.m_drawSkillNames);
+            m_basicSkillRefs = new List<AssetReference>(c.m_basicSkillRefs);
+            m_drawSkillRefs = new List<AssetReference>(c.m_drawSkillRefs);
         }
 
         public static CharacterContext operator +(CharacterContext a, CharacterModifierProperty b) 
         {
-            return new CharacterContext(a.CharacterStats + b, a.m_basicSkillNames, a.m_drawSkillNames);
+            return new CharacterContext(a.CharacterStats + b, a.m_basicSkillRefs, a.m_drawSkillRefs);
         }
 
         public static CharacterContext operator -(CharacterContext a, CharacterModifierProperty b)
         {
-            return new CharacterContext(a.CharacterStats - b, a.m_basicSkillNames, a.m_drawSkillNames);
+            return new CharacterContext(a.CharacterStats - b, a.m_basicSkillRefs, a.m_drawSkillRefs);
         }
 
         public static CharacterContext operator *(CharacterContext a, CharacterModifierProperty b)
         {
-            return new CharacterContext(a.CharacterStats * b, a.m_basicSkillNames, a.m_drawSkillNames);
+            return new CharacterContext(a.CharacterStats * b, a.m_basicSkillRefs, a.m_drawSkillRefs);
         }
 
         public static CharacterContext operator /(CharacterContext a, CharacterModifierProperty b)
         {
-            return new CharacterContext(a.CharacterStats / b, a.m_basicSkillNames, a.m_drawSkillNames);
+            return new CharacterContext(a.CharacterStats / b, a.m_basicSkillRefs, a.m_drawSkillRefs);
         }
     }
 }

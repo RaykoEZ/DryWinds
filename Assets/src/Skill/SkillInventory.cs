@@ -25,6 +25,11 @@ namespace Curry.Skill
             } 
         }
 
+        public SkillInventory(List<BaseSkill> skills) 
+        {
+            m_skillList = skills;
+        }
+
         public BaseSkill GetSkill(int index)
         {
             if (index >= m_skillList.Count || index < 0) 

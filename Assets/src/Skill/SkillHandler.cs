@@ -9,7 +9,6 @@ namespace Curry.Skill
     public class SkillHandler
     {
         [SerializeField] SkillInventory m_skills = default;
-        protected BaseCharacter m_userRef;
 
         public bool IsCurrentSkillAvailable
         {
@@ -31,6 +30,11 @@ namespace Curry.Skill
         protected BaseSkill CurrentSkill
         {
             get { return m_skills.EquippedSkill; }
+        }
+
+        public SkillHandler(List<BaseSkill> preparedSkills)
+        {
+            m_skills = new SkillInventory(preparedSkills);
         }
 
         public void Init(BaseCharacter user, bool hitBoxOn = false)

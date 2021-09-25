@@ -34,7 +34,7 @@ namespace Curry.Game
 
         protected virtual void OnEnable()
         {
-            m_statsManager.Init(m_contextFactory);
+            m_statusManager.Init(m_contextFactory);
             m_detector.OnDetected += OnTargetDetected;
             m_detector.OnExitDetection += OnLosingTarget;
         }

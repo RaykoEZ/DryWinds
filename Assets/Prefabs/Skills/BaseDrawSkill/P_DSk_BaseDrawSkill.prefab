@@ -58,7 +58,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_numToPool: 5
-  m_parent: {fileID: 0}
+  m_defaultParent: {fileID: 5751947332779855329}
 --- !u!1 &5751947332779855330
 GameObject:
   m_ObjectHideFlags: 0
@@ -136,7 +136,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5751947333654081879}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 918.3679, y: 672.3613, z: -62.42001}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 5751947332544427048}
