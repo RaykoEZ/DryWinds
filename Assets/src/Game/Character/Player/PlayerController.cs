@@ -12,7 +12,6 @@ namespace Curry.Game
         [SerializeField] SkillHandler m_basicSkills = default;
         [SerializeField] SkillHandler m_drawSkills = default;
         [SerializeField] AnimatorHandler m_anim = default;
-
         [SerializeField] InputActionReference m_movementAction = default;
 
         protected Coroutine m_currentInputRecovery;

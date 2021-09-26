@@ -12,6 +12,7 @@ namespace Curry.Game
         protected Transform m_parent = default;
         protected Queue<T> m_pool = new Queue<T>();
         protected List<T> m_inUse = new List<T>();
+
         public ObjectPool(int numToPool, T poolObj, Transform parent) 
         {
             m_amountToPool = numToPool;
@@ -54,6 +55,7 @@ namespace Curry.Game
                 newObj = m_pool.Dequeue();
             }
 
+            newObj.transform.position = Vector3.zero;
             newObj.gameObject.SetActive(true);
             m_inUse.Add(newObj);
             // no more available, make new into pool

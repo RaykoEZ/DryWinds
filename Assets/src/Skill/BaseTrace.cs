@@ -6,6 +6,7 @@ using Curry.Game;
 
 namespace Curry.Skill
 {
+    public delegate void OnTraceFinish();
     // Trace is like the brush tip for paint tools but with decay behaviours
     public class BaseTrace : Interactable
     {
@@ -17,6 +18,8 @@ namespace Curry.Skill
         [SerializeField] protected float m_decayWait = default;
         // Life of each drawn vertiex in seconds, starts to decay after this (sec)
         [SerializeField] protected float m_durability = default;
+
+        public event OnTraceFinish OnFinish;
 
         protected bool m_isDecaying = false;
         protected bool m_isMakingCollider = true;
@@ -51,7 +54,11 @@ namespace Curry.Skill
         {
             ResetAll();
         }
-
+        public override void ReturnToPool()
+        {
+            OnFinish = null;
+            base.ReturnToPool();
+        }
         public virtual void Execute(Vector2 targetPosition, float length)
         {
             if (!m_drawnVert.Contains(targetPosition))
@@ -129,6 +136,7 @@ namespace Curry.Skill
 
         protected virtual void OnClear()
         {
+            OnFinish?.Invoke();
             ResetAll();
             ReturnToPool();
         }

@@ -21,30 +21,40 @@ namespace Curry.Game
 
     }
 
-    public class NpcSpawner : MonoBehaviour, ISpawner
+    public class InteractableSpawner : MonoBehaviour, ISpawner
     {
         // Reference to the npc asset
-        [SerializeField] protected PrefabLoader m_npcRef = default;
+        [SerializeField] protected PrefabLoader m_objRef = default;
         [SerializeField] protected SpawnerProperties m_spawnProperties = default;
+        [SerializeField] protected InteractableInstanceManager m_instanceManager = default;
         protected float m_spawnTimer = 0f;
-
-        protected List<GameObject> m_npcObjs = new List<GameObject>();
+        protected int m_spawnCounter = 0;
         public GameObject AssetRef { get; protected set; }
         
         protected virtual void Start() 
         {
-            m_npcRef.OnLoadSuccess += (obj) => { AssetRef = obj; };
-            m_npcRef.LoadAsset();
+            m_objRef.OnLoadSuccess += (obj) => 
+            { 
+                AssetRef = obj;
+                m_instanceManager.PrepareNewInstance(AssetRef, m_spawnProperties.DefaultParent);
+            };
+            m_objRef.LoadAsset();
         }
         
         protected virtual void Update() 
-        {    
-            if (m_spawnProperties.AutoSpawn && m_npcObjs.Count < m_spawnProperties.AutoSpawnAmountCap) 
+        {
+            AutoSpawn();
+        }
+
+        protected virtual void AutoSpawn() 
+        {
+            if (m_spawnProperties.AutoSpawn && m_spawnCounter < m_spawnProperties.AutoSpawnAmountCap)
             {
                 m_spawnTimer += Time.deltaTime;
-                if (m_spawnTimer >= m_spawnProperties.AutoSpawnTimeInterval && AssetRef != null) 
+                if (m_spawnTimer >= m_spawnProperties.AutoSpawnTimeInterval && AssetRef != null)
                 {
-                    Spawn();
+                    Spawn(m_spawnProperties.DefaultParent);
+                    ++m_spawnCounter;
                     m_spawnTimer = 0f;
                 }
             }
@@ -56,12 +66,9 @@ namespace Curry.Game
             { 
                 return null; 
             }
-
             Transform transform = parent == null ? m_spawnProperties.DefaultParent : parent;
-            GameObject obj = Instantiate(AssetRef, transform);
-
-            m_npcObjs.Add(obj);
-
+            GameObject obj = m_instanceManager.GetInstanceFromCurrentPool().gameObject;
+            obj.transform.SetParent(transform);
             return obj;
         }
     }

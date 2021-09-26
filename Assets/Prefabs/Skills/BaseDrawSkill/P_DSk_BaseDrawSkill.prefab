@@ -167,7 +167,11 @@ MonoBehaviour:
     StaminaDamage: 0
     SpDamage: 0
     Knockback: 0
-  m_trace: {fileID: 11400000, guid: d249897879c08434f8c6722634c46ac1, type: 2}
+  m_traceRef:
+    m_assetRef:
+      m_AssetGUID: c429d02b3f4902d4591f75325c991b40
+      m_SubObjectName: 
+      m_SubObjectType: 
   m_instanceManager: {fileID: 5751947332544427054}
 --- !u!95 &5751947333654081876
 Animator:

@@ -30,7 +30,7 @@ namespace Curry.Game
 
         public virtual void Prepare() 
         { }
-        public void ReturnToPool()
+        public virtual void ReturnToPool()
         {
             Origin.ReturnToPool(this);
         }

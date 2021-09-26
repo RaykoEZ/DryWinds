@@ -7,8 +7,6 @@ namespace Curry.Game
     [RequireComponent(typeof(Collider2D))]
     public class CharacterDetector : MonoBehaviour
     {
-        [SerializeField] Collider2D m_range = default;
-
         public event OnCharacterDetected OnDetected;
         public event OnCharacterDetected OnExitDetection;
 
