@@ -8,7 +8,6 @@ namespace Curry.Game
     public class Player : BaseCharacter
     {
         protected Camera m_cam = default;
-
         public Camera CurrentCamera { get { return m_cam; } }
 
         protected virtual void Update()

@@ -11,12 +11,22 @@ namespace Curry.Game
     public abstract class BaseCharacter : Interactable
     {
         [SerializeField] protected CharacterStatusManager m_statusManager = default;
-        [SerializeField] SkillHandler m_basicSkills = default;
-        [SerializeField] SkillHandler m_drawSkills = default;
-
-        public virtual CharacterStats BaseStats { get { return m_statusManager.BaseStats.CharacterStats; } }
-        public virtual CharacterStats CurrentStats { get { return m_statusManager.CurrentStats.CharacterStats; } }
-        public override CollisionStats CurrentCollisionStats { get { return m_statusManager.CurrentStats.CharacterStats.CollisionStats; } }
+        protected SkillActivator m_basicSkills = new SkillActivator();
+        protected SkillActivator m_drawSkills = new SkillActivator();
+        public virtual CharacterStats BaseStats 
+        { 
+            get { return m_statusManager.BaseStats.CharacterStats; } 
+        }
+        public virtual CharacterStats CurrentStats 
+        { 
+            get { return m_statusManager.CurrentStats.CharacterStats; } 
+        }
+        public override CollisionStats CurrentCollisionStats 
+        { 
+            get { return m_statusManager.CurrentStats.CharacterStats.CollisionStats; } 
+        }
+        public virtual SkillActivator BasicSkillActivator { get { return m_basicSkills; } }
+        public virtual SkillActivator DrawSkillActivator { get { return m_drawSkills; } }
 
         public event OnCharacterHeal OnHealing;
         public event OnCharacterTakeDamage OnTakingDamage;
@@ -29,9 +39,14 @@ namespace Curry.Game
 
         public virtual void Init(CharacterContextFactory contextFactory) 
         {
+            m_statusManager.OnLoadFinish += OnCharacterStatusLoaded;
             m_statusManager.Init(contextFactory);
-            m_basicSkills.Init(this);
-            m_drawSkills.Init(this);
+        }
+
+        protected virtual void OnCharacterStatusLoaded() 
+        {
+            m_basicSkills.Init(this, m_statusManager.BasicSkills);
+            m_drawSkills.Init(this, m_statusManager.DrawSkills);
         }
 
         public virtual void Shutdown() 

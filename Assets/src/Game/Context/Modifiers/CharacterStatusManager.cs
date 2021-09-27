@@ -1,27 +1,41 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
+using Curry.Skill;
 
 namespace Curry.Game
 {
-    public delegate void OnCharacterStatsUpdate(CharacterContext c);
+    public delegate void OnStatusLoadFinished();
     public class CharacterStatusManager : MonoBehaviour
     {
         [SerializeField] protected CharacterContext m_initStats;
 
         protected CharacterModifierContainer m_multipliers = new CharacterModifierContainer(1f);
         protected CharacterModifierContainer m_adders = new CharacterModifierContainer(0f);
-
         protected CharacterModifierContainer m_specialMods = new CharacterModifierContainer(0f);
         protected IGameContextFactory<CharacterContext> m_contextFactoryRef = default;
-
         protected CharacterContext m_current;
+        protected SkillInventory m_basicSkills = new SkillInventory();
+        protected SkillInventory m_drawSkills = new SkillInventory();
+        public event OnStatusLoadFinished OnLoadFinish;
         public CharacterContext BaseStats { get { return new CharacterContext(m_initStats); } }
         // Stats after modifiers
         public virtual CharacterContext PreModifierStats { get { return new CharacterContext(m_current); } }
         // Stats after modifiers
         public virtual CharacterContext CurrentStats { get { return CalculateModifiedStats(); } }
+        public SkillInventory BasicSkills { get { return m_basicSkills; } protected set { m_basicSkills = value; } }
+        public SkillInventory DrawSkills { get { return m_drawSkills; } protected set { m_drawSkills = value; } }
+        protected bool StatusLoadFinished 
+        { 
+            get 
+            { 
+                return m_basicSkills.SkillAssetsLoaded 
+                    && m_drawSkills.SkillAssetsLoaded; 
+            } 
+        }
 
-        
         protected virtual void Start() 
         {
             m_multipliers.OnEffectTrigger += UpdateStats;
@@ -53,6 +67,23 @@ namespace Curry.Game
             m_contextFactoryRef = contextFactory;
             m_current = new CharacterContext(m_initStats);
             m_contextFactoryRef.UpdateContext(m_initStats);
+            LoadSkills();
+        }
+
+        protected virtual void LoadSkills() 
+        {
+            m_basicSkills.OnFinish += OnLoadStepFinish;
+            m_drawSkills.OnFinish += OnLoadStepFinish;
+            m_basicSkills.Init(m_current.BasicSkillAssetRefs, transform);
+            m_drawSkills.Init(m_current.DrawSkilllAssetRefs, transform);
+        }
+
+        protected virtual void OnLoadStepFinish() 
+        {
+            if (StatusLoadFinished) 
+            {
+                OnLoadFinish?.Invoke();
+            }
         }
 
         public virtual void Shutdown() 

@@ -5,10 +5,9 @@ using Curry.Game;
 
 namespace Curry.Skill
 {
-    [Serializable]
-    public class SkillHandler
+    public class SkillActivator
     {
-        [SerializeField] SkillInventory m_skills = default;
+        SkillInventory m_skillSetRef = default;
 
         public bool IsCurrentSkillAvailable
         {
@@ -25,21 +24,17 @@ namespace Curry.Skill
 
         public List<BaseSkill> AllSkills
         {
-            get { return m_skills.Skills; }
+            get { return m_skillSetRef.Skills; }
         }
         protected BaseSkill CurrentSkill
         {
-            get { return m_skills.EquippedSkill; }
+            get { return m_skillSetRef.EquippedSkill; }
         }
 
-        public SkillHandler(List<BaseSkill> preparedSkills)
+        public void Init(BaseCharacter user, SkillInventory preparedSkills, bool hitBoxOn = false)
         {
-            m_skills = new SkillInventory(preparedSkills);
-        }
-
-        public void Init(BaseCharacter user, bool hitBoxOn = false)
-        {
-            foreach(BaseSkill skill in m_skills.Skills) 
+            m_skillSetRef = preparedSkills;
+            foreach (BaseSkill skill in m_skillSetRef.Skills) 
             {
                 skill.Init(user, hitBoxOn);
             }
@@ -72,29 +67,19 @@ namespace Curry.Skill
             CurrentSkill.Interrupt();
         }
 
-        public bool IsSkillAvailable(int index) 
-        {
-            if (index >= m_skills.Skills.Count) 
-            {
-                return false;
-            }
-
-            return m_skills.GetSkill(index).SkillUsable;
-        }
-
         //skill swap ops
         public virtual void ChangeSkill(int index)
         {
-            m_skills.EquippedTraceIndex = index;
+            m_skillSetRef.EquippedTraceIndex = index;
         }
         public virtual void NextSkill()
         {
-            m_skills.EquippedTraceIndex++;
+            m_skillSetRef.EquippedTraceIndex++;
         }
 
         public virtual void PreviousSkill()
         {
-            m_skills.EquippedTraceIndex--;
+            m_skillSetRef.EquippedTraceIndex--;
         }
     }
 }
