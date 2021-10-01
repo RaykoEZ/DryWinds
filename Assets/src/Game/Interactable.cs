@@ -80,8 +80,6 @@ namespace Curry.Game
             {
                 Destroy(gameObject);
             }
-        }
-
-        
+        }      
     }
 }

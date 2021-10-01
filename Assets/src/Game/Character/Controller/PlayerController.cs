@@ -6,21 +6,13 @@ using Curry.Skill;
 
 namespace Curry.Game
 {
-    public class PlayerController : MonoBehaviour
+    public class PlayerController : BaseCharacterController<Player>
     {
         [SerializeField] Player m_player = default;
         [SerializeField] AnimatorHandler m_anim = default;
         [SerializeField] InputActionReference m_movementAction = default;
 
-        protected Coroutine m_currentInputRecovery;
-        protected bool m_disableInput = false;
-
-        void Start()
-        {
-            m_player.OnTakingDamage += OnHitStun;
-            m_player.OnActionInterrupt += OnInterrupt;
-
-        }
+        public override Player Character { get { return m_player; } } 
 
         void Update()
         {
@@ -28,25 +20,22 @@ namespace Curry.Game
             {
                 if (Mouse.current.leftButton.isPressed)
                 {
-                    OnDraw();
+                    Vector2 pos = Character.CurrentCamera.
+                        ScreenToWorldPoint(Mouse.current.position.ReadValue());
+                    TargetPosition target = new TargetPosition(pos);
+                    OnDrawSkill(target);
                 }
 
                 if (m_movementAction.action.ReadValue<Vector2>().sqrMagnitude > 0)
                 {
-                    OnMovement(m_movementAction.action.ReadValue<Vector2>());
+                    Move(m_movementAction.action.ReadValue<Vector2>());
                 }
             }
         }
 
-        public void OnMovement(Vector2 dir) 
-        {
-            float drag = m_player.RigidBody.drag;
-            m_player.RigidBody.AddForce( dir * m_player.CurrentStats.Speed * drag);           
-        }
-
         public void OnBasicSkill(InputAction.CallbackContext c)
         {
-            if (!m_player.BasicSkillActivator.IsCurrentSkillAvailable || m_disableInput) 
+            if (!m_basicSkill.IsCurrentSkillAvailable || m_disableInput) 
             {
                 return;
             }
@@ -60,16 +49,15 @@ namespace Curry.Game
                         {                            
                             // trigger dash windup anim on rmb press
                             m_anim.OnDashWindUp();
-                            m_player.BasicSkillActivator.SkillWindup();
+                            m_basicSkill.SkillWindup();
                         }
                         else
                         {
                             m_anim.OnDashRelease();
-                            Vector2 pos = m_player.CurrentCamera.
+                            Vector2 pos = Character.CurrentCamera.
                                 ScreenToWorldPoint(Mouse.current.position.ReadValue());
                             TargetPosition target = new TargetPosition(pos);
-                            // Dash when rmb released
-                            m_player.BasicSkillActivator.ActivateSkill(target);
+                            OnBasicSkill(target);
                         }
                         break;
                     default:
@@ -87,7 +75,7 @@ namespace Curry.Game
                 {
                     case InputActionPhase.Performed:
                         // Finished a brush stroke
-                        m_player.DrawSkillActivator.InterruptSkill();
+                        m_drawSkill.InterruptSkill();
                         break;
                     default:
                         break;
@@ -95,18 +83,17 @@ namespace Curry.Game
             }
         }
 
-        public void OnDraw() 
+        protected override void OnHitStun(float damage)
         {
-            Vector2 pos = m_player.CurrentCamera.
-                            ScreenToWorldPoint(Mouse.current.position.ReadValue());
-            TargetPosition target = new TargetPosition(pos);
-            VectorParam param = new VectorParam(target);
-            m_player.DrawSkillActivator.ActivateSkill(param);
+            base.OnHitStun(damage);
+            // Interrupt the input stun and reapply the stun timer
+            m_anim.OnTakeDamage();
         }
 
         public void ChangeTrace(int index)
         {
         }
+
         public void NextTrace()
         {
 
@@ -118,29 +105,6 @@ namespace Curry.Game
         }
         #endregion
 
-        protected void OnHitStun(float damage) 
-        {
-            // Interrupt the input stun and reapply the stun timer
-            if (m_currentInputRecovery != null) 
-            {
-                StopCoroutine(m_currentInputRecovery);
-            }
-            OnInterrupt();
-            m_anim.OnTakeDamage();
-            m_currentInputRecovery = StartCoroutine(RecoverInput());
-        }
 
-        protected void OnInterrupt() 
-        {
-            m_player.BasicSkillActivator.InterruptSkill();
-        }
-
-        protected virtual IEnumerator RecoverInput() 
-        {
-            m_disableInput = true;
-            yield return new WaitForSeconds(m_player.CurrentStats.HitRecoveryTime);
-            m_disableInput = false;
-            m_currentInputRecovery = null;
-        }
     }
 }

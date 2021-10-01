@@ -1,16 +1,14 @@
-﻿using System;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
-using UnityEngine.ResourceManagement.AsyncOperations;
 using Curry.Skill;
 
 namespace Curry.Game
 {
-    public delegate void OnStatusLoadFinished();
     public class CharacterStatusManager : MonoBehaviour
     {
         [SerializeField] protected CharacterContext m_initStats;
+        public event OnLoadFinish OnLoaded;
 
         protected CharacterModifierContainer m_multipliers = new CharacterModifierContainer(1f);
         protected CharacterModifierContainer m_adders = new CharacterModifierContainer(0f);
@@ -19,7 +17,6 @@ namespace Curry.Game
         protected CharacterContext m_current;
         protected SkillInventory m_basicSkills = new SkillInventory();
         protected SkillInventory m_drawSkills = new SkillInventory();
-        public event OnStatusLoadFinished OnLoadFinish;
         public CharacterContext BaseStats { get { return new CharacterContext(m_initStats); } }
         // Stats after modifiers
         public virtual CharacterContext PreModifierStats { get { return new CharacterContext(m_current); } }
@@ -62,28 +59,20 @@ namespace Curry.Game
             OnTimeElapsed(Time.deltaTime);
         }
 
-        public virtual void Init(IGameContextFactory<CharacterContext> contextFactory) 
+        public virtual void Init(BaseCharacter user, IGameContextFactory<CharacterContext> contextFactory) 
         {
             m_contextFactoryRef = contextFactory;
             m_current = new CharacterContext(m_initStats);
             m_contextFactoryRef.UpdateContext(m_initStats);
-            LoadSkills();
+            StartCoroutine(LoadAssets(user));
         }
 
-        protected virtual void LoadSkills() 
+        protected virtual IEnumerator LoadAssets(BaseCharacter user) 
         {
-            m_basicSkills.OnFinish += OnLoadStepFinish;
-            m_drawSkills.OnFinish += OnLoadStepFinish;
-            m_basicSkills.Init(m_current.BasicSkillAssetRefs, transform);
-            m_drawSkills.Init(m_current.DrawSkilllAssetRefs, transform);
-        }
-
-        protected virtual void OnLoadStepFinish() 
-        {
-            if (StatusLoadFinished) 
-            {
-                OnLoadFinish?.Invoke();
-            }
+            m_basicSkills.Init(user, m_current.BasicSkillAssetRefs, transform);
+            m_drawSkills.Init(user, m_current.DrawSkilllAssetRefs, transform);
+            yield return new WaitUntil(() => { return StatusLoadFinished; });
+            OnLoaded?.Invoke();
         }
 
         public virtual void Shutdown() 

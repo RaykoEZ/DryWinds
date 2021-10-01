@@ -5,14 +5,15 @@ using Curry.Skill;
 
 namespace Curry.Game
 {
+    public delegate void OnLoadFinish();
     public delegate void OnCharacterHeal(float heal);
     public delegate void OnCharacterTakeDamage(float damage);
+    public delegate void OnCharacterDefeated();
     public delegate void OnCharacterInterrupt();
     public abstract class BaseCharacter : Interactable
     {
         [SerializeField] protected CharacterStatusManager m_statusManager = default;
-        protected SkillActivator m_basicSkills = new SkillActivator();
-        protected SkillActivator m_drawSkills = new SkillActivator();
+        public event OnLoadFinish OnLoaded;
         public virtual CharacterStats BaseStats 
         { 
             get { return m_statusManager.BaseStats.CharacterStats; } 
@@ -25,12 +26,13 @@ namespace Curry.Game
         { 
             get { return m_statusManager.CurrentStats.CharacterStats.CollisionStats; } 
         }
-        public virtual SkillActivator BasicSkillActivator { get { return m_basicSkills; } }
-        public virtual SkillActivator DrawSkillActivator { get { return m_drawSkills; } }
+        public virtual SkillInventory BasicSkills { get { return m_statusManager.BasicSkills; } }
+        public virtual SkillInventory DrawSkills { get { return m_statusManager.DrawSkills; } }
 
         public event OnCharacterHeal OnHealing;
         public event OnCharacterTakeDamage OnTakingDamage;
         public event OnCharacterInterrupt OnActionInterrupt;
+        public event OnCharacterDefeated OnDefeated;
 
         public override void OnKnockback(Vector2 direction, float knockback)
         {
@@ -39,14 +41,8 @@ namespace Curry.Game
 
         public virtual void Init(CharacterContextFactory contextFactory) 
         {
-            m_statusManager.OnLoadFinish += OnCharacterStatusLoaded;
-            m_statusManager.Init(contextFactory);
-        }
-
-        protected virtual void OnCharacterStatusLoaded() 
-        {
-            m_basicSkills.Init(this, m_statusManager.BasicSkills);
-            m_drawSkills.Init(this, m_statusManager.DrawSkills);
+            m_statusManager.OnLoaded += () => { OnLoaded?.Invoke(); };
+            m_statusManager.Init(this, contextFactory);
         }
 
         public virtual void Shutdown() 
@@ -82,6 +78,7 @@ namespace Curry.Game
         }
         public override void OnDefeat()
         {
+            OnDefeated?.Invoke();
             base.OnDefeat();
         }
 

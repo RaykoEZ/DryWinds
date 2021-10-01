@@ -22,9 +22,9 @@ namespace Curry.Skill
             }
         }
 
-        public override void Init(BaseCharacter user, bool hitBoxOn = false)
+        public override void Init(BaseCharacter user)
         {
-            base.Init(user, hitBoxOn);
+            base.Init(user);
             m_traceRef.OnLoadSuccess += (obj) => 
             { 
                 AssetRef = obj;

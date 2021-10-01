@@ -8,7 +8,6 @@ namespace Curry.Skill
     public abstract class BaseSkill : MonoBehaviour, ICharacterAction<SkillParam>
     {
         [SerializeField] protected Animator m_animator = default;
-        [SerializeField] protected Collider2D m_hitBox = default;
         [SerializeField] protected SkillProperty m_skillProperty = default;
 
         public event OnActionFinish OnFinish;
@@ -60,10 +59,9 @@ namespace Curry.Skill
         {      
         }
 
-        public virtual void Init(BaseCharacter user, bool hitBoxOn = false) 
+        public virtual void Init(BaseCharacter user) 
         {
             m_user = user;
-            m_hitBox.enabled = hitBoxOn;
         }
 
         public virtual void SkillWindup()
@@ -145,6 +143,7 @@ namespace Curry.Skill
 
         protected virtual void OnSkillFinish() 
         {
+            m_windupTimer = 0f;
             ActionInProgress = false;
             OnFinish?.Invoke();
         }

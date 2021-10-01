@@ -23,8 +23,7 @@ namespace Curry.Ai
         {
             if (!m_transitionInProgress) 
             {
-                NpcWorldState state = new NpcWorldState();
-                m_current.OnUpdate(m_controller, state);
+                m_current.OnUpdate(m_controller);
             }
             EvaluateGoal();
         }
@@ -50,9 +49,7 @@ namespace Curry.Ai
             m_transitionInProgress = false;
             m_current = next;
             m_current.OnTransition += OnTransitionFinished;
-            NpcWorldState state = new NpcWorldState();
-
-            m_current.OnEnter(m_controller, state);
+            m_current.OnEnter(m_controller);
         }
     }
 

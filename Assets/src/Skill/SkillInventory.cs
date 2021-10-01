@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using Curry.Util;
+using Curry.Game;
 
 namespace Curry.Skill
 {
@@ -12,24 +13,22 @@ namespace Curry.Skill
         protected int m_equippedIndex = 0;
         protected int m_loadFinishedCount = 0;
         protected Transform m_parent;
+        protected BaseCharacter m_userRef;
         protected HashSet<BaseSkill> m_skillSet = new HashSet<BaseSkill>();
         protected List<PrefabLoader> m_loaders = new List<PrefabLoader>();
         public event OnSkillLoadFinish OnFinish;
         public List<BaseSkill> Skills { get { return new List<BaseSkill>(m_skillSet); } }
+        public BaseSkill CurrentSkill { get { return Skills[EquippedIndex]; } }
+
         public bool SkillAssetsLoaded { get; protected set; }
-        public int EquippedTraceIndex { 
+        public int EquippedIndex { 
             get { return m_equippedIndex; } 
             set { m_equippedIndex = Mathf.Clamp(value, 0, m_skillSet.Count - 1); } }
 
-        public BaseSkill EquippedSkill 
-        { get 
-            { 
-                return Skills[EquippedTraceIndex];
-            } 
-        }
 
-        public void Init(List<AssetReference> skillRefs, Transform parent) 
+        public void Init(BaseCharacter user, List<AssetReference> skillRefs, Transform parent) 
         {
+            m_userRef = user;
             m_parent = parent;
             foreach (AssetReference skillRef in skillRefs)
             {
@@ -51,7 +50,9 @@ namespace Curry.Skill
         {
             GameObject skillInstance = Object.Instantiate(obj, m_parent);
             skillInstance.transform.position = Vector3.zero;
-            m_skillSet.Add(skillInstance.GetComponent<BaseSkill>());
+            BaseSkill skillBehaviour = skillInstance.GetComponent<BaseSkill>();
+            skillBehaviour.Init(m_userRef);
+            m_skillSet.Add(skillBehaviour);
             ++m_loadFinishedCount;
 
             if(m_loadFinishedCount == m_loaders.Count) 

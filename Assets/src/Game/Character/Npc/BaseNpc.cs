@@ -6,8 +6,6 @@ using Curry.Ai;
 
 namespace Curry.Game
 {
-    public delegate void OnDefeat();
-
     public class BaseNpc : BaseCharacter
     {
         [SerializeField] float m_averageReactionTime = default;
@@ -19,7 +17,6 @@ namespace Curry.Game
 
         public event OnCharacterDetected OnDetectCharacter;
         public event OnCharacterDetected OnCharacterExitDetection;
-        public event OnDefeat OnDefeated;
         protected virtual float ReactionTime
         {
             get
@@ -34,7 +31,7 @@ namespace Curry.Game
 
         protected virtual void OnEnable()
         {
-            m_statusManager.Init(m_contextFactory);
+            m_statusManager.Init(this, m_contextFactory);
             m_detector.OnDetected += OnTargetDetected;
             m_detector.OnExitDetection += OnLosingTarget;
         }
@@ -48,12 +45,6 @@ namespace Curry.Game
         public override void OnKnockback(Vector2 direction, float knockback) 
         {
             base.OnKnockback(direction, knockback);
-        }
-
-        public override void OnDefeat()
-        {
-            OnDefeated?.Invoke();
-            base.OnDefeat();
         }
 
         // Methods for adding/removing enemies in detection range.

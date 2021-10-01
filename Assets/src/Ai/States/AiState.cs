@@ -21,8 +21,8 @@ namespace Curry.Ai
             return m_basePriority;
         }
 
-        public abstract void OnEnter(NpcController controller, NpcWorldState state);
-        public abstract void OnUpdate(NpcController controller, NpcWorldState state);
+        public abstract void OnEnter(NpcController controller);
+        public abstract void OnUpdate(NpcController controller);
         public virtual void TransitionTo(AiState next) 
         {
             OnTransition?.Invoke(next);

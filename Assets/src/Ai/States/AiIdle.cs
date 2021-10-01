@@ -8,12 +8,12 @@ namespace Curry.Ai
     [CreateAssetMenu(menuName = "Curry/AiState/Idle", order = 0)]
     public class AiIdle : AiState
     {
-        public override void OnEnter(NpcController controller, NpcWorldState state)
+        public override void OnEnter(NpcController controller)
         {
 
         }
 
-        public override void OnUpdate(NpcController controller, NpcWorldState state)
+        public override void OnUpdate(NpcController controller)
         {
         }
 

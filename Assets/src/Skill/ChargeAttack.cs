@@ -41,8 +41,6 @@ namespace Curry.Skill
                     0.4f,
                     (Mathf.Min(m_windupTimer, m_skillProperty.MaxWindupTime)) / m_skillProperty.MaxWindupTime);
                 Vector2 mousePos = posParam.Target;
-
-                m_windupTimer = 0f;
                 m_animator.SetBool("WindingUp", false);
                 m_dashing = StartCoroutine(DashMotion(m_user.RigidBody.position, mousePos, chargeFactor));
             }
