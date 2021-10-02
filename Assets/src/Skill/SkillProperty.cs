@@ -11,8 +11,7 @@ namespace Curry.Skill
         public float SpCost;
         public float CooldownTime;
         public float MaxWindupTime;
-        public float StaminaDamage;
-        public float SpDamage;
+        public float SkillValue;
         public float Knockback;
     }
 }

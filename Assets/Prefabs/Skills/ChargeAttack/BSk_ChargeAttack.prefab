@@ -63,15 +63,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_animator: {fileID: 8596796697600054897}
-  m_hitBox: {fileID: 4048156830801403012}
   m_skillProperty:
     Name: Charge
     TargetOptions: 2
     SpCost: 10
     CooldownTime: 1
     MaxWindupTime: 0.5
-    StaminaDamage: 10
-    SpDamage: 0
+    SkillValue: 10
     Knockback: 5
   m_chargeDuration: 0.2
 --- !u!95 &8596796697600054897

@@ -18,7 +18,6 @@ namespace Curry.Game
             Character.OnActionInterrupt += OnInterrupt;
             Character.OnLoaded += Init;
             Character.OnDefeated += OnDefeated;
-
         }
         protected virtual void Init()
         {

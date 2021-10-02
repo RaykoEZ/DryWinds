@@ -10,7 +10,7 @@ namespace Curry.Skill
         [SerializeField] protected Animator m_animator = default;
         [SerializeField] protected SkillProperty m_skillProperty = default;
 
-        public event OnActionFinish OnFinish;
+        public event OnActionFinish<SkillParam> OnFinish;
 
         protected bool m_onCD = false;
         protected float m_windupTimer = 0f;
@@ -139,13 +139,14 @@ namespace Curry.Skill
 
             IsWindingUp = false;
             m_windupTimer = 0f;
+            OnFinish?.Invoke(this);
         }
 
         protected virtual void OnSkillFinish() 
         {
             m_windupTimer = 0f;
             ActionInProgress = false;
-            OnFinish?.Invoke();
+            OnFinish?.Invoke(this);
         }
 
         protected virtual IEnumerator OnWindup() 

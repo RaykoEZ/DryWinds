@@ -26,8 +26,8 @@ namespace Curry.Game
             }
         }
 
-        public HashSet<BaseCharacter> Enemies { get { return m_enemies; } }
-        public HashSet<BaseCharacter> Allies { get { return m_allies; } }
+        public List<BaseCharacter> Enemies { get { return new List<BaseCharacter>(m_enemies); } }
+        public List<BaseCharacter> Allies { get { return new List<BaseCharacter>(m_allies); } }
 
         protected virtual void OnEnable()
         {

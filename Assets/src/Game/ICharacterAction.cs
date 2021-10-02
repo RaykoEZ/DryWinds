@@ -2,10 +2,10 @@
 
 namespace Curry.Game
 {
-    public delegate void OnActionFinish();
+    public delegate void OnActionFinish<T>(ICharacterAction<T> action) where T : IActionParam;
     public interface ICharacterAction<T> where T : IActionParam
     {
-        event OnActionFinish OnFinish;
+        event OnActionFinish<T> OnFinish;
         bool ActionInProgress { get; }
         void Execute(T param);
         void Interrupt();

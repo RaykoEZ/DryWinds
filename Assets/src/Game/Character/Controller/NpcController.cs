@@ -35,6 +35,10 @@ namespace Curry.Game
         {
             OnTakingDamage?.Invoke(damage);
         }
+        public virtual void EquipBasicSkill(BaseSkill skill)
+        {
+            m_basicSkill.EquipSkill(skill);
+        }
 
         protected virtual IEnumerator UseSkill(ITargetable<Vector2> target) 
         {

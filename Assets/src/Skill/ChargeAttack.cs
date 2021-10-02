@@ -19,7 +19,7 @@ namespace Curry.Skill
         {
             Vector2 diff = hit.RigidBody.position - m_user.RigidBody.position;
             hit.OnKnockback(diff.normalized, m_skillProperty.Knockback);
-            hit.OnTakeDamage(m_skillProperty.StaminaDamage);
+            hit.OnTakeDamage(m_skillProperty.SkillValue);
         }
 
         public override void Execute(SkillParam target)
