@@ -10,21 +10,10 @@ namespace Curry.Game
         protected Camera m_cam = default;
         public Camera CurrentCamera { get { return m_cam; } }
 
-        protected virtual void Update()
-        {
-            OnSPRegen();
-        }
-
         public override void Init(CharacterContextFactory contextFactory)
         {
             base.Init(contextFactory);
             m_cam = Camera.main;
         }
-
-        protected void OnSPRegen() 
-        {
-            m_statusManager.GainSp(Time.deltaTime * CurrentStats.SPRegenPerSec);
-        }
-
     }
 }

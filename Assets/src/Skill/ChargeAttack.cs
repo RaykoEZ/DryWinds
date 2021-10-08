@@ -9,9 +9,9 @@ namespace Curry.Skill
     {
         [SerializeField] protected float m_chargeDuration = default;
         Coroutine m_dashing;
-        public override void SkillWindup() 
+        public override void Windup() 
         {
-            base.SkillWindup();
+            base.Windup();
             m_animator.SetBool("WindingUp", true);
         }
 
@@ -22,7 +22,7 @@ namespace Curry.Skill
             hit.OnTakeDamage(m_skillProperty.SkillValue);
         }
 
-        public override void Execute(SkillParam target)
+        public override void Execute(IActionInput target)
         {
             if(target == null) 
             { 
@@ -33,9 +33,9 @@ namespace Curry.Skill
             base.Execute(target);
         }
 
-        protected override IEnumerator SkillEffect(SkillParam target)
+        protected override IEnumerator SkillEffect(IActionInput target)
         {
-            if(target is VectorParam posParam) 
+            if(target is VectorInput posParam) 
             {
                 float chargeFactor = Mathf.Max(
                     0.4f,
@@ -44,7 +44,6 @@ namespace Curry.Skill
                 m_animator.SetBool("WindingUp", false);
                 m_dashing = StartCoroutine(DashMotion(m_user.RigidBody.position, mousePos, chargeFactor));
             }
-
             yield return null;
         }
 
@@ -68,14 +67,9 @@ namespace Curry.Skill
                 t += Time.deltaTime;
                 yield return null;
             }
-
             rb.drag = oldDrag;
+            yield return null;
             OnSkillFinish();
-        }
-
-        public override void StopIframe() 
-        {
-            base.StopIframe();
         }
 
         public override void Interrupt()

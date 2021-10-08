@@ -11,33 +11,33 @@ namespace Curry.Skill
         {
             get
             {
-                return CurrentSkill != null && CurrentSkill.SkillUsable;
+                return CurrentSkill != null && CurrentSkill.IsUsable;
             }
         }
 
         public SkillProperty CurrentSkillProperties
         {
-            get { return CurrentSkill.SkillProperties; }
+            get { return CurrentSkill.Properties; }
         }
 
-        public BaseSkill CurrentSkill
+        public ICharacterAction<IActionInput, SkillProperty> CurrentSkill
         {
             get; protected set;
         }
 
         public virtual void SkillWindup()
         {
-            CurrentSkill?.SkillWindup();
+            CurrentSkill?.Windup();
         }
 
-        public virtual void EquipSkill(BaseSkill skill) 
-        {
+        public virtual void EquipSkill(ICharacterAction<IActionInput, SkillProperty> skill) 
+        {      
             CurrentSkill = skill;
         }
 
         public virtual void ActivateSkill(ITargetable<Vector2> target, bool isDirection = false, Dictionary<string, object> payload = null)
         {           
-            VectorParam param = new VectorParam(target, payload);
+            VectorInput param = new VectorInput(target, payload);
             CurrentSkill?.Execute(param);
         }
 
@@ -49,7 +49,7 @@ namespace Curry.Skill
 
         public virtual void InterruptSkill()
         {
-            CurrentSkill.Interrupt();
+            CurrentSkill?.Interrupt();
         }
     }
 }

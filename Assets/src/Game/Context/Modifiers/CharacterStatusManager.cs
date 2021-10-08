@@ -69,8 +69,16 @@ namespace Curry.Game
 
         protected virtual IEnumerator LoadAssets(BaseCharacter user) 
         {
-            m_basicSkills.Init(user, m_current.BasicSkillAssetRefs, transform);
-            m_drawSkills.Init(user, m_current.DrawSkilllAssetRefs, transform);
+            if (!m_basicSkills.SkillAssetsLoaded) 
+            {
+                m_basicSkills.Init(user, m_current.BasicSkillAssetRefs, transform);
+            }
+
+            if (!m_drawSkills.SkillAssetsLoaded)
+            {
+                m_drawSkills.Init(user, m_current.DrawSkilllAssetRefs, transform);
+            }
+
             yield return new WaitUntil(() => { return StatusLoadFinished; });
             OnLoaded?.Invoke();
         }

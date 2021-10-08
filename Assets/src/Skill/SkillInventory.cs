@@ -12,19 +12,20 @@ namespace Curry.Skill
     {
         protected int m_equippedIndex = 0;
         protected int m_loadFinishedCount = 0;
+        protected int m_numLoadSceduled = 0;
+
         protected Transform m_parent;
         protected BaseCharacter m_userRef;
-        protected HashSet<BaseSkill> m_skillSet = new HashSet<BaseSkill>();
+        protected List<ICharacterAction<IActionInput, SkillProperty>> m_skillSet = new List<ICharacterAction<IActionInput, SkillProperty>>();
         protected List<PrefabLoader> m_loaders = new List<PrefabLoader>();
         public event OnSkillLoadFinish OnFinish;
-        public List<BaseSkill> Skills { get { return new List<BaseSkill>(m_skillSet); } }
-        public BaseSkill CurrentSkill { get { return Skills[EquippedIndex]; } }
+        public List<ICharacterAction<IActionInput, SkillProperty>> Skills { get { return new List<ICharacterAction<IActionInput, SkillProperty>>(m_skillSet); } }
+        public ICharacterAction<IActionInput, SkillProperty> CurrentSkill { get { return Skills[EquippedIndex]; } }
 
         public bool SkillAssetsLoaded { get; protected set; }
         public int EquippedIndex { 
             get { return m_equippedIndex; } 
             set { m_equippedIndex = Mathf.Clamp(value, 0, m_skillSet.Count - 1); } }
-
 
         public void Init(BaseCharacter user, List<AssetReference> skillRefs, Transform parent) 
         {
@@ -34,14 +35,18 @@ namespace Curry.Skill
             {
                 m_loaders.Add(new PrefabLoader(skillRef, OnLoadFinish));
             }
+            LoadInitialAssets();
+        }
 
+        protected void LoadInitialAssets() 
+        {
             foreach (PrefabLoader loader in m_loaders)
             {
                 loader.LoadAsset();
             }
         }
 
-        public void AddSkill(BaseSkill skill) 
+        public void AddSkill(ICharacterAction<IActionInput, SkillProperty> skill) 
         {
             m_skillSet.Add(skill);
         }
@@ -50,12 +55,18 @@ namespace Curry.Skill
         {
             GameObject skillInstance = Object.Instantiate(obj, m_parent);
             skillInstance.transform.position = Vector3.zero;
-            BaseSkill skillBehaviour = skillInstance.GetComponent<BaseSkill>();
-            skillBehaviour.Init(m_userRef);
-            m_skillSet.Add(skillBehaviour);
+            BaseSkill skill = skillInstance.GetComponent<BaseSkill>();
+            skill.Init(m_userRef);
+            ICharacterAction<IActionInput, SkillProperty> skillAction = skill as ICharacterAction<IActionInput, SkillProperty>;
+            m_skillSet.Add(skillAction);
             ++m_loadFinishedCount;
+            LoadFinishCheck();
+        }
 
-            if(m_loadFinishedCount == m_loaders.Count) 
+        protected void LoadFinishCheck() 
+        {
+            bool finished = m_loadFinishedCount == m_loaders.Count;
+            if (finished)
             {
                 SkillAssetsLoaded = true;
                 OnFinish?.Invoke();

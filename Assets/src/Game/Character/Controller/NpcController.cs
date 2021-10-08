@@ -11,10 +11,11 @@ namespace Curry.Game
         [SerializeField] protected BaseNpc m_npc = default;
         [SerializeField] protected Animator m_anim = default;
 
-        protected Coroutine m_skillCall;
+        Coroutine ActionCall { get; set; }
+        public bool IsReady { get { return ActionCall == null; } }
         public event OnCharacterTakeDamage OnTakingDamage;
         public override BaseNpc Character { get { return m_npc; } }
-
+        
         protected override void Start() 
         {
             base.Start();
@@ -23,31 +24,33 @@ namespace Curry.Game
 
         public override void OnBasicSkill(ITargetable<Vector2> target)
         {
-            // Do not overlap skill calls
-            if (m_skillCall != null)
-            {
-                return;
-            }
-            m_skillCall = StartCoroutine(UseSkill(target));
+            m_anim.SetBool("WindingUp", false);
+            m_basicSkill.ActivateSkill(target);
+        }
+
+        public virtual void OnSkillWindup(BaseCharacter target)
+        {
+            ActionCall = StartCoroutine(UseBasicSkill(target));
         }
 
         protected virtual void OnTakeDamage(float damage)
         {
             OnTakingDamage?.Invoke(damage);
         }
-        public virtual void EquipBasicSkill(BaseSkill skill)
+        public virtual void EquipBasicSkill(ICharacterAction<IActionInput, SkillProperty> skill)
         {
             m_basicSkill.EquipSkill(skill);
         }
 
-        protected virtual IEnumerator UseSkill(ITargetable<Vector2> target) 
+        protected virtual IEnumerator UseBasicSkill(BaseCharacter target)
         {
             m_anim.SetBool("WindingUp", true);
             m_basicSkill.SkillWindup();
-            yield return new WaitForSeconds(Character.BasicSkills.CurrentSkill.SkillProperties.MaxWindupTime);
-            m_anim.SetBool("WindingUp", false);
-            m_basicSkill.ActivateSkill(target);
-            m_skillCall = null;
+            yield return new WaitForSeconds(Character.BasicSkills.CurrentSkill.Properties.MaxWindupTime);
+            TargetPosition pos = new TargetPosition(target.transform.position);
+            OnBasicSkill(pos);
+            ActionCall = null;
         }
+
     }
 }

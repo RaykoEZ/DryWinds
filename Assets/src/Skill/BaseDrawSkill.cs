@@ -14,11 +14,11 @@ namespace Curry.Skill
         protected BaseTrace m_currentTracerBehaviour;
         public virtual float CooldownTime { get { return m_skillProperty.CooldownTime; } }
         public GameObject AssetRef { get; protected set; }
-        public override bool SkillUsable
+        public override bool IsUsable
         {
             get
             {
-                return base.SkillUsable && AssetRef != null;
+                return base.IsUsable && AssetRef != null;
             }
         }
 
@@ -33,20 +33,20 @@ namespace Curry.Skill
             m_traceRef.LoadAsset();
         }
 
-        protected override IEnumerator SkillEffect(SkillParam target = null) 
+        protected override IEnumerator SkillEffect(IActionInput target = null) 
         {
             yield break;
         }
 
-        public override void Execute(SkillParam param)
+        public override void Execute(IActionInput param)
         {
             // If spawned traces is not ready, don't draw 
-            if(!SkillUsable) 
+            if(!IsUsable) 
             {
                 OnSkillFinish();
                 return; 
             }
-            if (param is VectorParam posParam) 
+            if (param is VectorInput posParam) 
             {
                 // start a new stroke if we hold LMB (already drawing) and is moving
                 if (!ActionInProgress)
@@ -56,7 +56,7 @@ namespace Curry.Skill
                     m_currentTracerBehaviour.OnFinish += () => { ActionInProgress = false; };
                 }
                 float length = !ActionInProgress ? 0f : Vector2.Distance(posParam.Target, m_previousDrawPos);
-                float totalCost = length * SkillProperties.SpCost;
+                float totalCost = length * Properties.SpCost;
                 //update mousePos log
                 m_previousDrawPos = posParam.Target;
                 ConsumeResource(totalCost);

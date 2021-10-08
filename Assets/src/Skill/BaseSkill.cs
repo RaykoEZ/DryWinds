@@ -5,12 +5,12 @@ using Curry.Game;
 
 namespace Curry.Skill
 {
-    public abstract class BaseSkill : MonoBehaviour, ICharacterAction<SkillParam>
+    public abstract class BaseSkill : MonoBehaviour, ICharacterAction<IActionInput, SkillProperty>
     {
         [SerializeField] protected Animator m_animator = default;
         [SerializeField] protected SkillProperty m_skillProperty = default;
 
-        public event OnActionFinish<SkillParam> OnFinish;
+        public event OnActionFinish<IActionInput, SkillProperty> OnFinish;
 
         protected bool m_onCD = false;
         protected float m_windupTimer = 0f;
@@ -19,11 +19,11 @@ namespace Curry.Skill
         protected Coroutine m_currentWindup = default;
         protected Coroutine m_coolDown = default;
 
-        public SkillProperty SkillProperties { get { return m_skillProperty; } }
+        public SkillProperty Properties { get { return m_skillProperty; } }
         protected bool IsWindingUp { get; set; }
         public bool ActionInProgress { get; protected set; }
 
-        public virtual bool SkillUsable
+        public virtual bool IsUsable
         {
             get
             {
@@ -31,7 +31,7 @@ namespace Curry.Skill
                     m_user?.CurrentStats.SP >= m_skillProperty.SpCost;
             }
         }
-        protected abstract IEnumerator SkillEffect(SkillParam target);
+        protected abstract IEnumerator SkillEffect(IActionInput target);
 
         protected virtual void OnTriggerEnter2D(Collider2D col)
         {
@@ -48,11 +48,25 @@ namespace Curry.Skill
         {
             Interactable hit = col.gameObject.GetComponent<Interactable>();
 
-            if (hit == null || (hit.Relations & m_skillProperty.TargetOptions) == ObjectRelations.None)
+            if (hit == null)
             {
                 return;
             }
-            OnHit(hit);
+
+            bool isAlly = m_user.Relations == hit.Relations;
+            if (m_skillProperty.TargetOptions == ObjectRelations.Ally &&
+                isAlly) 
+            {
+                OnHit(hit);
+                return;
+            }
+
+            if (m_skillProperty.TargetOptions == ObjectRelations.Enemy &&
+                !isAlly)
+            {
+                OnHit(hit);
+                return;
+            }
         }
 
         public virtual void OnHit(Interactable hit) 
@@ -64,9 +78,9 @@ namespace Curry.Skill
             m_user = user;
         }
 
-        public virtual void SkillWindup()
+        public virtual void Windup()
         {
-            if (!SkillUsable || m_skillProperty.MaxWindupTime == 0) 
+            if (!IsUsable || m_skillProperty.MaxWindupTime == 0) 
             {
                 return;
             }
@@ -79,15 +93,16 @@ namespace Curry.Skill
             }
 
             IsWindingUp = true;
+            ActionInProgress = true;
             m_currentWindup = StartCoroutine(OnWindup());
         }
 
         // The logics and interactions of the skill on each target
         /// @param target: initial target for skill
-        public virtual void Execute(SkillParam param)
+        public virtual void Execute(IActionInput param)
         {
             IsWindingUp = false;
-            if (SkillUsable && m_user != null)
+            if (IsUsable && m_user != null)
             {
                 ActionInProgress = true;
                 ConsumeResource(m_skillProperty.SpCost);
@@ -106,17 +121,7 @@ namespace Curry.Skill
                 OnSkillFinish();
             }
         }
-        public virtual void StartIframe()
-        {
-            int iframeLayer = LayerMask.NameToLayer("IFrame");
-            m_user.gameObject.layer = iframeLayer;
-        }
 
-        public virtual void StopIframe()
-        {
-            // Set user back to default layer to collide with other characters
-            m_user.gameObject.layer = 0;
-        }
         protected virtual void CoolDown() 
         {
             if(m_coolDown == null) 
@@ -138,6 +143,7 @@ namespace Curry.Skill
             }
 
             IsWindingUp = false;
+            ActionInProgress = false;
             m_windupTimer = 0f;
             OnFinish?.Invoke(this);
         }
@@ -151,7 +157,7 @@ namespace Curry.Skill
 
         protected virtual IEnumerator OnWindup() 
         { 
-            while(IsWindingUp && SkillUsable) 
+            while(IsWindingUp && IsUsable) 
             {
                 m_windupTimer += Time.deltaTime;
                 yield return new WaitForFixedUpdate();

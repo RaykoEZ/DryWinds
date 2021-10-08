@@ -157,16 +157,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_animator: {fileID: 5751947333654081876}
-  m_hitBox: {fileID: 5751947332779855328}
   m_skillProperty:
-    Name: BaseDraw
-    TargetOptions: 0
-    SpCost: 3
-    CooldownTime: 1
-    MaxWindupTime: 0
-    StaminaDamage: 0
-    SpDamage: 0
-    Knockback: 0
+    m_name: BaseDraw
+    m_targetOptions: -1
+    m_spCost: 5
+    m_cooldownTime: 1
+    m_maxWindupTime: 0
+    m_skillValue: 0
+    m_knockback: 1
   m_traceRef:
     m_assetRef:
       m_AssetGUID: c429d02b3f4902d4591f75325c991b40

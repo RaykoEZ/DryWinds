@@ -6,11 +6,7 @@ using Curry.Game;
 
 namespace Curry.Ai
 {
-    public class HunterStateMachine : AiStateMachine 
+    public class HunterStateMachine : BaseAiStateMachine 
     {
-        protected override void EvaluateGoal()
-        {
-
-        }
     }
 }

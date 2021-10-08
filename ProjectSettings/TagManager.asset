@@ -8,11 +8,11 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - IFrame
+  - 
   - Water
   - UI
   - Environment
-  - 
+  - AiDetection
   - 
   - 
   - 

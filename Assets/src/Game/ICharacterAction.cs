@@ -2,16 +2,19 @@
 
 namespace Curry.Game
 {
-    public delegate void OnActionFinish<T>(ICharacterAction<T> action) where T : IActionParam;
-    public interface ICharacterAction<T> where T : IActionParam
+    public delegate void OnActionFinish<T, T1>(ICharacterAction<T, T1> action) where T : IActionInput where T1 : IActionProperty;
+    public interface ICharacterAction<T, T1> where T : IActionInput where T1 : IActionProperty
     {
-        event OnActionFinish<T> OnFinish;
+        event OnActionFinish<T, T1> OnFinish;
+        bool IsUsable { get; }
         bool ActionInProgress { get; }
+        T1 Properties { get; }
+        void Windup();
         void Execute(T param);
         void Interrupt();
     }
 
-    public interface IActionParam 
+    public interface IActionInput 
     { 
         Dictionary<string, object> Payload { get; }
     }

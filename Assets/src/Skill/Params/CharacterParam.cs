@@ -3,7 +3,7 @@ using Curry.Game;
 
 namespace Curry.Skill
 {
-    public class CharacterParam : SkillParam
+    public class CharacterParam : SkillInput
     {
         public BaseCharacter Target { get; private set; }
 

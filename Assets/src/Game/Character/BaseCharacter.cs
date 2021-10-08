@@ -34,6 +34,11 @@ namespace Curry.Game
         public event OnCharacterInterrupt OnActionInterrupt;
         public event OnCharacterDefeated OnDefeated;
 
+        protected virtual void Update()
+        {
+            OnSPRegen();
+        }
+
         public override void OnKnockback(Vector2 direction, float knockback)
         {
             m_rigidbody.AddForce(knockback * direction, ForceMode2D.Impulse);
@@ -67,6 +72,11 @@ namespace Curry.Game
             m_statusManager.LoseSp(val);
 
         }
+        protected virtual void OnSPRegen()
+        {
+            m_statusManager.GainSp(Time.deltaTime * CurrentStats.SPRegenPerSec);
+        }
+
         public virtual void OnGainSp(float val)
         {
             m_statusManager.GainSp(val);

@@ -9,9 +9,13 @@ namespace Curry.Ai
     {
         public static BaseCharacter WeakestCharacter(List<BaseCharacter> characters) 
         {
-            BaseCharacter target = characters[0];
-            if (characters.Count > 1)
+            if(characters == null || characters.Count == 0) 
             {
+                return null;
+            }
+            else
+            {
+                BaseCharacter target = characters[0];
                 for (int i = 1; i < characters.Count; ++i)
                 {
                     BaseCharacter current = characters[i];
@@ -20,8 +24,8 @@ namespace Curry.Ai
                         target = current;
                     }
                 }
+                return target;
             }
-            return target;
         }
     }
 }
