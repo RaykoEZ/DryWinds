@@ -42,11 +42,6 @@ namespace Curry.Game
             m_detector.OnExitDetection -= OnLosingTarget;
         }
 
-        public override void OnKnockback(Vector2 direction, float knockback) 
-        {
-            base.OnKnockback(direction, knockback);
-        }
-
         // Methods for adding/removing enemies in detection range.
         protected virtual void OnTargetDetected(BaseCharacter character)
         {

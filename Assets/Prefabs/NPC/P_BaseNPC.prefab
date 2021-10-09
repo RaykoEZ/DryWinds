@@ -309,7 +309,7 @@ MonoBehaviour:
       m_hitRecoveryTime: 5
       m_collisionStats:
         m_contactDamage: 0
-        m_knockback: 3
+        m_knockback: 1
     m_basicSkillRefs:
     - m_AssetGUID: 7fdf6cff9c0eb9642870a1ddc3aba327
       m_SubObjectName: 

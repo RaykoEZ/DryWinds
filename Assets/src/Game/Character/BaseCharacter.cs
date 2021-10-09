@@ -39,11 +39,6 @@ namespace Curry.Game
             OnSPRegen();
         }
 
-        public override void OnKnockback(Vector2 direction, float knockback)
-        {
-            m_rigidbody.AddForce(knockback * direction, ForceMode2D.Impulse);
-        }
-
         public virtual void Init(CharacterContextFactory contextFactory) 
         {
             m_statusManager.OnLoaded += () => { OnLoaded?.Invoke(); };
@@ -100,28 +95,6 @@ namespace Curry.Game
             }
 
             m_statusManager.AddModifier(mod);
-        }
-
-        protected override void OnClash(Collision2D collision)
-        {
-            Interactable incomingInterable = collision.gameObject.GetComponent<Interactable>();
-            if (incomingInterable != null)
-            {
-                ContactPoint2D contact = collision.GetContact(0);
-                Vector2 dir = contact.normal.normalized;
-
-                if (incomingInterable.Relations != Relations)
-                {
-                    float staminaRating = (CurrentStats.MaxStamina / Mathf.Max(1f, CurrentStats.Stamina));
-                    staminaRating = Mathf.Min(5f, staminaRating);
-
-                    OnKnockback(dir, staminaRating * incomingInterable.CurrentCollisionStats.Knockback);
-                }
-                else
-                {
-                    OnKnockback(dir, incomingInterable.CurrentCollisionStats.Knockback);
-                }
-            }
         }
     }
 }

@@ -13,7 +13,7 @@ namespace Curry.Ai
     {
         [SerializeField] protected float m_basePriority = default;
 
-        public virtual bool PreCondition(NpcController controller, NpcWorldState args)
+        public virtual bool PreCondition(NpcWorldState args)
         {
             return true;
         }

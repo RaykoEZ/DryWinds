@@ -8,7 +8,7 @@ namespace Curry.Ai
 {
     public abstract class AiSkill : AiAction<IActionInput, SkillProperty>
     {
-        public override bool PreCondition(NpcController controller, NpcWorldState args)
+        public override bool PreCondition(NpcWorldState args)
         {
             return args.Enemies.Count > 0 && args.BasicSkills.Count > 0;
         }

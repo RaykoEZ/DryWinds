@@ -20,6 +20,14 @@ namespace Curry.Ai
                     1.1f * m_averageReactionInterval);
             }
         }
+
+        protected virtual bool IsReady
+        {
+            get 
+            {
+                return m_controller.IsReady && !m_current.ActionInProgress;
+            }
+        }
         float m_evalTimer = 0f; 
         protected AiState m_current;
         NpcWorldState m_worldStateSnapshot = new NpcWorldState();
@@ -38,7 +46,7 @@ namespace Curry.Ai
                 List<AiState> validActions = new List<AiState>();
                 foreach (AiState state in m_otherActions)
                 {
-                    if (state.PreCondition(m_controller, WorldStateSnapshot))
+                    if (state.PreCondition(WorldStateSnapshot))
                     {
                         validActions.Add(state);
                     }
@@ -73,7 +81,7 @@ namespace Curry.Ai
         protected virtual void Update() 
         {
             m_evalTimer += Time.deltaTime;
-            if (m_evalTimer > m_defaultFrequency && !m_current.ActionInProgress) 
+            if (m_evalTimer > m_defaultFrequency && IsReady) 
             {
                EvaluateActions();
                m_evalTimer = 0f;
