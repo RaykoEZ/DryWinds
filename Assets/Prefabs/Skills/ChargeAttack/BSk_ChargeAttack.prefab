@@ -49,7 +49,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Radius: 0.75
 --- !u!114 &1162902964026411203
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -69,8 +69,8 @@ MonoBehaviour:
     m_spCost: 10
     m_cooldownTime: 2
     m_maxWindupTime: 1
-    m_skillValue: 10
-    m_knockback: 1
+    m_actionValue: 10
+    m_knockback: 10
   m_chargeDuration: 0.2
 --- !u!95 &8596796697600054897
 Animator:

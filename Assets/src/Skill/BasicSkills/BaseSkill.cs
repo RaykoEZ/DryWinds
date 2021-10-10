@@ -5,12 +5,12 @@ using Curry.Game;
 
 namespace Curry.Skill
 {
-    public abstract class BaseSkill : MonoBehaviour, ICharacterAction<IActionInput, SkillProperty>
+    public abstract class BaseSkill : MonoBehaviour, ICharacterAction<IActionInput>
     {
         [SerializeField] protected Animator m_animator = default;
-        [SerializeField] protected SkillProperty m_skillProperty = default;
+        [SerializeField] protected ActionProperty m_skillProperty = default;
 
-        public event OnActionFinish<IActionInput, SkillProperty> OnFinish;
+        public event OnActionFinish<IActionInput> OnFinish;
 
         protected bool m_onCD = false;
         protected float m_windupTimer = 0f;
@@ -19,7 +19,7 @@ namespace Curry.Skill
         protected Coroutine m_currentWindup = default;
         protected Coroutine m_coolDown = default;
 
-        public SkillProperty Properties { get { return m_skillProperty; } }
+        public ActionProperty Properties { get { return m_skillProperty; } }
         protected bool IsWindingUp { get; set; }
         public bool ActionInProgress { get; protected set; }
 

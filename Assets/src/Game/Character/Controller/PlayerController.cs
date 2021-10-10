@@ -16,14 +16,13 @@ namespace Curry.Game
 
         void Update()
         {
-            if (!m_disableInput) 
+            if (IsReady) 
             {
                 if (Mouse.current.leftButton.isPressed)
                 {
                     Vector2 pos = Character.CurrentCamera.
                         ScreenToWorldPoint(Mouse.current.position.ReadValue());
-                    TargetPosition target = new TargetPosition(pos);
-                    OnDrawSkill(target);
+                    OnDrawSkill(pos);
                 }
 
                 if (m_movementAction.action.ReadValue<Vector2>().sqrMagnitude > 0)
@@ -35,7 +34,7 @@ namespace Curry.Game
 
         public void OnBasicSkill(InputAction.CallbackContext c)
         {
-            if (!m_basicSkill.IsCurrentSkillAvailable || m_disableInput) 
+            if (!m_basicSkill.IsCurrentSkillAvailable || !IsReady) 
             {
                 return;
             }
@@ -56,8 +55,7 @@ namespace Curry.Game
                             m_anim.OnDashRelease();
                             Vector2 pos = Character.CurrentCamera.
                                 ScreenToWorldPoint(Mouse.current.position.ReadValue());
-                            TargetPosition target = new TargetPosition(pos);
-                            OnBasicSkill(target);
+                            OnBasicSkill(pos);
                         }
                         break;
                     default:
@@ -82,29 +80,13 @@ namespace Curry.Game
                 }
             }
         }
+        #endregion
 
-        protected override void OnHitStun(float damage)
+        protected override void OnInterrupt()
         {
-            base.OnHitStun(damage);
+            base.OnInterrupt();
             // Interrupt the input stun and reapply the stun timer
             m_anim.OnTakeDamage();
         }
-
-        public void ChangeTrace(int index)
-        {
-        }
-
-        public void NextTrace()
-        {
-
-        }
-
-        public void PreviousTrace()
-        {
-
-        }
-        #endregion
-
-
     }
 }

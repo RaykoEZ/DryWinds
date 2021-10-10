@@ -16,8 +16,7 @@ namespace Curry.Ai
         {
             get
             {
-                return Random.Range(0.9f * m_averageReactionInterval, 
-                    1.1f * m_averageReactionInterval);
+                return Random.Range(0.7f, 1.2f) * m_averageReactionInterval;
             }
         }
 

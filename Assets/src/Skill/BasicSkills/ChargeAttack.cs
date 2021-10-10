@@ -17,9 +17,18 @@ namespace Curry.Skill
 
         public override void OnHit(Interactable hit)
         {
-            Vector2 diff = hit.RigidBody.position - m_user.RigidBody.position;
-            hit.OnKnockback(diff.normalized, m_skillProperty.Knockback);
-            hit.OnTakeDamage(m_skillProperty.SkillValue);
+            if (m_dashing != null) 
+            {
+                StopCoroutine(m_dashing);
+                OnSkillFinish();
+            }
+
+            Vector2 diff = m_user.RigidBody.position - hit.RigidBody.position;
+            m_user.RigidBody.velocity = Vector2.zero;
+            hit.RigidBody.velocity = Vector2.zero;
+            m_user.OnKnockback(diff.normalized, 0.75f * m_skillProperty.Knockback);
+            hit.OnKnockback(-diff.normalized, m_skillProperty.Knockback);
+            hit.OnTakeDamage(m_skillProperty.ActionValue);
         }
 
         public override void Execute(IActionInput target)
@@ -58,27 +67,8 @@ namespace Curry.Skill
                 t += Time.deltaTime;
                 yield return null;
             }
-
-            t = 0f;
-            float oldDrag = rb.drag;
-            while (t < m_chargeDuration)
-            {
-                rb.drag += 0.5f;
-                t += Time.deltaTime;
-                yield return null;
-            }
-            rb.drag = oldDrag;
             yield return null;
             OnSkillFinish();
-        }
-
-        public override void Interrupt()
-        {
-            if(m_dashing != null) 
-            {
-                StopCoroutine(m_dashing);
-            }
-            base.Interrupt();
         }
     }
 }

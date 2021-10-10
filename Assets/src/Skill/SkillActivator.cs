@@ -15,12 +15,12 @@ namespace Curry.Skill
             }
         }
 
-        public SkillProperty CurrentSkillProperties
+        public ActionProperty CurrentSkillProperties
         {
             get { return CurrentSkill.Properties; }
         }
 
-        public ICharacterAction<IActionInput, SkillProperty> CurrentSkill
+        public ICharacterAction<IActionInput> CurrentSkill
         {
             get; protected set;
         }
@@ -30,20 +30,14 @@ namespace Curry.Skill
             CurrentSkill?.Windup();
         }
 
-        public virtual void EquipSkill(ICharacterAction<IActionInput, SkillProperty> skill) 
+        public virtual void EquipSkill(ICharacterAction<IActionInput> skill) 
         {      
             CurrentSkill = skill;
         }
 
-        public virtual void ActivateSkill(ITargetable<Vector2> target, bool isDirection = false, Dictionary<string, object> payload = null)
+        public virtual void ActivateSkill(Vector2 target, bool isDirection = false, Dictionary<string, object> payload = null)
         {           
             VectorInput param = new VectorInput(target, payload);
-            CurrentSkill?.Execute(param);
-        }
-
-        public virtual void ActivateSkill(ITargetable<BaseCharacter> target, bool isDirection = false, Dictionary<string, object> payload = null)
-        {
-            CharacterParam param = new CharacterParam(target, payload);
             CurrentSkill?.Execute(param);
         }
 

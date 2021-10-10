@@ -10,10 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 6563105090482654035}
   - component: {fileID: 346624158060485392}
-  - component: {fileID: 8327469527283527605}
   - component: {fileID: 9087464718448856407}
   - component: {fileID: 6249534485216099116}
   - component: {fileID: 3837881217764659054}
+  - component: {fileID: 2929046991183055066}
   m_Layer: 6
   m_Name: BaseTrace
   m_TagString: Untagged
@@ -55,26 +55,6 @@ EdgeCollider2D:
   m_AdjacentEndPoint: {x: 0, y: 0}
   m_UseAdjacentStartPoint: 0
   m_UseAdjacentEndPoint: 0
---- !u!114 &8327469527283527605
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6937999071832126887}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d4902fe81710101469cae2dcf62341a8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_rigidbody: {fileID: 3837881217764659054}
-  m_hurtBox: {fileID: 346624158060485392}
-  m_relations: 0
-  m_lineRenderer: {fileID: 9087464718448856407}
-  m_edgeCollider: {fileID: 346624158060485392}
-  m_decayPerInterval: 0.05
-  m_decayWait: 0.05
-  m_durability: 3
 --- !u!120 &9087464718448856407
 LineRenderer:
   m_ObjectHideFlags: 0
@@ -211,3 +191,23 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 7
+--- !u!114 &2929046991183055066
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6937999071832126887}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4992002a094cde24fb8bd0ad37305548, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_rigidbody: {fileID: 3837881217764659054}
+  m_hurtBox: {fileID: 346624158060485392}
+  m_relations: -1
+  m_lineRenderer: {fileID: 9087464718448856407}
+  m_edgeCollider: {fileID: 346624158060485392}
+  m_decayPerInterval: 0.2
+  m_decayWait: 0.1
+  m_durability: 3

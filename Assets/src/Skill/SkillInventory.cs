@@ -16,11 +16,11 @@ namespace Curry.Skill
 
         protected Transform m_parent;
         protected BaseCharacter m_userRef;
-        protected List<ICharacterAction<IActionInput, SkillProperty>> m_skillSet = new List<ICharacterAction<IActionInput, SkillProperty>>();
+        protected List<ICharacterAction<IActionInput>> m_skillSet = new List<ICharacterAction<IActionInput>>();
         protected List<PrefabLoader> m_loaders = new List<PrefabLoader>();
         public event OnSkillLoadFinish OnFinish;
-        public List<ICharacterAction<IActionInput, SkillProperty>> Skills { get { return new List<ICharacterAction<IActionInput, SkillProperty>>(m_skillSet); } }
-        public ICharacterAction<IActionInput, SkillProperty> CurrentSkill { get { return Skills[EquippedIndex]; } }
+        public List<ICharacterAction<IActionInput>> Skills { get { return new List<ICharacterAction<IActionInput>>(m_skillSet); } }
+        public ICharacterAction<IActionInput> CurrentSkill { get { return Skills[EquippedIndex]; } }
 
         public bool SkillAssetsLoaded { get; protected set; }
         public int EquippedIndex { 
@@ -46,7 +46,7 @@ namespace Curry.Skill
             }
         }
 
-        public void AddSkill(ICharacterAction<IActionInput, SkillProperty> skill) 
+        public void AddSkill(ICharacterAction<IActionInput> skill) 
         {
             m_skillSet.Add(skill);
         }
@@ -57,7 +57,7 @@ namespace Curry.Skill
             skillInstance.transform.position = Vector3.zero;
             BaseSkill skill = skillInstance.GetComponent<BaseSkill>();
             skill.Init(m_userRef);
-            ICharacterAction<IActionInput, SkillProperty> skillAction = skill as ICharacterAction<IActionInput, SkillProperty>;
+            ICharacterAction<IActionInput> skillAction = skill as ICharacterAction<IActionInput>;
             m_skillSet.Add(skillAction);
             ++m_loadFinishedCount;
             LoadFinishCheck();

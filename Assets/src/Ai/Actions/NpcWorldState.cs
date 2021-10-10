@@ -9,15 +9,15 @@ namespace Curry.Ai
         public CharacterStats CurrentStats { get; set; }
         public List<BaseCharacter> Enemies { get; set; }
         public List<BaseCharacter> Allies { get; set; }
-        public List<ICharacterAction<IActionInput, SkillProperty>> BasicSkills { get; set; }
-        public List<ICharacterAction<IActionInput, SkillProperty>> DrawSkills { get; set; }
+        public List<ICharacterAction<IActionInput>> BasicSkills { get; set; }
+        public List<ICharacterAction<IActionInput>> DrawSkills { get; set; }
 
         public NpcWorldState(
             CharacterStats currentStats,
             List<BaseCharacter> enemies,
             List<BaseCharacter> allies,
-            List<ICharacterAction<IActionInput, SkillProperty>> basicSkills,
-            List<ICharacterAction<IActionInput, SkillProperty>> drawSkills)
+            List<ICharacterAction<IActionInput>> basicSkills,
+            List<ICharacterAction<IActionInput>> drawSkills)
         {
             CurrentStats = currentStats;
             Enemies = enemies;

@@ -8,22 +8,11 @@ namespace Curry.Ai
 {
     [Serializable]
     [CreateAssetMenu(menuName = "Curry/AiState/Idle", order = 0)]
-    public class AiIdle : AiAction<IActionInput, SkillProperty>
+    public class AiIdle : AiAction<IActionInput>
     {
-        public override ICharacterAction<IActionInput, SkillProperty> Execute(NpcController controller, NpcWorldState state)
+        public override ICharacterAction<IActionInput> Execute(NpcController controller, NpcWorldState state)
         {
             return null;
-        }
-
-        protected override float ActionScore(ICharacterAction<IActionInput, SkillProperty> action, BaseCharacter target)
-        {
-            throw new NotImplementedException();
-        }
-
-        public  override ICharacterAction<IActionInput, SkillProperty> ChooseAction(
-            List<ICharacterAction<IActionInput, SkillProperty>> skills, BaseCharacter target)
-        {
-            throw new NotImplementedException();
         }
     }
 }

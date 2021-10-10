@@ -5,10 +5,11 @@ using Curry.Skill;
 namespace Curry.Game
 {
     public abstract class BaseCharacterController<T> : MonoBehaviour where T : BaseCharacter
-    { 
+    {
+        public virtual bool IsReady { get { return ActionCall == null; } }
+        protected Coroutine ActionCall { get; set; }
         public abstract T Character { get; }
-        protected bool m_disableInput = false;
-        protected Coroutine m_currentInputRecovery;
+
         protected SkillActivator m_basicSkill = new SkillActivator();
         protected SkillActivator m_drawSkill = new SkillActivator();
 
@@ -26,28 +27,68 @@ namespace Curry.Game
         }
         public virtual void Move(Vector2 dir)
         {
-            float drag = Character.RigidBody.drag;
-            Character.RigidBody.AddForce(dir * Character.CurrentStats.Speed * drag);
+            if (IsReady) 
+            {
+                float drag = Character.RigidBody.drag;
+                Character.RigidBody.AddForce(dir * Character.CurrentStats.Speed * drag);
+            }
         }
 
-        public virtual void OnDrawSkill(ITargetable<Vector2> target) 
+        public virtual void MoveTo(Vector2 pos)
         {
-            m_drawSkill.ActivateSkill(target);
-        }
-        public virtual void OnBasicSkill(ITargetable<Vector2> target) 
-        {
-            m_basicSkill.ActivateSkill(target);
+            if (IsReady) 
+            {
+                ActionCall = StartCoroutine(Movement(pos));
+            }
         }
 
-        protected virtual void OnHitStun(float damage)
+        protected virtual IEnumerator Movement(Vector2 pos)
+        {
+            float t = 0f;
+            float distance = Vector2.Distance(pos, transform.position);
+            float duration = distance / Character.CurrentStats.Speed;
+            while (t < duration) 
+            {
+                t += Time.deltaTime;
+                Character.transform.position = Vector2.Lerp(transform.position, pos, t/duration);
+                yield return null;
+            }
+            ActionCall = null;
+        }
+
+        public virtual void OnDrawSkill(Vector2 target) 
+        {
+            if (IsReady)
+            {
+                m_drawSkill.ActivateSkill(target);
+            }
+        }
+        public virtual void OnBasicSkill(Vector2 target) 
+        {
+            if (IsReady)
+            {
+                m_basicSkill.ActivateSkill(target);
+            }
+        }
+
+        public virtual void OnBasicSkill(BaseCharacter target)
+        {
+            if (IsReady)
+            {
+                m_basicSkill.ActivateSkill(target.transform.position);
+            }
+        }
+
+        protected void OnHitStun(float damage)
         {
             // Interrupt the input stun and reapply the stun timer
-            if (m_currentInputRecovery != null)
+            if (ActionCall != null)
             {
-                StopCoroutine(m_currentInputRecovery);
+                StopCoroutine(ActionCall);
+                ActionCall = null;
             }
             OnInterrupt();
-            m_currentInputRecovery = StartCoroutine(RecoverInput());
+            ActionCall = StartCoroutine(RecoverInput());
         }
         protected virtual void OnInterrupt()
         {
@@ -61,10 +102,8 @@ namespace Curry.Game
 
         protected IEnumerator RecoverInput()
         {
-            m_disableInput = true;
             yield return new WaitForSeconds(Character.CurrentStats.HitRecoveryTime);
-            m_disableInput = false;
-            m_currentInputRecovery = null;
+            ActionCall = null;
         }
     }
 }

@@ -8,10 +8,10 @@ namespace Curry.Skill
     public class VectorInput : SkillInput
     {
         public Vector2 Target { get; private set; }
-        public VectorInput(ITargetable<Vector2> target, Dictionary<string, object> payload = null) 
+        public VectorInput(Vector2 target, Dictionary<string, object> payload = null) 
             : base(payload) 
         {
-            Target = target.Value;
+            Target = target;
         }
     }
 }
