@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Curry.Ai;
+using Pathfinding;
 
 namespace Curry.Game
 {
