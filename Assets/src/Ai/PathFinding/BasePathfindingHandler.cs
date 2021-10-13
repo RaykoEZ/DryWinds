@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,6 +11,9 @@ namespace Curry.Ai
     public class BasePathfindingHandler : MonoBehaviour, IPathHandler
     {
         Coroutine m_follow = default;
+
+        public virtual bool TargetReached { get { return PathingAi.reachedDestination; } }
+
         protected virtual IAstarAI PathingAi
         {
             get { return GetComponent<IAstarAI>(); }
@@ -22,11 +24,11 @@ namespace Curry.Ai
         }
 
         public event OnPathPlanned OnPlanned;
-        public event OnDestinationReached OnReached;
 
         protected virtual void OnEnable() 
         {
             PathingAi.canMove = false;
+            PathingAi.canSearch = false;
             Seeker.pathCallback += PlannerFinished;
         }
 
@@ -42,26 +44,29 @@ namespace Curry.Ai
         protected virtual void DestinationReached()
         {
             PathingAi.canMove = false;
-            OnReached?.Invoke();
+            PathingAi.canSearch = false;
         }
 
         public virtual void PlanPath(Transform target)
         {
+            PathingAi.canSearch = true;
             PathingAi.destination = target.position;
         }
 
         public virtual void PlanPath(Vector3 target)
         {
+            PathingAi.canSearch = true;
             PathingAi.destination = target;
         }
 
         public virtual void FollowPlannedPath()
         {
-            if(m_follow == null) 
+            if(m_follow != null) 
             {
-                PathingAi.canMove = true;
-                m_follow = StartCoroutine(OnFollowPath());
+                StopCoroutine(m_follow);
             }
+            PathingAi.canMove = true;
+            m_follow = StartCoroutine(OnFollowPath());
         }
 
         protected virtual IEnumerator OnFollowPath() 

@@ -13,47 +13,34 @@ namespace Curry.Game
         protected SkillActivator m_basicSkill = new SkillActivator();
         protected SkillActivator m_drawSkill = new SkillActivator();
 
-        protected virtual void Start()
+        protected virtual void OnEnable()
         {
             Character.OnTakingDamage += OnHitStun;
             Character.OnActionInterrupt += OnInterrupt;
             Character.OnLoaded += Init;
             Character.OnDefeated += OnDefeated;
         }
+
+        protected virtual void OnDisable() 
+        {
+            Character.OnTakingDamage -= OnHitStun;
+            Character.OnActionInterrupt -= OnInterrupt;
+            Character.OnLoaded -= Init;
+            Character.OnDefeated -= OnDefeated;
+        }
+
         protected virtual void Init()
         {
             m_basicSkill.EquipSkill(Character.BasicSkills.CurrentSkill);
             m_drawSkill.EquipSkill(Character.DrawSkills.CurrentSkill);
         }
-        public virtual void Move(Vector2 dir)
+        public virtual void Move(Vector2 target)
         {
             if (IsReady) 
             {
                 float drag = Character.RigidBody.drag;
-                Character.RigidBody.AddForce(dir * Character.CurrentStats.Speed * drag);
+                Character.RigidBody.AddForce(target * Character.CurrentStats.Speed * drag);
             }
-        }
-
-        public virtual void MoveTo(Vector2 pos)
-        {
-            if (IsReady) 
-            {
-                ActionCall = StartCoroutine(Movement(pos));
-            }
-        }
-
-        protected virtual IEnumerator Movement(Vector2 pos)
-        {
-            float t = 0f;
-            float distance = Vector2.Distance(pos, transform.position);
-            float duration = distance / Character.CurrentStats.Speed;
-            while (t < duration) 
-            {
-                t += Time.deltaTime;
-                Character.transform.position = Vector2.Lerp(transform.position, pos, t/duration);
-                yield return null;
-            }
-            ActionCall = null;
         }
 
         public virtual void OnDrawSkill(Vector2 target) 

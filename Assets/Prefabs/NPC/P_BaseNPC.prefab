@@ -39,10 +39,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6431847256417144376}
-  - component: {fileID: 8562595953941160831}
   - component: {fileID: 752459911173138847}
   m_Layer: 0
-  m_Name: Controller
+  m_Name: StateMachine
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -62,20 +61,6 @@ Transform:
   m_Father: {fileID: 6053750748373758017}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8562595953941160831
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1272379081076532926}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c4aac0b1a041d564a9ebb95df11e5eb4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_npc: {fileID: 7557477938998303306}
-  m_anim: {fileID: 4052941514383100218}
 --- !u!114 &752459911173138847
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -90,7 +75,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_defaultFrequency: 0.5
   m_averageReactionInterval: 0.5
-  m_controller: {fileID: 8562595953941160831}
+  m_controller: {fileID: 126701949216335967}
   m_idle:
     m_action: {fileID: 11400000, guid: 54014485234b0c84bbc07e44fa267cb9, type: 2}
   m_otherActions:
@@ -226,6 +211,96 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &126701949216335967
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8869289004023852315}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4aac0b1a041d564a9ebb95df11e5eb4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_npc: {fileID: 7557477938998303306}
+  m_anim: {fileID: 4052941514383100218}
+--- !u!114 &915293743172950041
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8869289004023852315}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 373b52eb9bf8c40f785bb6947a1aee66, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 1
+  drawGizmos: 1
+  detailedGizmos: 0
+  startEndModifier:
+    addPoints: 0
+    exactStartPoint: 3
+    exactEndPoint: 3
+    useRaycasting: 0
+    mask:
+      serializedVersion: 2
+      m_Bits: 4294967295
+    useGraphRaycasting: 0
+  traversableTags: -1
+  tagPenalties: 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+  graphMask:
+    value: -1
+--- !u!114 &5924811866286357854
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8869289004023852315}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 740561d4b367fa54a82fbf5fec8a2415, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &6245671203566449450
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8869289004023852315}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6eb1402c17e84a9282a7f0f62eb584f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 2
+  radius: 0.5
+  height: 0.5
+  repathRate: 1
+  canSearch: 1
+  canMove: 1
+  maxSpeed: 1
+  gravity: {x: 0, y: 0, z: 0}
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  centerOffsetCompatibility: NaN
+  orientation: 1
+  enableRotation: 0
+  targetCompatibility: {fileID: 0}
+  maxAcceleration: -2.5
+  rotationSpeed: 360
+  slowdownDistance: 0.6
+  pickNextWaypointDist: 2
+  endReachedDistance: 0.2
+  alwaysDrawGizmos: 0
+  slowWhenNotFacingTarget: 1
+  whenCloseToDestination: 0
+  constrainInsideGraph: 0
 --- !u!114 &6927984868378902487
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -272,82 +347,6 @@ MonoBehaviour:
   m_relations: 2
   m_statusManager: {fileID: 6927984868378902487}
   m_detector: {fileID: 2498299348684587035}
---- !u!114 &915293743172950041
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8869289004023852315}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 373b52eb9bf8c40f785bb6947a1aee66, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  version: 1
-  drawGizmos: 1
-  detailedGizmos: 0
-  startEndModifier:
-    addPoints: 0
-    exactStartPoint: 3
-    exactEndPoint: 3
-    useRaycasting: 0
-    mask:
-      serializedVersion: 2
-      m_Bits: 4294967295
-    useGraphRaycasting: 0
-  traversableTags: -1
-  tagPenalties: 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-  graphMask:
-    value: -1
---- !u!114 &6245671203566449450
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8869289004023852315}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f6eb1402c17e84a9282a7f0f62eb584f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  version: 2
-  radius: 0.5
-  height: 0.5
-  repathRate: 1
-  canSearch: 1
-  canMove: 1
-  maxSpeed: 1
-  gravity: {x: 0, y: 0, z: 0}
-  groundMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  centerOffsetCompatibility: NaN
-  orientation: 1
-  enableRotation: 0
-  targetCompatibility: {fileID: 0}
-  maxAcceleration: -2.5
-  rotationSpeed: 360
-  slowdownDistance: 0.6
-  pickNextWaypointDist: 2
-  endReachedDistance: 0.2
-  alwaysDrawGizmos: 0
-  slowWhenNotFacingTarget: 1
-  whenCloseToDestination: 0
-  constrainInsideGraph: 0
---- !u!114 &5924811866286357854
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8869289004023852315}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 740561d4b367fa54a82fbf5fec8a2415, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &7597001706235312769
 GameObject:
   m_ObjectHideFlags: 0

@@ -24,10 +24,14 @@ namespace Curry.Skill
             }
 
             Vector2 diff = m_user.RigidBody.position - hit.RigidBody.position;
+            if (hit.RigidBody.bodyType != RigidbodyType2D.Static)
+            {
+                hit.RigidBody.velocity = Vector2.zero;
+                hit.OnKnockback(-diff.normalized, m_skillProperty.Knockback);
+            }
+
             m_user.RigidBody.velocity = Vector2.zero;
-            hit.RigidBody.velocity = Vector2.zero;
             m_user.OnKnockback(diff.normalized, 0.75f * m_skillProperty.Knockback);
-            hit.OnKnockback(-diff.normalized, m_skillProperty.Knockback);
             hit.OnTakeDamage(m_skillProperty.ActionValue);
         }
 
