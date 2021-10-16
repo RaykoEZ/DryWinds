@@ -9,7 +9,6 @@ namespace Curry.Game
         bool IsUsable { get; }
         bool ActionInProgress { get; }
         ActionProperty Properties { get; }
-        void Windup();
         void Execute(T param);
         void Interrupt();
     }

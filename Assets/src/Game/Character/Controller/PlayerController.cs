@@ -34,7 +34,8 @@ namespace Curry.Game
 
         public void OnBasicSkill(InputAction.CallbackContext c)
         {
-            if (!m_basicSkill.IsCurrentSkillAvailable || !IsReady) 
+            if (m_basicSkill.CurrentSkill == null || 
+                !m_basicSkill.CurrentSkill.IsUsable || !IsReady) 
             {
                 return;
             }
@@ -44,15 +45,8 @@ namespace Curry.Game
                 switch (c.phase)
                 {
                     case InputActionPhase.Performed:
-                        if (Mouse.current.rightButton.isPressed)
-                        {                            
-                            // trigger dash windup anim on rmb press
-                            m_anim.OnDashWindUp();
-                            m_basicSkill.SkillWindup();
-                        }
-                        else
+                        if (!Mouse.current.rightButton.isPressed)
                         {
-                            m_anim.OnDashRelease();
                             Vector2 pos = Character.CurrentCamera.
                                 ScreenToWorldPoint(Mouse.current.position.ReadValue());
                             OnBasicSkill(pos);
@@ -62,6 +56,15 @@ namespace Curry.Game
                         break;
                 }
             }
+        }
+
+        protected override IEnumerator OnSkill(Vector2 target) 
+        {
+            // trigger dash windup anim
+            m_anim.OnWindUp();
+            yield return new WaitForSeconds(m_basicSkill.CurrentSkill.Properties.WindupTime);
+            m_anim.OnDashRelease();
+            m_basicSkill.ActivateSkill(target);
         }
 
         #region drawing brush

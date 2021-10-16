@@ -31,9 +31,37 @@ namespace Curry.Game
 
         protected virtual void Init()
         {
-            m_basicSkill.EquipSkill(Character.BasicSkills.CurrentSkill);
-            m_drawSkill.EquipSkill(Character.DrawSkills.CurrentSkill);
+            EquipeSkill(0);
+            EquipeDrawSkill(0);
         }
+
+        public virtual void EquipeSkill(int index) 
+        {
+            Character.BasicSkills.EquippedIndex = index;
+            if (m_basicSkill.CurrentSkill != null) 
+            {
+                m_basicSkill.CurrentSkill.OnFinish -= OnActionFinish;
+            }
+            m_basicSkill.CurrentSkill = Character.BasicSkills.CurrentSkill;
+            m_basicSkill.CurrentSkill.OnFinish += OnActionFinish;
+        }
+        public virtual void EquipeDrawSkill(int index)
+        {
+            Character.DrawSkills.EquippedIndex = index;
+            if (m_drawSkill.CurrentSkill != null)
+            {
+                m_drawSkill.CurrentSkill.OnFinish -= OnActionFinish;
+            }
+            m_drawSkill.CurrentSkill = Character.DrawSkills.CurrentSkill;
+            m_drawSkill.CurrentSkill.OnFinish += OnActionFinish;
+
+        }
+
+        protected virtual void OnActionFinish(ICharacterAction<IActionInput> action) 
+        {
+            ActionCall = null;
+        }
+
         public virtual void Move(Vector2 target)
         {
             if (IsReady) 
@@ -54,7 +82,7 @@ namespace Curry.Game
         {
             if (IsReady)
             {
-                m_basicSkill.ActivateSkill(target);
+                ActionCall = StartCoroutine(OnSkill(target));
             }
         }
 
@@ -62,8 +90,14 @@ namespace Curry.Game
         {
             if (IsReady)
             {
-                m_basicSkill.ActivateSkill(target.transform.position);
+                ActionCall = StartCoroutine(OnSkill(target.transform.position));
             }
+        }
+
+        protected virtual IEnumerator OnSkill(Vector2 target) 
+        {
+            yield return new WaitForSeconds(m_basicSkill.CurrentSkill.Properties.WindupTime);
+            m_basicSkill.ActivateSkill(target);
         }
 
         protected void OnHitStun(float damage)

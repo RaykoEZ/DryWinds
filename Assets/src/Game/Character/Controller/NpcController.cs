@@ -50,6 +50,15 @@ namespace Curry.Game
                 ActionCall = StartCoroutine(OnMove());
             }
         }
+        public virtual void Move(Transform target)
+        {
+            if (IsReady)
+            {
+                PathHandler.OnPlanned += OnPathPlanned;
+                PathHandler.PlanPath(target);
+                ActionCall = StartCoroutine(OnMove());
+            }
+        }
 
         protected virtual void OnPathPlanned(bool pathPossible) 
         {
@@ -66,16 +75,19 @@ namespace Curry.Game
         }
         public virtual void EquipBasicSkill(ICharacterAction<IActionInput> skill)
         {
-            m_basicSkill.EquipSkill(skill);
+            if (m_basicSkill.CurrentSkill != null)
+            {
+                m_basicSkill.CurrentSkill.OnFinish -= OnActionFinish;
+            }
+            m_basicSkill.CurrentSkill = skill;
+            m_basicSkill.CurrentSkill.OnFinish += OnActionFinish;
         }
 
         protected virtual IEnumerator UsingSkill(BaseCharacter target)
         {
             m_anim.SetBool("WindingUp", true);
-            m_basicSkill.SkillWindup();
-            yield return new WaitForSeconds(Character.BasicSkills.CurrentSkill.Properties.MaxWindupTime);
+            yield return new WaitForSeconds(Character.BasicSkills.CurrentSkill.Properties.WindupTime);
             m_anim.SetBool("WindingUp", false);
-            ActionCall = null;
             m_basicSkill.ActivateSkill(target.transform.position);
         }
 

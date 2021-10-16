@@ -12,7 +12,6 @@ namespace Curry.Ai
     {
         public override bool PreCondition(NpcWorldState args)
         {
-
             bool baseCheck = base.PreCondition(args);
             if (!baseCheck) 
             {
@@ -34,7 +33,7 @@ namespace Curry.Ai
             }
 
             ActionProperty properties = action.Properties;
-            ret = (properties.ActionValue - 0.1f * properties.MaxWindupTime) / properties.SpCost;
+            ret = (properties.ActionValue - 0.1f * properties.WindupTime) / properties.SpCost;
             // base damage score
             return ret;
         }

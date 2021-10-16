@@ -68,10 +68,10 @@ MonoBehaviour:
     m_targetOptions: 2
     m_spCost: 10
     m_cooldownTime: 2
-    m_maxWindupTime: 1
+    m_windupTime: 0.5
     m_actionValue: 10
     m_knockback: 10
-  m_chargeDuration: 0.2
+  m_chargeDuration: 0.1
 --- !u!95 &8596796697600054897
 Animator:
   serializedVersion: 3

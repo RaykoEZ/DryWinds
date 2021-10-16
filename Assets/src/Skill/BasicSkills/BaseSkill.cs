@@ -13,14 +13,11 @@ namespace Curry.Skill
         public event OnActionFinish<IActionInput> OnFinish;
 
         protected bool m_onCD = false;
-        protected float m_windupTimer = 0f;
         protected BaseCharacter m_user = default;
         protected Coroutine m_currentSkill = default;
-        protected Coroutine m_currentWindup = default;
         protected Coroutine m_coolDown = default;
 
         public ActionProperty Properties { get { return m_skillProperty; } }
-        protected bool IsWindingUp { get; set; }
         public bool ActionInProgress { get; protected set; }
 
         public virtual bool IsUsable
@@ -78,30 +75,10 @@ namespace Curry.Skill
             m_user = user;
         }
 
-        public virtual void Windup()
-        {
-            if (!IsUsable || m_skillProperty.MaxWindupTime == 0) 
-            {
-                return;
-            }
-
-            // reset windup timer if player charges again before skill activation
-            if (m_currentWindup != null) 
-            {
-                m_windupTimer = 0f;
-                StopCoroutine(m_currentWindup);
-            }
-
-            IsWindingUp = true;
-            ActionInProgress = true;
-            m_currentWindup = StartCoroutine(OnWindup());
-        }
-
         // The logics and interactions of the skill on each target
         /// @param target: initial target for skill
         public virtual void Execute(IActionInput param)
         {
-            IsWindingUp = false;
             if (IsUsable && m_user != null)
             {
                 ActionInProgress = true;
@@ -112,14 +89,7 @@ namespace Curry.Skill
         }
         public virtual void Interrupt()
         {
-            if (IsWindingUp)
-            {
-                CancelWindup();
-            }
-            else
-            {
-                OnSkillFinish();
-            }
+            OnSkillFinish();
         }
 
         protected virtual void CoolDown() 
@@ -135,34 +105,10 @@ namespace Curry.Skill
             m_user.OnLoseSp(val);
         }
 
-        protected virtual void CancelWindup() 
-        {
-            if(m_currentWindup != null) 
-            {
-                StopCoroutine(m_currentWindup);
-            }
-
-            IsWindingUp = false;
-            ActionInProgress = false;
-            m_windupTimer = 0f;
-            OnFinish?.Invoke(this);
-        }
-
         protected virtual void OnSkillFinish() 
         {
-            m_windupTimer = 0f;
             ActionInProgress = false;
             OnFinish?.Invoke(this);
-        }
-
-        protected virtual IEnumerator OnWindup() 
-        { 
-            while(IsWindingUp && IsUsable) 
-            {
-                m_windupTimer += Time.deltaTime;
-                yield return new WaitForFixedUpdate();
-            }
-            m_currentWindup = null;
         }
 
         protected virtual IEnumerator OnCooldown() 

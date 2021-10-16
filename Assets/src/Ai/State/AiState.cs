@@ -11,7 +11,7 @@ namespace Curry.Ai
     {
         [SerializeReference] AiAction<IActionInput> m_action = default;
         protected virtual ICharacterAction<IActionInput> ExecutingAction { get; set; }
-        public bool ActionInProgress { get { return ExecutingAction != null && ExecutingAction.ActionInProgress; } }
+        public virtual bool ActionInProgress { get { return ExecutingAction != null && ExecutingAction.ActionInProgress; } }
         public virtual bool PreCondition(NpcWorldState args)
         {
             return m_action.PreCondition(args);

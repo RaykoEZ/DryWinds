@@ -8,7 +8,7 @@ namespace Curry.Game
     {
         [SerializeField] Animator m_animator = default;
         
-        public void OnDashWindUp() 
+        public void OnWindUp() 
         {
             m_animator.SetBool("DashCharging", true);
             m_animator.SetTrigger("DashTrigger");

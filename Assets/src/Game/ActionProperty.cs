@@ -10,7 +10,7 @@ namespace Curry.Game
         [SerializeField] ObjectRelations m_targetOptions;
         [SerializeField] float m_spCost;
         [SerializeField] float m_cooldownTime;
-        [SerializeField] float m_maxWindupTime;
+        [SerializeField] float m_windupTime;
         [SerializeField] float m_actionValue;
         [SerializeField] float m_knockback;
 
@@ -18,7 +18,7 @@ namespace Curry.Game
         public ObjectRelations TargetOptions { get { return m_targetOptions; } }
         public float SpCost { get { return m_spCost; } }
         public float CooldownTime { get { return m_cooldownTime; } }
-        public float MaxWindupTime { get { return m_maxWindupTime; } }
+        public float WindupTime { get { return m_windupTime; } }
         public float ActionValue { get { return m_actionValue; } }
         public float Knockback { get { return m_knockback; } }
 
@@ -35,7 +35,7 @@ namespace Curry.Game
             m_targetOptions = targetOptions;
             m_spCost = spCost;
             m_cooldownTime = cooldownTime;
-            m_maxWindupTime = maxWindupTime;
+            m_windupTime = maxWindupTime;
             m_actionValue = actonValue;
             m_knockback = knockback;
         }

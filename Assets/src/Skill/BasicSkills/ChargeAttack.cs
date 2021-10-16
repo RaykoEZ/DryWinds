@@ -9,11 +9,6 @@ namespace Curry.Skill
     {
         [SerializeField] protected float m_chargeDuration = default;
         Coroutine m_dashing;
-        public override void Windup() 
-        {
-            base.Windup();
-            m_animator.SetBool("WindingUp", true);
-        }
 
         public override void OnHit(Interactable hit)
         {
@@ -46,28 +41,31 @@ namespace Curry.Skill
             base.Execute(target);
         }
 
+        protected override void OnSkillFinish() 
+        {
+            base.OnSkillFinish();
+            m_dashing = null;
+        }
+
         protected override IEnumerator SkillEffect(IActionInput target)
         {
             if(target is VectorInput posParam) 
             {
-                float chargeFactor = Mathf.Max(
-                    0.4f,
-                    (Mathf.Min(m_windupTimer, m_skillProperty.MaxWindupTime)) / m_skillProperty.MaxWindupTime);
                 Vector2 mousePos = posParam.Target;
                 m_animator.SetBool("WindingUp", false);
-                m_dashing = StartCoroutine(DashMotion(m_user.RigidBody.position, mousePos, chargeFactor));
+                m_dashing = StartCoroutine(DashMotion(m_user.RigidBody.position, mousePos));
             }
             yield return null;
         }
 
-        protected virtual IEnumerator DashMotion(Vector2 origin, Vector2 targetPos, float chargeCoeff)
+        protected virtual IEnumerator DashMotion(Vector2 origin, Vector2 targetPos)
         {
             float t = 0f;
             Vector2 dir = targetPos - origin;
             Rigidbody2D rb = m_user.RigidBody;
             while (t < m_chargeDuration)
             {
-                rb.AddForce(dir.normalized * chargeCoeff * m_user.CurrentStats.Speed, ForceMode2D.Impulse);
+                rb.AddForce(dir.normalized * m_user.CurrentStats.Speed, ForceMode2D.Impulse);
                 t += Time.deltaTime;
                 yield return null;
             }

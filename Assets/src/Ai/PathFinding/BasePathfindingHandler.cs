@@ -50,7 +50,7 @@ namespace Curry.Ai
         public virtual void PlanPath(Transform target)
         {
             PathingAi.canSearch = true;
-            PathingAi.destination = target.position;
+            StartCoroutine(OnFollowTarget(target));
         }
 
         public virtual void PlanPath(Vector3 target)
@@ -74,6 +74,15 @@ namespace Curry.Ai
             yield return new WaitUntil(()=> { return PathingAi.reachedDestination; });
             DestinationReached();
             m_follow = null;
+        }
+
+        protected virtual IEnumerator OnFollowTarget(Transform target)
+        {
+            while (!PathingAi.reachedDestination) 
+            {
+                PathingAi.destination = target.position;
+                yield return new WaitForSeconds(0.5f);
+            }
         }
     }
 }
