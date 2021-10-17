@@ -12,17 +12,17 @@ namespace Curry.Ai
         [SerializeReference] AiAction<IActionInput> m_action = default;
         protected virtual ICharacterAction<IActionInput> ExecutingAction { get; set; }
         public virtual bool ActionInProgress { get { return ExecutingAction != null && ExecutingAction.ActionInProgress; } }
-        public virtual bool PreCondition(NpcWorldState args)
+        public virtual bool PreCondition(AiWorldState args)
         {
             return m_action.PreCondition(args);
         }
 
-        public virtual float Priority(NpcWorldState args)
+        public virtual float Priority(AiWorldState args)
         {
             return m_action.Priority(args);
         }
 
-        public virtual void Execute(NpcController controller, NpcWorldState state) 
+        public virtual void Execute(NpcController controller, AiWorldState state) 
         {
             ExecutingAction = m_action.Execute(controller, state);
         }

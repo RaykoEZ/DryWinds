@@ -10,7 +10,7 @@ namespace Curry.Ai
     [CreateAssetMenu(menuName = "Curry/AiState/BasicAttack", order = 0)]
     public class AiBasicAttack : AiSkill
     {
-        public override bool PreCondition(NpcWorldState args)
+        public override bool PreCondition(AiWorldState args)
         {
             bool baseCheck = base.PreCondition(args);
             if (!baseCheck) 

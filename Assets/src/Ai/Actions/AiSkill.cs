@@ -7,12 +7,12 @@ namespace Curry.Ai
 {
     public abstract class AiSkill : AiAction<IActionInput>
     {
-        public override bool PreCondition(NpcWorldState args)
+        public override bool PreCondition(AiWorldState args)
         {
             return args.Enemies.Count > 0 && args.BasicSkills.Count > 0;
         }
 
-        public override ICharacterAction<IActionInput> Execute(NpcController controller, NpcWorldState state)
+        public override ICharacterAction<IActionInput> Execute(NpcController controller, AiWorldState state)
         {
             BaseCharacter target = ChooseTarget(state.Enemies);
             ICharacterAction<IActionInput> skill = ChooseAction(state.BasicSkills, target);

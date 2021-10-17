@@ -29,8 +29,8 @@ namespace Curry.Ai
         }
         float m_evalTimer = 0f; 
         protected AiState m_current;
-        NpcWorldState m_worldStateSnapshot = new NpcWorldState();
-        protected virtual NpcWorldState WorldStateSnapshot
+        AiWorldState m_worldStateSnapshot = new AiWorldState();
+        protected virtual AiWorldState WorldStateSnapshot
         {
             get
             {

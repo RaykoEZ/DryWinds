@@ -12,12 +12,12 @@ namespace Curry.Ai
         [SerializeField] float m_averageWanderDistance = 3f;
         float WanderDistance { get { return UnityEngine.Random.Range(0.8f, 1.2f) * m_averageWanderDistance; } }
 
-        public override bool PreCondition(NpcWorldState args)
+        public override bool PreCondition(AiWorldState args)
         {
             return args.Enemies.Count == 0;
         }
 
-        public override ICharacterAction<IActionInput> Execute(NpcController controller, NpcWorldState state)
+        public override ICharacterAction<IActionInput> Execute(NpcController controller, AiWorldState state)
         {
             Vector2 randDir = GetDirection();
             Vector2 randPos = GetDestination(
