@@ -7,7 +7,9 @@ using Curry.Game;
 namespace Curry.Skill
 {
     public delegate void OnTraceFinish();
-    // Trace is like the brush tip for paint tools but with decay behaviours
+    public delegate void OnActivateDrawSkill(List<Vector2> regionVerts);
+    // Trace is like the brush tip for paint tools but with decay behaviours, also detects patterns for skill activation
+    [RequireComponent(typeof(EdgeCollider2D))]
     public class BaseTrace : Interactable
     {
         [SerializeField] protected LineRenderer m_lineRenderer = default;
@@ -19,7 +21,8 @@ namespace Curry.Skill
         // Life of each drawn vertiex in seconds, starts to decay after this (sec)
         [SerializeField] protected float m_durability = default;
 
-        public event OnTraceFinish OnFinish;
+        public event OnTraceFinish OnTracingFinish;
+        public event OnActivateDrawSkill OnActivate;
 
         protected bool m_isDecaying = false;
         protected bool m_isMakingCollider = true;
@@ -42,7 +45,6 @@ namespace Curry.Skill
         protected override void OnCollisionEnter2D(Collision2D col)
         {
             BaseCharacter hit = col.gameObject.GetComponent<BaseCharacter>();
-
             if (hit == null || (hit.Relations & m_relations) == ObjectRelations.None)
             {
                 Vector2 dir = col.GetContact(0).normal.normalized;
@@ -54,11 +56,7 @@ namespace Curry.Skill
         {
             ResetAll();
         }
-        public override void ReturnToPool()
-        {
-            OnFinish = null;
-            base.ReturnToPool();
-        }
+
         public virtual void Execute(Vector2 targetPosition, float length)
         {
             if (!m_drawnVert.Contains(targetPosition))
@@ -66,6 +64,8 @@ namespace Curry.Skill
                 EvaluateLength(length);
                 m_drawnVert.Enqueue(targetPosition);
                 m_drawnPositions.Enqueue(targetPosition);
+                DetectePattern(targetPosition);
+
                 m_lineRenderer.positionCount = m_drawnPositions.Count;
                 m_lineRenderer.SetPosition(m_lineRenderer.positionCount - 1, targetPosition);
 
@@ -73,8 +73,43 @@ namespace Curry.Skill
                 {
                     m_edgeCollider.points = m_drawnVert.ToArray();
                 }
+            }
+        }
 
-            }  
+        /// <summary>
+        /// Determin whether the drawing activates the skill effect
+        /// </summary>
+        /// <returns> 
+        /// true: the draw pattern will activate the skill effect
+        /// false: no pattern detected on drawing yet
+        /// </returns>
+        protected virtual bool DetectePattern(Vector2 targetVert) 
+        {
+            bool ret = false;
+            Vector2[] verts = m_edgeCollider.points;
+            // need more than 1 points defined to have a general pattern.
+            if(verts.Length > 0) 
+            {
+                Vector2 dir = (targetVert - verts[m_edgeCollider.points.Length - 1]).normalized;
+                // move starting point from origin towards targetVert by 2x radius to avoid collision on origin.
+                Vector2 start = verts[m_edgeCollider.points.Length - 1] + (1.5f * m_edgeCollider.edgeRadius * dir);
+                float dist =
+                    Vector2.Distance(targetVert, verts[m_edgeCollider.points.Length - 1]) >
+                    Vector2.Distance(start, verts[m_edgeCollider.points.Length - 1]) ? Vector2.Distance(targetVert, start) : 0f;
+
+                // 1 << 8 for drawing layer, CONST IN THE FUTURE
+                RaycastHit2D hit = Physics2D.CircleCast(start, 0.5f * m_edgeCollider.edgeRadius, dir, dist, 1 << 8);
+                if (hit.collider == m_edgeCollider) 
+                {
+                    Debug.Log($"loop point at {hit.point.ToString("F4")}, linecast from {start.ToString("F4")} to {targetVert.ToString("F4")}");
+                }
+            }
+            return ret;
+        }
+
+        protected virtual void ActivateEffect(List<Vector2> regionVerts) 
+        {
+            OnActivate?.Invoke(regionVerts);
         }
 
         protected void EvaluateLength(float length)
@@ -94,7 +129,6 @@ namespace Curry.Skill
         protected virtual IEnumerator OnDecay()
         {
             float decayAmount = m_decayPerInterval;
-            float decayAccel= 1.0f;
             // if no more to decay, finish loop
             while (m_isDecaying)
             {
@@ -127,22 +161,21 @@ namespace Curry.Skill
                 m_lineRenderer.positionCount = m_drawnPositions.Count;
                 m_lineRenderer.SetPositions(m_drawnPositions.ToArray());
                 m_edgeCollider.points = m_drawnVert.ToArray();
-
-                yield return new WaitForSeconds(decayAccel * m_decayWait);
-                decayAccel *= 0.5f;
-
+                yield return new WaitForSeconds(m_decayWait);
             }
         }
 
         protected virtual void OnClear()
         {
-            OnFinish?.Invoke();
+            OnTracingFinish?.Invoke();
             ResetAll();
             ReturnToPool();
         }
 
         protected virtual void ResetAll() 
         {
+            OnTracingFinish = null;
+            OnActivate = null;
             m_isDecaying = false;
             m_decayTimer = 0f;
             m_lineRenderer.positionCount = 0;

@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 6249534485216099116}
   - component: {fileID: 3837881217764659054}
   - component: {fileID: 2929046991183055066}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: BaseTrace
   m_TagString: Untagged
   m_Icon: {fileID: 0}

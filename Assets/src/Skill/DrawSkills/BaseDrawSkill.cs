@@ -53,7 +53,7 @@ namespace Curry.Skill
                 {
                     // make new stroke
                     m_currentTracerBehaviour = m_instanceManager.GetInstanceFromCurrentPool() as BaseTrace;
-                    m_currentTracerBehaviour.OnFinish += () => { ActionInProgress = false; };
+                    m_currentTracerBehaviour.OnTracingFinish += () => { ActionInProgress = false; };
                 }
                 float length = !ActionInProgress ? 0f : Vector2.Distance(posParam.Target, m_previousDrawPos);
                 float totalCost = length * Properties.SpCost;
