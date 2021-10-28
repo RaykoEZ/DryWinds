@@ -148,15 +148,17 @@ namespace Curry.Skill
             {
                 List<Vector2> toRemove = new List<Vector2>();
 
-                for (int i = 0; i < verts.Length; ++i) 
+                for (int i = 0; i < verts.Length - 1; ++i) 
                 {
                     // From first vert to the closest vert to closure point, remove those hanging verts and keep the rest
                     // Stop on the first instance of finding the closest point to closure point
                     toRemove.Add(verts[i]);
                     segmentsRemoved++;
-                    searchRadius *= 1.5f;
+                    searchRadius *= 1.2f;
+                    Vector2 midPoint = Vector2.Lerp(verts[i], verts[i + 1], 0.5f);
+                    bool isMidPointClose = Vector2.Distance(midPoint, closureVert) < searchRadius;
                     bool isNearClosure = Vector2.Distance(verts[i], closureVert) < searchRadius;
-                    if (isNearClosure) 
+                    if (isNearClosure || isMidPointClose) 
                     {
                         break;
                     }
