@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Curry.Game
+﻿namespace Curry.Game
 {
     public delegate void OnActionFinish<T>(ICharacterAction<T> action) where T : IActionInput;
     public interface ICharacterAction<T> where T : IActionInput
@@ -11,10 +9,5 @@ namespace Curry.Game
         ActionProperty Properties { get; }
         void Execute(T param);
         void Interrupt();
-    }
-
-    public interface IActionInput 
-    { 
-        Dictionary<string, object> Payload { get; }
     }
 }

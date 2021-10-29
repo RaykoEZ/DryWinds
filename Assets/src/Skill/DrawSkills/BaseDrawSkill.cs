@@ -11,7 +11,7 @@ namespace Curry.Skill
         [SerializeField] protected InteractableInstanceManager m_instanceManager = default;
 
         protected Vector2 m_previousDrawPos;
-        protected BaseTrace m_currentTracerBehaviour;
+        protected BaseTracer m_currentTracer;
         public virtual float CooldownTime { get { return m_skillProperty.CooldownTime; } }
         public GameObject AssetRef { get; protected set; }
         public override bool IsUsable
@@ -33,9 +33,10 @@ namespace Curry.Skill
             m_traceRef.LoadAsset();
         }
 
-        protected override IEnumerator SkillEffect(IActionInput target = null) 
+        protected override IEnumerator SkillEffect(IActionInput target) 
         {
-            yield break;
+            yield return new WaitForSeconds(1.0f);
+            Debug.Log("Draw Skill");
         }
 
         public override void Execute(IActionInput param)
@@ -52,27 +53,30 @@ namespace Curry.Skill
                 if (!ActionInProgress)
                 {
                     // make new stroke
-                    m_currentTracerBehaviour = m_instanceManager.GetInstanceFromCurrentPool() as BaseTrace;
-                    m_currentTracerBehaviour.OnTracingFinish += () => { ActionInProgress = false; };
+                    m_currentTracer = m_instanceManager.GetInstanceFromCurrentPool() as BaseTracer;
+                    m_currentTracer.OnActivate += OnSkillEffectActivate;
+
                 }
                 float length = !ActionInProgress ? 0f : Vector2.Distance(posParam.Target, m_previousDrawPos);
                 float totalCost = length * Properties.SpCost;
                 //update mousePos log
                 m_previousDrawPos = posParam.Target;
                 ConsumeResource(totalCost);
-                m_currentTracerBehaviour.Execute(posParam.Target, length);
+                m_currentTracer.OnTrace(posParam.Target, length);
                 ActionInProgress = true;
             }
         }
 
-        public override void Interrupt()
+        protected virtual void OnSkillEffectActivate(IActionInput input) 
         {
-            CoolDown();
-            base.Interrupt();
+            m_currentTracer.OnActivate -= OnSkillEffectActivate;
+            OnSkillFinish();
+            m_currentSkill = StartCoroutine(SkillEffect(input));
         }
 
         protected override void OnSkillFinish()
         {
+            m_currentTracer.OnClear();
             CoolDown();
             base.OnSkillFinish();
         }

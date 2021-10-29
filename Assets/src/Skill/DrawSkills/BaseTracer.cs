@@ -7,22 +7,14 @@ using Curry.Util;
 
 namespace Curry.Skill
 {
-    public delegate void OnTraceFinish();
-    public delegate void OnActivateDrawSkill(List<Vector2> regionVerts);
+    public delegate void OnActivateDrawSkill(IActionInput input);
     // Trace is like the brush tip for paint tools but with decay behaviours, also detects patterns for skill activation
     [RequireComponent(typeof(EdgeCollider2D))]
-    public class BaseTrace : Interactable
+    public class BaseTracer : Interactable
     {
         [SerializeField] protected LineRenderer m_lineRenderer = default;
         [SerializeField] protected EdgeCollider2D m_edgeCollider = default;
-        // Units length to decay per decay interval.
-        [SerializeField] protected float m_decayPerInterval = default;
-        // Seconds to wait for next stroke decay interval
-        [SerializeField] protected float m_decayWait = default;
-        // Life of each drawn vertiex in seconds, starts to decay after this (sec)
-        [SerializeField] protected float m_durability = default;
 
-        public event OnTraceFinish OnTracingFinish;
         public event OnActivateDrawSkill OnActivate;
 
         protected bool m_isDecaying = false;
@@ -31,17 +23,6 @@ namespace Curry.Skill
         protected Queue<Vector3> m_drawnPositions = new Queue<Vector3>();
         protected Queue<float> m_segmentLengths = new Queue<float>();       
         protected float m_decayTimer = 0f;
-
-        // Update is called once per frame
-        protected virtual void FixedUpdate()
-        {
-            m_decayTimer += Time.deltaTime;
-            if(m_decayTimer > m_durability && !m_isDecaying) 
-            {
-                m_isDecaying = true;
-                StartCoroutine(OnDecay());
-            }          
-        }
 
         protected override void OnCollisionEnter2D(Collision2D col)
         {
@@ -58,7 +39,7 @@ namespace Curry.Skill
             ResetAll();
         }
 
-        public virtual void Execute(Vector2 targetPosition, float length)
+        public virtual void OnTrace(Vector2 targetPosition, float length)
         {
             if (!m_drawnVert.Contains(targetPosition) && !m_loopTriggered)
             {
@@ -71,7 +52,7 @@ namespace Curry.Skill
                     List<Vector2> trimmedVerts = GetTrimmmedPattern(m_drawnVert.ToArray(), targetPosition, out int segRemoved);
                     if (GameUtil.AreaOfEnclosure(trimmedVerts.ToArray()) > 1f) 
                     {
-                        SetShape(trimmedVerts, segRemoved);
+                        TracePattern(trimmedVerts, segRemoved);
                         return;
                     }
                 }
@@ -87,7 +68,7 @@ namespace Curry.Skill
         }
 
         // Set the line render and collider to the shape we drew
-        protected virtual void SetShape(List<Vector2> shapeVerts, int segmentsRemoved) 
+        protected virtual void TracePattern(List<Vector2> shapeVerts, int segmentsRemoved) 
         {
             m_loopTriggered = true;
             for (int i = 0; i < segmentsRemoved; ++i)
@@ -99,9 +80,10 @@ namespace Curry.Skill
             Vector3[] newPos = VectorExtension.ToVector3Array(shapeVerts.ToArray());
             m_drawnPositions = new Queue<Vector3>(newPos);
             m_lineRenderer.positionCount = newPos.Length;
-            Debug.Log(newPos.Length);
             m_lineRenderer.SetPositions(newPos);
             m_edgeCollider.points = m_drawnVert.ToArray();
+
+            ActivateEffect(new List<Vector2>(m_drawnVert));
         }
 
         /// <summary>
@@ -139,7 +121,7 @@ namespace Curry.Skill
         /// <param name="closureVert"> the latest point to make contact with the line to form a shape</param>
         /// <param name="searchRadius"> the radius for searching neighbourhood points</param>
         /// <returns></returns>
-        protected List<Vector2> GetTrimmmedPattern(Vector2[] verts, Vector2 closureVert, out int segmentsRemoved, float searchRadius = 0.05f) 
+        protected List<Vector2> GetTrimmmedPattern(Vector2[] verts, Vector2 closureVert, out int segmentsRemoved, float searchRadius = 0.1f) 
         {
             List<Vector2> toKeep = new List<Vector2>(verts);
             toKeep[0] = closureVert;
@@ -172,9 +154,11 @@ namespace Curry.Skill
             return toKeep;
         } 
 
-        protected virtual void ActivateEffect(List<Vector2> regionVerts) 
+        protected virtual void ActivateEffect(List<Vector2> input) 
         {
-            OnActivate?.Invoke(regionVerts);
+            Dictionary<string, object> args = new Dictionary<string, object> { { "region", input } };
+            SkillInput payload = new SkillInput(args);
+            OnActivate?.Invoke(payload);
         }
 
         protected void EvaluateLength(float length)
@@ -191,55 +175,20 @@ namespace Curry.Skill
             }
         }
 
-        protected virtual IEnumerator OnDecay()
+        public virtual void OnClear()
         {
-            float decayAmount = m_decayPerInterval;
-            // if no more to decay, finish loop
-            while (m_isDecaying)
-            {
-                if(m_segmentLengths.Count == 0) 
-                {
-                    OnClear();
-                    yield break;
-                }
-                while (decayAmount > Mathf.Epsilon && m_segmentLengths.Count > 0)
-                {
-                    float lastSegmentLength = m_segmentLengths.Peek();
-                    // if we can decay the segment and/or have more to decay, remove the last segment and keep going  
-                    if (lastSegmentLength <= decayAmount)
-                    {
-                        m_drawnVert?.Dequeue();
-                        m_drawnPositions?.Dequeue();
-                        m_segmentLengths.Dequeue();
-                        decayAmount -= lastSegmentLength;
-                    }
-                    else if (lastSegmentLength > decayAmount)
-                    {
-                        TrimEndSegment(decayAmount);
-                        decayAmount = 0f;
-                    }
-                }
-                // Reload the decay amount for next segment decay interval
-                // With acceleration
-                decayAmount += m_decayPerInterval;
-                // Update line renderer and collider after decay
-                m_lineRenderer.positionCount = m_drawnPositions.Count;
-                m_lineRenderer.SetPositions(m_drawnPositions.ToArray());
-                m_edgeCollider.points = m_drawnVert.ToArray();
-                yield return new WaitForSeconds(m_decayWait);
-            }
+            StartCoroutine(OnExit());
         }
 
-        protected virtual void OnClear()
+        protected virtual IEnumerator OnExit() 
         {
-            OnTracingFinish?.Invoke();
+            yield return new WaitForSeconds(1.0f);
             ResetAll();
             ReturnToPool();
         }
 
         protected virtual void ResetAll() 
         {
-            OnTracingFinish = null;
             OnActivate = null;
             m_loopTriggered = false;
             m_isDecaying = false;
@@ -249,31 +198,6 @@ namespace Curry.Skill
             m_drawnPositions.Clear();
             m_segmentLengths.Clear();
             m_edgeCollider.points = m_drawnVert.ToArray();
-        }
-
-        protected void TrimEndSegment(float trimLength) 
-        {
-            if(m_segmentLengths.Count < 1) 
-            { 
-                return; 
-            }
-
-            Vector2[] vertList = m_drawnVert.ToArray();
-            Vector3[] posList = m_drawnPositions.ToArray();
-            float[] lengthList = m_segmentLengths.ToArray();
-            // lerp last vertex to new position, shrinking this segment by $$decayAmount.
-            Vector2 vlast = vertList[0];
-            Vector2 vSecondLast = vertList[1];
-            float t = trimLength / lengthList[0];
-            Vector2 newVLast = Vector2.Lerp(vlast, vSecondLast, t);
-
-            posList[0] = newVLast;
-            vertList[0] = newVLast;
-            lengthList[0] = Vector2.Distance(newVLast, vSecondLast);
-            // update data structure with new values
-            m_drawnVert = new Queue<Vector2>(vertList);
-            m_drawnPositions = new Queue<Vector3>(posList);
-            m_segmentLengths = new Queue<float>(lengthList);
         }
     }
 }
