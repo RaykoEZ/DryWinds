@@ -1,11 +1,11 @@
-using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using Curry.Game;
 using Curry.Util;
 
 namespace Curry.Skill
 {
-    public class BaseDrawSkill : BaseSkill
+    public abstract class BaseDrawSkill : BaseSkill
     {
         [SerializeField] protected PrefabLoader m_traceRef = default;
         [SerializeField] protected InteractableInstanceManager m_instanceManager = default;
@@ -22,6 +22,8 @@ namespace Curry.Skill
             }
         }
 
+        protected abstract void UpdateHitBox(List<Vector2> verts);
+
         public override void Init(BaseCharacter user)
         {
             base.Init(user);
@@ -31,12 +33,6 @@ namespace Curry.Skill
                 m_instanceManager.PrepareNewInstance(AssetRef);
             };
             m_traceRef.LoadAsset();
-        }
-
-        protected override IEnumerator SkillEffect(IActionInput target) 
-        {
-            yield return new WaitForSeconds(1.0f);
-            Debug.Log("Draw Skill");
         }
 
         public override void Execute(IActionInput param)
@@ -67,10 +63,11 @@ namespace Curry.Skill
             }
         }
 
-        protected virtual void OnSkillEffectActivate(IActionInput input) 
+        protected virtual void OnSkillEffectActivate(RegionInput input) 
         {
             m_currentTracer.OnActivate -= OnSkillEffectActivate;
             OnSkillFinish();
+            UpdateHitBox(input.Vertices);
             m_currentSkill = StartCoroutine(SkillEffect(input));
         }
 

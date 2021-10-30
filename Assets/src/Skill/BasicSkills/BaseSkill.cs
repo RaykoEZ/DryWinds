@@ -5,11 +5,11 @@ using Curry.Game;
 
 namespace Curry.Skill
 {
+    [RequireComponent(typeof(Animator))]
     public abstract class BaseSkill : MonoBehaviour, ICharacterAction<IActionInput>
     {
         [SerializeField] protected Animator m_animator = default;
         [SerializeField] protected ActionProperty m_skillProperty = default;
-
         public event OnActionFinish<IActionInput> OnFinish;
 
         protected bool m_onCD = false;
@@ -19,7 +19,7 @@ namespace Curry.Skill
 
         public ActionProperty Properties { get { return m_skillProperty; } }
         public bool ActionInProgress { get; protected set; }
-
+        
         public virtual bool IsUsable
         {
             get

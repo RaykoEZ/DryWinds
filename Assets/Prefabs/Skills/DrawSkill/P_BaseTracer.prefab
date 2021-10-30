@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 3837881217764659054}
   - component: {fileID: 2929046991183055066}
   m_Layer: 8
-  m_Name: BaseTrace
+  m_Name: P_BaseTracer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

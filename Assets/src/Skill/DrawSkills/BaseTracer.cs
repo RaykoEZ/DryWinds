@@ -7,7 +7,7 @@ using Curry.Util;
 
 namespace Curry.Skill
 {
-    public delegate void OnActivateDrawSkill(IActionInput input);
+    public delegate void OnActivateDrawSkill(RegionInput input);
     // Trace is like the brush tip for paint tools but with decay behaviours, also detects patterns for skill activation
     [RequireComponent(typeof(EdgeCollider2D))]
     public class BaseTracer : Interactable
@@ -17,12 +17,9 @@ namespace Curry.Skill
 
         public event OnActivateDrawSkill OnActivate;
 
-        protected bool m_isDecaying = false;
         protected bool m_loopTriggered = false;
         protected Queue<Vector2> m_drawnVert = new Queue<Vector2>();
         protected Queue<Vector3> m_drawnPositions = new Queue<Vector3>();
-        protected Queue<float> m_segmentLengths = new Queue<float>();       
-        protected float m_decayTimer = 0f;
 
         protected override void OnCollisionEnter2D(Collision2D col)
         {
@@ -43,7 +40,6 @@ namespace Curry.Skill
         {
             if (!m_drawnVert.Contains(targetPosition) && !m_loopTriggered)
             {
-                EvaluateLength(length);
                 m_drawnVert.Enqueue(targetPosition);
                 m_drawnPositions.Enqueue(targetPosition);
                 // We drew a shape/enclosure, we set the trace to the drawn shape
@@ -71,11 +67,6 @@ namespace Curry.Skill
         protected virtual void TracePattern(List<Vector2> shapeVerts, int segmentsRemoved) 
         {
             m_loopTriggered = true;
-            for (int i = 0; i < segmentsRemoved; ++i)
-            {
-                m_segmentLengths.Dequeue();
-            }
-
             m_drawnVert = new Queue<Vector2>(shapeVerts);
             Vector3[] newPos = VectorExtension.ToVector3Array(shapeVerts.ToArray());
             m_drawnPositions = new Queue<Vector3>(newPos);
@@ -156,23 +147,8 @@ namespace Curry.Skill
 
         protected virtual void ActivateEffect(List<Vector2> input) 
         {
-            Dictionary<string, object> args = new Dictionary<string, object> { { "region", input } };
-            SkillInput payload = new SkillInput(args);
+            RegionInput payload = new RegionInput(input);
             OnActivate?.Invoke(payload);
-        }
-
-        protected void EvaluateLength(float length)
-        {
-            int numP = m_lineRenderer.positionCount;
-            if (numP == 0) 
-            {
-                return;
-            }
-            else 
-            {
-                //store it for later
-                m_segmentLengths.Enqueue(length);
-            }
         }
 
         public virtual void OnClear()
@@ -191,12 +167,9 @@ namespace Curry.Skill
         {
             OnActivate = null;
             m_loopTriggered = false;
-            m_isDecaying = false;
-            m_decayTimer = 0f;
             m_lineRenderer.positionCount = 0;
             m_drawnVert.Clear();
             m_drawnPositions.Clear();
-            m_segmentLengths.Clear();
             m_edgeCollider.points = m_drawnVert.ToArray();
         }
     }
