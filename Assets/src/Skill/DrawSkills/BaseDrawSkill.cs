@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Curry.Game;
@@ -66,16 +67,27 @@ namespace Curry.Skill
         protected virtual void OnSkillEffectActivate(RegionInput input) 
         {
             m_currentTracer.OnActivate -= OnSkillEffectActivate;
-            OnSkillFinish();
-            UpdateHitBox(input.Vertices);
-            m_currentSkill = StartCoroutine(SkillEffect(input));
-        }
-
-        protected override void OnSkillFinish()
-        {
             m_currentTracer.OnClear();
             CoolDown();
-            base.OnSkillFinish();
+            OnSkillFinish();
+            StartCoroutine(InitSkillEffect(input));
+        }
+
+        protected virtual void OnEffectStart() 
+        { 
+            
+        }
+
+        protected virtual IEnumerator InitSkillEffect(RegionInput input) 
+        {
+            HitBox.enabled = false;
+            // Start animation
+            UpdateHitBox(input.Vertices);
+            OnEffectStart();
+            yield return new WaitForEndOfFrame();
+            // Activate hitbox and start skill effect
+            HitBox.enabled = true;
+            m_currentSkill = StartCoroutine(SkillEffect(input));
         }
     }
 }

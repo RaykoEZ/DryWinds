@@ -45,10 +45,10 @@ namespace Curry.Skill
                 // We drew a shape/enclosure, we set the trace to the drawn shape
                 if (DetectPattern(targetPosition)) 
                 {
-                    List<Vector2> trimmedVerts = GetTrimmmedPattern(m_drawnVert.ToArray(), targetPosition, out int segRemoved);
+                    List<Vector2> trimmedVerts = GetTrimmmedPattern(m_drawnVert.ToArray(), targetPosition);
                     if (GameUtil.AreaOfEnclosure(trimmedVerts.ToArray()) > 1f) 
                     {
-                        TracePattern(trimmedVerts, segRemoved);
+                        TracePattern(trimmedVerts);
                         return;
                     }
                 }
@@ -64,7 +64,7 @@ namespace Curry.Skill
         }
 
         // Set the line render and collider to the shape we drew
-        protected virtual void TracePattern(List<Vector2> shapeVerts, int segmentsRemoved) 
+        protected virtual void TracePattern(List<Vector2> shapeVerts) 
         {
             m_loopTriggered = true;
             m_drawnVert = new Queue<Vector2>(shapeVerts);
@@ -112,11 +112,10 @@ namespace Curry.Skill
         /// <param name="closureVert"> the latest point to make contact with the line to form a shape</param>
         /// <param name="searchRadius"> the radius for searching neighbourhood points</param>
         /// <returns></returns>
-        protected List<Vector2> GetTrimmmedPattern(Vector2[] verts, Vector2 closureVert, out int segmentsRemoved, float searchRadius = 0.1f) 
+        protected List<Vector2> GetTrimmmedPattern(Vector2[] verts, Vector2 closureVert, float searchRadius = 0.1f) 
         {
             List<Vector2> toKeep = new List<Vector2>(verts);
             toKeep[0] = closureVert;
-            segmentsRemoved = -1;
             if (verts.Length > 2) 
             {
                 List<Vector2> toRemove = new List<Vector2>();
@@ -126,7 +125,6 @@ namespace Curry.Skill
                     // From first vert to the closest vert to closure point, remove those hanging verts and keep the rest
                     // Stop on the first instance of finding the closest point to closure point
                     toRemove.Add(verts[i]);
-                    segmentsRemoved++;
                     searchRadius *= 1.2f;
                     Vector2 midPoint = Vector2.Lerp(verts[i], verts[i + 1], 0.5f);
                     bool isMidPointClose = Vector2.Distance(midPoint, closureVert) < searchRadius;

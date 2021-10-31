@@ -5,9 +5,12 @@ using Curry.Game;
 
 namespace Curry.Skill
 {
+    [RequireComponent(typeof(CircleCollider2D))]
     public class ChargeAttack : BaseSkill, IHitboxEffect 
     {
         [SerializeField] protected float m_chargeDuration = default;
+        protected override Collider2D HitBox { get { return GetComponent<Collider2D>(); } }
+
         Coroutine m_dashing;
 
         public override void OnHit(Interactable hit)

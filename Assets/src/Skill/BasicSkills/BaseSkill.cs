@@ -28,6 +28,8 @@ namespace Curry.Skill
                     m_user?.CurrentStats.SP >= m_skillProperty.SpCost;
             }
         }
+        protected abstract Collider2D HitBox { get; }
+
         protected abstract IEnumerator SkillEffect(IActionInput target);
 
         protected virtual void OnTriggerEnter2D(Collider2D col)

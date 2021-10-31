@@ -196,7 +196,7 @@ Animator:
   m_GameObject: {fileID: 5751947333654081879}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 8ad275651759feb4aa8ae6b2929a1305, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -241,13 +241,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_animator: {fileID: 5751947333654081876}
   m_skillProperty:
-    m_name: 
-    m_targetOptions: 0
-    m_spCost: 0
-    m_cooldownTime: 0
+    m_name: MinorShield
+    m_targetOptions: -1
+    m_spCost: 3
+    m_cooldownTime: 2
     m_windupTime: 0
     m_actionValue: 0
-    m_knockback: 0
+    m_knockback: 1
   m_traceRef:
     m_assetRef:
       m_AssetGUID: c429d02b3f4902d4591f75325c991b40
@@ -255,3 +255,4 @@ MonoBehaviour:
       m_SubObjectType: 
   m_instanceManager: {fileID: 5751947332544427054}
   m_hitBox: {fileID: 3092607195079742924}
+  m_duration: 5
