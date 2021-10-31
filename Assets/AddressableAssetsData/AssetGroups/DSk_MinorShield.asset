@@ -21,20 +21,14 @@ MonoBehaviour:
     m_Address: DSkiill/P/MinorShield
     m_ReadOnly: 0
     m_SerializedLabels: []
-    m_MainAsset: {fileID: 5751947333654081879, guid: 2b4559809b5866343bf6cfccc130056a, type: 3}
-    m_TargetAsset: {fileID: 5751947333654081879, guid: 2b4559809b5866343bf6cfccc130056a, type: 3}
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
   - m_GUID: c429d02b3f4902d4591f75325c991b40
     m_Address: P_BaseTracer
     m_ReadOnly: 0
     m_SerializedLabels: []
-    m_MainAsset: {fileID: 6937999071832126887, guid: c429d02b3f4902d4591f75325c991b40, type: 3}
-    m_TargetAsset: {fileID: 6937999071832126887, guid: c429d02b3f4902d4591f75325c991b40, type: 3}
-  - m_GUID: 8ad275651759feb4aa8ae6b2929a1305
-    m_Address: Skill/AC/MinorShield
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    m_MainAsset: {fileID: 9100000, guid: 8ad275651759feb4aa8ae6b2929a1305, type: 2}
-    m_TargetAsset: {fileID: 9100000, guid: 8ad275651759feb4aa8ae6b2929a1305, type: 2}
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: b7f44c639b5eac6459efa6d347a60ca1, type: 2}
   m_SchemaSet:
