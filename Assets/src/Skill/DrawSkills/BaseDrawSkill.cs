@@ -73,20 +73,13 @@ namespace Curry.Skill
             StartCoroutine(InitSkillEffect(input));
         }
 
-        protected virtual void OnEffectStart() 
-        { 
-            
-        }
-
         protected virtual IEnumerator InitSkillEffect(RegionInput input) 
         {
-            HitBox.enabled = false;
             // Start animation
             UpdateHitBox(input.Vertices);
-            OnEffectStart();
-            yield return new WaitForEndOfFrame();
+            StartSkillAnim();
+            yield return new WaitUntil(()=> { return m_animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 1f; });
             // Activate hitbox and start skill effect
-            HitBox.enabled = true;
             m_currentSkill = StartCoroutine(SkillEffect(input));
         }
     }

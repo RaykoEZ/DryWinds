@@ -9,7 +9,6 @@ namespace Curry.Skill
     public class ChargeAttack : BaseSkill, IHitboxEffect 
     {
         [SerializeField] protected float m_chargeDuration = default;
-        protected override Collider2D HitBox { get { return GetComponent<Collider2D>(); } }
 
         Coroutine m_dashing;
 
@@ -33,17 +32,6 @@ namespace Curry.Skill
             hit.OnTakeDamage(m_skillProperty.ActionValue);
         }
 
-        public override void Execute(IActionInput target)
-        {
-            if(target == null) 
-            { 
-                return; 
-            }
-
-            m_animator.SetTrigger("SkillTrigger");
-            base.Execute(target);
-        }
-
         protected override void OnSkillFinish() 
         {
             base.OnSkillFinish();
@@ -52,10 +40,9 @@ namespace Curry.Skill
 
         protected override IEnumerator SkillEffect(IActionInput target)
         {
-            if(target is VectorInput posParam) 
+            if(target != null && target is VectorInput posParam) 
             {
                 Vector2 mousePos = posParam.Target;
-                m_animator.SetBool("WindingUp", false);
                 m_dashing = StartCoroutine(DashMotion(m_user.RigidBody.position, mousePos));
             }
             yield return null;

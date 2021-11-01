@@ -28,7 +28,6 @@ namespace Curry.Skill
                     m_user?.CurrentStats.SP >= m_skillProperty.SpCost;
             }
         }
-        protected abstract Collider2D HitBox { get; }
 
         protected abstract IEnumerator SkillEffect(IActionInput target);
 
@@ -36,11 +35,25 @@ namespace Curry.Skill
         {
             Interactable hit = col.gameObject.GetComponent<Interactable>();
 
-            if(hit == null || (hit.Relations & m_skillProperty.TargetOptions) == ObjectRelations.None) 
+            if (hit == null)
             {
                 return;
             }
-            OnHit(hit);
+
+            bool isAlly = m_user.Relations == hit.Relations;
+            if (m_skillProperty.TargetOptions == ObjectRelations.Ally &&
+                isAlly)
+            {
+                OnHit(hit);
+                return;
+            }
+
+            if (m_skillProperty.TargetOptions == ObjectRelations.Enemy &&
+                !isAlly)
+            {
+                OnHit(hit);
+                return;
+            }
         }
 
         protected virtual void OnCollisionEnter2D(Collision2D col)
@@ -77,12 +90,18 @@ namespace Curry.Skill
             m_user = user;
         }
 
+        protected virtual void StartSkillAnim() 
+        {
+            m_animator.SetTrigger("Start");
+        }
+
         // The logics and interactions of the skill on each target
         /// @param target: initial target for skill
         public virtual void Execute(IActionInput param)
         {
             if (IsUsable && m_user != null)
             {
+                StartSkillAnim();
                 ActionInProgress = true;
                 ConsumeResource(m_skillProperty.SpCost);
                 CoolDown();
