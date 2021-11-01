@@ -23,12 +23,6 @@ namespace Curry.Skill
 
         protected override void OnCollisionEnter2D(Collision2D col)
         {
-            BaseCharacter hit = col.gameObject.GetComponent<BaseCharacter>();
-            if (hit == null || (hit.Relations & m_relations) == ObjectRelations.None)
-            {
-                Vector2 dir = col.GetContact(0).normal.normalized;
-                hit.OnKnockback(-dir, CurrentCollisionStats.Knockback);
-            }
         }
 
         public override void Prepare()

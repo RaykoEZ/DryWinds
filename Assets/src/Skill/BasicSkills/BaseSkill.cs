@@ -14,7 +14,6 @@ namespace Curry.Skill
 
         protected bool m_onCD = false;
         protected BaseCharacter m_user = default;
-        protected Coroutine m_currentSkill = default;
         protected Coroutine m_coolDown = default;
 
         public ActionProperty Properties { get { return m_skillProperty; } }
@@ -90,22 +89,17 @@ namespace Curry.Skill
             m_user = user;
         }
 
-        protected virtual void StartSkillAnim() 
-        {
-            m_animator.SetTrigger("Start");
-        }
-
         // The logics and interactions of the skill on each target
         /// @param target: initial target for skill
         public virtual void Execute(IActionInput param)
         {
             if (IsUsable && m_user != null)
             {
-                StartSkillAnim();
                 ActionInProgress = true;
                 ConsumeResource(m_skillProperty.SpCost);
                 CoolDown();
-                m_currentSkill = StartCoroutine(SkillEffect(param));
+                m_animator.SetTrigger("Start");
+                StartCoroutine(SkillEffect(param));
             }
         }
         public virtual void Interrupt()

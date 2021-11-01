@@ -11,7 +11,7 @@ namespace Curry.Skill
     {
         [SerializeField] protected PolygonCollider2D m_hitBox = default;
 
-        protected override void UpdateHitBox(List<Vector2> verts)
+        protected override void PrepareDrawEffect(List<Vector2> verts)
         {
             m_hitBox.SetPath(0, verts);
         }

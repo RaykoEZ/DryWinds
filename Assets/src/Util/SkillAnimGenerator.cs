@@ -43,8 +43,6 @@ namespace Curry.Util
             AssetDatabase.CreateAsset(idle, $"{saveAddress}_idle.anim");
             AnimationClip start = new AnimationClip();
             AssetDatabase.CreateAsset(start, $"{saveAddress}_start.anim");
-            AnimationClip end = new AnimationClip();
-            AssetDatabase.CreateAsset(end, $"{saveAddress}_end.anim");
 
             // Add StateMachines
             var rootStateMachine = controller.layers[0].stateMachine;
@@ -54,29 +52,19 @@ namespace Curry.Util
             onIdle.motion = idle;
             var onStart = rootStateMachine.AddState("OnStart");
             onStart.motion = start;
-            var onEnd = rootStateMachine.AddState("OnExit");
 
-            onEnd.motion = end;
             // Add parameters
             controller.AddParameter("Start", AnimatorControllerParameterType.Trigger);
-            controller.AddParameter("End", AnimatorControllerParameterType.Trigger);
 
             // Add Transitions
             var idleToStart = onIdle.AddTransition(onStart);
             idleToStart.AddCondition(AnimatorConditionMode.If, 1f, "Start");
             idleToStart.duration = 0f;
 
-            var idleToEnd = onIdle.AddTransition(onEnd);
-            idleToEnd.AddCondition(AnimatorConditionMode.If, 1f, "End");
-            idleToEnd.duration = 0f;
-
             var startToIdle = onStart.AddTransition(onIdle);
             startToIdle.hasExitTime = true;
             startToIdle.duration = 0f;
 
-            var endToIdle = onEnd.AddTransition(onIdle);
-            endToIdle.hasExitTime = true;
-            endToIdle.duration = 0f;
         }
 
 

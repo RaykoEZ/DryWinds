@@ -23,7 +23,7 @@ namespace Curry.Skill
             }
         }
 
-        protected abstract void UpdateHitBox(List<Vector2> verts);
+        protected abstract void PrepareDrawEffect(List<Vector2> verts);
 
         public override void Init(BaseCharacter user)
         {
@@ -64,23 +64,36 @@ namespace Curry.Skill
             }
         }
 
-        protected virtual void OnSkillEffectActivate(RegionInput input) 
+        public override void Interrupt()
         {
-            m_currentTracer.OnActivate -= OnSkillEffectActivate;
-            m_currentTracer.OnClear();
-            CoolDown();
-            OnSkillFinish();
-            StartCoroutine(InitSkillEffect(input));
+            base.Interrupt();
+            EndTracer();
         }
 
-        protected virtual IEnumerator InitSkillEffect(RegionInput input) 
+        protected virtual void EndTracer()
         {
+            if (m_currentTracer.isActiveAndEnabled) 
+            {
+                m_currentTracer.OnActivate -= OnSkillEffectActivate;
+                m_currentTracer.OnClear();
+            }
+        }
+
+        protected virtual void OnSkillEffectActivate(RegionInput input) 
+        {
+            EndTracer();
+            CoolDown();
+            OnSkillFinish();
+            PrepareDrawEffect(input.Vertices);
+            m_animator.SetTrigger("Start");
+            StartCoroutine(SkillEffect(input));
+        }
+
+        protected override IEnumerator SkillEffect(IActionInput target)
+        {
+            Debug.Log("Draw Skill Activate");
             // Start animation
-            UpdateHitBox(input.Vertices);
-            StartSkillAnim();
-            yield return new WaitUntil(()=> { return m_animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 1f; });
-            // Activate hitbox and start skill effect
-            m_currentSkill = StartCoroutine(SkillEffect(input));
+            yield return null;
         }
     }
 }
