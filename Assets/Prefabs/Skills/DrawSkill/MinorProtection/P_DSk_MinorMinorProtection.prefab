@@ -164,7 +164,7 @@ GameObject:
   - component: {fileID: 5359112122655602748}
   - component: {fileID: 7023212454887877008}
   m_Layer: 0
-  m_Name: P_DSk_MinorShield
+  m_Name: P_DSk_MinorMinorProtection
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -18,6 +18,7 @@ namespace Curry.Game
     // A basic script for a collidable object 
     public class Interactable : MonoBehaviour, IPoolable
     {
+        [SerializeField] protected Animator m_anim = default;
         [SerializeField] protected Rigidbody2D m_rigidbody = default;
         [SerializeField] protected Collider2D m_hurtBox = default;
         [SerializeField] protected ObjectRelations m_relations = default;
@@ -27,6 +28,7 @@ namespace Curry.Game
         public Collider2D HurtBox { get { return m_hurtBox; } }
         public ObjectRelations Relations { get { return m_relations; } }
         public virtual CollisionStats CurrentCollisionStats { get { return m_defaultCollisionStats; } }
+        public Animator Animator { get { return m_anim; } }
 
         public virtual void Prepare() 
         { }

@@ -49,6 +49,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b9c4c0c6eab04142a333faf9a790664, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_anim: {fileID: 2938013307545882423}
   m_rigidbody: {fileID: 826281917603678357}
   m_hurtBox: {fileID: 54977025414749079}
   m_relations: 1
@@ -248,7 +249,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5267077008236365787}
   - component: {fileID: 5872814142033351578}
-  - component: {fileID: 7869645759159708107}
   m_Layer: 0
   m_Name: Controller
   m_TagString: Untagged
@@ -283,18 +283,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_player: {fileID: 6580273533904613876}
-  m_anim: {fileID: 7869645759159708107}
   m_movementAction: {fileID: -5037352003540691882, guid: 82b300ceb3c136247a87054a5fd03e4f, type: 3}
---- !u!114 &7869645759159708107
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8130093959058342510}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 664240685e9c5344aaf2399bf5fa489b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_animator: {fileID: 2938013307545882423}

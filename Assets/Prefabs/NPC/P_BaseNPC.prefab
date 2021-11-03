@@ -290,6 +290,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14d441f6d236aef49b10deb7331d5dcf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_anim: {fileID: 7055139423586535467}
   m_rigidbody: {fileID: 8221820323924603490}
   m_hurtBox: {fileID: 8946931605538531584}
   m_relations: 2

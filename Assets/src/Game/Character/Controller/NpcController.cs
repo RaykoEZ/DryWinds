@@ -10,7 +10,6 @@ namespace Curry.Game
     public class NpcController : BaseCharacterController<BaseNpc>
     {
         [SerializeField] protected BaseNpc m_npc = default;
-        [SerializeField] protected Animator m_anim = default;
 
         protected IPathHandler m_pathHandler;
         public event OnCharacterTakeDamage OnTakingDamage;
@@ -85,9 +84,9 @@ namespace Curry.Game
 
         protected virtual IEnumerator UsingSkill(BaseCharacter target)
         {
-            m_anim.SetBool("WindingUp", true);
+            Character.Animator.SetBool("WindingUp", true);
             yield return new WaitForSeconds(Character.BasicSkills.CurrentSkill.Properties.WindupTime);
-            m_anim.SetBool("WindingUp", false);
+            Character.Animator.SetBool("WindingUp", false);
             m_basicSkill.ActivateSkill(target.transform.position);
         }
 
@@ -100,7 +99,7 @@ namespace Curry.Game
         protected override void OnInterrupt()
         {
             base.OnInterrupt();
-            m_anim.SetBool("WindingUp", false);
+            Character.Animator.SetBool("WindingUp", false);
         }
     }
 }

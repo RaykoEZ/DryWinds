@@ -4,19 +4,7 @@ using Curry.Game;
 
 namespace Curry.Skill
 {
-    public interface ITimeLimit
-    { 
-        float Duration { get; }
-        float TimeElapsed { get; }
-        void OnExpire();
-    }
-
-    public class FragileBarrier : FragileObject
-    { 
-    
-    }
-
-    public class MinorShield : EdgeSkill
+    public class MinorProtection : EdgeSkill
     {
         [SerializeField] float m_duration = default;
 
