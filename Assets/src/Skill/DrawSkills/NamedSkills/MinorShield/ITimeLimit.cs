@@ -4,6 +4,6 @@
     { 
         float Duration { get; }
         float TimeElapsed { get; }
-        void OnExpire();
+        void OnDefeat(bool animate = false);
     }
 }

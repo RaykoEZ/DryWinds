@@ -1,5 +1,5 @@
 using System;
-using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 using Curry.Util;
 
@@ -25,7 +25,6 @@ namespace Curry.Game
         CollisionStats m_defaultCollisionStats = new CollisionStats(0f, 5f);
         public virtual IObjectPool Origin { get; set; }
         public Rigidbody2D RigidBody { get { return m_rigidbody; } }
-        public Collider2D HurtBox { get { return m_hurtBox; } }
         public ObjectRelations Relations { get { return m_relations; } }
         public virtual CollisionStats CurrentCollisionStats { get { return m_defaultCollisionStats; } }
         public Animator Animator { get { return m_anim; } }
@@ -66,16 +65,37 @@ namespace Curry.Game
         {          
         }
 
-        public virtual void OnDefeat() 
+        public virtual void OnDefeat(bool animate = false)
         {
-            if (Origin != null) 
+            if (animate) 
             {
-                ReturnToPool();
+                StartCoroutine(OnDefeatSequence());
             }
             else 
             {
+                Defeat();
+            }
+        }
+        
+        IEnumerator OnDefeatSequence() 
+        {
+
+            m_anim.SetBool("Defeated", true);
+            yield return new WaitUntil(()=> { return m_anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 1f; });
+            Defeat();
+        }
+
+        void Defeat() 
+        {
+            gameObject.layer = LayerMask.NameToLayer("Defeated");
+            if (Origin != null)
+            {
+                ReturnToPool();
+            }
+            else
+            {
                 Destroy(gameObject);
             }
-        }      
+        }
     }
 }

@@ -81,10 +81,10 @@ namespace Curry.Game
         {
             OnActionInterrupt?.Invoke();
         }
-        public override void OnDefeat()
+        public override void OnDefeat(bool animate = false)
         {
             OnDefeated?.Invoke();
-            base.OnDefeat();
+            base.OnDefeat(animate);
         }
 
         public virtual void ApplyModifier(CharactertModifier mod) 

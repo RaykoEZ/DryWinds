@@ -14,24 +14,22 @@ namespace Curry.Skill
         protected Vector2 m_previousDrawPos;
         protected BaseTracer m_currentTracer;
         public virtual float CooldownTime { get { return m_skillProperty.CooldownTime; } }
-        public GameObject AssetRef { get; protected set; }
+        public GameObject TracerRef { get; protected set; }
+
         public override bool IsUsable
         {
             get
             {
-                return base.IsUsable && AssetRef != null;
+                return base.IsUsable && TracerRef != null;
             }
         }
-
-        protected abstract void PrepareDrawEffect(List<Vector2> verts);
 
         public override void Init(BaseCharacter user)
         {
             base.Init(user);
             m_traceRef.OnLoadSuccess += (obj) => 
             { 
-                AssetRef = obj;
-                m_instanceManager.PrepareNewInstance(AssetRef);
+                TracerRef = obj;
             };
             m_traceRef.LoadAsset();
         }
@@ -50,7 +48,7 @@ namespace Curry.Skill
                 if (!ActionInProgress)
                 {
                     // make new stroke
-                    m_currentTracer = m_instanceManager.GetInstanceFromCurrentPool() as BaseTracer;
+                    m_currentTracer = m_instanceManager.GetInstanceFromAsset(TracerRef) as BaseTracer;
                     m_currentTracer.OnActivate += OnSkillEffectActivate;
 
                 }
@@ -84,16 +82,8 @@ namespace Curry.Skill
             EndTracer();
             CoolDown();
             OnSkillFinish();
-            PrepareDrawEffect(input.Vertices);
             m_animator.SetTrigger("Start");
             StartCoroutine(SkillEffect(input));
-        }
-
-        protected override IEnumerator SkillEffect(IActionInput target)
-        {
-            Debug.Log("Draw Skill Activate");
-            // Start animation
-            yield return null;
         }
     }
 }
