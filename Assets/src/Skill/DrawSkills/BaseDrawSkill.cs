@@ -47,43 +47,57 @@ namespace Curry.Skill
                 // start a new stroke if we hold LMB (already drawing) and is moving
                 if (!ActionInProgress)
                 {
+                    EndTracer();
+                    m_previousDrawPos = posParam.Target;
                     // make new stroke
                     m_currentTracer = m_instanceManager.GetInstanceFromAsset(TracerRef) as BaseTracer;
                     m_currentTracer.OnActivate += OnSkillEffectActivate;
-
+                    ActionInProgress = true;                   
                 }
-                float length = !ActionInProgress ? 0f : Vector2.Distance(posParam.Target, m_previousDrawPos);
-                float totalCost = length * Properties.SpCost;
-                //update mousePos log
+
+                float dist = Vector2.Distance(posParam.Target, m_previousDrawPos);
+                float totalCost = dist * Properties.SpCost;
+                if (totalCost <= m_user.CurrentStats.SP)
+                {
+                    //update mousePos log
+                    ConsumeResource(totalCost);
+                    m_currentTracer.OnTrace(posParam.Target);
+                }
+                else if( m_user.CurrentStats.SP > 0f )
+                {
+                    float scale = m_user.CurrentStats.SP / totalCost;
+                    Vector2 lerp = Vector2.Lerp(m_previousDrawPos, posParam.Target, scale);
+                    ConsumeResource(m_user.CurrentStats.SP);
+                    m_currentTracer.OnTrace(lerp);
+                }
                 m_previousDrawPos = posParam.Target;
-                ConsumeResource(totalCost);
-                m_currentTracer.OnTrace(posParam.Target, length);
-                ActionInProgress = true;
             }
         }
 
         public override void Interrupt()
         {
-            base.Interrupt();
             EndTracer();
+            base.Interrupt();
         }
 
         protected virtual void EndTracer()
         {
-            if (m_currentTracer.isActiveAndEnabled) 
+            if(m_currentTracer != null && m_currentTracer.isActiveAndEnabled) 
             {
-                m_currentTracer.OnActivate -= OnSkillEffectActivate;
-                m_currentTracer.OnClear();
-            }
+                m_currentTracer.ActivateEffect();
+            } 
         }
 
         protected virtual void OnSkillEffectActivate(RegionInput input) 
         {
+            m_currentTracer.OnActivate -= OnSkillEffectActivate;
+            m_currentTracer.OnClear();
             EndTracer();
             CoolDown();
             OnSkillFinish();
             m_animator.SetTrigger("Start");
             StartCoroutine(SkillEffect(input));
+
         }
     }
 }

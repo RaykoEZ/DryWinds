@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Curry.Game
 {
-    [RequireComponent(typeof(Collider2D))]
+    [RequireComponent(typeof(EdgeCollider2D))]
     public class ArenaRing : DynamicInteractable
     {
         [SerializeField] float m_initScale = default;
@@ -71,7 +71,7 @@ namespace Curry.Game
         protected void SetRingScale(float scale) 
         {
             transform.localScale = new Vector3(scale, scale, scale);
-            EdgeCollider2D col = (EdgeCollider2D)m_hurtBox;
+            EdgeCollider2D col = GetComponent<EdgeCollider2D>();
             col.edgeRadius = 0.5f * scale;
         }
     }

@@ -17,7 +17,7 @@ namespace Curry.Skill
 
         public event OnActivateDrawSkill OnActivate;
 
-        protected bool m_loopTriggered = false;
+        protected bool m_effectActivated = false;
         protected Queue<Vector2> m_drawnVert = new Queue<Vector2>();
         protected Queue<Vector3> m_drawnPositions = new Queue<Vector3>();
 
@@ -30,45 +30,26 @@ namespace Curry.Skill
             ResetAll();
         }
 
-        public virtual void OnTrace(Vector2 targetPosition, float length)
+        public virtual void OnTrace(Vector2 target)
         {
-            if (!m_drawnVert.Contains(targetPosition) && !m_loopTriggered)
+            AddVertex(target);
+        }
+
+        protected void AddVertex(Vector2 targetPosition) 
+        {
+            if (!m_drawnVert.Contains(targetPosition) && !m_effectActivated)
             {
                 m_drawnVert.Enqueue(targetPosition);
                 m_drawnPositions.Enqueue(targetPosition);
-                // We drew a shape/enclosure, we set the trace to the drawn shape
-                if (DetectPattern(targetPosition)) 
-                {
-                    List<Vector2> trimmedVerts = GetTrimmmedPattern(m_drawnVert.ToArray(), targetPosition);
-                    if (GameUtil.AreaOfEnclosure(trimmedVerts.ToArray()) > 1f) 
-                    {
-                        TracePattern(trimmedVerts);
-                        return;
-                    }
-                }
-
                 UpdateTrace(targetPosition);
             }
         }
+
         protected virtual void UpdateTrace(Vector2 targetPosition) 
         {
             m_lineRenderer.positionCount = m_drawnPositions.Count;
             m_lineRenderer.SetPosition(m_lineRenderer.positionCount - 1, targetPosition);
             m_edgeCollider.points = m_drawnVert.ToArray();
-        }
-
-        // Set the line render and collider to the shape we drew
-        protected virtual void TracePattern(List<Vector2> shapeVerts) 
-        {
-            m_loopTriggered = true;
-            m_drawnVert = new Queue<Vector2>(shapeVerts);
-            Vector3[] newPos = VectorExtension.ToVector3Array(shapeVerts.ToArray());
-            m_drawnPositions = new Queue<Vector3>(newPos);
-            m_lineRenderer.positionCount = newPos.Length;
-            m_lineRenderer.SetPositions(newPos);
-            m_edgeCollider.points = m_drawnVert.ToArray();
-
-            ActivateEffect(new List<Vector2>(m_drawnVert));
         }
 
         /// <summary>
@@ -88,10 +69,7 @@ namespace Curry.Skill
                 Vector2 dir = (targetVert - verts[m_edgeCollider.points.Length - 1]).normalized;
                 // move starting point from origin towards targetVert by 2x radius to avoid collision on origin.
                 Vector2 start = verts[m_edgeCollider.points.Length - 1] + (2f * m_edgeCollider.edgeRadius * dir);
-                float dist =
-                    Vector2.Distance(targetVert, verts[m_edgeCollider.points.Length - 1]) >
-                    Vector2.Distance(start, verts[m_edgeCollider.points.Length - 1]) ? Vector2.Distance(targetVert, start) : 0f;
-
+                float dist = Vector2.Distance(targetVert, start);
                 // 1 << 8 for drawing layer, CONST IN THE FUTURE
                 RaycastHit2D hit = Physics2D.CircleCast(start, m_edgeCollider.edgeRadius, dir, dist, 1 << 8);
                 ret = hit.collider == m_edgeCollider;
@@ -106,14 +84,13 @@ namespace Curry.Skill
         /// <param name="closureVert"> the latest point to make contact with the line to form a shape</param>
         /// <param name="searchRadius"> the radius for searching neighbourhood points</param>
         /// <returns></returns>
-        protected List<Vector2> GetTrimmmedPattern(Vector2[] verts, Vector2 closureVert, float searchRadius = 0.1f) 
+        protected List<Vector2> GetTrimmmedPattern(Vector2[] verts, Vector2 closureVert, float searchRadius) 
         {
             List<Vector2> toKeep = new List<Vector2>(verts);
             toKeep[0] = closureVert;
             if (verts.Length > 2) 
             {
                 List<Vector2> toRemove = new List<Vector2>();
-
                 for (int i = 0; i < verts.Length - 1; ++i) 
                 {
                     // From first vert to the closest vert to closure point, remove those hanging verts and keep the rest
@@ -137,9 +114,10 @@ namespace Curry.Skill
             return toKeep;
         } 
 
-        protected virtual void ActivateEffect(List<Vector2> input) 
+        public virtual void ActivateEffect() 
         {
-            RegionInput payload = new RegionInput(input);
+            List<Vector2> verts = new List<Vector2>(m_drawnVert);
+            RegionInput payload = new RegionInput(verts);
             OnActivate?.Invoke(payload);
         }
 
@@ -150,7 +128,7 @@ namespace Curry.Skill
 
         protected virtual IEnumerator OnExit() 
         {
-            yield return new WaitForSeconds(1.0f);
+            yield return new WaitForSeconds(0.5f);
             ResetAll();
             ReturnToPool();
         }
@@ -158,7 +136,7 @@ namespace Curry.Skill
         protected virtual void ResetAll() 
         {
             OnActivate = null;
-            m_loopTriggered = false;
+            m_effectActivated = false;
             m_lineRenderer.positionCount = 0;
             m_drawnVert.Clear();
             m_drawnPositions.Clear();

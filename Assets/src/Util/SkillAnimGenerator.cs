@@ -40,17 +40,17 @@ namespace Curry.Util
             var controller = AnimatorController.CreateAnimatorControllerAtPath($"{saveAddress}.controller");
 
             AnimationClip idle = new AnimationClip();
-            AssetDatabase.CreateAsset(idle, $"{saveAddress}_idle.anim");
+            AssetDatabase.CreateAsset(idle, $"{saveAddress}_inactive.anim");
             AnimationClip start = new AnimationClip();
-            AssetDatabase.CreateAsset(start, $"{saveAddress}_start.anim");
+            AssetDatabase.CreateAsset(start, $"{saveAddress}_active.anim");
 
             // Add StateMachines
             var rootStateMachine = controller.layers[0].stateMachine;
 
             // Add States
-            var onIdle = rootStateMachine.AddState("OnIdle");
+            var onIdle = rootStateMachine.AddState("OnInactive");
             onIdle.motion = idle;
-            var onStart = rootStateMachine.AddState("OnStart");
+            var onStart = rootStateMachine.AddState("OnActive");
             onStart.motion = start;
 
             // Add parameters

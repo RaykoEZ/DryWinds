@@ -72,6 +72,5 @@ namespace Curry.Game
             return obj;
         }
     }
-
 }
 

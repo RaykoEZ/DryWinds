@@ -15,13 +15,12 @@ namespace Curry.Skill
     [RequireComponent(typeof(LineRenderer))]
     public class FragileBarrier : FragileObject, ITimeLimit, ISummonableObject<RegionInput>
     {
-        [SerializeField] protected EdgeCollider2D m_hitBox = default;
         [SerializeField] protected LineRenderer m_lineRenderer = default;
 
         public float Duration { get; protected set; }
         public float TimeElapsed { get; protected set; }
         public virtual GameObject Self { get { return gameObject; } }
-        public virtual EdgeCollider2D HitBox { get { return m_hitBox; } }
+        public virtual EdgeCollider2D HitBox { get { return GetComponent<EdgeCollider2D>(); } }
         public virtual LineRenderer LineRenderer { get { return m_lineRenderer; } }
 
         public void OnSummon(RegionInput param) 
@@ -29,11 +28,12 @@ namespace Curry.Skill
             if(param != null && param.Vertices.Count > 2) 
             {
                 Duration = (float)param.Payload["duration"];
-                m_hitBox.SetPoints(param.Vertices);
+                HitBox.SetPoints(param.Vertices);
                 Vector3[] pos = VectorExtension.ToVector3Array(param.Vertices.ToArray());
                 m_lineRenderer.positionCount = pos.Length;
                 m_lineRenderer.SetPositions(pos);
-
+                transform.parent = null;
+                m_anim.SetTrigger("Start");
                 StartCoroutine(Countdown());
             }
         }
@@ -47,6 +47,11 @@ namespace Curry.Skill
             }
             // Start defeat sequence
             Debug.Log("Barrier expired");
+            m_anim.SetTrigger("End");
+            yield return new WaitUntil(() => 
+            { 
+                return m_anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 1f; 
+            });
             OnDefeat();
         }
 

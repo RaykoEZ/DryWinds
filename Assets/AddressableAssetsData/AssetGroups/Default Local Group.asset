@@ -16,7 +16,13 @@ MonoBehaviour:
   m_Data:
     m_SerializedData: []
   m_GUID: cb0962f79020ccc4c8a10197b3e67f06
-  m_SerializeEntries: []
+  m_SerializeEntries:
+  - m_GUID: f7fd15333b915b2429510021a1cfcb51
+    m_Address: DSkiill/P/MinorProtection/Summon0
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: b7f44c639b5eac6459efa6d347a60ca1, type: 2}
   m_SchemaSet:

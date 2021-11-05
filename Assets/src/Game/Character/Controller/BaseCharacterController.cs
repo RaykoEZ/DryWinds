@@ -15,7 +15,7 @@ namespace Curry.Game
 
         protected virtual void OnEnable()
         {
-            Character.OnTakingDamage += OnHitStun;
+            Character.OnHitStun += OnHitStun;
             Character.OnActionInterrupt += OnInterrupt;
             Character.OnLoaded += Init;
             Character.OnDefeated += OnDefeated;
@@ -23,7 +23,7 @@ namespace Curry.Game
 
         protected virtual void OnDisable() 
         {
-            Character.OnTakingDamage -= OnHitStun;
+            Character.OnHitStun -= OnHitStun;
             Character.OnActionInterrupt -= OnInterrupt;
             Character.OnLoaded -= Init;
             Character.OnDefeated -= OnDefeated;
@@ -66,8 +66,7 @@ namespace Curry.Game
         {
             if (IsReady) 
             {
-                float drag = Character.RigidBody.drag;
-                Character.RigidBody.AddForce(target * Character.CurrentStats.Speed * drag);
+                Character.RigidBody.AddForce(target * Character.CurrentStats.Speed);
             }
         }
 
@@ -100,7 +99,7 @@ namespace Curry.Game
             m_basicSkill.ActivateSkill(target);
         }
 
-        protected void OnHitStun(float damage)
+        protected void OnHitStun(float stunMod)
         {
             // Interrupt the input stun and reapply the stun timer
             if (ActionCall != null)
@@ -109,7 +108,7 @@ namespace Curry.Game
                 ActionCall = null;
             }
             OnInterrupt();
-            ActionCall = StartCoroutine(RecoverInput());
+            ActionCall = StartCoroutine(RecoverInput(stunMod));
         }
         protected virtual void OnInterrupt()
         {
@@ -121,9 +120,9 @@ namespace Curry.Game
         {       
         }
 
-        protected IEnumerator RecoverInput()
+        protected IEnumerator RecoverInput(float stunMod)
         {
-            yield return new WaitForSeconds(Character.CurrentStats.HitRecoveryTime);
+            yield return new WaitForSeconds(stunMod * Character.CurrentStats.HitRecoveryTime);
             ActionCall = null;
         }
     }

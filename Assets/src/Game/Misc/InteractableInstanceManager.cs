@@ -8,22 +8,22 @@ namespace Curry.Game
         [SerializeField] InteractablePoolCollection m_poolManager = default;
         ObjectPool<Interactable> m_currentPool = default;
 
-        public virtual void PrepareNewInstance(GameObject instanceAsset, Transform parent = null)
+        public virtual void PrepareNewInstance(GameObject instance, Transform parent = null)
         {
-            string assetId = instanceAsset.name;
-            if (m_poolManager.ContainsPool(assetId))
+            string instanceId = instance.name;
+            if (m_poolManager.ContainsPool(instanceId))
             {
-                m_currentPool = m_poolManager.GetPool(assetId);
+                m_currentPool = m_poolManager.GetPool(instanceId);
             }
-            else if (instanceAsset.TryGetComponent(out Interactable reference))
+            else if (instance.TryGetComponent(out Interactable reference))
             {
-                m_currentPool = m_poolManager.AddPool(assetId, reference, parent);
+                m_currentPool = m_poolManager.AddPool(instanceId, reference, parent);
             }
         }
 
-        public virtual Interactable GetInstanceFromAsset(GameObject asset)
+        public virtual Interactable GetInstanceFromAsset(GameObject asset, Transform parent = null)
         {
-            PrepareNewInstance(asset);
+            PrepareNewInstance(asset, parent);
             return m_currentPool?.GetItemFromPool();
         }
 

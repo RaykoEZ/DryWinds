@@ -20,7 +20,6 @@ namespace Curry.Game
     {
         [SerializeField] protected Animator m_anim = default;
         [SerializeField] protected Rigidbody2D m_rigidbody = default;
-        [SerializeField] protected Collider2D m_hurtBox = default;
         [SerializeField] protected ObjectRelations m_relations = default;
         CollisionStats m_defaultCollisionStats = new CollisionStats(0f, 5f);
         public virtual IObjectPool Origin { get; set; }
@@ -38,10 +37,7 @@ namespace Curry.Game
 
         protected virtual void OnCollisionEnter2D(Collision2D collision)
         {
-            if(collision.otherCollider == m_hurtBox) 
-            {
-                OnClash(collision);
-            }
+            OnClash(collision);
         }
 
         protected virtual void OnClash(Collision2D collision)
@@ -62,7 +58,7 @@ namespace Curry.Game
 
 
         public virtual void OnTakeDamage(float damage) 
-        {          
+        {
         }
 
         public virtual void OnDefeat(bool animate = false)
@@ -79,7 +75,6 @@ namespace Curry.Game
         
         IEnumerator OnDefeatSequence() 
         {
-
             m_anim.SetBool("Defeated", true);
             yield return new WaitUntil(()=> { return m_anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 1f; });
             Defeat();
@@ -87,7 +82,6 @@ namespace Curry.Game
 
         void Defeat() 
         {
-            gameObject.layer = LayerMask.NameToLayer("Defeated");
             if (Origin != null)
             {
                 ReturnToPool();

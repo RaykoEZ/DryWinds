@@ -8,6 +8,7 @@ namespace Curry.Game
     public delegate void OnLoadFinish();
     public delegate void OnCharacterHeal(float heal);
     public delegate void OnCharacterTakeDamage(float damage);
+    public delegate void OnCharacterHitStun(float stunMod);
     public delegate void OnCharacterDefeated();
     public delegate void OnCharacterInterrupt();
     public abstract class BaseCharacter : Interactable
@@ -31,13 +32,9 @@ namespace Curry.Game
 
         public event OnCharacterHeal OnHealing;
         public event OnCharacterTakeDamage OnTakingDamage;
+        public event OnCharacterHitStun OnHitStun;
         public event OnCharacterInterrupt OnActionInterrupt;
         public event OnCharacterDefeated OnDefeated;
-
-        protected virtual void Update()
-        {
-            OnSPRegen();
-        }
 
         public virtual void Init(CharacterContextFactory contextFactory) 
         {
@@ -50,10 +47,17 @@ namespace Curry.Game
             m_statusManager.Shutdown();
         }
 
+        public override void OnKnockback(Vector2 direction, float knockback)
+        {
+            base.OnKnockback(direction, knockback);
+            OnHitStun?.Invoke(1f);
+        }
+
         public override void OnTakeDamage(float damage)
         {
             m_statusManager.TakeDamage(damage);
             OnTakingDamage?.Invoke(damage);
+            OnHitStun?.Invoke(1f);
         }
 
         public virtual void OnHeal(float val) 
@@ -67,7 +71,7 @@ namespace Curry.Game
             m_statusManager.LoseSp(val);
 
         }
-        protected virtual void OnSPRegen()
+        public virtual void OnSPRegen()
         {
             m_statusManager.GainSp(Time.deltaTime * CurrentStats.SPRegenPerSec);
         }

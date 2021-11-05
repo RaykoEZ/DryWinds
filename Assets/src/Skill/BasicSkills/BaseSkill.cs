@@ -109,10 +109,10 @@ namespace Curry.Skill
 
         protected virtual void CoolDown() 
         {
-            if(m_coolDown == null) 
+            if (m_coolDown == null) 
             {
                 m_coolDown = StartCoroutine(OnCooldown());
-            }
+            }          
         }
 
         protected virtual void ConsumeResource(float val) 

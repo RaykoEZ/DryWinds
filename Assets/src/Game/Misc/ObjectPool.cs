@@ -55,6 +55,7 @@ namespace Curry.Game
             }
 
             newObj.transform.position = Vector3.zero;
+            newObj.transform.SetParent(m_parent);
             newObj.gameObject.SetActive(true);
             newObj.Prepare();
             m_inUse.Add(newObj);

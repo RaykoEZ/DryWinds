@@ -14,7 +14,7 @@ namespace Curry.Skill
 
     public class MinorProtection : BaseDrawSkill, ISummonSkill<RegionInput>
     {
-        [SerializeField] float m_duration = default;
+        [SerializeField] float m_shieldDuration = default;
         [SerializeField] protected PrefabLoader m_barrierSpawn = default;
         
         public ISummonableObject<RegionInput> SummonObject { get; protected set; }
@@ -23,7 +23,11 @@ namespace Curry.Skill
 
         public virtual void Summon(RegionInput param) 
         {
-            param.Payload["duration"] = m_duration;
+            if(param.Payload == null)
+            {
+                param.Payload = new Dictionary<string, object>();
+            }
+            param.Payload.Add("duration", m_shieldDuration);
             m_currentBarrier = m_instanceManager.GetInstanceFromAsset(SummonObject.Self) as FragileBarrier;
             m_currentBarrier?.OnSummon(param);
         }
@@ -40,8 +44,7 @@ namespace Curry.Skill
 
         protected override IEnumerator SkillEffect(IActionInput target)
         {
-            Debug.Log("Summon barrier");
-            if(target is RegionInput input) 
+            if(target is RegionInput input)
             {
                 Summon(input);
             }

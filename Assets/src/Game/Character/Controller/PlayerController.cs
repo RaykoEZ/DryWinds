@@ -11,9 +11,8 @@ namespace Curry.Game
         [SerializeField] Player m_player = default;
         [SerializeField] InputActionReference m_movementAction = default;
 
-        public override Player Character { get { return m_player; } } 
-
-        void Update()
+        public override Player Character { get { return m_player; } }
+        void FixedUpdate()
         {
             if (IsReady) 
             {
@@ -22,6 +21,10 @@ namespace Curry.Game
                     Vector2 pos = Character.CurrentCamera.
                         ScreenToWorldPoint(Mouse.current.position.ReadValue());
                     OnDrawSkill(pos);
+                }
+                else
+                {
+                    Character.OnSPRegen();
                 }
 
                 if (m_movementAction.action.ReadValue<Vector2>().sqrMagnitude > 0)
