@@ -119,8 +119,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5751947333654081877}
-  - component: {fileID: 5751947333654081878}
   - component: {fileID: 5751947333654081876}
+  - component: {fileID: 3241553824442576430}
   m_Layer: 0
   m_Name: P_DSk_BaseDrawSkill
   m_TagString: Untagged
@@ -144,33 +144,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5751947333654081878
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5751947333654081879}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 83ac3cf1b5f76a04d99953cd983310e0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_animator: {fileID: 5751947333654081876}
-  m_skillProperty:
-    m_name: BaseDraw
-    m_targetOptions: -1
-    m_spCost: 5
-    m_cooldownTime: 1
-    m_maxWindupTime: 0
-    m_skillValue: 0
-    m_knockback: 1
-  m_traceRef:
-    m_assetRef:
-      m_AssetGUID: c429d02b3f4902d4591f75325c991b40
-      m_SubObjectName: 
-      m_SubObjectType: 
-  m_instanceManager: {fileID: 5751947332544427054}
 --- !u!95 &5751947333654081876
 Animator:
   serializedVersion: 3
@@ -190,3 +163,30 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &3241553824442576430
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5751947333654081879}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a859596dd3d84f0469c3bad0d73a0be6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_animator: {fileID: 0}
+  m_skillProperty:
+    m_name: BaseDraw
+    m_targetOptions: 0
+    m_spCost: 2
+    m_cooldownTime: 1
+    m_maxWindupTime: 0
+    m_actionValue: 0
+    m_knockback: 0
+  m_traceRef:
+    m_assetRef:
+      m_AssetGUID: c429d02b3f4902d4591f75325c991b40
+      m_SubObjectName: 
+      m_SubObjectType: 
+  m_instanceManager: {fileID: 5751947332544427054}

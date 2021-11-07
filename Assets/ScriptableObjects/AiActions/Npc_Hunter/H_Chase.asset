@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79762b3a4c6df9841a3612431cc9706f, type: 3}
   m_Name: H_Chase
   m_EditorClassIdentifier: 
-  m_basePriority: 1
+  m_basePriority: 0.7

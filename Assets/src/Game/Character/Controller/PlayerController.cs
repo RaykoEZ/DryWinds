@@ -16,14 +16,13 @@ namespace Curry.Game
 
         void Update()
         {
-            if (!m_disableInput) 
+            if (IsReady) 
             {
                 if (Mouse.current.leftButton.isPressed)
                 {
                     Vector2 pos = Character.CurrentCamera.
                         ScreenToWorldPoint(Mouse.current.position.ReadValue());
-                    TargetPosition target = new TargetPosition(pos);
-                    OnDrawSkill(target);
+                    OnDrawSkill(pos);
                 }
 
                 if (m_movementAction.action.ReadValue<Vector2>().sqrMagnitude > 0)
@@ -35,7 +34,8 @@ namespace Curry.Game
 
         public void OnBasicSkill(InputAction.CallbackContext c)
         {
-            if (!m_basicSkill.IsCurrentSkillAvailable || m_disableInput) 
+            if (m_basicSkill.CurrentSkill == null || 
+                !m_basicSkill.CurrentSkill.IsUsable || !IsReady) 
             {
                 return;
             }
@@ -45,25 +45,26 @@ namespace Curry.Game
                 switch (c.phase)
                 {
                     case InputActionPhase.Performed:
-                        if (Mouse.current.rightButton.isPressed)
-                        {                            
-                            // trigger dash windup anim on rmb press
-                            m_anim.OnDashWindUp();
-                            m_basicSkill.SkillWindup();
-                        }
-                        else
+                        if (!Mouse.current.rightButton.isPressed)
                         {
-                            m_anim.OnDashRelease();
                             Vector2 pos = Character.CurrentCamera.
                                 ScreenToWorldPoint(Mouse.current.position.ReadValue());
-                            TargetPosition target = new TargetPosition(pos);
-                            OnBasicSkill(target);
+                            OnBasicSkill(pos);
                         }
                         break;
                     default:
                         break;
                 }
             }
+        }
+
+        protected override IEnumerator OnSkill(Vector2 target) 
+        {
+            // trigger dash windup anim
+            m_anim.OnWindUp();
+            yield return new WaitForSeconds(m_basicSkill.CurrentSkill.Properties.WindupTime);
+            m_anim.OnDashRelease();
+            m_basicSkill.ActivateSkill(target);
         }
 
         #region drawing brush
@@ -82,29 +83,13 @@ namespace Curry.Game
                 }
             }
         }
+        #endregion
 
-        protected override void OnHitStun(float damage)
+        protected override void OnInterrupt()
         {
-            base.OnHitStun(damage);
+            base.OnInterrupt();
             // Interrupt the input stun and reapply the stun timer
             m_anim.OnTakeDamage();
         }
-
-        public void ChangeTrace(int index)
-        {
-        }
-
-        public void NextTrace()
-        {
-
-        }
-
-        public void PreviousTrace()
-        {
-
-        }
-        #endregion
-
-
     }
 }

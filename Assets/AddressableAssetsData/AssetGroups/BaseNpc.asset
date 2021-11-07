@@ -17,24 +17,24 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: 29af5067bfb23414aa7bf94e2774204e
   m_SerializeEntries:
-  - m_GUID: 954c07cc9977f24408e30d64042810cb
-    m_Address: P_BaseNPC
+  - m_GUID: 3b51bd00171374e4296e24e927c12a63
+    m_Address: P_BaseNpc
     m_ReadOnly: 0
     m_SerializedLabels: []
-    m_MainAsset: {fileID: 8869289004023852315, guid: 954c07cc9977f24408e30d64042810cb, type: 3}
-    m_TargetAsset: {fileID: 8869289004023852315, guid: 954c07cc9977f24408e30d64042810cb, type: 3}
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
   - m_GUID: e2429b6b6afa2d5489795f162b344dea
     m_Address: Anim_Npc_Windup
     m_ReadOnly: 0
     m_SerializedLabels: []
-    m_MainAsset: {fileID: 7400000, guid: e2429b6b6afa2d5489795f162b344dea, type: 2}
-    m_TargetAsset: {fileID: 7400000, guid: e2429b6b6afa2d5489795f162b344dea, type: 2}
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
   - m_GUID: 8e7ca43f62fb6ad468b02d9d28eebaca
     m_Address: Npc/Anim_Npc_Idle
     m_ReadOnly: 0
     m_SerializedLabels: []
-    m_MainAsset: {fileID: 7400000, guid: 8e7ca43f62fb6ad468b02d9d28eebaca, type: 2}
-    m_TargetAsset: {fileID: 7400000, guid: 8e7ca43f62fb6ad468b02d9d28eebaca, type: 2}
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
   - m_GUID: e847d3a3bc32e674985371a34a3e2d24
     m_Address: AC_BaseNpc
     m_ReadOnly: 0

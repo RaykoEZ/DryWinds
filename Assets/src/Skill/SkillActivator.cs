@@ -7,43 +7,14 @@ namespace Curry.Skill
 {
     public class SkillActivator
     {
-        public bool IsCurrentSkillAvailable
+        public ICharacterAction<IActionInput> CurrentSkill
         {
-            get
-            {
-                return CurrentSkill != null && CurrentSkill.IsUsable;
-            }
+            get; set;
         }
 
-        public SkillProperty CurrentSkillProperties
+        public virtual void ActivateSkill(Vector2 target, bool isDirection = false, Dictionary<string, object> payload = null)
         {
-            get { return CurrentSkill.Properties; }
-        }
-
-        public ICharacterAction<IActionInput, SkillProperty> CurrentSkill
-        {
-            get; protected set;
-        }
-
-        public virtual void SkillWindup()
-        {
-            CurrentSkill?.Windup();
-        }
-
-        public virtual void EquipSkill(ICharacterAction<IActionInput, SkillProperty> skill) 
-        {      
-            CurrentSkill = skill;
-        }
-
-        public virtual void ActivateSkill(ITargetable<Vector2> target, bool isDirection = false, Dictionary<string, object> payload = null)
-        {           
             VectorInput param = new VectorInput(target, payload);
-            CurrentSkill?.Execute(param);
-        }
-
-        public virtual void ActivateSkill(ITargetable<BaseCharacter> target, bool isDirection = false, Dictionary<string, object> payload = null)
-        {
-            CharacterParam param = new CharacterParam(target, payload);
             CurrentSkill?.Execute(param);
         }
 

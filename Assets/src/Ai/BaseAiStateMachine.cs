@@ -16,8 +16,7 @@ namespace Curry.Ai
         {
             get
             {
-                return Random.Range(0.9f * m_averageReactionInterval, 
-                    1.1f * m_averageReactionInterval);
+                return Random.Range(0.7f, 1.3f) * m_averageReactionInterval;
             }
         }
 
@@ -30,8 +29,8 @@ namespace Curry.Ai
         }
         float m_evalTimer = 0f; 
         protected AiState m_current;
-        NpcWorldState m_worldStateSnapshot = new NpcWorldState();
-        protected virtual NpcWorldState WorldStateSnapshot
+        AiWorldState m_worldStateSnapshot = new AiWorldState();
+        protected virtual AiWorldState WorldStateSnapshot
         {
             get
             {

@@ -9,24 +9,26 @@ namespace Curry.Ai
 {
     public delegate void OnAiActionFinish();
     [Serializable]
-    public abstract class AiAction<T, T1> : ScriptableObject where T : IActionInput where T1 : IActionProperty
+    public abstract class AiAction<T> : ScriptableObject where T : IActionInput
     {
         [SerializeField] protected float m_basePriority = default;
-
-        public virtual bool PreCondition(NpcWorldState args)
+        // Returns action executed
+        public abstract ICharacterAction<T> Execute(NpcController controller, AiWorldState state);
+       
+        public virtual bool PreCondition(AiWorldState args)
         {
             return true;
         }
 
-        public virtual float Priority(NpcWorldState args) 
+        public virtual float Priority(AiWorldState args) 
         {
             return m_basePriority;
         }
+    
+        protected virtual BaseCharacter ChooseTarget(List<BaseCharacter> characters) 
+        {
+            return HeuristicUtil.WeakestCharacter(characters);
+        }
 
-        // Returns action executed
-        public abstract ICharacterAction<T, T1> Execute(NpcController controller, NpcWorldState state);
-
-        public abstract ICharacterAction<T, T1> ChooseAction(List<ICharacterAction<T, T1>> skills, BaseCharacter target);
-        protected abstract float ActionScore(ICharacterAction<T, T1> action, BaseCharacter target);
     }
 }

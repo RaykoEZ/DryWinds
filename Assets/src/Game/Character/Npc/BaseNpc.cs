@@ -3,12 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Curry.Ai;
+using Pathfinding;
 
 namespace Curry.Game
 {
     public class BaseNpc : BaseCharacter
     {
-        [SerializeField] float m_averageReactionTime = default;
         [SerializeField] protected CharacterDetector m_detector = default;
 
         protected CharacterContextFactory m_contextFactory = new CharacterContextFactory();
@@ -17,14 +17,6 @@ namespace Curry.Game
 
         public event OnCharacterDetected OnDetectCharacter;
         public event OnCharacterDetected OnCharacterExitDetection;
-        protected virtual float ReactionTime
-        {
-            get
-            {
-                return UnityEngine.
-                    Random.Range(0.9f * m_averageReactionTime, 1.1f * m_averageReactionTime);
-            }
-        }
 
         public List<BaseCharacter> Enemies { get { return new List<BaseCharacter>(m_enemies); } }
         public List<BaseCharacter> Allies { get { return new List<BaseCharacter>(m_allies); } }

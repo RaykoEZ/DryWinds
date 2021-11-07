@@ -8,22 +8,18 @@ namespace Curry.Ai
 {
     [Serializable]
     [CreateAssetMenu(menuName = "Curry/AiState/Chase", order = 0)]
-    public class AiChase : AiAction<IActionInput, IActionProperty>
+    public class AiChase : AiAction<IActionInput>
     {
-        public override ICharacterAction<IActionInput, IActionProperty> Execute(NpcController controller, NpcWorldState state)
+        public override bool PreCondition(AiWorldState args)
         {
-            throw new NotImplementedException();
+            return args.Enemies.Count > 0;
         }
 
-        protected override float ActionScore(ICharacterAction<IActionInput, IActionProperty> action, BaseCharacter target)
+        public override ICharacterAction<IActionInput> Execute(NpcController controller, AiWorldState state)
         {
-            throw new NotImplementedException();
-        }
-
-        public override ICharacterAction<IActionInput, IActionProperty> ChooseAction(
-            List<ICharacterAction<IActionInput, IActionProperty>> skills, BaseCharacter target)
-        {
-            throw new NotImplementedException();
+            Transform target = ChooseTarget(state.Enemies).transform;
+            controller.Move(target);
+            return null;
         }
     }
 }

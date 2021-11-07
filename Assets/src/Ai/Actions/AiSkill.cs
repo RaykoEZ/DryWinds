@@ -1,42 +1,33 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using Curry.Game;
 using Curry.Skill;
 
 namespace Curry.Ai
 {
-    public abstract class AiSkill : AiAction<IActionInput, SkillProperty>
+    public abstract class AiSkill : AiAction<IActionInput>
     {
-        public override bool PreCondition(NpcWorldState args)
+        public override bool PreCondition(AiWorldState args)
         {
             return args.Enemies.Count > 0 && args.BasicSkills.Count > 0;
         }
 
-        public override ICharacterAction<IActionInput, SkillProperty> Execute(NpcController controller, NpcWorldState state)
+        public override ICharacterAction<IActionInput> Execute(NpcController controller, AiWorldState state)
         {
             BaseCharacter target = ChooseTarget(state.Enemies);
-            ICharacterAction<IActionInput, SkillProperty> skill = ChooseAction(state.BasicSkills, target);
+            ICharacterAction<IActionInput> skill = ChooseAction(state.BasicSkills, target);
             ActivateSkill(controller, skill, target);
             return skill;
         }
 
-        protected virtual void ActivateSkill(NpcController controller, ICharacterAction<IActionInput, SkillProperty> skill, BaseCharacter target) 
+        protected virtual void ActivateSkill(NpcController controller, ICharacterAction<IActionInput> skill, BaseCharacter target) 
         {
             controller.EquipBasicSkill(skill);
-            if(skill.Properties.MaxWindupTime > 0f) 
-            {
-                controller.OnSkillWindup(target);
-            }
-            else 
-            {
-                TargetPosition pos = new TargetPosition(target.transform.position);
-                controller.OnBasicSkill(pos);
-            }
+            controller.OnBasicSkill(target);
         }
 
-        public override ICharacterAction<IActionInput, SkillProperty> ChooseAction(
-            List<ICharacterAction<IActionInput, SkillProperty>> skills, 
+        public virtual ICharacterAction<IActionInput> ChooseAction(
+            List<ICharacterAction<IActionInput>> skills, 
             BaseCharacter target)
         {
             int bestIdx = 0;
@@ -59,6 +50,6 @@ namespace Curry.Ai
             return skills[bestIdx];
         }
 
-        protected abstract BaseCharacter ChooseTarget(List<BaseCharacter> characters);
+        protected abstract float ActionScore(ICharacterAction<IActionInput> action, BaseCharacter target);
     }
 }
