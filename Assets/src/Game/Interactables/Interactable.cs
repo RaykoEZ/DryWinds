@@ -72,7 +72,13 @@ namespace Curry.Game
                 Defeat();
             }
         }
-        
+
+        protected virtual void UpdatePathfinder()
+        {
+            Bounds bounds = GetComponent<Collider2D>().bounds;
+            AstarPath.active.UpdateGraphs(bounds);
+        }
+
         IEnumerator OnDefeatSequence() 
         {
             m_anim.SetBool("Defeated", true);

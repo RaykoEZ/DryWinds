@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Curry.Game
 {
     [RequireComponent(typeof(EdgeCollider2D))]
-    public class ArenaRing : DynamicInteractable
+    public class ArenaRing : Interactable
     {
         [SerializeField] float m_initScale = default;
         [SerializeField] float m_duration = default;
