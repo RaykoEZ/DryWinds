@@ -28,7 +28,7 @@ namespace Curry.Game
         public event OnModifierExpire OnModifierExpire;
         // Used to apply additional modifiers from a modifier's effect
         public event OnModifierChain OnModifierChain;
-        // Used to notify a change in modifier values
+        // Used to notify when modifier applied
         public event OnModifierTrigger OnTrigger;
 
         public string Name { get { return m_name; } }

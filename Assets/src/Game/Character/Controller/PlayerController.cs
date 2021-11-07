@@ -9,12 +9,10 @@ namespace Curry.Game
     public class PlayerController : BaseCharacterController<Player>
     {
         [SerializeField] Player m_player = default;
-        [SerializeField] AnimatorHandler m_anim = default;
         [SerializeField] InputActionReference m_movementAction = default;
 
-        public override Player Character { get { return m_player; } } 
-
-        void Update()
+        public override Player Character { get { return m_player; } }
+        void FixedUpdate()
         {
             if (IsReady) 
             {
@@ -23,6 +21,10 @@ namespace Curry.Game
                     Vector2 pos = Character.CurrentCamera.
                         ScreenToWorldPoint(Mouse.current.position.ReadValue());
                     OnDrawSkill(pos);
+                }
+                else
+                {
+                    Character.OnSPRegen();
                 }
 
                 if (m_movementAction.action.ReadValue<Vector2>().sqrMagnitude > 0)
@@ -61,9 +63,10 @@ namespace Curry.Game
         protected override IEnumerator OnSkill(Vector2 target) 
         {
             // trigger dash windup anim
-            m_anim.OnWindUp();
+            Character.Animator.SetBool("DashCharging", true);
+            Character.Animator.SetTrigger("DashTrigger");
             yield return new WaitForSeconds(m_basicSkill.CurrentSkill.Properties.WindupTime);
-            m_anim.OnDashRelease();
+            Character.Animator.SetBool("DashCharging", false);
             m_basicSkill.ActivateSkill(target);
         }
 
@@ -89,7 +92,7 @@ namespace Curry.Game
         {
             base.OnInterrupt();
             // Interrupt the input stun and reapply the stun timer
-            m_anim.OnTakeDamage();
+            Character.Animator.SetTrigger("TakeDamage");
         }
     }
 }

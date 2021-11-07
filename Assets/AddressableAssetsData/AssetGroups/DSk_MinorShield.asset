@@ -10,25 +10,25 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
-  m_Name: DSk_Base
+  m_Name: DSk_MinorShield
   m_EditorClassIdentifier: 
-  m_GroupName: DSk_Base
+  m_GroupName: DSk_MinorShield
   m_Data:
     m_SerializedData: []
   m_GUID: 1b443685a5954e648b06e334c91741ec
   m_SerializeEntries:
   - m_GUID: 2b4559809b5866343bf6cfccc130056a
-    m_Address: P_BaseDraw
+    m_Address: DSkiill/P/MinorProtection
     m_ReadOnly: 0
     m_SerializedLabels: []
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
   - m_GUID: c429d02b3f4902d4591f75325c991b40
-    m_Address: P_BaseTrace
+    m_Address: P_BaseTracer
     m_ReadOnly: 0
     m_SerializedLabels: []
-    m_MainAsset: {fileID: 6937999071832126887, guid: c429d02b3f4902d4591f75325c991b40, type: 3}
-    m_TargetAsset: {fileID: 6937999071832126887, guid: c429d02b3f4902d4591f75325c991b40, type: 3}
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: b7f44c639b5eac6459efa6d347a60ca1, type: 2}
   m_SchemaSet:

@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1162902964026411203}
   - component: {fileID: 8596796697600054897}
   m_Layer: 0
-  m_Name: BSk_ChargeAttack
+  m_Name: BSk_Charge
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -67,8 +67,8 @@ MonoBehaviour:
     m_name: ChargeAttack
     m_targetOptions: 2
     m_spCost: 10
-    m_cooldownTime: 2
-    m_windupTime: 0.5
+    m_cooldownTime: 1
+    m_windupTime: 0.2
     m_actionValue: 10
     m_knockback: 10
   m_chargeDuration: 0.1

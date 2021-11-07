@@ -5,21 +5,20 @@ using Curry.Game;
 
 namespace Curry.Skill
 {
+    [RequireComponent(typeof(Animator))]
     public abstract class BaseSkill : MonoBehaviour, ICharacterAction<IActionInput>
     {
         [SerializeField] protected Animator m_animator = default;
         [SerializeField] protected ActionProperty m_skillProperty = default;
-
         public event OnActionFinish<IActionInput> OnFinish;
 
         protected bool m_onCD = false;
         protected BaseCharacter m_user = default;
-        protected Coroutine m_currentSkill = default;
         protected Coroutine m_coolDown = default;
 
         public ActionProperty Properties { get { return m_skillProperty; } }
         public bool ActionInProgress { get; protected set; }
-
+        
         public virtual bool IsUsable
         {
             get
@@ -28,17 +27,32 @@ namespace Curry.Skill
                     m_user?.CurrentStats.SP >= m_skillProperty.SpCost;
             }
         }
+
         protected abstract IEnumerator SkillEffect(IActionInput target);
 
         protected virtual void OnTriggerEnter2D(Collider2D col)
         {
             Interactable hit = col.gameObject.GetComponent<Interactable>();
 
-            if(hit == null || (hit.Relations & m_skillProperty.TargetOptions) == ObjectRelations.None) 
+            if (hit == null)
             {
                 return;
             }
-            OnHit(hit);
+
+            bool isAlly = m_user.Relations == hit.Relations;
+            if (m_skillProperty.TargetOptions == ObjectRelations.Ally &&
+                isAlly)
+            {
+                OnHit(hit);
+                return;
+            }
+
+            if (m_skillProperty.TargetOptions == ObjectRelations.Enemy &&
+                !isAlly)
+            {
+                OnHit(hit);
+                return;
+            }
         }
 
         protected virtual void OnCollisionEnter2D(Collision2D col)
@@ -84,7 +98,8 @@ namespace Curry.Skill
                 ActionInProgress = true;
                 ConsumeResource(m_skillProperty.SpCost);
                 CoolDown();
-                m_currentSkill = StartCoroutine(SkillEffect(param));
+                m_animator.SetTrigger("Start");
+                StartCoroutine(SkillEffect(param));
             }
         }
         public virtual void Interrupt()
@@ -94,10 +109,10 @@ namespace Curry.Skill
 
         protected virtual void CoolDown() 
         {
-            if(m_coolDown == null) 
+            if (m_coolDown == null) 
             {
                 m_coolDown = StartCoroutine(OnCooldown());
-            }
+            }          
         }
 
         protected virtual void ConsumeResource(float val) 

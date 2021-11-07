@@ -4,12 +4,10 @@ using UnityEngine;
 
 namespace Curry.Game
 {
-    public class FragileObject : DynamicInteractable, IFragileObject
+    public class FragileObject : Interactable, IFragileObject
     {
         [SerializeField] int m_durability = default;
-        [SerializeField] float m_iFrameLength = default;
 
-        bool m_isInvincible = false;
         protected int m_currentDurability = 1;
 
         protected virtual void Start()
@@ -34,21 +32,12 @@ namespace Curry.Game
 
         public override void OnTakeDamage(float damage)
         {
-            if (m_isInvincible) { return; }
-            StartCoroutine(IFrameCounter());
             m_currentDurability--;
             if (m_currentDurability <= 0)
             {
                 UpdatePathfinder();
                 OnDefeat();
             }
-        }
-
-        IEnumerator IFrameCounter() 
-        {
-            m_isInvincible = true;
-            yield return new WaitForSeconds(m_iFrameLength);
-            m_isInvincible = false;
         }
     }
 }
