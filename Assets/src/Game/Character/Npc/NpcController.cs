@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Curry.Skill;
 
 namespace Curry.Game
 {
@@ -8,54 +10,68 @@ namespace Curry.Game
     {
         [SerializeField] protected BaseNpc m_npc = default;
         [SerializeField] protected Animator m_anim = default;
-        [SerializeField] protected SkillHandler m_skillHandler = default;
-        [SerializeField] float m_actionInterval = default;
-        protected float m_actionTimer = 0f;
-        protected bool m_attacking = false;
+
+        protected Coroutine m_movingCall;
+        protected Coroutine m_skillCall;
+        public event OnCharacterTakeDamage OnTakingDamage;
+        public BaseNpc Npc { get { return m_npc; } }
+
         protected virtual void Start() 
         {
-            m_skillHandler.Init(m_npc);
             m_npc.OnTakingDamage += OnTakeDamage;
             m_npc.OnDefeated += OnDefeat;
         }
 
-        protected virtual void Update() 
+        public virtual void ActivateSkill(ITargetable<Vector2> target, BaseSkill skill)
         {
-            if (m_actionInterval != 0f && !m_attacking && m_actionTimer > m_actionInterval) 
+            // Do not overlap skill calls
+            if (m_skillCall != null)
             {
-                m_attacking = true;
-                m_actionTimer = 0f;
-                OnSkill();
+                return;
             }
-            else 
-            {
-                m_actionTimer += Time.deltaTime;
-            }
+
+            m_skillCall = StartCoroutine(WindupSkill(target, skill));
         }
 
-        protected virtual void OnSkill()
+        public virtual void Wander()
         {
-            StartCoroutine(WindupSkill());
+
         }
 
-        protected virtual IEnumerator WindupSkill() 
+        public virtual void MoveTo(Vector2 targetPos)
+        {
+            if (m_movingCall != null)
+            {
+                StopCoroutine(m_movingCall);
+            }
+            m_movingCall = StartCoroutine(OnMove(targetPos));
+        }
+
+        protected virtual void OnTakeDamage(float damage)
+        {
+            OnTakingDamage?.Invoke(damage);
+        }
+
+        protected virtual void OnDefeat()
+        {
+
+        }
+
+        protected virtual IEnumerator OnMove(Vector2 targetPos) 
+        {
+            m_movingCall = null;
+            yield return null;
+        }  
+
+        protected virtual IEnumerator WindupSkill(ITargetable<Vector2> target, BaseSkill skill) 
         {
             m_anim.SetBool("WindingUp", true);
-            m_skillHandler.SkillWindup();
-            yield return new WaitForSeconds(m_skillHandler.CurrentSkill.MaxWindUpTime);
+            skill.SkillWindup();
+            yield return new WaitForSeconds(skill.SkillProperties.MaxWindupTime);
             m_anim.SetBool("WindingUp", false);
-            m_skillHandler.ActivateSkill(m_npc.Target.position);
-            m_attacking = false;
-        }
-
-        protected virtual void OnTakeDamage(float damage) 
-        { 
-        
-        }
-
-        protected virtual void OnDefeat() 
-        { 
-
+            VectorParam param = new VectorParam(target);
+            skill.Execute(param);
+            m_skillCall = null;
         }
     }
 }

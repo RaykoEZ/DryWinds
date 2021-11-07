@@ -6,27 +6,34 @@ using Curry.Util;
 namespace Curry.Game
 {
     // Player: does not damage player
-    // Hostile: damages player
+    // Enemy: damages player
     [Flags]
     public enum ObjectRelations 
     {
-        None = 0,
+        None,
         Ally = 1,
         Enemy = 1 << 1
     }
 
     // A basic script for a collidable object 
-    public class Interactable : MonoBehaviour
+    public class Interactable : MonoBehaviour, IPoolable
     {
         [SerializeField] protected Rigidbody2D m_rigidbody = default;
         [SerializeField] protected Collider2D m_hurtBox = default;
         [SerializeField] protected ObjectRelations m_relations = default;
         CollisionStats m_defaultCollisionStats = new CollisionStats(0f, 5f);
-         
+        public virtual IObjectPool Origin { get; set; }
         public Rigidbody2D RigidBody { get { return m_rigidbody; } }
         public Collider2D HurtBox { get { return m_hurtBox; } }
         public ObjectRelations Relations { get { return m_relations; } }
         public virtual CollisionStats CurrentCollisionStats { get { return m_defaultCollisionStats; } }
+
+        public virtual void Prepare() 
+        { }
+        public virtual void ReturnToPool()
+        {
+            Origin.ReturnToPool(this);
+        }
 
         protected virtual void OnCollisionEnter2D(Collision2D collision)
         {
@@ -64,7 +71,17 @@ namespace Curry.Game
         }
 
         public virtual void OnDefeat() 
-        {      
+        {
+            if (Origin != null) 
+            {
+                ReturnToPool();
+            }
+            else 
+            {
+                Destroy(gameObject);
+            }
         }
+
+        
     }
 }

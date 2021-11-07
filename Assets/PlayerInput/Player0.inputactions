@@ -6,7 +6,7 @@
             "id": "ad142658-e7e9-48ef-95f2-68b5b0f3e2b2",
             "actions": [
                 {
-                    "name": "DashSkill",
+                    "name": "BasicSkill",
                     "type": "Button",
                     "id": "da906083-8a20-4e98-b7b3-a838dbb13b67",
                     "expectedControlType": "Button",
@@ -14,7 +14,7 @@
                     "interactions": ""
                 },
                 {
-                    "name": "Draw",
+                    "name": "DrawSkill",
                     "type": "Button",
                     "id": "8a8de55e-3cda-48d6-b162-2dc862edab26",
                     "expectedControlType": "Button",
@@ -38,7 +38,7 @@
                     "interactions": "Press(behavior=2)",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "DashSkill",
+                    "action": "BasicSkill",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -49,7 +49,7 @@
                     "interactions": "Press(behavior=1)",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "Draw",
+                    "action": "DrawSkill",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

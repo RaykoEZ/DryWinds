@@ -1,0 +1,49 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: BaseNpc
+  m_EditorClassIdentifier: 
+  m_GroupName: BaseNpc
+  m_Data:
+    m_SerializedData: []
+  m_GUID: 29af5067bfb23414aa7bf94e2774204e
+  m_SerializeEntries:
+  - m_GUID: 954c07cc9977f24408e30d64042810cb
+    m_Address: P_BaseNPC
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    m_MainAsset: {fileID: 8869289004023852315, guid: 954c07cc9977f24408e30d64042810cb, type: 3}
+    m_TargetAsset: {fileID: 8869289004023852315, guid: 954c07cc9977f24408e30d64042810cb, type: 3}
+  - m_GUID: e2429b6b6afa2d5489795f162b344dea
+    m_Address: Anim_Npc_Windup
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    m_MainAsset: {fileID: 7400000, guid: e2429b6b6afa2d5489795f162b344dea, type: 2}
+    m_TargetAsset: {fileID: 7400000, guid: e2429b6b6afa2d5489795f162b344dea, type: 2}
+  - m_GUID: 8e7ca43f62fb6ad468b02d9d28eebaca
+    m_Address: Npc/Anim_Npc_Idle
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    m_MainAsset: {fileID: 7400000, guid: 8e7ca43f62fb6ad468b02d9d28eebaca, type: 2}
+    m_TargetAsset: {fileID: 7400000, guid: 8e7ca43f62fb6ad468b02d9d28eebaca, type: 2}
+  - m_GUID: e847d3a3bc32e674985371a34a3e2d24
+    m_Address: AC_BaseNpc
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    m_MainAsset: {fileID: 9100000, guid: e847d3a3bc32e674985371a34a3e2d24, type: 2}
+    m_TargetAsset: {fileID: 9100000, guid: e847d3a3bc32e674985371a34a3e2d24, type: 2}
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: b7f44c639b5eac6459efa6d347a60ca1, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 8a78b64edec12314e9a769d939d5e200, type: 2}
+    - {fileID: 11400000, guid: 09602b737dc778b4fb3fd32e62d010ee, type: 2}

@@ -6,16 +6,20 @@ using Curry.Game;
 
 namespace Curry.Skill
 {
+    public delegate void OnTraceFinish();
     // Trace is like the brush tip for paint tools but with decay behaviours
-    public class BaseTrace : BaseSkill
+    public class BaseTrace : Interactable
     {
         [SerializeField] protected LineRenderer m_lineRenderer = default;
+        [SerializeField] protected EdgeCollider2D m_edgeCollider = default;
         // Units length to decay per decay interval.
         [SerializeField] protected float m_decayPerInterval = default;
         // Seconds to wait for next stroke decay interval
         [SerializeField] protected float m_decayWait = default;
         // Life of each drawn vertiex in seconds, starts to decay after this (sec)
         [SerializeField] protected float m_durability = default;
+
+        public event OnTraceFinish OnFinish;
 
         protected bool m_isDecaying = false;
         protected bool m_isMakingCollider = true;
@@ -24,7 +28,6 @@ namespace Curry.Skill
         protected Queue<float> m_segmentLengths = new Queue<float>();       
         protected float m_decayTimer = 0f;
 
-        protected EdgeCollider2D m_edgeCollider { get{ return (EdgeCollider2D)m_hitBox; } }
         // Update is called once per frame
         protected virtual void FixedUpdate()
         {
@@ -40,29 +43,24 @@ namespace Curry.Skill
         {
             BaseCharacter hit = col.gameObject.GetComponent<BaseCharacter>();
 
-            if (hit == null || (hit.Relations & m_skillProperty.TargetOptions) == ObjectRelations.None)
+            if (hit == null || (hit.Relations & m_relations) == ObjectRelations.None)
             {
-                return;
+                Vector2 dir = col.GetContact(0).normal.normalized;
+                hit.OnKnockback(-dir, CurrentCollisionStats.Knockback);
             }
-
-            Vector2 dir = col.GetContact(0).normal.normalized;
-            hit.OnKnockback(-dir , m_skillProperty.Knockback);
         }
 
-        protected override IEnumerator SkillEffect(SkillTargetParam target = null) 
+        public override void Prepare()
         {
-            yield break;
+            ResetAll();
         }
-
-        public override void Execute(SkillTargetParam target)
+        public override void ReturnToPool()
         {
-            float length = (float)target.Payload["length"];
-            if (m_user?.CurrentStats.SP < length * m_skillProperty.SpCost)
-            {
-                return;
-            }
-
-            Vector2 targetPosition = target.TargetPos;
+            OnFinish = null;
+            base.ReturnToPool();
+        }
+        public virtual void Execute(Vector2 targetPosition, float length)
+        {
             if (!m_drawnVert.Contains(targetPosition))
             {
                 EvaluateLength(length);
@@ -76,7 +74,6 @@ namespace Curry.Skill
                     m_edgeCollider.points = m_drawnVert.ToArray();
                 }
 
-                ConsumeResource(SkillProperties.SpCost * length);
             }  
         }
 
@@ -139,6 +136,13 @@ namespace Curry.Skill
 
         protected virtual void OnClear()
         {
+            OnFinish?.Invoke();
+            ResetAll();
+            ReturnToPool();
+        }
+
+        protected virtual void ResetAll() 
+        {
             m_isDecaying = false;
             m_decayTimer = 0f;
             m_lineRenderer.positionCount = 0;
@@ -150,8 +154,6 @@ namespace Curry.Skill
             {
                 m_edgeCollider.points = m_drawnVert.ToArray();
             }
-
-            gameObject.SetActive(false);
         }
 
         protected void TrimEndSegment(float trimLength) 

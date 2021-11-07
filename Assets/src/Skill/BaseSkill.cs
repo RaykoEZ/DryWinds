@@ -1,52 +1,28 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Curry.Game;
 
 namespace Curry.Skill
 {
-    [Flags]
-    public enum TargetOptions 
-    { 
-        None = 0,
-        Self = 1,
-        Ally = 1 << 1,
-        Enemy = 1 << 2,
-    }
-
-    public class SkillTargetParam
-    {
-        Vector2 m_targetPos = default;
-        Dictionary<string, object> m_payload;
-
-        public Vector2 TargetPos { get { return m_targetPos; } }
-        public Dictionary<string, object> Payload { get { return m_payload; } }
-
-        public SkillTargetParam(Vector2 pos, Dictionary<string, object> payload = null) 
-        {
-            m_targetPos = pos;
-            m_payload = payload;
-        }
-    }
-
-    public abstract class BaseSkill : MonoBehaviour
+    public abstract class BaseSkill : MonoBehaviour, ICharacterAction<SkillParam>
     {
         [SerializeField] protected Animator m_animator = default;
         [SerializeField] protected Collider2D m_hitBox = default;
         [SerializeField] protected SkillProperty m_skillProperty = default;
 
+        public event OnActionFinish OnFinish;
+
         protected bool m_onCD = false;
-        protected bool m_isWindingUp = false;
-        protected bool m_skillActive = false;
         protected float m_windupTimer = 0f;
         protected BaseCharacter m_user = default;
         protected Coroutine m_currentSkill = default;
         protected Coroutine m_currentWindup = default;
+        protected Coroutine m_coolDown = default;
 
         public SkillProperty SkillProperties { get { return m_skillProperty; } }
-        public float MaxWindUpTime { get { return m_skillProperty.MaxWindupTime; } }
-        public bool IsWindingUp { get { return m_isWindingUp; } }
+        protected bool IsWindingUp { get; set; }
+        public bool ActionInProgress { get; protected set; }
 
         public virtual bool SkillUsable
         {
@@ -56,7 +32,7 @@ namespace Curry.Skill
                     m_user?.CurrentStats.SP >= m_skillProperty.SpCost;
             }
         }
-        protected abstract IEnumerator SkillEffect(SkillTargetParam target = null);
+        protected abstract IEnumerator SkillEffect(SkillParam target);
 
         protected virtual void OnTriggerEnter2D(Collider2D col)
         {
@@ -81,7 +57,7 @@ namespace Curry.Skill
         }
 
         public virtual void OnHit(Interactable hit) 
-        {        
+        {      
         }
 
         public virtual void Init(BaseCharacter user, bool hitBoxOn = false) 
@@ -92,33 +68,62 @@ namespace Curry.Skill
 
         public virtual void SkillWindup()
         {
-            if(!SkillUsable || m_skillProperty.MaxWindupTime == 0) 
+            if (!SkillUsable || m_skillProperty.MaxWindupTime == 0) 
             {
                 return;
             }
 
             // reset windup timer if player charges again before skill activation
-            if(m_currentWindup != null) 
+            if (m_currentWindup != null) 
             {
                 m_windupTimer = 0f;
                 StopCoroutine(m_currentWindup);
             }
 
-            m_isWindingUp = true;
+            IsWindingUp = true;
             m_currentWindup = StartCoroutine(OnWindup());
         }
 
         // The logics and interactions of the skill on each target
         /// @param target: initial target for skill
-        public virtual void Execute(SkillTargetParam target = null) 
+        public virtual void Execute(SkillParam param)
         {
-            m_isWindingUp = false;
+            IsWindingUp = false;
             if (SkillUsable && m_user != null)
             {
-                m_skillActive = true;
+                ActionInProgress = true;
                 ConsumeResource(m_skillProperty.SpCost);
-                StartCoroutine(OnCooldown());
-                m_currentSkill = StartCoroutine(SkillEffect(target));
+                CoolDown();
+                m_currentSkill = StartCoroutine(SkillEffect(param));
+            }
+        }
+        public virtual void Interrupt()
+        {
+            if (IsWindingUp)
+            {
+                CancelWindup();
+            }
+            else
+            {
+                OnSkillFinish();
+            }
+        }
+        public virtual void StartIframe()
+        {
+            int iframeLayer = LayerMask.NameToLayer("IFrame");
+            m_user.gameObject.layer = iframeLayer;
+        }
+
+        public virtual void StopIframe()
+        {
+            // Set user back to default layer to collide with other characters
+            m_user.gameObject.layer = 0;
+        }
+        protected virtual void CoolDown() 
+        {
+            if(m_coolDown == null) 
+            {
+                m_coolDown = StartCoroutine(OnCooldown());
             }
         }
 
@@ -127,25 +132,26 @@ namespace Curry.Skill
             m_user.OnLoseSp(val);
         }
 
-        public virtual void CancelWindup() 
+        protected virtual void CancelWindup() 
         {
             if(m_currentWindup != null) 
             {
                 StopCoroutine(m_currentWindup);
             }
 
-            m_isWindingUp = false;
+            IsWindingUp = false;
             m_windupTimer = 0f;
         }
 
-        public virtual void EndSkillEffect()
+        protected virtual void OnSkillFinish() 
         {
-            m_skillActive = false;
+            ActionInProgress = false;
+            OnFinish?.Invoke();
         }
 
         protected virtual IEnumerator OnWindup() 
         { 
-            while(m_isWindingUp && SkillUsable) 
+            while(IsWindingUp && SkillUsable) 
             {
                 m_windupTimer += Time.deltaTime;
                 yield return new WaitForFixedUpdate();
@@ -158,19 +164,8 @@ namespace Curry.Skill
             m_onCD = true;
             //start cooldown and reset skill states
             yield return new WaitForSeconds(m_skillProperty.CooldownTime);
+            m_coolDown = null;
             m_onCD = false;
-        }
-
-        public virtual void StartIframe() 
-        {
-            int iframeLayer = LayerMask.NameToLayer("IFrame");
-            m_user.gameObject.layer = iframeLayer;
-        }
-
-        public virtual void StopIframe() 
-        {
-            // Set user back to default layer to collide with other characters
-            m_user.gameObject.layer = 0;
         }
     }
 

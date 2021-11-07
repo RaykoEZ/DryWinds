@@ -22,13 +22,9 @@ namespace Curry.Game
             m_cam = Camera.main;
         }
 
-        public override void OnDefeat()
-        {
-        }
-
         protected void OnSPRegen() 
         {
-            m_statsManager.GainSp(Time.deltaTime * CurrentStats.SPRegenPerSec);
+            m_statusManager.GainSp(Time.deltaTime * CurrentStats.SPRegenPerSec);
         }
 
     }

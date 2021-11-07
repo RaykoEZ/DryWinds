@@ -1,0 +1,55 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: BSk_ChargeAttack
+  m_EditorClassIdentifier: 
+  m_GroupName: BSk_ChargeAttack
+  m_Data:
+    m_SerializedData: []
+  m_GUID: fdbdd93039d4b4c408f8cedd4211b940
+  m_SerializeEntries:
+  - m_GUID: 7fdf6cff9c0eb9642870a1ddc3aba327
+    m_Address: P_ChargeAttack
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    m_MainAsset: {fileID: 4048156830801403013, guid: 7fdf6cff9c0eb9642870a1ddc3aba327, type: 3}
+    m_TargetAsset: {fileID: 4048156830801403013, guid: 7fdf6cff9c0eb9642870a1ddc3aba327, type: 3}
+  - m_GUID: d54319e07ba10ef4780f4814d5a06f7b
+    m_Address: Anim_Charge_Windup
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    m_MainAsset: {fileID: 7400000, guid: d54319e07ba10ef4780f4814d5a06f7b, type: 2}
+    m_TargetAsset: {fileID: 7400000, guid: d54319e07ba10ef4780f4814d5a06f7b, type: 2}
+  - m_GUID: e82eb7cd6328c7943a7e642e1f1914e7
+    m_Address: Anim_Charge_Release
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    m_MainAsset: {fileID: 7400000, guid: e82eb7cd6328c7943a7e642e1f1914e7, type: 2}
+    m_TargetAsset: {fileID: 7400000, guid: e82eb7cd6328c7943a7e642e1f1914e7, type: 2}
+  - m_GUID: 8b63e4cb99424a04eb72059288c80133
+    m_Address: Anim_Charge_Idle
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    m_MainAsset: {fileID: 7400000, guid: 8b63e4cb99424a04eb72059288c80133, type: 2}
+    m_TargetAsset: {fileID: 7400000, guid: 8b63e4cb99424a04eb72059288c80133, type: 2}
+  - m_GUID: 2d48eee9594228b40b2d8e483e4b3c57
+    m_Address: AC_Skill_ChargeAttack
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    m_MainAsset: {fileID: 9100000, guid: 2d48eee9594228b40b2d8e483e4b3c57, type: 2}
+    m_TargetAsset: {fileID: 9100000, guid: 2d48eee9594228b40b2d8e483e4b3c57, type: 2}
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: b7f44c639b5eac6459efa6d347a60ca1, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: bb21c9d59b22f7149aeba26999dd0061, type: 2}
+    - {fileID: 11400000, guid: d3c050b0ceb29c14484c557194eadc15, type: 2}

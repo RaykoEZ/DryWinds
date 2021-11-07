@@ -11,10 +11,15 @@ namespace Curry.Game
 
         bool m_isInvincible = false;
         protected int m_currentDurability = 1;
-        
-        protected virtual void Start() 
+
+        protected virtual void Start()
         {
-            m_currentDurability = m_durability;     
+            Prepare();
+        }
+
+        public override void Prepare()
+        {
+            m_currentDurability = m_durability;
         }
 
         protected override void OnClash(Collision2D collision)
@@ -36,12 +41,6 @@ namespace Curry.Game
             {
                 OnDefeat();
             }
-        }
-
-        public override void OnDefeat()
-        {
-            // Should return to a pool and play a disappearing animation.
-            Destroy(gameObject);
         }
 
         IEnumerator IFrameCounter() 
