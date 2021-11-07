@@ -1,27 +1,38 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using Curry.Skill;
 
 namespace Curry.Game
 {
-    public delegate void OnCharacterStatsUpdate(CharacterContext c);
     public class CharacterStatusManager : MonoBehaviour
     {
         [SerializeField] protected CharacterContext m_initStats;
+        public event OnLoadFinish OnLoaded;
 
         protected CharacterModifierContainer m_multipliers = new CharacterModifierContainer(1f);
         protected CharacterModifierContainer m_adders = new CharacterModifierContainer(0f);
-
         protected CharacterModifierContainer m_specialMods = new CharacterModifierContainer(0f);
         protected IGameContextFactory<CharacterContext> m_contextFactoryRef = default;
-
         protected CharacterContext m_current;
+        protected SkillInventory m_basicSkills = new SkillInventory();
+        protected SkillInventory m_drawSkills = new SkillInventory();
         public CharacterContext BaseStats { get { return new CharacterContext(m_initStats); } }
         // Stats after modifiers
         public virtual CharacterContext PreModifierStats { get { return new CharacterContext(m_current); } }
         // Stats after modifiers
         public virtual CharacterContext CurrentStats { get { return CalculateModifiedStats(); } }
+        public SkillInventory BasicSkills { get { return m_basicSkills; } protected set { m_basicSkills = value; } }
+        public SkillInventory DrawSkills { get { return m_drawSkills; } protected set { m_drawSkills = value; } }
+        protected bool StatusLoadFinished 
+        { 
+            get 
+            { 
+                return m_basicSkills.SkillAssetsLoaded 
+                    && m_drawSkills.SkillAssetsLoaded; 
+            } 
+        }
 
-        
         protected virtual void Start() 
         {
             m_multipliers.OnEffectTrigger += UpdateStats;
@@ -48,11 +59,28 @@ namespace Curry.Game
             OnTimeElapsed(Time.deltaTime);
         }
 
-        public virtual void Init(IGameContextFactory<CharacterContext> contextFactory) 
+        public virtual void Init(BaseCharacter user, IGameContextFactory<CharacterContext> contextFactory) 
         {
             m_contextFactoryRef = contextFactory;
             m_current = new CharacterContext(m_initStats);
             m_contextFactoryRef.UpdateContext(m_initStats);
+            StartCoroutine(LoadAssets(user));
+        }
+
+        protected virtual IEnumerator LoadAssets(BaseCharacter user) 
+        {
+            if (!m_basicSkills.SkillAssetsLoaded) 
+            {
+                m_basicSkills.Init(user, m_current.BasicSkillAssetRefs, transform);
+            }
+
+            if (!m_drawSkills.SkillAssetsLoaded)
+            {
+                m_drawSkills.Init(user, m_current.DrawSkilllAssetRefs, transform);
+            }
+
+            yield return new WaitUntil(() => { return StatusLoadFinished; });
+            OnLoaded?.Invoke();
         }
 
         public virtual void Shutdown() 

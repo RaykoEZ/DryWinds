@@ -36,7 +36,6 @@ namespace Curry.Game
         protected virtual T MakePoolItem(T objRef, Transform parent) 
         {
             T item = Object.Instantiate(objRef, parent);
-            item.Prepare();
             item.Origin = this;
             item.gameObject.SetActive(false);
             m_pool.Enqueue(item);
@@ -57,6 +56,7 @@ namespace Curry.Game
 
             newObj.transform.position = Vector3.zero;
             newObj.gameObject.SetActive(true);
+            newObj.Prepare();
             m_inUse.Add(newObj);
             // no more available, make new into pool
             return newObj;

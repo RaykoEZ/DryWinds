@@ -40,7 +40,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6431847256417144376}
   - component: {fileID: 8562595953941160831}
-  - component: {fileID: 4616489978129765166}
+  - component: {fileID: 752459911173138847}
   m_Layer: 0
   m_Name: Controller
   m_TagString: Untagged
@@ -76,7 +76,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_npc: {fileID: 7557477938998303306}
   m_anim: {fileID: 4052941514383100218}
---- !u!114 &4616489978129765166
+--- !u!114 &752459911173138847
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -85,11 +85,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 1272379081076532926}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 19d2c30700b6d5a439fd4fc452a2d9d8, type: 3}
+  m_Script: {fileID: 11500000, guid: 910daf26a6fb13a4e8b046cd19884a1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_numToPool: 0
-  m_defaultParent: {fileID: 0}
+  m_defaultFrequency: 3
+  m_averageReactionInterval: 0.1
+  m_controller: {fileID: 8562595953941160831}
+  m_idle:
+    m_action: {fileID: 11400000, guid: 54014485234b0c84bbc07e44fa267cb9, type: 2}
+  m_otherActions:
+  - m_action: {fileID: 11400000, guid: 470bf20990b7cd749888eda0a1633684, type: 2}
 --- !u!1 &3047808954471248666
 GameObject:
   m_ObjectHideFlags: 0
@@ -132,7 +137,7 @@ GameObject:
   - component: {fileID: 1459826822461578454}
   - component: {fileID: 7856266967142227805}
   - component: {fileID: 2498299348684587035}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: DetectionRange
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -168,7 +173,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0.25}
   serializedVersion: 2
-  m_Radius: 2
+  m_Radius: 5
 --- !u!114 &2498299348684587035
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -181,7 +186,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ff44df4348b8324db275c57b138f3ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_range: {fileID: 7856266967142227805}
 --- !u!60 &368594841113657428
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -301,12 +305,15 @@ MonoBehaviour:
       m_stamina: 50
       m_sp: 50
       m_speed: 1
-      m_spRegenPerSec: 0
+      m_spRegenPerSec: 5
       m_hitRecoveryTime: 5
       m_collisionStats:
         m_contactDamage: 0
-        m_knockback: 3
-    m_basicSkillRefs: []
+        m_knockback: 1
+    m_basicSkillRefs:
+    - m_AssetGUID: 7fdf6cff9c0eb9642870a1ddc3aba327
+      m_SubObjectName: 
+      m_SubObjectType: 
     m_drawSkillRefs: []
 --- !u!114 &7557477938998303306
 MonoBehaviour:
@@ -324,13 +331,7 @@ MonoBehaviour:
   m_hurtBox: {fileID: 368594841113657428}
   m_relations: 2
   m_statusManager: {fileID: 6927984868378902487}
-  m_basicSkills:
-    m_skills:
-      m_skillList: []
-  m_drawSkills:
-    m_skills:
-      m_skillList: []
-  m_averageReactionTime: 0.5
+  m_averageReactionTime: 1
   m_detector: {fileID: 2498299348684587035}
 --- !u!1 &7597001706235312769
 GameObject:

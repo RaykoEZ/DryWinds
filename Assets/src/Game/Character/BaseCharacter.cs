@@ -5,33 +5,44 @@ using Curry.Skill;
 
 namespace Curry.Game
 {
+    public delegate void OnLoadFinish();
     public delegate void OnCharacterHeal(float heal);
     public delegate void OnCharacterTakeDamage(float damage);
+    public delegate void OnCharacterDefeated();
     public delegate void OnCharacterInterrupt();
     public abstract class BaseCharacter : Interactable
     {
         [SerializeField] protected CharacterStatusManager m_statusManager = default;
-        [SerializeField] SkillHandler m_basicSkills = default;
-        [SerializeField] SkillHandler m_drawSkills = default;
-
-        public virtual CharacterStats BaseStats { get { return m_statusManager.BaseStats.CharacterStats; } }
-        public virtual CharacterStats CurrentStats { get { return m_statusManager.CurrentStats.CharacterStats; } }
-        public override CollisionStats CurrentCollisionStats { get { return m_statusManager.CurrentStats.CharacterStats.CollisionStats; } }
+        public event OnLoadFinish OnLoaded;
+        public virtual CharacterStats BaseStats 
+        { 
+            get { return m_statusManager.BaseStats.CharacterStats; } 
+        }
+        public virtual CharacterStats CurrentStats 
+        { 
+            get { return m_statusManager.CurrentStats.CharacterStats; } 
+        }
+        public override CollisionStats CurrentCollisionStats 
+        { 
+            get { return m_statusManager.CurrentStats.CharacterStats.CollisionStats; } 
+        }
+        public virtual SkillInventory BasicSkills { get { return m_statusManager.BasicSkills; } }
+        public virtual SkillInventory DrawSkills { get { return m_statusManager.DrawSkills; } }
 
         public event OnCharacterHeal OnHealing;
         public event OnCharacterTakeDamage OnTakingDamage;
         public event OnCharacterInterrupt OnActionInterrupt;
+        public event OnCharacterDefeated OnDefeated;
 
-        public override void OnKnockback(Vector2 direction, float knockback)
+        protected virtual void Update()
         {
-            m_rigidbody.AddForce(knockback * direction, ForceMode2D.Impulse);
+            OnSPRegen();
         }
 
         public virtual void Init(CharacterContextFactory contextFactory) 
         {
-            m_statusManager.Init(contextFactory);
-            m_basicSkills.Init(this);
-            m_drawSkills.Init(this);
+            m_statusManager.OnLoaded += () => { OnLoaded?.Invoke(); };
+            m_statusManager.Init(this, contextFactory);
         }
 
         public virtual void Shutdown() 
@@ -56,6 +67,11 @@ namespace Curry.Game
             m_statusManager.LoseSp(val);
 
         }
+        protected virtual void OnSPRegen()
+        {
+            m_statusManager.GainSp(Time.deltaTime * CurrentStats.SPRegenPerSec);
+        }
+
         public virtual void OnGainSp(float val)
         {
             m_statusManager.GainSp(val);
@@ -67,6 +83,7 @@ namespace Curry.Game
         }
         public override void OnDefeat()
         {
+            OnDefeated?.Invoke();
             base.OnDefeat();
         }
 
@@ -78,28 +95,6 @@ namespace Curry.Game
             }
 
             m_statusManager.AddModifier(mod);
-        }
-
-        protected override void OnClash(Collision2D collision)
-        {
-            Interactable incomingInterable = collision.gameObject.GetComponent<Interactable>();
-            if (incomingInterable != null)
-            {
-                ContactPoint2D contact = collision.GetContact(0);
-                Vector2 dir = contact.normal.normalized;
-
-                if (incomingInterable.Relations != Relations)
-                {
-                    float staminaRating = (CurrentStats.MaxStamina / Mathf.Max(1f, CurrentStats.Stamina));
-                    staminaRating = Mathf.Min(5f, staminaRating);
-
-                    OnKnockback(dir, staminaRating * incomingInterable.CurrentCollisionStats.Knockback);
-                }
-                else
-                {
-                    OnKnockback(dir, incomingInterable.CurrentCollisionStats.Knockback);
-                }
-            }
         }
     }
 }

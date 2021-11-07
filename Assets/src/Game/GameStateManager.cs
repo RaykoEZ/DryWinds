@@ -23,10 +23,6 @@ namespace Curry.Game
             m_playerContextFactory = playerContextFactory;
             m_playerUI.Init(playerContextFactory);
             m_player.Init(playerContextFactory);
-
-            // Setup Iframe collision ignore
-            int iframeLayer = LayerMask.NameToLayer("IFrame");
-            Physics.IgnoreLayerCollision(0, iframeLayer, true);
         }
 
         void OnDisable()

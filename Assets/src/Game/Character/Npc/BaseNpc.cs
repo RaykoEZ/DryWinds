@@ -6,8 +6,6 @@ using Curry.Ai;
 
 namespace Curry.Game
 {
-    public delegate void OnDefeat();
-
     public class BaseNpc : BaseCharacter
     {
         [SerializeField] float m_averageReactionTime = default;
@@ -19,7 +17,6 @@ namespace Curry.Game
 
         public event OnCharacterDetected OnDetectCharacter;
         public event OnCharacterDetected OnCharacterExitDetection;
-        public event OnDefeat OnDefeated;
         protected virtual float ReactionTime
         {
             get
@@ -29,12 +26,12 @@ namespace Curry.Game
             }
         }
 
-        public HashSet<BaseCharacter> Enemies { get { return m_enemies; } }
-        public HashSet<BaseCharacter> Allies { get { return m_allies; } }
+        public List<BaseCharacter> Enemies { get { return new List<BaseCharacter>(m_enemies); } }
+        public List<BaseCharacter> Allies { get { return new List<BaseCharacter>(m_allies); } }
 
-        protected virtual void OnEnable()
+        public override void Prepare()
         {
-            m_statusManager.Init(m_contextFactory);
+            Init(m_contextFactory);
             m_detector.OnDetected += OnTargetDetected;
             m_detector.OnExitDetection += OnLosingTarget;
         }
@@ -45,67 +42,36 @@ namespace Curry.Game
             m_detector.OnExitDetection -= OnLosingTarget;
         }
 
-        public override void OnKnockback(Vector2 direction, float knockback) 
-        {
-            base.OnKnockback(direction, knockback);
-        }
-
-        public override void OnDefeat()
-        {
-            OnDefeated?.Invoke();
-            base.OnDefeat();
-        }
-
         // Methods for adding/removing enemies in detection range.
         protected virtual void OnTargetDetected(BaseCharacter character)
         {
             bool isFoe = character.Relations != Relations;
-            Action action;
             if (isFoe)
             {
-                action = () =>
-                {
-                    m_enemies.Add(character);
-                    OnDetectCharacter?.Invoke(character);
-                };
+                m_enemies.Add(character);
+                OnDetectCharacter?.Invoke(character);
             }
             else
             {
-                action = () =>
-                {
-                    m_allies.Add(character);
-                    OnDetectCharacter?.Invoke(character);
-                };
+                m_allies.Add(character);
+                OnDetectCharacter?.Invoke(character);
             }
-            StartCoroutine(Reaction(action));
         }
 
         protected virtual void OnLosingTarget(BaseCharacter character)
         {
             bool isFoe = character.Relations != Relations;
-            Action action;
             if (isFoe)
             {
-                action = () => {
-                    m_enemies.Remove(character);
-                    OnCharacterExitDetection?.Invoke(character);
-                };
+                m_enemies.Remove(character);
+                OnCharacterExitDetection?.Invoke(character);
+
             }
             else
             {
-                action = () => {
-                    m_allies.Remove(character);
-                    OnCharacterExitDetection?.Invoke(character);
-                };
+                m_allies.Remove(character);
+                OnCharacterExitDetection?.Invoke(character);
             }
-            StartCoroutine(Reaction(action));
-        }
-
-        protected virtual IEnumerator Reaction(Action action)
-        {
-            yield return new WaitForSeconds(ReactionTime);
-            // if character is still in range of view after some time, detect target.
-            action?.Invoke();
         }
     }
 }
