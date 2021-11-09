@@ -20,7 +20,7 @@ namespace Curry.Game
             m_currentDurability = m_durability;
         }
 
-        protected override void OnClash(Collision2D collision)
+        public override void OnClash(Collision2D collision)
         {
             Interactable incomingInterable = collision.gameObject.GetComponent<Interactable>();
 

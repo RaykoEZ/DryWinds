@@ -23,7 +23,7 @@ namespace Curry.Game
         { 
             get { return m_statusManager.CurrentStats.CharacterStats; } 
         }
-        public override CollisionStats CurrentCollisionStats 
+        public override CollisionStats CollisionData 
         { 
             get { return m_statusManager.CurrentStats.CharacterStats.CollisionStats; } 
         }

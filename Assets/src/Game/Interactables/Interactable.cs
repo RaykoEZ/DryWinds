@@ -16,7 +16,7 @@ namespace Curry.Game
     }
 
     // A basic script for a collidable object 
-    public class Interactable : MonoBehaviour, IPoolable
+    public class Interactable : MonoBehaviour, IPoolable, IClashable
     {
         [SerializeField] protected Animator m_anim = default;
         [SerializeField] protected Rigidbody2D m_rigidbody = default;
@@ -25,7 +25,7 @@ namespace Curry.Game
         public virtual IObjectPool Origin { get; set; }
         public Rigidbody2D RigidBody { get { return m_rigidbody; } }
         public ObjectRelations Relations { get { return m_relations; } }
-        public virtual CollisionStats CurrentCollisionStats { get { return m_defaultCollisionStats; } }
+        public virtual CollisionStats CollisionData { get { return m_defaultCollisionStats; } }
         public Animator Animator { get { return m_anim; } }
 
         public virtual void Prepare() 
@@ -40,14 +40,14 @@ namespace Curry.Game
             OnClash(collision);
         }
 
-        protected virtual void OnClash(Collision2D collision)
+        public virtual void OnClash(Collision2D collision)
         {
             Interactable incomingInterable = collision.gameObject.GetComponent<Interactable>();
             if (incomingInterable != null)
             {
                 ContactPoint2D contact = collision.GetContact(0);
                 Vector2 dir = contact.normal.normalized;
-                OnKnockback(dir, incomingInterable.CurrentCollisionStats.Knockback);
+                OnKnockback(dir, incomingInterable.CollisionData.Knockback);
             }
         }
 
