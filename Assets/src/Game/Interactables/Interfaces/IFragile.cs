@@ -1,6 +1,6 @@
 ﻿namespace Curry.Game
 {
-    public interface IFragileObject
+    public interface IFragile
     {
         void OnTakeDamage(float damage);
     }

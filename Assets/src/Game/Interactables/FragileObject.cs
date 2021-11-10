@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Curry.Game
 {
-    public class FragileObject : Interactable, IFragileObject
+    public class FragileObject : Interactable, IFragile
     {
         [SerializeField] int m_durability = default;
 
