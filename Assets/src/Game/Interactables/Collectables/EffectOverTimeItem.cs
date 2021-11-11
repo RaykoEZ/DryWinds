@@ -9,7 +9,7 @@ namespace Curry.Game
         public virtual void Start()
         {
             Modifier = new EffectOverTimeModifier(
-                m_itemName, 
+                m_itemProperty.Name, 
                 m_modifierValue, 
                 m_duration, 
                 m_triggerInterval, 

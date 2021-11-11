@@ -66,12 +66,12 @@ MonoBehaviour:
   m_skillProperty:
     m_name: ChargeAttack
     m_targetOptions: 2
-    m_spCost: 10
+    m_spCost: 1
     m_cooldownTime: 1
     m_windupTime: 0.2
     m_actionValue: 10
     m_knockback: 10
-  m_chargeDuration: 0.1
+  m_chargeDuration: 0.01
 --- !u!95 &8596796697600054897
 Animator:
   serializedVersion: 3

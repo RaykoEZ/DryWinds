@@ -51,10 +51,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4bb9d08f857e90e49a17fc48a2e1b65e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_anim: {fileID: 0}
   m_rigidbody: {fileID: 5453938753140334961}
-  m_hurtBox: {fileID: 698963442251398555}
   m_relations: 0
   m_itemName: StamRegenItem
+  m_description: 
+  m_sprite: {fileID: 0}
   m_duration: 10
   m_modifierValue:
     m_maxStamina: 0
@@ -75,7 +77,7 @@ Rigidbody2D:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4990494026700266777}
   m_BodyType: 2
-  m_Simulated: 1
+  m_Simulated: 0
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1

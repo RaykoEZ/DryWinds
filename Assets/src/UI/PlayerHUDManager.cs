@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Curry.Game;
 
@@ -9,16 +7,20 @@ namespace Curry.UI
     {
         [SerializeField] ResourceBar m_spBar = default;
         [SerializeField] ResourceBar m_stamBar = default;
+        [SerializeField] ItemSlotCollection m_heldItems = default;
         CharacterContext m_playerContext = default;
 
-        public void Init(CharacterContextFactory contextFactory)
+        public void Init(CharacterContextFactory contextFactory, Player player)
         {
             contextFactory.OnUpdate += OnPlayerStatUpdate;
+            player.OnCollect += m_heldItems.LoadItemToSlot;
+
         }
 
-        public void Shutdown(CharacterContextFactory contextFactory) 
+        public void Shutdown(CharacterContextFactory contextFactory, Player player) 
         {
             contextFactory.OnUpdate -= OnPlayerStatUpdate;
+            player.OnCollect -= m_heldItems.LoadItemToSlot;
         }
 
         void OnPlayerStatUpdate(CharacterContext c) 

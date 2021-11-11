@@ -4,7 +4,7 @@
     {
         public virtual void Start() 
         {
-            Modifier = new CharacterAdder(m_itemName, m_modifierValue, m_duration);
+            Modifier = new CharacterAdder(m_itemProperty.Name, m_modifierValue, m_duration);
         }
     }
 }

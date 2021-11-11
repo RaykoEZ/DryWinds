@@ -74,7 +74,7 @@ Rigidbody2D:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2827255062020474157}
   m_BodyType: 2
-  m_Simulated: 1
+  m_Simulated: 0
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
@@ -98,10 +98,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ca8808a80bcd2b4eb800c92deed9b3b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_anim: {fileID: 0}
   m_rigidbody: {fileID: 8745921598324665306}
-  m_hurtBox: {fileID: 3922763432562932085}
   m_relations: 0
   m_itemName: Berry
+  m_description: 
+  m_sprite: {fileID: 0}
   m_healAmount: 10
 --- !u!1 &5131586963801652436
 GameObject:

@@ -5,13 +5,20 @@ namespace Curry.Game
 {
     public abstract class BaseItem : Interactable, ICollectable
     {
-        [SerializeField] protected string m_itemName = default;
-        [SerializeField] protected string m_description = default;
-        [SerializeField] protected Sprite m_sprite = default;
-        public virtual string Name { get { return m_itemName; } }
-        public virtual string Description { get { return m_description; } }
-        public virtual GameObject CollectedObject { get { return gameObject; } }
-        public virtual Sprite ItemSprite { get { return m_sprite; } }
+        [SerializeField] protected EntityProperty m_itemProperty = default;
+
+        public virtual GameObject CollectedObject 
+        { 
+            get 
+            { 
+                return gameObject; 
+            } 
+        }
+
+        public EntityProperty Property
+        {
+            get { return m_itemProperty; }
+        }
 
         protected Player m_owner;
 
@@ -22,7 +29,6 @@ namespace Curry.Game
             {
                 return;
             }
-
             OnCloseBy(hit);
         }
 
@@ -37,7 +43,7 @@ namespace Curry.Game
             player.OnInteractPrompt(onClick);
         }
 
-        public virtual void UseItem()
+        public virtual void Use()
         {
             if (OnActivate(m_owner))
             {
@@ -51,6 +57,12 @@ namespace Curry.Game
         public virtual void OnConsumed() 
         {
             Destroy(gameObject);
+        }
+
+        public void Discard()
+        {
+            Debug.Log("Discarded me.");
+            OnConsumed();
         }
     }
 }

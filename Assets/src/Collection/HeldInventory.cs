@@ -8,7 +8,7 @@ namespace Curry.Collection
     {
         public static int MaxItemCount { get { return 5; } }
         public IReadOnlyList<ICollectable> Items { get { return m_items; } }
-        protected List<ICollectable> m_items = new List<ICollectable>(MaxItemCount);
+        protected ICollectable[] m_items = new ICollectable[MaxItemCount];
 
         public virtual ICollectable GetItem(int index)
         {
@@ -16,19 +16,32 @@ namespace Curry.Collection
             return m_items[i];
         }
 
-        public virtual bool Add(ICollectable item) 
+        public virtual bool Add(ICollectable item, out int slot) 
         {
-            bool hasSpace = m_items.Count < MaxItemCount;
-            if (hasSpace) 
+            bool hasSpace = false;
+            for (int i = 0; i < MaxItemCount; ++i) 
             {
-                m_items.Add(item);              
+                hasSpace = m_items[i] == null;
+                if (hasSpace)
+                {
+                    m_items[i] = item;
+                    slot = i;
+                    return hasSpace;
+                }
             }
+            slot = -1;
             return hasSpace;
         }
 
-        public virtual bool Remove(ICollectable item) 
+        public virtual bool DiscardAt(int slot) 
         {
-            return m_items.Remove(item);
+            bool itemExists = m_items != null;
+            if (itemExists) 
+            {
+                m_items[slot].Discard();
+                m_items[slot] = null;
+            }
+            return itemExists;
         }
     }
 }

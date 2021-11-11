@@ -102,7 +102,7 @@ namespace Curry.Game
             ICollectable item = Character.HeldInventory.GetItem(m_currentItemIdx);
             if (item != null)
             {
-                item.UseItem();
+                item.Use();
             }
         }
 
