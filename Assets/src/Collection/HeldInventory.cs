@@ -10,9 +10,9 @@ namespace Curry.Collection
         public IReadOnlyList<ICollectable> Items { get { return m_items; } }
         protected List<ICollectable> m_items = new List<ICollectable>(MaxItemCount);
 
-        public virtual ICollectable GetItem(int index) 
+        public virtual ICollectable GetItem(int index)
         {
-            int i = Mathf.Clamp(index, 0, MaxItemCount);
+            int i = Mathf.Clamp(index, 0, MaxItemCount - 1);
             return m_items[i];
         }
 

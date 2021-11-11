@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Interactions;
-using Curry.Skill;
+using Curry.Collection;
 
 namespace Curry.Game
 {
@@ -10,6 +10,7 @@ namespace Curry.Game
     {
         [SerializeField] Player m_player = default;
         [SerializeField] InputActionReference m_movementAction = default;
+        protected int m_currentItemIdx = 0;
 
         public override Player Character { get { return m_player; } }
         void FixedUpdate()
@@ -87,6 +88,23 @@ namespace Curry.Game
             }
         }
         #endregion
+
+        public void SelectItem(int val) 
+        {
+            if (val < HeldInventory.MaxItemCount) 
+            {
+                m_currentItemIdx = val;
+            }
+        }
+
+        public void UseItem() 
+        {
+            ICollectable item = Character.HeldInventory.GetItem(m_currentItemIdx);
+            if (item != null)
+            {
+                item.UseItem();
+            }
+        }
 
         protected override void OnInterrupt()
         {

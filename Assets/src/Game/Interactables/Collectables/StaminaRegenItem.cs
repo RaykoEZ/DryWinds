@@ -7,7 +7,7 @@ namespace Curry.Game
         [SerializeField] protected float m_healAmount = default;
         protected override void OnEffectTrigger() 
         {
-            m_target.OnHeal(m_healAmount);
+            m_owner.OnHeal(m_healAmount);
         }
 
     }

@@ -3,6 +3,6 @@
     // Entities that prompt player when player is near its vicinity
     public interface IProximityPrompt
     {
-        void OnProximity();
+        void OnCloseBy(Player player);
     }
 }
