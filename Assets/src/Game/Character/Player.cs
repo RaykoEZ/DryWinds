@@ -6,7 +6,7 @@ using Curry.UI;
 
 namespace Curry.Game
 {
-    public delegate void OnCollectItem(int slot, EntityProperty itemProperty);
+    public delegate void OnCollectItem(int slot, EntityProperty itemProperty, ICollectable item);
     public class Player : BaseCharacter
     {
         [SerializeField] PromptManager m_prompt = default;
@@ -34,7 +34,7 @@ namespace Curry.Game
             if (HeldInventory.Add(item, out int slot))
             {
                 //collect successful
-                OnCollect?.Invoke(slot, item.Property);
+                OnCollect?.Invoke(slot, item.Property, item);
             }
             else
             {

@@ -34,7 +34,13 @@ namespace Curry.UI
 
         public void Hide() 
         {
+            ResetPrompt();
             OnHide?.Invoke(this);
+        }
+
+        protected void ResetPrompt()
+        {
+            m_button.onClick.RemoveAllListeners();
         }
     }
 }

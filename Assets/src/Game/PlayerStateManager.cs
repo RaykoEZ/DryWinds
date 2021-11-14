@@ -14,7 +14,7 @@ namespace Curry.Game
         CharacterContextFactory m_playerContextFactory = default;
 
         // Start is called before the first frame update
-        void Start()
+        void Awake()
         {
             m_gameEventListener.OnPlayerKnockout += OnPlayerKnockout;
 

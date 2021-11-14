@@ -63,7 +63,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 1.5, y: 1.5}
   m_EdgeRadius: 0
 --- !u!50 &8745921598324665306
 Rigidbody2D:
@@ -74,7 +74,7 @@ Rigidbody2D:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2827255062020474157}
   m_BodyType: 2
-  m_Simulated: 0
+  m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
@@ -100,10 +100,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_anim: {fileID: 0}
   m_rigidbody: {fileID: 8745921598324665306}
-  m_relations: 0
-  m_itemName: Berry
-  m_description: 
-  m_sprite: {fileID: 0}
+  m_relations: 1
+  m_itemProperty:
+    Name: Heal
+    Description: It's good.
+    EntitySprite: {fileID: 21300000, guid: 838f46b375a1ed74fbadeb73248efe22, type: 3}
+    Object: {fileID: 2827255062020474157}
   m_healAmount: 10
 --- !u!1 &5131586963801652436
 GameObject:

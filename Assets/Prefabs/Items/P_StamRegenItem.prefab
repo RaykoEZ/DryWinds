@@ -53,10 +53,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_anim: {fileID: 0}
   m_rigidbody: {fileID: 5453938753140334961}
-  m_relations: 0
-  m_itemName: StamRegenItem
-  m_description: 
-  m_sprite: {fileID: 0}
+  m_relations: 1
+  m_itemProperty:
+    Name: Regen
+    Description: It's green.
+    EntitySprite: {fileID: 7482667652216324306, guid: 8546c1b55c20c42438e2e981104c9a5b, type: 3}
+    Object: {fileID: 4990494026700266777}
   m_duration: 10
   m_modifierValue:
     m_maxStamina: 0
@@ -77,7 +79,7 @@ Rigidbody2D:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4990494026700266777}
   m_BodyType: 2
-  m_Simulated: 0
+  m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
@@ -113,7 +115,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 1.5, y: 1.5}
   m_EdgeRadius: 0
 --- !u!1 &8046879597400072847
 GameObject:

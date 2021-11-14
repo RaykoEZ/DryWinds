@@ -23,7 +23,7 @@ namespace Curry.Game
             get { return m_itemProperty; }
         }
         // returns true if item is expires after use
-        public abstract bool OnActivate(BaseCharacter hit);
+        protected abstract bool OnActivate(BaseCharacter hit);
 
         protected virtual void OnTriggerEnter2D(Collider2D col)
         {
@@ -61,7 +61,7 @@ namespace Curry.Game
             OnLeaveRange += ()=>{ prompt.Hide(); };
         }
 
-        public virtual void Use()
+        public virtual void Activate()
         {
             if (OnActivate(m_owner))
             {

@@ -8,7 +8,7 @@ namespace Curry.Game
         [SerializeField] protected CharacterModifierProperty m_modifierValue = default;
         protected virtual CharactertModifier Modifier { get; set; }
 
-        public override bool OnActivate(BaseCharacter hit)
+        protected override bool OnActivate(BaseCharacter hit)
         {
             hit.ApplyModifier(Modifier);
             return true;

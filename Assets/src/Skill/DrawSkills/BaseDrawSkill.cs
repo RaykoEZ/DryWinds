@@ -39,6 +39,7 @@ namespace Curry.Skill
             // If spawned traces is not ready, don't draw 
             if(!IsUsable) 
             {
+                Interrupt();
                 OnSkillFinish();
                 return; 
             }

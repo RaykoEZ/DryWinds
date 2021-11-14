@@ -87,7 +87,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19d2c30700b6d5a439fd4fc452a2d9d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_numToPool: 1
+  m_numToPool: 3
   m_defaultParent: {fileID: 5751947332779855329}
 --- !u!1 &5751947332779855330
 GameObject:
