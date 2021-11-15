@@ -7,9 +7,8 @@ namespace Curry.Game
         [SerializeField] protected float m_healAmount = default;
         protected override bool OnActivate(BaseCharacter hit) 
         {
-            bool ret = hit.CurrentStats.Stamina < hit.CurrentStats.MaxStamina;
             hit.OnHeal(m_healAmount);
-            return ret;
+            return true;
         }
     }
 }

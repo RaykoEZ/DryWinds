@@ -33,6 +33,21 @@ namespace Curry.Collection
             return hasSpace;
         }
 
+        public void UseItem(int slot, out bool expired) 
+        {
+            ICollectable item = GetItem(slot);
+            if (item == null)
+            {
+                expired = false;
+                return;
+            }
+            expired = item.Activate();
+            if (expired)
+            {
+                DiscardAt(slot);
+            }
+        }
+
         public virtual bool DiscardAt(int slot) 
         {
             bool itemExists = m_items != null;

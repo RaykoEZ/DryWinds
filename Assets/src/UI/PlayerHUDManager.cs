@@ -14,13 +14,14 @@ namespace Curry.UI
         {
             contextFactory.OnUpdate += OnPlayerStatUpdate;
             player.OnCollect += m_heldItems.LoadItemToSlot;
-
+            player.OnUse += m_heldItems.OnItemUsed;
         }
 
         public void Shutdown(CharacterContextFactory contextFactory, Player player) 
         {
             contextFactory.OnUpdate -= OnPlayerStatUpdate;
             player.OnCollect -= m_heldItems.LoadItemToSlot;
+            player.OnUse -= m_heldItems.OnItemUsed;
         }
 
         void OnPlayerStatUpdate(CharacterContext c) 

@@ -43,6 +43,14 @@ namespace Curry.Input
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""HeldItems"",
+                    ""type"": ""Button"",
+                    ""id"": ""59cb4104-f60b-4f15-be3f-21cf89b12163"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -122,6 +130,61 @@ namespace Curry.Input
                     ""action"": ""Movement"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ef65bacf-ceab-4d4f-bc6f-6f743b2ad61e"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": ""Tap"",
+                    ""processors"": ""Scale"",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""HeldItems"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""05d9d78e-3589-477e-9e1f-a91ca9f8e677"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": ""Tap"",
+                    ""processors"": ""Scale(factor=2)"",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""HeldItems"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""29220ffd-5212-4842-b482-3c80a434fac5"",
+                    ""path"": ""<Keyboard>/3"",
+                    ""interactions"": ""Tap"",
+                    ""processors"": ""Scale(factor=3)"",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""HeldItems"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b22206f4-3688-4199-91f9-72d497647e0a"",
+                    ""path"": ""<Keyboard>/4"",
+                    ""interactions"": ""Tap"",
+                    ""processors"": ""Scale(factor=4)"",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""HeldItems"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8d28a84e-07b7-49f4-b5b3-6615c4130d40"",
+                    ""path"": ""<Keyboard>/5"",
+                    ""interactions"": ""Tap"",
+                    ""processors"": ""Scale(factor=5)"",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""HeldItems"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -700,6 +763,7 @@ namespace Curry.Input
             m_Player_BasicSkill = m_Player.FindAction("BasicSkill", throwIfNotFound: true);
             m_Player_DrawSkill = m_Player.FindAction("DrawSkill", throwIfNotFound: true);
             m_Player_Movement = m_Player.FindAction("Movement", throwIfNotFound: true);
+            m_Player_HeldItems = m_Player.FindAction("HeldItems", throwIfNotFound: true);
             // UI
             m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
             m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -764,6 +828,7 @@ namespace Curry.Input
         private readonly InputAction m_Player_BasicSkill;
         private readonly InputAction m_Player_DrawSkill;
         private readonly InputAction m_Player_Movement;
+        private readonly InputAction m_Player_HeldItems;
         public struct PlayerActions
         {
             private @PlayerInput_0 m_Wrapper;
@@ -771,6 +836,7 @@ namespace Curry.Input
             public InputAction @BasicSkill => m_Wrapper.m_Player_BasicSkill;
             public InputAction @DrawSkill => m_Wrapper.m_Player_DrawSkill;
             public InputAction @Movement => m_Wrapper.m_Player_Movement;
+            public InputAction @HeldItems => m_Wrapper.m_Player_HeldItems;
             public InputActionMap Get() { return m_Wrapper.m_Player; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -789,6 +855,9 @@ namespace Curry.Input
                     @Movement.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMovement;
                     @Movement.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMovement;
                     @Movement.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMovement;
+                    @HeldItems.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnHeldItems;
+                    @HeldItems.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnHeldItems;
+                    @HeldItems.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnHeldItems;
                 }
                 m_Wrapper.m_PlayerActionsCallbackInterface = instance;
                 if (instance != null)
@@ -802,6 +871,9 @@ namespace Curry.Input
                     @Movement.started += instance.OnMovement;
                     @Movement.performed += instance.OnMovement;
                     @Movement.canceled += instance.OnMovement;
+                    @HeldItems.started += instance.OnHeldItems;
+                    @HeldItems.performed += instance.OnHeldItems;
+                    @HeldItems.canceled += instance.OnHeldItems;
                 }
             }
         }
@@ -961,6 +1033,7 @@ namespace Curry.Input
             void OnBasicSkill(InputAction.CallbackContext context);
             void OnDrawSkill(InputAction.CallbackContext context);
             void OnMovement(InputAction.CallbackContext context);
+            void OnHeldItems(InputAction.CallbackContext context);
         }
         public interface IUIActions
         {

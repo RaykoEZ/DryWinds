@@ -28,6 +28,14 @@
                     "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": ""
+                },
+                {
+                    "name": "HeldItems",
+                    "type": "Button",
+                    "id": "59cb4104-f60b-4f15-be3f-21cf89b12163",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -107,6 +115,61 @@
                     "action": "Movement",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "ef65bacf-ceab-4d4f-bc6f-6f743b2ad61e",
+                    "path": "<Keyboard>/1",
+                    "interactions": "Tap",
+                    "processors": "Scale",
+                    "groups": "Keyboard&Mouse",
+                    "action": "HeldItems",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "05d9d78e-3589-477e-9e1f-a91ca9f8e677",
+                    "path": "<Keyboard>/2",
+                    "interactions": "Tap",
+                    "processors": "Scale(factor=2)",
+                    "groups": "Keyboard&Mouse",
+                    "action": "HeldItems",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "29220ffd-5212-4842-b482-3c80a434fac5",
+                    "path": "<Keyboard>/3",
+                    "interactions": "Tap",
+                    "processors": "Scale(factor=3)",
+                    "groups": "Keyboard&Mouse",
+                    "action": "HeldItems",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b22206f4-3688-4199-91f9-72d497647e0a",
+                    "path": "<Keyboard>/4",
+                    "interactions": "Tap",
+                    "processors": "Scale(factor=4)",
+                    "groups": "Keyboard&Mouse",
+                    "action": "HeldItems",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8d28a84e-07b7-49f4-b5b3-6615c4130d40",
+                    "path": "<Keyboard>/5",
+                    "interactions": "Tap",
+                    "processors": "Scale(factor=5)",
+                    "groups": "Keyboard&Mouse",
+                    "action": "HeldItems",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },

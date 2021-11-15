@@ -52,6 +52,7 @@ namespace Curry.Game
             Action onClick = () =>
             {
                 m_owner = player;
+                gameObject.SetActive(false);
                 player.OnCollectItem(this);
             };
 
@@ -61,15 +62,17 @@ namespace Curry.Game
             OnLeaveRange += ()=>{ prompt.Hide(); };
         }
 
-        public virtual void Activate()
+        public virtual bool Activate()
         {
-            if (OnActivate(m_owner))
+            bool expired = OnActivate(m_owner);
+            if (expired)
             {
                 OnConsumed();
             }
+            return expired;
         }
 
-        public virtual void OnConsumed() 
+        protected virtual void OnConsumed() 
         {
             Destroy(gameObject);
         }

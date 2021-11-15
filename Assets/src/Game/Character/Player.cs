@@ -6,16 +6,18 @@ using Curry.UI;
 
 namespace Curry.Game
 {
-    public delegate void OnCollectItem(int slot, EntityProperty itemProperty, ICollectable item);
+    public delegate void OnCollectItem(int slot, EntityProperty itemProperty);
+    public delegate void OnUseItem(int slot, bool expired);
     public class Player : BaseCharacter
     {
         [SerializeField] PromptManager m_prompt = default;
         protected Camera m_cam = default;
         protected HeldInventory m_heldItems = new HeldInventory();
         public Camera CurrentCamera { get { return m_cam; } }
-        public HeldInventory HeldInventory { get { return m_heldItems; } }
+        public HeldInventory Inventory { get { return m_heldItems; } }
         
         public event OnCollectItem OnCollect;
+        public event OnUseItem OnUse;
 
         public override void Init(CharacterContextFactory contextFactory)
         {
@@ -31,16 +33,23 @@ namespace Curry.Game
 
         public void OnCollectItem(ICollectable item)
         {
-            if (HeldInventory.Add(item, out int slot))
+            if (Inventory.Add(item, out int slot))
             {
                 //collect successful
-                OnCollect?.Invoke(slot, item.Property, item);
+                OnCollect?.Invoke(slot, item.Property);
             }
             else
             {
                 //collect failure
                 Debug.Log($"Cannot collect {item.Property.Name}.");
             }
+        }
+
+        public void UseItem(int slot) 
+        {
+            Inventory.UseItem(slot, out bool expired);
+            Debug.Log(expired);
+            OnUse?.Invoke(slot, expired);
         }
 
         public InteractPrompt OnInteractPrompt(Action onClick, string title, EPromptType type = EPromptType.Interact)

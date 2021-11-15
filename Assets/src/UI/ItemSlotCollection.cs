@@ -8,15 +8,23 @@ namespace Curry.UI
     {
         [SerializeField] protected ItemSlot[] m_itemSlots = new ItemSlot[HeldInventory.MaxItemCount];
 
-        public void LoadItemToSlot(int slot, EntityProperty prop, ICollectable obj)
+        public void LoadItemToSlot(int slot, EntityProperty prop)
         {
             if(slot < m_itemSlots.Length) 
             {
-                m_itemSlots[slot].LoadValues(prop, obj);
+                m_itemSlots[slot].LoadValues(prop);
             }
         }
 
-        public void UnloadSlot(int slot)
+        public void OnItemUsed(int slot, bool expired) 
+        {
+            if (expired) 
+            {
+                m_itemSlots[slot].Unload();
+            }
+        }
+
+        protected void UnloadSlot(int slot)
         {
             if (slot < m_itemSlots.Length)
             {
