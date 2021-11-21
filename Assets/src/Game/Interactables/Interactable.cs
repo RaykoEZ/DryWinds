@@ -10,7 +10,7 @@ namespace Curry.Game
     [Flags]
     public enum ObjectRelations 
     {
-        None,
+        None = 0,
         Ally = 1,
         Enemy = 1 << 1
     }
@@ -55,7 +55,6 @@ namespace Curry.Game
         {
             m_rigidbody.AddForce(knockback * direction, ForceMode2D.Impulse);
         }
-
 
         public virtual void OnTakeDamage(float damage) 
         {

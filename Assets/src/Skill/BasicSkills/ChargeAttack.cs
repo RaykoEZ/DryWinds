@@ -26,7 +26,7 @@ namespace Curry.Skill
                 hit.RigidBody.velocity = Vector2.zero;
                 hit.OnKnockback(-diff.normalized, m_skillProperty.Knockback);
             }
-
+            Debug.Log("HIT");
             m_user.RigidBody.velocity = Vector2.zero;
             m_user.OnKnockback(diff.normalized, 0.75f * m_skillProperty.Knockback);
             hit.OnTakeDamage(m_skillProperty.ActionValue);

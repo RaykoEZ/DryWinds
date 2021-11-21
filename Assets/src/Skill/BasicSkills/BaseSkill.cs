@@ -34,46 +34,16 @@ namespace Curry.Skill
         {
             Interactable hit = col.gameObject.GetComponent<Interactable>();
 
-            if (hit == null)
+            if (hit == null || hit.Relations == ObjectRelations.None)
             {
                 return;
             }
 
             bool isAlly = m_user.Relations == hit.Relations;
-            if (m_skillProperty.TargetOptions == ObjectRelations.Ally &&
-                isAlly)
-            {
-                OnHit(hit);
-                return;
-            }
-
-            if (m_skillProperty.TargetOptions == ObjectRelations.Enemy &&
-                !isAlly)
-            {
-                OnHit(hit);
-                return;
-            }
-        }
-
-        protected virtual void OnCollisionEnter2D(Collision2D col)
-        {
-            Interactable hit = col.gameObject.GetComponent<Interactable>();
-
-            if (hit == null)
-            {
-                return;
-            }
-
-            bool isAlly = m_user.Relations == hit.Relations;
-            if (m_skillProperty.TargetOptions == ObjectRelations.Ally &&
-                isAlly) 
-            {
-                OnHit(hit);
-                return;
-            }
-
-            if (m_skillProperty.TargetOptions == ObjectRelations.Enemy &&
-                !isAlly)
+            bool hitConfirm = 
+                (isAlly && m_skillProperty.TargetOptions == ObjectRelations.Ally) ||
+                (!isAlly && m_skillProperty.TargetOptions == ObjectRelations.Enemy);
+            if (hitConfirm)
             {
                 OnHit(hit);
                 return;
