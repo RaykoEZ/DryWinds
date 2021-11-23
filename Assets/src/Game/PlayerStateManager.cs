@@ -30,13 +30,31 @@ namespace Curry.Game
             m_playerUI.Shutdown(m_playerContextFactory, m_player);
             m_player.Shutdown();
         }
-
-        void OnPlayerKnockout(object sender, PlayerEventArgs args) 
+        void OnPlayerKnockout(object sender, PlayerArgs args)
         {
             // Handle Lose calls
             Debug.Log("Game Over.");
-            Application.Quit();
+            Time.timeScale = 0f;
         }
 
+        void OnPlayerInteract(object sender, InteractableArgs args) 
+        { 
+        
+        }
+
+        void OnPlayerInteractNPC(object sender, NPCArgs args)
+        {
+
+        }
+
+        void OnItemObtained(object sender, ItemArgs args) 
+        {
+        
+        }
+
+        void OnFloraObtained(object sender, FloraArgs args) 
+        {
+
+        }
     }
 }

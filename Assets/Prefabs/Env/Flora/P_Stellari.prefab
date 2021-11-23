@@ -58,7 +58,7 @@ MonoBehaviour:
   m_itemProperty:
     Name: Stellari
     Description: A flower.
-    EntitySprite: {fileID: 21300000, guid: 5d25359bb9a0b0549a1f29100ce3bc8b, type: 3}
+    EntitySprite: {fileID: 21300000, guid: 28c8de4d5cadf6e43bf5d9dcc63f7965, type: 3}
 --- !u!95 &4394359745806297287
 Animator:
   serializedVersion: 3
@@ -191,7 +191,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 5d25359bb9a0b0549a1f29100ce3bc8b, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 28c8de4d5cadf6e43bf5d9dcc63f7965, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

@@ -7,37 +7,31 @@ namespace Curry.Events
 {
     public class GameEventHandler : MonoBehaviour
     {
-        [SerializeField] CurryGameEventListener m_onExitScreen = default;
         [SerializeField] CurryGameEventListener m_onKnockout = default;
+        [SerializeField] CurryGameEventListener m_onItemObtain = default;
+        [SerializeField] CurryGameEventListener m_onPlayerInteract = default;
 
-        public event EventHandler<NPCEventArgs> OnNpcOffscreen;
-        public event EventHandler<NPCEventArgs> OnNpcKnockout;
+        public event EventHandler<NPCArgs> OnNpcKnockout;
+        public event EventHandler<PlayerArgs> OnPlayerKnockout;
 
-        public event EventHandler<PlayerEventArgs> OnPlayerOffscreen;
-        public event EventHandler<PlayerEventArgs> OnPlayerKnockout;
+        public event EventHandler<ItemArgs> OnItemObtained;
+        public event EventHandler<FloraArgs> OnFloraObtained;
 
-        void Start() 
+        public event EventHandler<InteractableArgs> OnInteract;
+        public event EventHandler<NPCArgs> OnInteractNPC;
+
+        void OnEnable() 
         {
-            m_onExitScreen.Init();
             m_onKnockout.Init();
+            m_onItemObtain.Init();
+            m_onPlayerInteract.Init();
         }
 
-        public void OnObjectExitScreen(EventInfo info) 
+        void OnDisable()
         {
-            if (info.Payload["exitingObject"] is Interactable obj) 
-            {
-                if (obj is Player player)
-                {
-                    PlayerEventArgs args = new PlayerEventArgs(player);
-                    OnPlayerOffscreen?.Invoke(this, args);
-
-                }
-                else if (obj is BaseNpc npc)
-                {
-                    NPCEventArgs args = new NPCEventArgs(npc);
-                    OnNpcOffscreen?.Invoke(this, args);
-                }
-            }
+            m_onKnockout.Shutdown();
+            m_onItemObtain.Shutdown();
+            m_onPlayerInteract.Shutdown();
         }
 
         public void OnObjectKnockout(EventInfo info)
@@ -46,14 +40,39 @@ namespace Curry.Events
             {
                 if (obj is Player player) 
                 {
-                    PlayerEventArgs args = new PlayerEventArgs(player);
+                    PlayerArgs args = new PlayerArgs(player);
                     OnPlayerKnockout?.Invoke(this, args);
 
                 }
-                else if (obj is BaseNpc npc)
+
+                if (obj is BaseNpc npc)
                 {
-                    NPCEventArgs args = new NPCEventArgs(npc);
+                    NPCArgs args = new NPCArgs(npc);
                     OnNpcKnockout?.Invoke(this, args);
+                }
+            }
+        }
+
+        public void OnItemObtain(EventInfo info)
+        {
+            if (info.Payload["collected"] is BaseItem item)
+            {
+                if (item is Flora flora)
+                {
+
+                }
+
+
+            }
+        }
+
+        public void OnPlayerInteract(EventInfo info)
+        {
+            if (info.Payload["interactingWith"] is Interactable obj)
+            {
+                if (obj is BaseNpc npc)
+                {
+
                 }
             }
         }
