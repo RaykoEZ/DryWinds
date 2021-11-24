@@ -42,7 +42,6 @@ namespace Curry.Events
                 {
                     PlayerArgs args = new PlayerArgs(player);
                     OnPlayerKnockout?.Invoke(this, args);
-
                 }
 
                 if (obj is BaseNpc npc)
@@ -59,10 +58,11 @@ namespace Curry.Events
             {
                 if (item is Flora flora)
                 {
-
+                    FloraArgs floralArgs = new FloraArgs(flora);
+                    OnFloraObtained?.Invoke(this, floralArgs);
                 }
-
-
+                ItemArgs args = new ItemArgs(item);
+                OnItemObtained?.Invoke(this, args);
             }
         }
 
@@ -72,8 +72,11 @@ namespace Curry.Events
             {
                 if (obj is BaseNpc npc)
                 {
-
+                    NPCArgs args = new NPCArgs(npc);
+                    OnInteractNPC?.Invoke(this, args);
                 }
+                InteractableArgs interactable = new InteractableArgs(obj);
+                OnInteract.Invoke(this, interactable);
             }
         }
     }

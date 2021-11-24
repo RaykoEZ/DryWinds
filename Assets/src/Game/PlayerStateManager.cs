@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Curry.UI;
 using Curry.Events;
@@ -17,6 +15,10 @@ namespace Curry.Game
         void Awake()
         {
             m_gameEventListener.OnPlayerKnockout += OnPlayerKnockout;
+            m_gameEventListener.OnInteract += OnPlayerInteract;
+            m_gameEventListener.OnInteractNPC += OnPlayerInteractNPC;
+            m_gameEventListener.OnItemObtained += OnItemObtained;
+            m_gameEventListener.OnFloraObtained += OnFloraObtained;
 
             CharacterContextFactory playerContextFactory = new CharacterContextFactory();
             m_playerContextFactory = playerContextFactory;
@@ -27,6 +29,11 @@ namespace Curry.Game
         void OnDisable()
         {
             m_gameEventListener.OnPlayerKnockout -= OnPlayerKnockout;
+            m_gameEventListener.OnInteract -= OnPlayerInteract;
+            m_gameEventListener.OnInteractNPC -= OnPlayerInteractNPC;
+            m_gameEventListener.OnItemObtained -= OnItemObtained;
+            m_gameEventListener.OnFloraObtained -= OnFloraObtained;
+
             m_playerUI.Shutdown(m_playerContextFactory, m_player);
             m_player.Shutdown();
         }
