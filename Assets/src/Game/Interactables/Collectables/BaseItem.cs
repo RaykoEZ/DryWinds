@@ -24,7 +24,12 @@ namespace Curry.Game
         }
         // returns true if item is expires after use
         protected abstract bool OnActivate(BaseCharacter hit);
-
+        protected virtual void OnCollect(Player player) 
+        {
+            m_owner = player;
+            gameObject.SetActive(false);
+            player.OnCollectItem(this);
+        }
         protected virtual void OnTriggerEnter2D(Collider2D col)
         {
             Player hit = col.gameObject.GetComponent<Player>();
@@ -51,9 +56,7 @@ namespace Curry.Game
         {
             Action onClick = () =>
             {
-                m_owner = player;
-                gameObject.SetActive(false);
-                player.OnCollectItem(this);
+                OnCollect(player);
             };
 
             InteractPrompt prompt = 

@@ -9,6 +9,7 @@ namespace Curry.Game
         [SerializeField] PlayerHUDManager m_playerUI = default;
         [SerializeField] Player m_player = default;
         [SerializeField] GameEventHandler m_gameEventListener = default;
+        [SerializeField] ObjectiveManager m_objectiveManager = default;
         CharacterContextFactory m_playerContextFactory = default;
 
         // Start is called before the first frame update
@@ -61,7 +62,8 @@ namespace Curry.Game
 
         void OnFloraObtained(object sender, FloraArgs args) 
         {
-
+            Debug.Log("collected: " + args.Flora.Property.Name);
+            m_objectiveManager.OnObjectiveAchieve();
         }
     }
 }

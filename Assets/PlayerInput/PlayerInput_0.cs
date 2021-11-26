@@ -51,6 +51,14 @@ namespace Curry.Input
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""NextDialogue"",
+                    ""type"": ""Button"",
+                    ""id"": ""cc819900-020f-4ea2-bb64-7ddd32377733"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -183,6 +191,17 @@ namespace Curry.Input
                     ""processors"": ""Scale(factor=5)"",
                     ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""HeldItems"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f71ace56-53ba-4c58-a6a1-7d28dbf4d05a"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""NextDialogue"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -764,6 +783,7 @@ namespace Curry.Input
             m_Player_DrawSkill = m_Player.FindAction("DrawSkill", throwIfNotFound: true);
             m_Player_Movement = m_Player.FindAction("Movement", throwIfNotFound: true);
             m_Player_HeldItems = m_Player.FindAction("HeldItems", throwIfNotFound: true);
+            m_Player_NextDialogue = m_Player.FindAction("NextDialogue", throwIfNotFound: true);
             // UI
             m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
             m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -829,6 +849,7 @@ namespace Curry.Input
         private readonly InputAction m_Player_DrawSkill;
         private readonly InputAction m_Player_Movement;
         private readonly InputAction m_Player_HeldItems;
+        private readonly InputAction m_Player_NextDialogue;
         public struct PlayerActions
         {
             private @PlayerInput_0 m_Wrapper;
@@ -837,6 +858,7 @@ namespace Curry.Input
             public InputAction @DrawSkill => m_Wrapper.m_Player_DrawSkill;
             public InputAction @Movement => m_Wrapper.m_Player_Movement;
             public InputAction @HeldItems => m_Wrapper.m_Player_HeldItems;
+            public InputAction @NextDialogue => m_Wrapper.m_Player_NextDialogue;
             public InputActionMap Get() { return m_Wrapper.m_Player; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -858,6 +880,9 @@ namespace Curry.Input
                     @HeldItems.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnHeldItems;
                     @HeldItems.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnHeldItems;
                     @HeldItems.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnHeldItems;
+                    @NextDialogue.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnNextDialogue;
+                    @NextDialogue.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnNextDialogue;
+                    @NextDialogue.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnNextDialogue;
                 }
                 m_Wrapper.m_PlayerActionsCallbackInterface = instance;
                 if (instance != null)
@@ -874,6 +899,9 @@ namespace Curry.Input
                     @HeldItems.started += instance.OnHeldItems;
                     @HeldItems.performed += instance.OnHeldItems;
                     @HeldItems.canceled += instance.OnHeldItems;
+                    @NextDialogue.started += instance.OnNextDialogue;
+                    @NextDialogue.performed += instance.OnNextDialogue;
+                    @NextDialogue.canceled += instance.OnNextDialogue;
                 }
             }
         }
@@ -1034,6 +1062,7 @@ namespace Curry.Input
             void OnDrawSkill(InputAction.CallbackContext context);
             void OnMovement(InputAction.CallbackContext context);
             void OnHeldItems(InputAction.CallbackContext context);
+            void OnNextDialogue(InputAction.CallbackContext context);
         }
         public interface IUIActions
         {

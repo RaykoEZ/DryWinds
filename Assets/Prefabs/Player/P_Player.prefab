@@ -54,6 +54,7 @@ MonoBehaviour:
   m_rigidbody: {fileID: 826281917603678357}
   m_relations: 1
   m_statusManager: {fileID: 8378189346840365758}
+  m_onCollectItem: {fileID: 11400000, guid: 4357e5d0d787f484c93020b4886fa636, type: 2}
   m_prompt: {fileID: 3622565190836179060}
 --- !u!58 &54977025414749079
 CircleCollider2D:

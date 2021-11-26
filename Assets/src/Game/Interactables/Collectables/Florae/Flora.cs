@@ -5,6 +5,11 @@ namespace Curry.Game
     [RequireComponent(typeof(Rigidbody2D))]
     public class Flora : BaseItem, IFlammable, IFragile
     {
+        protected override void OnCollect(Player player)
+        {
+            base.OnCollect(player);
+        }
+
         public void OnTouchFire(IElementSource source)
         {
             Debug.Log("on fire");

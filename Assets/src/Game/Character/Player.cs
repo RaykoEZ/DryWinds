@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Curry.Collection;
 using Curry.UI;
+using Curry.Events;
 
 namespace Curry.Game
 {
@@ -10,6 +11,7 @@ namespace Curry.Game
     public delegate void OnUseItem(int slot, bool expired);
     public class Player : BaseCharacter
     {
+        [SerializeField] CurryGameEventSource m_onCollectItem = default;
         [SerializeField] PromptManager m_prompt = default;
         protected Camera m_cam = default;
         protected HeldInventory m_heldItems = new HeldInventory();
@@ -37,6 +39,9 @@ namespace Curry.Game
             {
                 //collect successful
                 OnCollect?.Invoke(slot, item.Property);
+                Dictionary<string, object> payload = new Dictionary<string, object> { { "collected", item } };
+                EventInfo info = new EventInfo(payload);
+                m_onCollectItem?.Broadcast(info);
             }
             else
             {

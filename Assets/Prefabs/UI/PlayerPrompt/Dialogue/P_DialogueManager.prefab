@@ -49,8 +49,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4166f246bc95024bb4eda50b8df63bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_listener:
+    m_eventToListen: {fileID: 11400000, guid: 247b74e5c0eb59b40a0cb23057ed3f27, type: 2}
+    m_responses:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 7797491141251592442}
+          m_TargetAssemblyTypeName: Curry.UI.DialogueManager, Assembly-CSharp
+          m_MethodName: OnDialogueTrigger
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
   m_nameDisplay: {fileID: 5165141348125630409}
   m_dialogueDisplay: {fileID: 5165141348800992116}
+  m_boxAnim: {fileID: 1203931665824785292}
+  m_continueAction: {fileID: 8691947511843523401, guid: 82b300ceb3c136247a87054a5fd03e4f, type: 3}
 --- !u!1001 &5142534787803460086
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -155,6 +174,11 @@ PrefabInstance:
 --- !u!224 &5165141348780925255 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 68592570734334129, guid: b8fe9dec80247fc4480fd9a1e166f2ce, type: 3}
+  m_PrefabInstance: {fileID: 5142534787803460086}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &1203931665824785292 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 6334538670972441210, guid: b8fe9dec80247fc4480fd9a1e166f2ce, type: 3}
   m_PrefabInstance: {fileID: 5142534787803460086}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &5165141348125630409 stripped
