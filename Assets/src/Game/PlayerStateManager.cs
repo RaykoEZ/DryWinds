@@ -8,7 +8,7 @@ namespace Curry.Game
     {
         [SerializeField] PlayerHUDManager m_playerUI = default;
         [SerializeField] Player m_player = default;
-        [SerializeField] GameEventHandler m_gameEventListener = default;
+        [SerializeField] GameEventManager m_gameEventListener = default;
         [SerializeField] ObjectiveManager m_objectiveManager = default;
         CharacterContextFactory m_playerContextFactory = default;
 

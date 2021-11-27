@@ -5,7 +5,7 @@ using Curry.Game;
 
 namespace Curry.Events
 {
-    public class GameEventHandler : MonoBehaviour
+    public class GameEventManager : MonoBehaviour
     {
         [SerializeField] CurryGameEventListener m_onKnockout = default;
         [SerializeField] CurryGameEventListener m_onItemObtain = default;
@@ -13,10 +13,8 @@ namespace Curry.Events
 
         public event EventHandler<NPCArgs> OnNpcKnockout;
         public event EventHandler<PlayerArgs> OnPlayerKnockout;
-
         public event EventHandler<ItemArgs> OnItemObtained;
         public event EventHandler<FloraArgs> OnFloraObtained;
-
         public event EventHandler<InteractableArgs> OnInteract;
         public event EventHandler<NPCArgs> OnInteractNPC;
 
