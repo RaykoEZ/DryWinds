@@ -3,8 +3,9 @@ using UnityEngine;
 
 namespace Curry.Events
 {
+
     [Serializable]
-    public class IntAchieved : IProgress<int>
+    public class AmountAchieved : ICondition<int>
     {
         [SerializeField] int m_target = default;
         
@@ -26,27 +27,12 @@ namespace Curry.Events
             }
         }
 
+        public string Description => throw new NotImplementedException();
+
         public virtual bool UpdateProgress(int progress)
         {
             Progress = progress;
             return Achieved;
-        }
-    }
-
-    [SerializeField]
-    public class ItemObtained : IProgress<string>
-    {
-        [SerializeField] string m_targetItemId = default;
-
-        public virtual string Target => throw new NotImplementedException();
-
-        public virtual string Progress => throw new NotImplementedException();
-
-        public virtual bool Achieved => throw new NotImplementedException();
-
-        public virtual bool UpdateProgress(string progress)
-        {
-            throw new NotImplementedException();
         }
     }
 }

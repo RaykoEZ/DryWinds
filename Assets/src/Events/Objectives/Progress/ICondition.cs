@@ -2,8 +2,9 @@
 
 namespace Curry.Events
 {
-    public interface IProgress<T> where T: IComparable 
-    { 
+    public interface ICondition<T>
+    {
+        string Description { get; }
         T Target { get; }
         T Progress { get; }
         bool Achieved { get; }

@@ -9,7 +9,7 @@ namespace Curry.Events
     public delegate void OnObjectiveComplete();
     public interface IObjective
     {
-        IProgress<IComparable> Progress { get; }
+        ICondition<IComparable> Progress { get; }
         event OnObjectiveComplete OnComplete;
         void Init(GameEventManager eventManager);
     }
