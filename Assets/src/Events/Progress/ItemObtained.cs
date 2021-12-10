@@ -65,5 +65,10 @@ namespace Curry.Events
 
             return Achieved;
         }
+
+        public override int GetHashCode()
+        {
+            return $"GET{Target.ItemSerialNumber}/{Target.Amount}/{Achieved}".GetHashCode();
+        }
     }
 }

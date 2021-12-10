@@ -1,11 +1,16 @@
 ﻿using System;
 using UnityEngine;
+using Curry.Game;
+using Curry.UI;
 
 namespace Curry.Events
 {
     public class ItemObtainObjective : GameObjective
     {
         [SerializeField] protected ItemObtained m_condition = default;
+        [SerializeField] protected DialogueTrigger m_dialogueTrigger = default;
+        [SerializeField] protected Dialogue m_dialogue = default;
+
         public override ICondition<IComparable> ObjectiveCondition 
         { 
             get { return m_condition as ICondition<IComparable>; } 
@@ -27,6 +32,12 @@ namespace Curry.Events
             {
                 OnCompleteCallback();
             }
+        }
+
+        protected override void OnCompleteCallback()
+        {
+            base.OnCompleteCallback();
+            m_dialogueTrigger.TriggerDialogue(m_dialogue, true);
         }
     }
 

@@ -33,12 +33,18 @@ namespace Curry.Game
 
         protected virtual void Init() 
         { 
-        
+            foreach(GameObjective objective in m_objectives)
+            {
+                objective.Init(m_eventManager);
+            }
         }
 
         protected virtual void Shutdown()
         {
-
+            foreach (GameObjective objective in m_objectives)
+            {
+                objective.Shutdown(m_eventManager);
+            }
         }
     }
 
