@@ -15,9 +15,14 @@ namespace Curry.Events
         { 
             get { return m_condition as ICondition<IComparable>; } 
         }
+        public override string Title { get { return "Get Title."; } }
+
+        public override string Description { get { return "Get Description."; } }
+
+
         public override void Init(GameEventManager eventManager)
         {
-            eventManager.OnItemObtained += OnItemObtain; 
+            eventManager.OnItemObtained += OnItemObtain;
         }
 
         public override void Shutdown(GameEventManager eventManager)

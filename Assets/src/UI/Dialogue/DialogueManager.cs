@@ -34,6 +34,17 @@ namespace Curry.UI
                 NextPage();
             }
         }
+        public void OnDialogueTrigger(EventInfo info)
+        {
+            bool diaplayName = info.Payload["displayName"] != null ||
+                (bool)info.Payload["displayName"];
+            Debug.Log("dialogue open: " + diaplayName);
+            // Only accept a new dialogue when the current dialogue finishes.
+            if (m_dialogue.Count == 0 && info.Payload["dialogue"] is Dialogue dialogue)
+            {
+                OpenDialogue(dialogue, diaplayName);
+            }
+        }
 
         public void OpenDialogue(Dialogue dialogue, bool diaplayName = true) 
         {
@@ -46,17 +57,7 @@ namespace Curry.UI
             NextPage();
         }
 
-        public void OnDialogueTrigger(EventInfo info) 
-        {
-            bool diaplayName = info.Payload["displayName"] != null || 
-                (bool)info.Payload["displayName"];
-            Debug.Log("dialogue open: " + diaplayName);
 
-            if (info.Payload["dialogue"] is Dialogue dialogue) 
-            {
-                OpenDialogue(dialogue, diaplayName);
-            }
-        }
 
         public void NextPage() 
         {

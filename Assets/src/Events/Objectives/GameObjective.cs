@@ -7,12 +7,15 @@ namespace Curry.Events
     public abstract class GameObjective : MonoBehaviour, IObjective, IEquatable<GameObjective>
     {
         public event OnObjectiveComplete OnComplete;
+        public abstract string Title { get; }
+        public abstract string Description { get; }
         public abstract ICondition<IComparable> ObjectiveCondition { get; }
+
         public abstract void Init(GameEventManager eventManager);
         public abstract void Shutdown(GameEventManager eventManager);
         protected virtual void OnCompleteCallback() 
         {
-            OnComplete?.Invoke();
+            OnComplete?.Invoke(this);
         }
 
         public static bool operator ==(GameObjective t1, GameObjective t2)
