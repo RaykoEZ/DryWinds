@@ -40,12 +40,12 @@ namespace Curry.Game
             }
         }
 
-        public override void Move(Vector2 target)
+        public override void Move(Vector2 direction, float unitPerStep = 0.1f)
         {
             if (IsReady)
             {
                 PathHandler.OnPlanned += OnPathPlanned;
-                PathHandler.PlanPath(target);
+                PathHandler.PlanPath(direction);
                 ActionCall = StartCoroutine(OnMove());
             }
         }

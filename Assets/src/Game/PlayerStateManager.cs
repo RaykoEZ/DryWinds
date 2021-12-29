@@ -9,6 +9,7 @@ namespace Curry.Game
         [SerializeField] PlayerHUDManager m_playerUI = default;
         [SerializeField] Player m_player = default;
         [SerializeField] GameEventManager m_gameEventListener = default;
+        
         CharacterContextFactory m_playerContextFactory = default;
 
         // Start is called before the first frame update

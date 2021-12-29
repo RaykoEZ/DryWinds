@@ -62,11 +62,11 @@ namespace Curry.Game
             ActionCall = null;
         }
 
-        public virtual void Move(Vector2 target)
+        public virtual void Move(Vector2 direction, float unitPerStep = 0.1f)
         {
             if (IsReady) 
             {
-                Character.RigidBody.AddForce(target * Character.CurrentStats.Speed);
+                Character.RigidBody.MovePosition(Character.RigidBody.position + (unitPerStep * direction * Character.CurrentStats.Speed));
             }
         }
 
@@ -123,6 +123,7 @@ namespace Curry.Game
         protected IEnumerator RecoverInput(float stunMod)
         {
             yield return new WaitForSeconds(stunMod * Character.CurrentStats.HitRecoveryTime);
+            Character.RigidBody.velocity = Vector2.zero;
             ActionCall = null;
         }
     }

@@ -71,7 +71,8 @@ MonoBehaviour:
     m_windupTime: 0.2
     m_actionValue: 10
     m_knockback: 10
-  m_chargeDuration: 0.01
+  m_chargeDuration: 0.2
+  m_recoilTime: 0.2
 --- !u!95 &8596796697600054897
 Animator:
   serializedVersion: 3

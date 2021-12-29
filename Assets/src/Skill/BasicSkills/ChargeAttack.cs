@@ -9,6 +9,7 @@ namespace Curry.Skill
     public class ChargeAttack : BaseSkill, IHitboxEffect 
     {
         [SerializeField] protected float m_chargeDuration = default;
+        [SerializeField] protected float m_recoilTime = default;
 
         Coroutine m_dashing;
 
@@ -54,11 +55,13 @@ namespace Curry.Skill
             Rigidbody2D rb = m_user.RigidBody;
             while (t < m_chargeDuration)
             {
-                rb.AddForce(dir.normalized * m_user.CurrentStats.Speed, ForceMode2D.Impulse);
+                rb.MovePosition(rb.position + (dir.normalized * (t / m_chargeDuration)));
                 t += Time.deltaTime;
                 yield return null;
             }
-            yield return null;
+            rb.AddForce(dir, ForceMode2D.Impulse);
+            yield return new WaitForSeconds(m_recoilTime);
+            rb.velocity = Vector2.zero;
             OnSkillFinish();
         }
     }
