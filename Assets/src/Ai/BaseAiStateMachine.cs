@@ -10,7 +10,7 @@ namespace Curry.Ai
         [SerializeField] protected float m_defaultFrequency = default;
         [SerializeField] protected float m_averageReactionInterval = default;
         [SerializeField] protected NpcController m_controller = default;
-        [SerializeField] protected AiState m_idle = default;
+        [SerializeField] protected AiState m_defaultAction = default;
         [SerializeField] protected List<AiState> m_otherActions = default;
         protected virtual float ReactionTime
         {
@@ -59,7 +59,7 @@ namespace Curry.Ai
             get
             {
                 List<AiState> states = ValidStates;
-                AiState best = m_idle;
+                AiState best = m_defaultAction;
                 foreach (AiState state in states)
                 {
                     if (state.Priority(WorldStateSnapshot) > best.Priority(WorldStateSnapshot))
@@ -73,7 +73,7 @@ namespace Curry.Ai
 
         protected virtual void Start() 
         {
-            m_current = m_idle;
+            m_current = m_defaultAction;
             ExecuteCurrentAction();
         }
 

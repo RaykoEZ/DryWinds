@@ -50,7 +50,7 @@ namespace Curry.Game
         public override void OnKnockback(Vector2 direction, float knockback)
         {
             base.OnKnockback(direction, knockback);
-            OnHitStun?.Invoke(1f);
+            OnHitStun?.Invoke(0.2f);
         }
 
         public override void OnTakeDamage(float damage)

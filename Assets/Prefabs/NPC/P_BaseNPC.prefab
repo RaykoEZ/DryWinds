@@ -155,7 +155,7 @@ GameObject:
   - component: {fileID: 5230140019612056492}
   - component: {fileID: 3931070445409266728}
   m_Layer: 0
-  m_Name: P_BaseNpc
+  m_Name: P_BaseNPC
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -292,7 +292,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_anim: {fileID: 7055139423586535467}
   m_rigidbody: {fileID: 8221820323924603490}
-  m_hurtBox: {fileID: 8946931605538531584}
   m_relations: 2
   m_statusManager: {fileID: 4175741410429288134}
   m_detector: {fileID: 8898458916651303178}
@@ -410,7 +409,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_npc: {fileID: 3546475977785711451}
-  m_anim: {fileID: 7055139423586535467}
 --- !u!114 &3931070445409266728
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -686,11 +684,10 @@ MonoBehaviour:
   m_defaultFrequency: 0.2
   m_averageReactionInterval: 0.2
   m_controller: {fileID: 5230140019612056492}
-  m_idle:
-    m_action: {fileID: 11400000, guid: 54014485234b0c84bbc07e44fa267cb9, type: 2}
+  m_defaultAction:
+    m_action: {fileID: 11400000, guid: 7d5b06fda42b0204db41f608201baca0, type: 2}
   m_otherActions:
   - m_action: {fileID: 11400000, guid: 470bf20990b7cd749888eda0a1633684, type: 2}
-  - m_action: {fileID: 11400000, guid: 7d5b06fda42b0204db41f608201baca0, type: 2}
   - m_action: {fileID: 11400000, guid: 5e2246434d1c42b40a41bdb774b9abdf, type: 2}
 --- !u!1 &6755770046371517024
 GameObject:
