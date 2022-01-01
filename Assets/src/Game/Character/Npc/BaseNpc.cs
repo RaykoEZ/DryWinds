@@ -10,6 +10,7 @@ namespace Curry.Game
     {
         [SerializeField] protected CharacterDetector m_detector = default;
 
+        AiEmotion m_emotions = new AiEmotion();
         protected CharacterContextFactory m_contextFactory = new CharacterContextFactory();
         protected HashSet<BaseCharacter> m_enemies = new HashSet<BaseCharacter>();
         protected HashSet<BaseCharacter> m_allies = new HashSet<BaseCharacter>();
@@ -17,6 +18,7 @@ namespace Curry.Game
         public event OnCharacterDetected OnDetectCharacter;
         public event OnCharacterDetected OnCharacterExitDetection;
 
+        public virtual AiEmotion Emotions { get { return m_emotions; } } 
         public List<BaseCharacter> Enemies { get { return new List<BaseCharacter>(m_enemies); } }
         public List<BaseCharacter> Allies { get { return new List<BaseCharacter>(m_allies); } }
 
@@ -63,6 +65,11 @@ namespace Curry.Game
                 m_allies.Remove(character);
                 OnCharacterExitDetection?.Invoke(character);
             }
+        }
+
+        public override void OnTakeDamage(float damage)
+        {
+            base.OnTakeDamage(damage);
         }
     }
 }
