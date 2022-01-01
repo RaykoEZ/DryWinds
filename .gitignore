@@ -12,6 +12,7 @@
 *.log
 Assets/TextMesh Pro*
 Assets/Samples/*
+Assets/AstarPathfindingProject/*
 Assets/StreamingAssets/aa/*
 Packages/*
 /[Ll]ibrary/*
