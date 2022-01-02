@@ -10,10 +10,9 @@
 *.csproj
 *.cache
 *.log
-/Assets/TextMesh Pro*
-/Assets/Samples/*
-/Assets/AstarPathfindingProject*
-/Assets/StreamingAssets/aa/*
+Assets/TextMesh Pro*
+Assets/Samples/*
+Assets/StreamingAssets/aa/*
 Packages/*
 /[Ll]ibrary/*
 /[Tt]emp/*
