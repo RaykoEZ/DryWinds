@@ -119,6 +119,7 @@ namespace Curry.Ai
         void UpdateWorldState()
         {
             BaseNpc npc = m_controller.Character;
+            m_worldStateSnapshot.Emotion = npc.Emotion.Current;
             m_worldStateSnapshot.CurrentStats = npc.CurrentStats;
             m_worldStateSnapshot.Enemies = npc.Enemies;
             m_worldStateSnapshot.Allies = npc.Allies;

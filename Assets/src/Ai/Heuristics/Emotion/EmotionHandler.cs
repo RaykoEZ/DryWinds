@@ -9,8 +9,9 @@
         public virtual void Init() 
         {
             m_default = new AiEmotion();
-            m_current = new AiEmotion();
+            m_current = m_default;
         }
+        public abstract void Update(float dt);
         public abstract void OnTakeDamage();
         public abstract void OnAllyDefeated();
         public abstract void OnThreatDetected();
@@ -19,6 +20,10 @@
 
     public class BaseEmotionHandler : EmotionHandler
     {
+        public override void Update(float dt)
+        {
+            
+        }
         public override void OnAllyDefeated()
         {
             m_current += new AiEmotion(0f, 0.5f);
@@ -38,6 +43,7 @@
         {
             m_current -= new AiEmotion(1f, 0.5f);
         }
+
     }
 
 }

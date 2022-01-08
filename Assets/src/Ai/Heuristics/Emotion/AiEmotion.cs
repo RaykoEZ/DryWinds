@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEngine;
 
 namespace Curry.Ai
 {
@@ -24,18 +25,24 @@ namespace Curry.Ai
         }
 
         public static AiEmotion operator -(AiEmotion a) => new AiEmotion(-a.EmnityValue, -a.FearValue);
-        public static AiEmotion operator +(AiEmotion a, AiEmotion b)
-        => new AiEmotion(a.EmnityValue + b.EmnityValue, a.FearValue + b.FearValue);
         public static AiEmotion operator -(AiEmotion a, AiEmotion b) => a + (-b);
+        public static AiEmotion operator +(AiEmotion a, AiEmotion b)
+        => new AiEmotion(
+            Mathf.Clamp(a.EmnityValue + b.EmnityValue,-1f, 1f), 
+            Mathf.Clamp(a.FearValue + b.FearValue, -1f, 1f));
         public static AiEmotion operator *(AiEmotion a, AiEmotion b)
-        => new AiEmotion(a.EmnityValue * b.EmnityValue, a.FearValue * b.FearValue);
+        => new AiEmotion(
+            Mathf.Clamp(a.EmnityValue * b.EmnityValue, -1f, 1f),
+            Mathf.Clamp(a.FearValue * b.FearValue, -1f, 1f));
         public static AiEmotion operator /(AiEmotion a, AiEmotion b)
         {
             if (b.EmnityValue == 0f || b.FearValue == 0f)
             {
                 throw new DivideByZeroException();
             }
-            return new AiEmotion(a.EmnityValue / b.EmnityValue, a.FearValue / b.FearValue);
+            return new AiEmotion(
+                Mathf.Clamp(a.EmnityValue / b.EmnityValue, -1f, 1f),
+                Mathf.Clamp(a.FearValue / b.FearValue, -1f, 1f));
         }
         public override string ToString() => $"Emnity: {EmnityValue}/n Fear: {FearValue}";
     }
