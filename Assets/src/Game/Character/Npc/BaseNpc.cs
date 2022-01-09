@@ -6,6 +6,7 @@ using Curry.Ai;
 
 namespace Curry.Game
 {
+    public delegate void OnNpcEvaluate();
     public class BaseNpc : BaseCharacter
     {
         [SerializeField] protected CharacterDetector m_detector = default;
@@ -17,6 +18,7 @@ namespace Curry.Game
 
         public event OnCharacterDetected OnDetectCharacter;
         public event OnCharacterDetected OnCharacterExitDetection;
+        public event OnNpcEvaluate OnEvaluate;
 
         public virtual EmotionHandler Emotion { get { return m_emotions; } } 
         public List<BaseCharacter> Enemies { get { return new List<BaseCharacter>(m_enemies); } }
@@ -43,13 +45,13 @@ namespace Curry.Game
             {
                 m_enemies.Add(character);
                 m_emotions.OnThreatDetected();
-                OnDetectCharacter?.Invoke(character);
             }
             else
             {
                 m_allies.Add(character);
-                OnDetectCharacter?.Invoke(character);
             }
+            OnDetectCharacter?.Invoke(character);
+            OnEvaluate?.Invoke();
         }
 
         protected virtual void OnLosingTarget(BaseCharacter character)
@@ -65,12 +67,14 @@ namespace Curry.Game
                 m_allies.Remove(character);
                 OnCharacterExitDetection?.Invoke(character);
             }
+            OnEvaluate?.Invoke();
         }
 
         public override void OnTakeDamage(float damage)
         {
             base.OnTakeDamage(damage);
             m_emotions.OnTakeDamage();
+            OnEvaluate?.Invoke();
         }
     }
 }

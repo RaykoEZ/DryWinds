@@ -7,27 +7,10 @@ namespace Curry.Ai
 {
     public class BaseAiStateMachine : MonoBehaviour 
     {
-        [SerializeField] protected float m_defaultFrequency = default;
-        [SerializeField] protected float m_averageReactionInterval = default;
         [SerializeField] protected NpcController m_controller = default;
         [SerializeField] protected AiState m_defaultAction = default;
         [SerializeField] protected List<AiState> m_otherActions = default;
-        protected virtual float ReactionTime
-        {
-            get
-            {
-                return Random.Range(0.7f, 1.3f) * m_averageReactionInterval;
-            }
-        }
 
-        protected virtual bool IsReady
-        {
-            get 
-            {
-                return m_controller.IsReady && !m_current.ActionInProgress;
-            }
-        }
-        float m_evalTimer = 0f; 
         protected AiState m_current;
         AiWorldState m_worldStateSnapshot = new AiWorldState();
         protected virtual AiWorldState WorldStateSnapshot
@@ -73,30 +56,15 @@ namespace Curry.Ai
 
         protected virtual void Start() 
         {
+            m_controller.OnEvaluate += Evaluate;
             m_current = m_defaultAction;
             ExecuteCurrentAction();
         }
 
-        protected virtual void Update() 
-        {
-            m_evalTimer += Time.deltaTime;
-            if (m_evalTimer > m_defaultFrequency && IsReady) 
-            {
-               EvaluateActions();
-               m_evalTimer = 0f;
-            }
-        }
-
         // Determine state changes or additional behaviour
-        protected virtual void EvaluateActions() 
+        public virtual void Evaluate() 
         {
             UpdateWorldState();
-            StartCoroutine(Evaluate());
-        }
-
-        protected virtual IEnumerator Evaluate() 
-        {
-            yield return new WaitForSeconds(ReactionTime);
             TransitionTo(BestState);
         }
 

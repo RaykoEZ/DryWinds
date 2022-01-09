@@ -10,9 +10,8 @@ namespace Curry.Game
     public class NpcController : BaseCharacterController<BaseNpc>
     {
         [SerializeField] protected BaseNpc m_npc = default;
-
         protected IPathHandler m_pathHandler;
-        public event OnCharacterTakeDamage OnTakingDamage;
+        public event OnNpcEvaluate OnEvaluate;
         public override BaseNpc Character { get { return m_npc; } }
         protected virtual IPathHandler PathHandler { get { return m_pathHandler; } }
 
@@ -24,12 +23,12 @@ namespace Curry.Game
         protected override void OnEnable() 
         {
             base.OnEnable();
-            m_npc.OnTakingDamage += OnTakeDamage;
+            m_npc.OnEvaluate += Evaluate;
         }
         protected override void OnDisable()
         {
             base.OnDisable();
-            m_npc.OnTakingDamage -= OnTakeDamage;
+            m_npc.OnEvaluate -= Evaluate;
         }
 
         public override void OnBasicSkill(BaseCharacter target)
@@ -68,10 +67,11 @@ namespace Curry.Game
             }
         }
 
-        protected virtual void OnTakeDamage(float damage)
+        protected virtual void Evaluate()
         {
-            OnTakingDamage?.Invoke(damage);
+            OnEvaluate?.Invoke();
         }
+
         public virtual void EquipBasicSkill(ICharacterAction<IActionInput> skill)
         {
             if (m_basicSkill.CurrentSkill != null)
