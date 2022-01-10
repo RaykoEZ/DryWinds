@@ -10,6 +10,12 @@ namespace Curry.Ai
     [CreateAssetMenu(menuName = "Curry/AiState/Chase", order = 0)]
     public class AiChase : AiAction<IActionInput>
     {
+        public override float Priority(AiWorldState args)
+        {
+            float mod = args.Emotion.Emnity - args.Emotion.Fear;
+            return mod * m_basePriority;
+        }
+
         public override bool PreCondition(AiWorldState args)
         {
             return args.Enemies.Count > 0;
