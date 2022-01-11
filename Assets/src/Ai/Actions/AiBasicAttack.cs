@@ -12,7 +12,7 @@ namespace Curry.Ai
     {
         public override float Priority(AiWorldState args)
         {
-            float mod = args.Emotion.Emnity - (0.5f * args.Emotion.Fear);
+            float mod = args.Emotion.Hatred - (0.5f * args.Emotion.Fear);
             return mod * m_basePriority;
         }
 

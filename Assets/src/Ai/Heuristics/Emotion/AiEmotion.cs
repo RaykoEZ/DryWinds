@@ -3,47 +3,71 @@ using UnityEngine;
 
 namespace Curry.Ai
 {
+    public enum AiEmotionState
+    {
+        Normal,
+        Hatred,
+        Fear,
+    }
+
     [Serializable]
     public class AiEmotion
     {
-        public virtual float Emnity { get; protected set; }
+        public virtual float Hatred { get; protected set; }
         public virtual float Fear { get; protected set; }
-
-        public virtual bool IsFearful { get { return Fear > 0f; } }
-        public virtual bool IsHostile { get { return Emnity > 0f; } }
+        public virtual AiEmotionState EmotionState 
+        { 
+            get
+            {
+                float diff = Hatred - Fear;
+                float magnitude = Mathf.Abs(diff);
+                if (diff < 0f && magnitude > 0.75f) 
+                {
+                    return AiEmotionState.Fear;
+                }
+                else if(diff > 0f && magnitude > 0.75f)
+                {
+                    return AiEmotionState.Hatred;
+                }
+                else 
+                {
+                    return AiEmotionState.Normal;
+                }
+            } 
+        }
 
         public AiEmotion()
         {
-            Emnity = 0f;
+            Hatred = 0f;
             Fear = 0f;
         }
 
-        public AiEmotion(float emnity, float fear)
+        public AiEmotion(float hatred, float fear)
         {
-            Emnity = emnity;
+            Hatred = hatred;
             Fear = fear;
         }
 
-        public static AiEmotion operator -(AiEmotion a) => new AiEmotion(-a.Emnity, -a.Fear);
+        public static AiEmotion operator -(AiEmotion a) => new AiEmotion(-a.Hatred, -a.Fear);
         public static AiEmotion operator -(AiEmotion a, AiEmotion b) => a + (-b);
         public static AiEmotion operator +(AiEmotion a, AiEmotion b)
         => new AiEmotion(
-            Mathf.Clamp(a.Emnity + b.Emnity,-1f, 1f), 
+            Mathf.Clamp(a.Hatred + b.Hatred,-1f, 1f), 
             Mathf.Clamp(a.Fear + b.Fear, -1f, 1f));
         public static AiEmotion operator *(AiEmotion a, AiEmotion b)
         => new AiEmotion(
-            Mathf.Clamp(a.Emnity * b.Emnity, -1f, 1f),
+            Mathf.Clamp(a.Hatred * b.Hatred, -1f, 1f),
             Mathf.Clamp(a.Fear * b.Fear, -1f, 1f));
         public static AiEmotion operator /(AiEmotion a, AiEmotion b)
         {
-            if (b.Emnity == 0f || b.Fear == 0f)
+            if (b.Hatred == 0f || b.Fear == 0f)
             {
                 throw new DivideByZeroException();
             }
             return new AiEmotion(
-                Mathf.Clamp(a.Emnity / b.Emnity, -1f, 1f),
+                Mathf.Clamp(a.Hatred / b.Hatred, -1f, 1f),
                 Mathf.Clamp(a.Fear / b.Fear, -1f, 1f));
         }
-        public override string ToString() => $"Emnity: {Emnity}/n Fear: {Fear}";
+        public override string ToString() => $"Emnity: {Hatred}/n Fear: {Fear}";
     }
 }
