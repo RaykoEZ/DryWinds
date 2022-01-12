@@ -10,12 +10,11 @@ namespace Curry.Game
     public class BaseNpc : BaseCharacter
     {
         [SerializeField] protected CharacterDetector m_detector = default;
-
         BaseEmotionHandler m_emotions = new BaseEmotionHandler();
+        float m_timer = 0f;
         protected CharacterContextFactory m_contextFactory = new CharacterContextFactory();
         protected HashSet<BaseCharacter> m_enemies = new HashSet<BaseCharacter>();
         protected HashSet<BaseCharacter> m_allies = new HashSet<BaseCharacter>();
-
         public event OnCharacterDetected OnDetectCharacter;
         public event OnCharacterDetected OnCharacterExitDetection;
         public event OnNpcEvaluate OnEvaluate;
@@ -23,6 +22,16 @@ namespace Curry.Game
         public virtual EmotionHandler Emotion { get { return m_emotions; } } 
         public List<BaseCharacter> Enemies { get { return new List<BaseCharacter>(m_enemies); } }
         public List<BaseCharacter> Allies { get { return new List<BaseCharacter>(m_allies); } }
+
+        protected virtual void Update() 
+        {
+            m_timer += Time.deltaTime;
+            if(m_timer > 1f) 
+            {
+                m_timer = 0f;
+                m_emotions.Update();
+            }
+        }
 
         public override void Prepare()
         {

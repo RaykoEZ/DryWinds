@@ -23,30 +23,24 @@ namespace Curry.Ai
             switch (Current.EmotionState) 
             {
                 case AiEmotionState.Normal:
-                    {
-                        if (m_current.Hatred > 0.2f || m_current.Hatred < -0.2f) 
-                        {
-                            float newHate = Mathf.Lerp(m_current.Hatred, 0f, Time.deltaTime);
-                            m_current = new AiEmotion(newHate, m_current.Fear);
-                        }
-
-                        if (m_current.Fear > 0.2f || m_current.Fear < -0.2f)
-                        {
-                            float newFear = Mathf.Lerp(m_current.Fear, 0f, Time.deltaTime);
-                            m_current = new AiEmotion(m_current.Hatred, newFear);
-                        }
-                        break;
-                    }
+                {
+                    float newHate = Mathf.Lerp(m_current.Hatred, 0f, 0.05f);
+                    float newFear = Mathf.Lerp(m_current.Fear, 0f, 0.05f);
+                    m_current = new AiEmotion(newHate, newFear);
+                    break;
+                }
                 case AiEmotionState.Hatred:
                 {
-                        float newHate = Mathf.Max(0f, m_current.Hatred - Time.deltaTime);
-                        m_current = new AiEmotion(newHate, m_current.Fear);
-                        break;
+                    float newHate = Mathf.Max(0f, m_current.Hatred - 0.05f);
+                    float newFear = Mathf.Lerp(m_current.Fear, 0f, 0.01f);
+                    m_current = new AiEmotion(newHate, newFear);
+                    break;
                 }
                 case AiEmotionState.Fear:
                 {
-                        float newFear = Mathf.Max(0f, m_current.Fear - Time.deltaTime);
-                        m_current = new AiEmotion(m_current.Hatred, newFear);
+                    float newHate = Mathf.Lerp(m_current.Hatred, 0f, 0.01f);
+                    float newFear = Mathf.Max(0f, m_current.Fear - 0.05f);
+                    m_current = new AiEmotion(newHate, newFear);
                     break; 
                 }
             }    
@@ -74,7 +68,6 @@ namespace Curry.Ai
         {
             m_current -= new AiEmotion(1f, 0.5f);
         }
-
     }
 
 }
