@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using UnityEngine;
 using Curry.Game;
-using Curry.Skill;
 
 namespace Curry.Ai
 {

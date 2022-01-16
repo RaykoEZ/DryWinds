@@ -19,10 +19,10 @@ namespace Curry.Ai
 
         public override ICharacterAction<IActionInput> Execute(NpcController controller, AiWorldState state)
         {
+            Debug.Log("Wander");
             Vector2 randDir = GetDirection();
             Vector2 randPos = GetDestination(
                 controller.Character.RigidBody.position, randDir);
-
             controller.Move(randPos);
             return null;
         }

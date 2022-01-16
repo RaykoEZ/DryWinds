@@ -54,7 +54,7 @@ namespace Curry.Ai
             }
         }
 
-        protected virtual void Start() 
+        protected virtual void Awake() 
         {
             m_controller.OnEvaluate += Evaluate;
             m_current = m_defaultAction;

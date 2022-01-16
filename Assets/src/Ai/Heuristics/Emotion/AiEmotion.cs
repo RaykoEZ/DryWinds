@@ -13,19 +13,27 @@ namespace Curry.Ai
     [Serializable]
     public class AiEmotion
     {
-        public virtual float Hatred { get; protected set; }
-        public virtual float Fear { get; protected set; }
+        float m_hate = 0f;
+        float m_fear = 0f;
+        public virtual float Hatred { 
+            get { return m_hate; } 
+            set { m_hate = Mathf.Clamp(value, 0f, 1f); }
+        }
+        public virtual float Fear { 
+            get { return m_fear; }
+            set { m_fear = Mathf.Clamp(value, 0f, 1f); }
+        }
         public virtual AiEmotionState EmotionState 
         { 
             get
             {
                 float diff = Hatred - Fear;
                 float magnitude = Mathf.Abs(diff);
-                if (diff < 0f && magnitude > 0.75f) 
+                if (diff < 0f && magnitude > 0.2f) 
                 {
                     return AiEmotionState.Fear;
                 }
-                else if(diff > 0f && magnitude > 0.75f)
+                else if(diff > 0f && magnitude > 0.2f)
                 {
                     return AiEmotionState.Hatred;
                 }
@@ -65,9 +73,9 @@ namespace Curry.Ai
                 throw new DivideByZeroException();
             }
             return new AiEmotion(
-                Mathf.Clamp(a.Hatred / b.Hatred, -1f, 1f),
-                Mathf.Clamp(a.Fear / b.Fear, -1f, 1f));
+                Mathf.Clamp(a.Hatred / b.Hatred, 0f, 1f),
+                Mathf.Clamp(a.Fear / b.Fear, 0f, 1f));
         }
-        public override string ToString() => $"Emnity: {Hatred}/n Fear: {Fear}";
+        public override string ToString() => $"State: {EmotionState} \n Emnity: {Hatred},  Fear: {Fear}";
     }
 }

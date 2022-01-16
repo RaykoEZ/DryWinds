@@ -9,8 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: acd288b551cde1c4295f96c5d5fc0598, type: 3}
-  m_Name: H_Wander
+  m_Script: {fileID: 11500000, guid: dc787d9d6ad5763439a6d32bde0e9ecc, type: 3}
+  m_Name: H_Flee
   m_EditorClassIdentifier: 
-  m_basePriority: 1
-  m_averageWanderDistance: 3
+  m_basePriority: 0.5

@@ -29,8 +29,18 @@ namespace Curry.Game
             if(m_timer > 1f) 
             {
                 m_timer = 0f;
-                m_emotions.Update();
+                m_emotions.Update(out bool emotionChanged);
+                //Debug.Log($"{Emotion.Current}");
+                if (emotionChanged) 
+                {
+                    OnEvaluate?.Invoke();
+                }
             }
+        }
+        public override void Init(CharacterContextFactory contextFactory)
+        {
+            base.Init(contextFactory);
+            m_emotions.Init();
         }
 
         public override void Prepare()

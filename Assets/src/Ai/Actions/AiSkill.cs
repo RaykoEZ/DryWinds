@@ -14,6 +14,7 @@ namespace Curry.Ai
 
         public override ICharacterAction<IActionInput> Execute(NpcController controller, AiWorldState state)
         {
+            Debug.Log("Skill");
             BaseCharacter target = ChooseTarget(state.Enemies);
             ICharacterAction<IActionInput> skill = ChooseAction(state.BasicSkills, target);
             ActivateSkill(controller, skill, target);

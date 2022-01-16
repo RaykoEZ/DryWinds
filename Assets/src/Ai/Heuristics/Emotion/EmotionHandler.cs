@@ -18,32 +18,31 @@ namespace Curry.Ai
         public abstract void OnThreatDetected();
         public abstract void OnHelped();
 
-        public virtual void Update() 
+        public virtual void Update(out bool emotionChanged) 
         {
+            AiEmotionState old = m_current.EmotionState;
             switch (Current.EmotionState) 
             {
                 case AiEmotionState.Normal:
                 {
-                    float newHate = Mathf.Lerp(m_current.Hatred, 0f, 0.05f);
-                    float newFear = Mathf.Lerp(m_current.Fear, 0f, 0.05f);
-                    m_current = new AiEmotion(newHate, newFear);
+                    m_current.Hatred -= 0.01f;
+                    m_current.Fear -= 0.01f;
                     break;
                 }
                 case AiEmotionState.Hatred:
                 {
-                    float newHate = Mathf.Max(0f, m_current.Hatred - 0.05f);
-                    float newFear = Mathf.Lerp(m_current.Fear, 0f, 0.01f);
-                    m_current = new AiEmotion(newHate, newFear);
+                    m_current.Hatred -= 0.01f;
+                    m_current.Fear -= 0.02f;
                     break;
                 }
                 case AiEmotionState.Fear:
                 {
-                    float newHate = Mathf.Lerp(m_current.Hatred, 0f, 0.01f);
-                    float newFear = Mathf.Max(0f, m_current.Fear - 0.05f);
-                    m_current = new AiEmotion(newHate, newFear);
+                    m_current.Hatred -= 0.02f;
+                    m_current.Fear -= 0.01f;
                     break; 
                 }
-            }    
+            }
+            emotionChanged = old != m_current.EmotionState;
         }
     }
 
@@ -51,17 +50,17 @@ namespace Curry.Ai
     {
         public override void OnAllyDefeated()
         {
-            m_current += new AiEmotion(0f, 0.5f);
+            m_current += new AiEmotion(0f, 0.3f);
         }
 
         public override void OnTakeDamage()
         {
-            m_current += new AiEmotion(0.5f, 1f);
+            m_current += new AiEmotion(0.2f, 0.1f);
         }
 
         public override void OnThreatDetected() 
         {
-            m_current += new AiEmotion(0f, 0.5f);
+            m_current += new AiEmotion(0f, 0.1f);
         }
 
         public override void OnHelped()

@@ -18,11 +18,12 @@ namespace Curry.Ai
 
         public override bool PreCondition(AiWorldState args)
         {
-            return args.Enemies.Count > 0;
+            return args.Enemies.Count > 0 && args.Emotion.EmotionState != AiEmotionState.Fear;
         }
 
         public override ICharacterAction<IActionInput> Execute(NpcController controller, AiWorldState state)
         {
+            Debug.Log("Chase");
             Transform target = ChooseTarget(state.Enemies).transform;
             controller.Move(target);
             return null;

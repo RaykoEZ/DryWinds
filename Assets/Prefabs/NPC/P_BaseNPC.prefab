@@ -372,11 +372,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6eb1402c17e84a9282a7f0f62eb584f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  version: 2
+  version: 5
   radius: 1
   height: 1
-  repathRate: 1
-  canSearch: 0
   canMove: 0
   maxSpeed: 2
   gravity: {x: 0, y: 0, z: 0}
@@ -384,8 +382,16 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   centerOffsetCompatibility: NaN
+  repathRateCompatibility: 1
+  canSearchCompability: 0
   orientation: 1
   enableRotation: 0
+  autoRepath:
+    mode: 0
+    interval: 1
+    sensitivity: 10
+    maximumInterval: 2
+    visualizeSensitivity: 0
   targetCompatibility: {fileID: 0}
   maxAcceleration: 10
   rotationSpeed: 360
@@ -681,14 +687,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 910daf26a6fb13a4e8b046cd19884a1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_defaultFrequency: 0.2
-  m_averageReactionInterval: 0.2
   m_controller: {fileID: 5230140019612056492}
   m_defaultAction:
     m_action: {fileID: 11400000, guid: 7d5b06fda42b0204db41f608201baca0, type: 2}
   m_otherActions:
   - m_action: {fileID: 11400000, guid: 470bf20990b7cd749888eda0a1633684, type: 2}
   - m_action: {fileID: 11400000, guid: 5e2246434d1c42b40a41bdb774b9abdf, type: 2}
+  - m_action: {fileID: 11400000, guid: 0ee466f76812c254a8cc073aa61ab72a, type: 2}
 --- !u!1 &6755770046371517024
 GameObject:
   m_ObjectHideFlags: 0
