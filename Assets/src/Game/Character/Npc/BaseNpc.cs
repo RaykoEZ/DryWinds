@@ -31,10 +31,7 @@ namespace Curry.Game
                 m_timer = 0f;
                 m_emotions.Update(out bool emotionChanged);
                 //Debug.Log($"{Emotion.Current}");
-                if (emotionChanged) 
-                {
-                    OnEvaluate?.Invoke();
-                }
+                OnEvaluate?.Invoke();
             }
         }
         public override void Init(CharacterContextFactory contextFactory)

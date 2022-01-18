@@ -58,14 +58,22 @@ namespace Curry.Ai
         {
             m_controller.OnEvaluate += Evaluate;
             m_current = m_defaultAction;
-            ExecuteCurrentAction();
+            ExecuteCurrentState();
         }
 
         // Determine state changes or additional behaviour
         public virtual void Evaluate() 
         {
             UpdateWorldState();
-            TransitionTo(BestState);
+            AiState newState = BestState;
+            if (newState != m_current) 
+            {
+                TransitionTo(newState);
+            }
+            else 
+            {
+                ExecuteCurrentState();
+            }
         }
 
         protected virtual void TransitionTo(AiState next)
@@ -76,10 +84,10 @@ namespace Curry.Ai
         protected virtual void OnTransitionFinished(AiState next)
         {
             m_current = next;
-            ExecuteCurrentAction();
+            ExecuteCurrentState();
         }
 
-        void ExecuteCurrentAction() 
+        void ExecuteCurrentState() 
         {
             m_current.Execute(m_controller, WorldStateSnapshot);
         }

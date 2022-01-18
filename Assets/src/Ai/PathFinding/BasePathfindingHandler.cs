@@ -23,12 +23,9 @@ namespace Curry.Ai
             get { return GetComponent<Seeker>(); }
         }
 
-        public event OnPathPlanned OnPlanned;
-
         protected virtual void OnEnable() 
         {
             PathingAi.canMove = false;
-            PathingAi.canSearch = false;
             Seeker.pathCallback += PlannerFinished;
         }
 
@@ -39,50 +36,47 @@ namespace Curry.Ai
 
         protected virtual void PlannerFinished(Path path) 
         {
-            OnPlanned?.Invoke(!path.error);
+            Debug.Log($"Log: {path.errorLog}");
+            if (!path.error) 
+            {
+                FollowPlannedPath();
+            }
         }
         protected virtual void DestinationReached()
         {
             PathingAi.canMove = false;
-            PathingAi.canSearch = false;
         }
 
         public virtual void PlanPath(Transform target)
         {
-            PathingAi.canSearch = true;
-            StartCoroutine(OnFollowTarget(target));
+            PathingAi.destination = target.position;
+            PathingAi.SearchPath();
         }
 
         public virtual void PlanPath(Vector3 target)
         {
-            PathingAi.canSearch = true;
             PathingAi.destination = target;
+            PathingAi.SearchPath();
         }
 
-        public virtual void FollowPlannedPath()
+        protected virtual void FollowPlannedPath()
         {
-            if(m_follow != null) 
+            if (m_follow != null) 
             {
                 StopCoroutine(m_follow);
             }
-            PathingAi.canMove = true;
             m_follow = StartCoroutine(OnFollowPath());
         }
 
         protected virtual IEnumerator OnFollowPath() 
         {
-            yield return new WaitUntil(()=> { return PathingAi.reachedDestination; });
+            PathingAi.canMove = true;
+            yield return new WaitUntil(() => 
+            { 
+                return PathingAi.reachedDestination; 
+            });
             DestinationReached();
             m_follow = null;
-        }
-
-        protected virtual IEnumerator OnFollowTarget(Transform target)
-        {
-            while (!PathingAi.reachedDestination) 
-            {
-                PathingAi.destination = target.position;
-                yield return new WaitForSeconds(0.5f);
-            }
         }
     }
 }

@@ -24,7 +24,10 @@ namespace Curry.Ai
 
         public virtual void Execute(NpcController controller, AiWorldState state) 
         {
-            ExecutingAction = m_action.Execute(controller, state);
+            if (!ActionInProgress) 
+            {
+                ExecutingAction = m_action.Execute(controller, state);
+            }
         }
 
         public virtual IEnumerator OnTransition(

@@ -39,31 +39,18 @@ namespace Curry.Game
             }
         }
 
-        public override void Move(Vector2 direction, float unitPerStep = 0.1f)
+        public override void Move(Vector2 target, float unitPerStep = 0.1f)
         {
             if (IsReady)
             {
-                PathHandler.OnPlanned += OnPathPlanned;
-                PathHandler.PlanPath(direction);
-                ActionCall = StartCoroutine(OnMove());
+                ActionCall = StartCoroutine(OnMove(target));
             }
         }
         public virtual void Move(Transform target)
         {
             if (IsReady)
             {
-                PathHandler.OnPlanned += OnPathPlanned;
-                PathHandler.PlanPath(target);
-                ActionCall = StartCoroutine(OnMove());
-            }
-        }
-
-        protected virtual void OnPathPlanned(bool pathPossible) 
-        {
-            if (pathPossible) 
-            {
-                PathHandler.OnPlanned -= OnPathPlanned;
-                PathHandler.FollowPlannedPath();
+                ActionCall = StartCoroutine(OnMove(target));
             }
         }
 
@@ -90,9 +77,18 @@ namespace Curry.Game
             m_basicSkill.ActivateSkill(target.transform.position);
         }
 
-        protected virtual IEnumerator OnMove() 
+        protected virtual IEnumerator OnMove(Vector2 target) 
         {
+            PathHandler.PlanPath(target);
             yield return new WaitUntil(() => { return PathHandler.TargetReached; });
+            Debug.Log("Path reached");
+            ActionCall = null;
+        }
+        protected virtual IEnumerator OnMove(Transform target)
+        {
+            PathHandler.PlanPath(target);
+            yield return new WaitUntil(() => { return PathHandler.TargetReached; });
+            Debug.Log("Path reached");
             ActionCall = null;
         }
 
