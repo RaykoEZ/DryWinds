@@ -6,18 +6,18 @@ using Curry.Ai;
 
 namespace Curry.Game
 {
-    [RequireComponent(typeof(IPathHandler))]
+    [RequireComponent(typeof(IPathAi))]
     public class NpcController : BaseCharacterController<BaseNpc>
     {
         [SerializeField] protected BaseNpc m_npc = default;
-        protected IPathHandler m_pathHandler;
+        protected IPathAi m_pathHandler;
         public event OnNpcEvaluate OnEvaluate;
         public override BaseNpc Character { get { return m_npc; } }
-        protected virtual IPathHandler PathHandler { get { return m_pathHandler; } }
+        protected virtual IPathAi PathHandler { get { return m_pathHandler; } }
 
         protected void Awake()
         {
-            m_pathHandler = GetComponent<IPathHandler>();
+            m_pathHandler = GetComponent<IPathAi>();
         }
 
         protected override void OnEnable() 

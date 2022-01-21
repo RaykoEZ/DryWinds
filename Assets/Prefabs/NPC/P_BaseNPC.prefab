@@ -151,9 +151,8 @@ GameObject:
   - component: {fileID: 8946931605538531584}
   - component: {fileID: 8221820323924603490}
   - component: {fileID: 5024886862165011002}
-  - component: {fileID: 7924517456756840797}
   - component: {fileID: 5230140019612056492}
-  - component: {fileID: 3931070445409266728}
+  - component: {fileID: 4594922257846341997}
   m_Layer: 0
   m_Name: P_BaseNPC
   m_TagString: Untagged
@@ -360,48 +359,6 @@ MonoBehaviour:
   tagPenalties: 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
   graphMask:
     value: -1
---- !u!114 &7924517456756840797
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2504028210536737802}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f6eb1402c17e84a9282a7f0f62eb584f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  version: 5
-  radius: 1
-  height: 1
-  canMove: 0
-  maxSpeed: 2
-  gravity: {x: 0, y: 0, z: 0}
-  groundMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  centerOffsetCompatibility: NaN
-  repathRateCompatibility: 1
-  canSearchCompability: 0
-  orientation: 1
-  enableRotation: 0
-  autoRepath:
-    mode: 0
-    interval: 1
-    sensitivity: 10
-    maximumInterval: 2
-    visualizeSensitivity: 0
-  targetCompatibility: {fileID: 0}
-  maxAcceleration: 10
-  rotationSpeed: 360
-  slowdownDistance: 1
-  pickNextWaypointDist: 1
-  endReachedDistance: 1
-  alwaysDrawGizmos: 0
-  slowWhenNotFacingTarget: 1
-  whenCloseToDestination: 0
-  constrainInsideGraph: 0
 --- !u!114 &5230140019612056492
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -415,7 +372,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_npc: {fileID: 3546475977785711451}
---- !u!114 &3931070445409266728
+--- !u!114 &4594922257846341997
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -424,9 +381,39 @@ MonoBehaviour:
   m_GameObject: {fileID: 2504028210536737802}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 740561d4b367fa54a82fbf5fec8a2415, type: 3}
+  m_Script: {fileID: 11500000, guid: 3461f69fd0a465348bc8f3c35b1e0faf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  version: 5
+  radius: 1
+  height: 0.01
+  canMove: 0
+  maxSpeed: 3
+  gravity: {x: NaN, y: NaN, z: NaN}
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  centerOffsetCompatibility: NaN
+  repathRateCompatibility: NaN
+  canSearchCompability: 0
+  orientation: 1
+  enableRotation: 0
+  autoRepath:
+    mode: 0
+    interval: 0.5
+    sensitivity: 5
+    maximumInterval: 2
+    visualizeSensitivity: 1
+  targetCompatibility: {fileID: 0}
+  maxAcceleration: -2.5
+  rotationSpeed: 360
+  slowdownDistance: 2
+  pickNextWaypointDist: 4
+  endReachedDistance: 1
+  alwaysDrawGizmos: 0
+  slowWhenNotFacingTarget: 1
+  whenCloseToDestination: 0
+  constrainInsideGraph: 0
 --- !u!1 &3511659773738548112
 GameObject:
   m_ObjectHideFlags: 0
