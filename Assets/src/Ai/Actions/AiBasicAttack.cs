@@ -5,7 +5,7 @@ using Curry.Game;
 namespace Curry.Ai
 {
     [Serializable]
-    [CreateAssetMenu(menuName = "Curry/AiState/BasicAttack", order = 0)]
+    [AddComponentMenu("Curry/Ai Action/Attack")]
     public class AiBasicAttack : AiSkill
     {
         public override float Priority(AiWorldState args)
@@ -17,7 +17,7 @@ namespace Curry.Ai
         public override bool PreCondition(AiWorldState args)
         {
             bool baseCheck = base.PreCondition(args);
-            if (!baseCheck) 
+            if (!baseCheck)
             {
                 return baseCheck;
             }

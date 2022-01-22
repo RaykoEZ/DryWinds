@@ -5,9 +5,15 @@ using Curry.Game;
 namespace Curry.Ai
 {
     [Serializable]
-    [CreateAssetMenu(menuName = "Curry/AiState/Flee", order = 0)]
+    [AddComponentMenu("Curry/Ai Action/Flee")]
     public class AiFlee : AiAction<IActionInput>
     {
+        public override bool ActionInProgress 
+        { 
+            get => throw new NotImplementedException(); 
+            protected set => throw new NotImplementedException(); 
+        }
+
         public override bool PreCondition(AiWorldState args)
         {
             return args.Enemies.Count > 0 && args.Emotion.EmotionState == AiEmotionState.Fear;
@@ -19,10 +25,9 @@ namespace Curry.Ai
             return mod * m_basePriority;
         }
 
-        public override ICharacterAction<IActionInput> Execute(NpcController controller, AiWorldState state)
+        public override void Execute(AiActionInput param)
         {
             Debug.Log("Fleeing!!!");
-            return null;
         }
     }
 }

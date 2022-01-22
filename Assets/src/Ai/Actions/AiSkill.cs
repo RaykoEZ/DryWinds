@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using Curry.Game;
 using Curry.Skill;
@@ -7,18 +8,22 @@ namespace Curry.Ai
 {
     public abstract class AiSkill : AiAction<IActionInput>
     {
+        public override bool ActionInProgress
+        {
+            get => throw new NotImplementedException();
+            protected set => throw new NotImplementedException();
+        }
         public override bool PreCondition(AiWorldState args)
         {
             return args.Enemies.Count > 0 && args.BasicSkills.Count > 0;
         }
 
-        public override ICharacterAction<IActionInput> Execute(NpcController controller, AiWorldState state)
+        public override void Execute(AiActionInput param)
         {
             Debug.Log("Skill");
-            BaseCharacter target = ChooseTarget(state.Enemies);
-            ICharacterAction<IActionInput> skill = ChooseAction(state.BasicSkills, target);
-            ActivateSkill(controller, skill, target);
-            return skill;
+            BaseCharacter target = ChooseTarget(param.WorldState.Enemies);
+            ICharacterAction<IActionInput> skill = ChooseAction(param.WorldState.BasicSkills, target);
+            ActivateSkill(param.Controller, skill, target);
         }
 
         protected virtual void ActivateSkill(NpcController controller, ICharacterAction<IActionInput> skill, BaseCharacter target) 

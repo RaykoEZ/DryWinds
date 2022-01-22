@@ -6,12 +6,25 @@ using Curry.Game;
 
 namespace Curry.Ai
 {
+    public class AiActionInput : IActionInput
+    {
+        public NpcController Controller { get; protected set; }
+        public AiWorldState WorldState { get; protected set; }
+        public Dictionary<string, object> Payload { get; protected set; }
+        public AiActionInput(NpcController controller, AiWorldState state, Dictionary<string, object> payload = null)
+        {
+            Controller = controller;
+            WorldState = state;
+            Payload = payload;
+        }
+    }
+
     [Serializable]
     public class AiState
     {
-        [SerializeReference] AiAction<IActionInput> m_action = default;
-        protected virtual ICharacterAction<IActionInput> ExecutingAction { get; set; }
-        public virtual bool ActionInProgress { get { return ExecutingAction != null && ExecutingAction.ActionInProgress; } }
+        [SerializeField] AiAction<IActionInput> m_action = default;
+        public virtual bool ActionInProgress { get { return m_action != null && m_action.ActionInProgress; } }
+        
         public virtual bool PreCondition(AiWorldState args)
         {
             return m_action.PreCondition(args);
@@ -22,11 +35,12 @@ namespace Curry.Ai
             return m_action.Priority(args);
         }
 
-        public virtual void Execute(NpcController controller, AiWorldState state) 
+        public virtual void ResolveState(NpcController controller, AiWorldState state) 
         {
             if (!ActionInProgress) 
             {
-                ExecutingAction = m_action.Execute(controller, state);
+                AiActionInput input = new AiActionInput(controller, state);
+                m_action.Execute(input);
             }
         }
 

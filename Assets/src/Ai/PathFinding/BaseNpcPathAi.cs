@@ -9,7 +9,6 @@ namespace Curry.Ai
     [AddComponentMenu("Curry/Pathfinding/AIPath (2D)")]
     public class BaseNpcPathAi : AIPath, IAstarAI, IPathAi
     {
-
         protected override void OnEnable()
         {
             canMove = false;

@@ -7,9 +7,15 @@ using Curry.Skill;
 namespace Curry.Ai
 {
     [Serializable]
-    [CreateAssetMenu(menuName = "Curry/AiState/Chase", order = 0)]
+    [AddComponentMenu("Curry/Ai Action/Chase")]
     public class AiChase : AiAction<IActionInput>
     {
+        public override bool ActionInProgress 
+        { 
+            get => throw new NotImplementedException(); 
+            protected set => throw new NotImplementedException(); 
+        }
+
         public override float Priority(AiWorldState args)
         {
             float mod = args.Emotion.Hatred - args.Emotion.Fear;
@@ -21,12 +27,11 @@ namespace Curry.Ai
             return args.Enemies.Count > 0 && args.Emotion.EmotionState != AiEmotionState.Fear;
         }
 
-        public override ICharacterAction<IActionInput> Execute(NpcController controller, AiWorldState state)
+        public override void Execute(AiActionInput param)
         {
             Debug.Log("Chase");
-            Transform target = ChooseTarget(state.Enemies).transform;
-            controller.Move(target);
-            return null;
+            Transform target = ChooseTarget(param.WorldState.Enemies).transform;
+            param.Controller.Move(target);
         }
     }
 }

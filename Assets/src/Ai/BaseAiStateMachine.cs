@@ -8,8 +8,8 @@ namespace Curry.Ai
     public class BaseAiStateMachine : MonoBehaviour 
     {
         [SerializeField] protected NpcController m_controller = default;
-        [SerializeField] protected AiState m_defaultAction = default;
-        [SerializeField] protected List<AiState> m_otherActions = default;
+        [SerializeField] protected AiState m_defaultState = default;
+        [SerializeField] protected List<AiState> m_otherStates = default;
 
         protected AiState m_current;
         AiWorldState m_worldStateSnapshot = new AiWorldState();
@@ -26,7 +26,7 @@ namespace Curry.Ai
             get
             {
                 List<AiState> validActions = new List<AiState>();
-                foreach (AiState state in m_otherActions)
+                foreach (AiState state in m_otherStates)
                 {
                     if (state.PreCondition(WorldStateSnapshot))
                     {
@@ -42,7 +42,7 @@ namespace Curry.Ai
             get
             {
                 List<AiState> states = ValidStates;
-                AiState best = m_defaultAction;
+                AiState best = m_defaultState;
                 foreach (AiState state in states)
                 {
                     if (state.Priority(WorldStateSnapshot) > best.Priority(WorldStateSnapshot))
@@ -57,8 +57,8 @@ namespace Curry.Ai
         protected virtual void Awake() 
         {
             m_controller.OnEvaluate += Evaluate;
-            m_current = m_defaultAction;
-            ExecuteCurrentState();
+            m_current = m_defaultState;
+            ResolveCurrentState();
         }
 
         // Determine state changes or additional behaviour
@@ -72,7 +72,7 @@ namespace Curry.Ai
             }
             else 
             {
-                ExecuteCurrentState();
+                ResolveCurrentState();
             }
         }
 
@@ -84,12 +84,12 @@ namespace Curry.Ai
         protected virtual void OnTransitionFinished(AiState next)
         {
             m_current = next;
-            ExecuteCurrentState();
+            ResolveCurrentState();
         }
 
-        void ExecuteCurrentState() 
+        void ResolveCurrentState() 
         {
-            m_current.Execute(m_controller, WorldStateSnapshot);
+            m_current.ResolveState(m_controller, WorldStateSnapshot);
         }
 
         void UpdateWorldState()
