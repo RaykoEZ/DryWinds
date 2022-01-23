@@ -15,7 +15,7 @@ namespace Curry.Skill
         protected BaseTracer m_currentTracer;
         public virtual float CooldownTime { get { return m_skillProperty.CooldownTime; } }
         public GameObject TracerRef { get; protected set; }
-
+        protected bool m_drawInProgress = false;
         public override bool IsUsable
         {
             get
@@ -40,20 +40,19 @@ namespace Curry.Skill
             if(!IsUsable) 
             {
                 Interrupt();
-                OnSkillFinish();
                 return; 
             }
             if (param is VectorInput posParam) 
             {
                 // start a new stroke if we hold LMB (already drawing) and is moving
-                if (!ActionInProgress)
+                if (!m_drawInProgress)
                 {
                     EndTracer();
                     m_previousDrawPos = posParam.Target;
                     // make new stroke
                     m_currentTracer = m_instanceManager.GetInstanceFromAsset(TracerRef) as BaseTracer;
                     m_currentTracer.OnActivate += OnSkillEffectActivate;
-                    ActionInProgress = true;                   
+                    m_drawInProgress = true;
                 }
 
                 float dist = Vector2.Distance(posParam.Target, m_previousDrawPos);
@@ -78,7 +77,13 @@ namespace Curry.Skill
         public override void Interrupt()
         {
             EndTracer();
-            base.Interrupt();
+            OnSkillFinish();
+        }
+
+        protected override void OnSkillFinish()
+        {
+            m_drawInProgress = false;
+            base.OnSkillFinish();
         }
 
         protected virtual void EndTracer()
@@ -97,8 +102,7 @@ namespace Curry.Skill
             CoolDown();
             OnSkillFinish();
             m_animator.SetTrigger("Start");
-            StartCoroutine(SkillEffect(input));
-
+            m_execute = StartCoroutine(ExecuteInternal(input));
         }
     }
 }

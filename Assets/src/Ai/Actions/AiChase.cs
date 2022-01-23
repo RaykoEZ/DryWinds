@@ -3,6 +3,7 @@ using UnityEngine;
 using Curry.Game;
 using System.Collections.Generic;
 using Curry.Skill;
+using System.Collections;
 
 namespace Curry.Ai
 {
@@ -10,12 +11,6 @@ namespace Curry.Ai
     [AddComponentMenu("Curry/Ai Action/Chase")]
     public class AiChase : AiAction<IActionInput>
     {
-        public override bool ActionInProgress 
-        { 
-            get => throw new NotImplementedException(); 
-            protected set => throw new NotImplementedException(); 
-        }
-
         public override float Priority(AiWorldState args)
         {
             float mod = args.Emotion.Hatred - args.Emotion.Fear;
@@ -32,6 +27,11 @@ namespace Curry.Ai
             Debug.Log("Chase");
             Transform target = ChooseTarget(param.WorldState.Enemies).transform;
             param.Controller.Move(target);
+        }
+
+        protected override IEnumerator ExecuteInternal(AiActionInput param)
+        {
+            throw new NotImplementedException();
         }
     }
 }

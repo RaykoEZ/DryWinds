@@ -3,26 +3,33 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Curry.Game;
-using Curry.Skill;
 
 namespace Curry.Ai
 {
-
-
     public delegate void OnAiActionFinish();
     [Serializable]
     public abstract class AiAction<T> : MonoBehaviour, ICharacterAction<AiActionInput> where T : IActionInput
     {
         [SerializeField] protected float m_basePriority = default;
-        public virtual bool IsUsable { get { return true; } }
-        public abstract bool ActionInProgress { get; protected set; }
+        public bool ActionInProgress { get { return m_execute != null; }}
+        public virtual bool IsUsable { get { return ActionInProgress; } }
         public virtual ActionProperty Properties { get { return m_prop; } }
         public event OnActionFinish<AiActionInput> OnFinish;
         protected ActionProperty m_prop = new ActionProperty();
-        public abstract void Execute(AiActionInput param);
+        protected Coroutine m_execute;
+        public virtual void Execute(AiActionInput param) 
+        {
+            m_execute = StartCoroutine(ExecuteInternal(param));
+        }
+
+        protected abstract IEnumerator ExecuteInternal(AiActionInput param); 
+
         public virtual void Interrupt()
         {
-            ActionInProgress = false;
+            if(m_execute != null) 
+            {
+                StopCoroutine(m_execute);
+            }
             OnFinish?.Invoke(this);
         }
        

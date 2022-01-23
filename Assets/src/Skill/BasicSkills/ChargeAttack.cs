@@ -11,14 +11,11 @@ namespace Curry.Skill
         [SerializeField] protected float m_chargeDuration = default;
         [SerializeField] protected float m_recoilTime = default;
 
-        Coroutine m_dashing;
-
         public override void OnHit(Interactable hit)
         {
-            if (m_dashing != null) 
+            if (m_execute != null) 
             {
-                StopCoroutine(m_dashing);
-                OnSkillFinish();
+                Interrupt();
             }
 
             Vector2 diff = m_user.RigidBody.position - hit.RigidBody.position;
@@ -32,18 +29,12 @@ namespace Curry.Skill
             hit.OnTakeDamage(m_skillProperty.ActionValue);
         }
 
-        protected override void OnSkillFinish() 
-        {
-            base.OnSkillFinish();
-            m_dashing = null;
-        }
-
-        protected override IEnumerator SkillEffect(IActionInput target)
+        protected override IEnumerator ExecuteInternal(IActionInput target)
         {
             if(target != null && target is VectorInput posParam) 
             {
                 Vector2 mousePos = posParam.Target;
-                m_dashing = StartCoroutine(DashMotion(m_user.RigidBody.position, mousePos));
+                m_execute = StartCoroutine(DashMotion(m_user.RigidBody.position, mousePos));
             }
             yield return null;
         }

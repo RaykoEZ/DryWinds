@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Curry.Game;
 using Curry.Skill;
+using System.Collections;
 
 namespace Curry.Ai
 {
@@ -10,15 +11,7 @@ namespace Curry.Ai
     [AddComponentMenu("Curry/Ai Action/Wander")]
     public partial class AIWander : AiAction<IActionInput>
     {
-        public override bool IsUsable { get { return true; } }
-        public override bool ActionInProgress
-        {
-            get { return m_wanderInProess; }
-            protected set { m_wanderInProess = value; }
-        }
         public float WanderDistance { get { return UnityEngine.Random.Range(0.8f, 1.2f) * 3f; } }
-        bool m_wanderInProess = false;
-
         protected virtual Vector2 GetDirection()
         {
             float randDirX = UnityEngine.Random.Range(-1, 1);
@@ -47,6 +40,11 @@ namespace Curry.Ai
                     param.Controller.Character.RigidBody.position, randDir);
                 param.Controller.Move(randPos);
             }
+        }
+
+        protected override IEnumerator ExecuteInternal(AiActionInput param)
+        {
+            throw new NotImplementedException();
         }
     }
 }

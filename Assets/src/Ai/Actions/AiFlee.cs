@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEngine;
 using Curry.Game;
+using System.Collections;
 
 namespace Curry.Ai
 {
@@ -8,12 +9,6 @@ namespace Curry.Ai
     [AddComponentMenu("Curry/Ai Action/Flee")]
     public class AiFlee : AiAction<IActionInput>
     {
-        public override bool ActionInProgress 
-        { 
-            get => throw new NotImplementedException(); 
-            protected set => throw new NotImplementedException(); 
-        }
-
         public override bool PreCondition(AiWorldState args)
         {
             return args.Enemies.Count > 0 && args.Emotion.EmotionState == AiEmotionState.Fear;
@@ -28,6 +23,11 @@ namespace Curry.Ai
         public override void Execute(AiActionInput param)
         {
             Debug.Log("Fleeing!!!");
+        }
+
+        protected override IEnumerator ExecuteInternal(AiActionInput param)
+        {
+            throw new NotImplementedException();
         }
     }
 }

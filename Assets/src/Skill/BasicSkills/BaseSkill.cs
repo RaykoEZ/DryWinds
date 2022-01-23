@@ -15,9 +15,10 @@ namespace Curry.Skill
         protected bool m_onCD = false;
         protected BaseCharacter m_user = default;
         protected Coroutine m_coolDown = default;
+        protected Coroutine m_execute;
 
         public ActionProperty Properties { get { return m_skillProperty; } }
-        public bool ActionInProgress { get; protected set; }
+        public bool ActionInProgress { get { return m_execute != null; } }
         
         public virtual bool IsUsable
         {
@@ -28,7 +29,7 @@ namespace Curry.Skill
             }
         }
 
-        protected abstract IEnumerator SkillEffect(IActionInput target);
+        protected abstract IEnumerator ExecuteInternal(IActionInput target);
 
         protected virtual void OnTriggerEnter2D(Collider2D col)
         {
@@ -65,16 +66,19 @@ namespace Curry.Skill
         {
             if (IsUsable && m_user != null)
             {
-                ActionInProgress = true;
                 ConsumeResource(m_skillProperty.SpCost);
                 CoolDown();
                 m_animator.SetTrigger("Start");
-                StartCoroutine(SkillEffect(param));
+                m_execute = StartCoroutine(ExecuteInternal(param));
             }
         }
         public virtual void Interrupt()
         {
             OnSkillFinish();
+            if( m_execute != null ) 
+            {
+                StopCoroutine(m_execute);
+            }
         }
 
         protected virtual void CoolDown() 
@@ -92,7 +96,6 @@ namespace Curry.Skill
 
         protected virtual void OnSkillFinish() 
         {
-            ActionInProgress = false;
             OnFinish?.Invoke(this);
         }
 

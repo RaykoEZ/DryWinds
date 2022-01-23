@@ -42,7 +42,7 @@ namespace Curry.Skill
             m_barrierSpawn.LoadAsset();
         }
 
-        protected override IEnumerator SkillEffect(IActionInput target)
+        protected override IEnumerator ExecuteInternal(IActionInput target)
         {
             if(target is RegionInput input)
             {

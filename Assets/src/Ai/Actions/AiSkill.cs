@@ -8,11 +8,6 @@ namespace Curry.Ai
 {
     public abstract class AiSkill : AiAction<IActionInput>
     {
-        public override bool ActionInProgress
-        {
-            get => throw new NotImplementedException();
-            protected set => throw new NotImplementedException();
-        }
         public override bool PreCondition(AiWorldState args)
         {
             return args.Enemies.Count > 0 && args.BasicSkills.Count > 0;
@@ -20,9 +15,9 @@ namespace Curry.Ai
 
         public override void Execute(AiActionInput param)
         {
-            Debug.Log("Skill");
             BaseCharacter target = ChooseTarget(param.WorldState.Enemies);
             ICharacterAction<IActionInput> skill = ChooseAction(param.WorldState.BasicSkills, target);
+            Debug.Log($"Using Skill: {skill.Properties.Name}");
             ActivateSkill(param.Controller, skill, target);
         }
 

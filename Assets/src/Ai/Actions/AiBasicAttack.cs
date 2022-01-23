@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEngine;
 using Curry.Game;
+using System.Collections;
 
 namespace Curry.Ai
 {
@@ -40,6 +41,11 @@ namespace Curry.Ai
             ret = (properties.ActionValue - 0.1f * properties.WindupTime) / properties.SpCost;
             // base damage score
             return ret;
+        }
+
+        protected override IEnumerator ExecuteInternal(AiActionInput param)
+        {
+            throw new NotImplementedException();
         }
     }
 }
