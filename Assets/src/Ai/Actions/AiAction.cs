@@ -11,8 +11,9 @@ namespace Curry.Ai
     public abstract class AiAction<T> : MonoBehaviour, ICharacterAction<AiActionInput> where T : IActionInput
     {
         [SerializeField] protected float m_basePriority = default;
-        public bool ActionInProgress { get { return m_execute != null; }}
-        public virtual bool IsUsable { get { return ActionInProgress; } }
+        // cooldown ends when internal execute coroutine finishes
+        public bool OnCooldown { get { return m_execute != null; }}
+        public virtual bool IsUsable { get { return OnCooldown; } }
         public virtual ActionProperty Properties { get { return m_prop; } }
         public event OnActionFinish<AiActionInput> OnFinish;
         protected ActionProperty m_prop = new ActionProperty();

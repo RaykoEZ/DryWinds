@@ -18,7 +18,7 @@ namespace Curry.Skill
         protected Coroutine m_execute;
 
         public ActionProperty Properties { get { return m_skillProperty; } }
-        public bool ActionInProgress { get { return m_execute != null; } }
+        public bool OnCooldown { get { return m_execute != null; } }
         
         public virtual bool IsUsable
         {
@@ -85,7 +85,7 @@ namespace Curry.Skill
         {
             if (m_coolDown == null) 
             {
-                m_coolDown = StartCoroutine(OnCooldown());
+                m_coolDown = StartCoroutine(Coolingdown());
             }          
         }
 
@@ -99,7 +99,7 @@ namespace Curry.Skill
             OnFinish?.Invoke(this);
         }
 
-        protected virtual IEnumerator OnCooldown() 
+        protected virtual IEnumerator Coolingdown() 
         {
             m_onCD = true;
             //start cooldown and reset skill states

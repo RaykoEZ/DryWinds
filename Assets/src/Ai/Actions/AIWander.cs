@@ -31,20 +31,17 @@ namespace Curry.Ai
             return args.Enemies.Count == 0;
         }
 
-        public override void Execute(AiActionInput param)
+        protected override IEnumerator ExecuteInternal(AiActionInput param)
         {
-            if (param.Controller.IsReady) 
+            if (param.Controller.IsReady)
             {
                 Vector2 randDir = GetDirection();
                 Vector2 randPos = GetDestination(
                     param.Controller.Character.RigidBody.position, randDir);
                 param.Controller.Move(randPos);
+                float wait = UnityEngine.Random.Range(3f, 5f);
+                yield return new WaitForSeconds(wait);
             }
-        }
-
-        protected override IEnumerator ExecuteInternal(AiActionInput param)
-        {
-            throw new NotImplementedException();
         }
     }
 }

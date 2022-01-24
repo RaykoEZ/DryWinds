@@ -54,6 +54,14 @@ namespace Curry.Game
             }
         }
 
+        public virtual void Wander() 
+        {
+            if (IsReady) 
+            {
+                m_pathHandler.Wander();
+            }
+        }
+
         protected virtual void Evaluate()
         {
             OnEvaluate?.Invoke();

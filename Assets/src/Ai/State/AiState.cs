@@ -23,7 +23,7 @@ namespace Curry.Ai
     public class AiState
     {
         [SerializeField] AiAction<IActionInput> m_action = default;
-        public virtual bool ActionInProgress { get { return m_action != null && m_action.ActionInProgress; } }
+        public virtual bool ActionInProgress { get { return m_action != null && m_action.OnCooldown; } }
         
         public virtual bool PreCondition(AiWorldState args)
         {
