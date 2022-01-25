@@ -29,7 +29,7 @@ namespace Curry.Ai
             param.Controller.Move(target);
         }
 
-        protected override IEnumerator ExecuteInternal(AiActionInput param)
+        protected override void ExecuteInternal(AiActionInput param)
         {
             throw new NotImplementedException();
         }

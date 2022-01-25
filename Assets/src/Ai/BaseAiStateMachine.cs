@@ -58,6 +58,10 @@ namespace Curry.Ai
         {
             m_controller.OnEvaluate += Evaluate;
             m_current = m_defaultState;
+        }
+
+        protected virtual void Start() 
+        {
             ResolveCurrentState();
         }
 

@@ -25,7 +25,7 @@ namespace Curry.Ai
             Debug.Log("Fleeing!!!");
         }
 
-        protected override IEnumerator ExecuteInternal(AiActionInput param)
+        protected override void ExecuteInternal(AiActionInput param)
         {
             throw new NotImplementedException();
         }

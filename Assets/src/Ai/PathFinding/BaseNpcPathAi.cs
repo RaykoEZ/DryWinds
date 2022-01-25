@@ -9,6 +9,8 @@ namespace Curry.Ai
     [AddComponentMenu("Curry/Pathfinding/AIPath (2D)")]
     public class BaseNpcPathAi : AIPath, IAstarAI, IPathAi
     {
+        protected float WanderDistance { get { return UnityEngine.Random.Range(0.6f, 1.2f) * 5f; } }
+
         protected override void OnEnable()
         {
             canMove = false;
@@ -47,7 +49,24 @@ namespace Curry.Ai
 
         public void Wander()
         {
-            throw new NotImplementedException();
+            Vector2 randDir = GetDirection();
+            Vector2 randPos = GetDestination(position, randDir);
+            Vector3 target = new Vector3(randPos.x, randPos.y, position.z);
+            PlanPath(target);
+        }
+        protected virtual Vector2 GetDirection()
+        {
+            float randDirX = UnityEngine.Random.Range(-1f, 1f);
+            float randDirY = UnityEngine.Random.Range(-1f, 1f);
+            Vector2 dir = new Vector2(randDirX, randDirY);
+            return dir.normalized;
+        }
+        protected virtual Vector2 GetDestination(Vector2 origin, Vector2 dir)
+        {
+            float randDegree = UnityEngine.Random.Range(-180f, 180f);
+            Vector2 randRot = Quaternion.AngleAxis(randDegree, Vector3.forward) * dir;
+            Vector2 future = origin + WanderDistance * randRot;
+            return future;
         }
     }
 }

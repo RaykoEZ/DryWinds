@@ -11,26 +11,28 @@ namespace Curry.Ai
     public abstract class AiAction<T> : MonoBehaviour, ICharacterAction<AiActionInput> where T : IActionInput
     {
         [SerializeField] protected float m_basePriority = default;
+        [SerializeField] protected float m_cooldownTime = default;
         // cooldown ends when internal execute coroutine finishes
-        public bool OnCooldown { get { return m_execute != null; }}
-        public virtual bool IsUsable { get { return OnCooldown; } }
+        public bool OnCooldown { get { return m_cooldown != null; }}
+        public virtual bool IsUsable { get { return !OnCooldown; } }
         public virtual ActionProperty Properties { get { return m_prop; } }
         public event OnActionFinish<AiActionInput> OnFinish;
         protected ActionProperty m_prop = new ActionProperty();
-        protected Coroutine m_execute;
+        protected Coroutine m_cooldown = null;
+
         public virtual void Execute(AiActionInput param) 
         {
-            m_execute = StartCoroutine(ExecuteInternal(param));
+            if (!OnCooldown) 
+            {
+                ExecuteInternal(param);
+                m_cooldown = StartCoroutine(Coolingdown());
+            }
         }
 
-        protected abstract IEnumerator ExecuteInternal(AiActionInput param); 
+        protected abstract void ExecuteInternal(AiActionInput param); 
 
         public virtual void Interrupt()
         {
-            if(m_execute != null) 
-            {
-                StopCoroutine(m_execute);
-            }
             OnFinish?.Invoke(this);
         }
        
@@ -49,5 +51,11 @@ namespace Curry.Ai
             return HeuristicUtil.WeakestCharacter(characters);
         }
 
+        IEnumerator Coolingdown()
+        {
+            //start cooldown and reset skill states
+            yield return new WaitForSeconds(m_cooldownTime);
+            m_cooldown = null;
+        }
     }
 }

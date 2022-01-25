@@ -12,19 +12,17 @@ namespace Curry.Skill
         [SerializeField] protected ActionProperty m_skillProperty = default;
         public event OnActionFinish<IActionInput> OnFinish;
 
-        protected bool m_onCD = false;
         protected BaseCharacter m_user = default;
         protected Coroutine m_coolDown = default;
         protected Coroutine m_execute;
 
         public ActionProperty Properties { get { return m_skillProperty; } }
-        public bool OnCooldown { get { return m_execute != null; } }
-        
+        public bool OnCooldown { get { return m_coolDown != null; } }       
         public virtual bool IsUsable
         {
             get
             {
-                return !m_onCD &&
+                return !OnCooldown &&
                     m_user?.CurrentStats.SP >= m_skillProperty.SpCost;
             }
         }
@@ -101,11 +99,9 @@ namespace Curry.Skill
 
         protected virtual IEnumerator Coolingdown() 
         {
-            m_onCD = true;
             //start cooldown and reset skill states
             yield return new WaitForSeconds(m_skillProperty.CooldownTime);
             m_coolDown = null;
-            m_onCD = false;
         }
     }
 

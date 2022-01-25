@@ -43,7 +43,7 @@ namespace Curry.Ai
             return ret;
         }
 
-        protected override IEnumerator ExecuteInternal(AiActionInput param)
+        protected override void ExecuteInternal(AiActionInput param)
         {
             throw new NotImplementedException();
         }

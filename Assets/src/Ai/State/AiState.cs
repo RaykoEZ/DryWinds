@@ -23,11 +23,11 @@ namespace Curry.Ai
     public class AiState
     {
         [SerializeField] AiAction<IActionInput> m_action = default;
-        public virtual bool ActionInProgress { get { return m_action != null && m_action.OnCooldown; } }
+        public virtual bool ActionInProgress { get { return m_action.OnCooldown; } }
         
         public virtual bool PreCondition(AiWorldState args)
         {
-            return m_action.PreCondition(args);
+            return !ActionInProgress && m_action.IsUsable && m_action.PreCondition(args);
         }
 
         public virtual float Priority(AiWorldState args)
@@ -37,11 +37,8 @@ namespace Curry.Ai
 
         public virtual void ResolveState(NpcController controller, AiWorldState state) 
         {
-            if (!ActionInProgress) 
-            {
-                AiActionInput input = new AiActionInput(controller, state);
-                m_action.Execute(input);
-            }
+            AiActionInput input = new AiActionInput(controller, state);
+            m_action.Execute(input);
         }
 
         public virtual IEnumerator OnTransition(

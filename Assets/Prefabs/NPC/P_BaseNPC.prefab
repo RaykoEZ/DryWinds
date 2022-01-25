@@ -385,7 +385,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   version: 5
-  radius: 1
+  radius: 2
   height: 0.01
   canMove: 0
   maxSpeed: 3
@@ -401,14 +401,14 @@ MonoBehaviour:
   autoRepath:
     mode: 0
     interval: 0.5
-    sensitivity: 5
-    maximumInterval: 2
+    sensitivity: 1
+    maximumInterval: 20
     visualizeSensitivity: 1
   targetCompatibility: {fileID: 0}
   maxAcceleration: -2.5
   rotationSpeed: 360
-  slowdownDistance: 2
-  pickNextWaypointDist: 4
+  slowdownDistance: 3
+  pickNextWaypointDist: 7
   endReachedDistance: 1
   alwaysDrawGizmos: 0
   slowWhenNotFacingTarget: 1
@@ -696,6 +696,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_basePriority: 0.5
+  m_cooldownTime: 5
 --- !u!114 &169720153959242809
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -709,6 +710,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_basePriority: 0.3
+  m_cooldownTime: 2
 --- !u!114 &4535262559166737969
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -722,6 +724,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_basePriority: 0.2
+  m_cooldownTime: 0.5
 --- !u!1 &6755770046371517024
 GameObject:
   m_ObjectHideFlags: 0
