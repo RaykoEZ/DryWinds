@@ -29,7 +29,7 @@ namespace Curry.Game
 
                 if (m_movementAction.action.ReadValue<Vector2>().sqrMagnitude > 0)
                 {
-                    Move(m_movementAction.action.ReadValue<Vector2>());
+                    MoveTo(m_movementAction.action.ReadValue<Vector2>());
                 }
             }
         }

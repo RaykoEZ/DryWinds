@@ -20,14 +20,10 @@ namespace Curry.Ai
             return mod * m_basePriority;
         }
 
-        public override void Execute(AiActionInput param)
-        {
-            Debug.Log("Fleeing!!!");
-        }
-
         protected override void ExecuteInternal(AiActionInput param)
         {
-            throw new NotImplementedException();
+            Debug.Log("Fleeing!!!");
+            param.Controller.Flee();
         }
     }
 }

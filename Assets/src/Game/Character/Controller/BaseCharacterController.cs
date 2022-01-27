@@ -62,7 +62,7 @@ namespace Curry.Game
             ActionCall = null;
         }
 
-        public virtual void Move(Vector2 direction, float unitPerStep = 0.1f)
+        public virtual void MoveTo(Vector2 direction, float unitPerStep = 0.1f)
         {
             if (IsReady) 
             {

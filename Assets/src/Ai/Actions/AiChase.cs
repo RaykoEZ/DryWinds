@@ -26,7 +26,7 @@ namespace Curry.Ai
         {
             Debug.Log("Chase");
             Transform target = ChooseTarget(param.WorldState.Enemies).transform;
-            param.Controller.Move(target);
+            param.Controller.MoveTo(target);
         }
 
         protected override void ExecuteInternal(AiActionInput param)

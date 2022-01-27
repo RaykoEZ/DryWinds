@@ -15,6 +15,7 @@ namespace Curry.Game
         protected CharacterContextFactory m_contextFactory = new CharacterContextFactory();
         protected HashSet<BaseCharacter> m_enemies = new HashSet<BaseCharacter>();
         protected HashSet<BaseCharacter> m_allies = new HashSet<BaseCharacter>();
+        protected List<Vector3> m_retreatLocations = new List<Vector3>();
         public event OnCharacterDetected OnDetectCharacter;
         public event OnCharacterDetected OnCharacterExitDetection;
         public event OnNpcEvaluate OnEvaluate;
@@ -22,7 +23,8 @@ namespace Curry.Game
         public virtual EmotionHandler Emotion { get { return m_emotions; } } 
         public List<BaseCharacter> Enemies { get { return new List<BaseCharacter>(m_enemies); } }
         public List<BaseCharacter> Allies { get { return new List<BaseCharacter>(m_allies); } }
-
+        public IReadOnlyList<Vector3> RetreatLocations { get { return m_retreatLocations; } }
+        public Vector3 SpawnLocation { get { return m_retreatLocations[0]; } }
         protected virtual void Update() 
         {
             m_timer += Time.deltaTime;
@@ -38,6 +40,8 @@ namespace Curry.Game
         {
             base.Init(contextFactory);
             m_emotions.Init();
+            m_retreatLocations.Clear();
+            m_retreatLocations.Add(transform.position);
         }
 
         public override void Prepare()

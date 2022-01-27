@@ -39,26 +39,32 @@ namespace Curry.Game
             }
         }
 
-        public override void Move(Vector2 target, float unitPerStep = 0.1f)
+        public override void MoveTo(Vector2 target, float unitPerStep = 0.1f)
         {
             if (IsReady)
             {
                 ActionCall = StartCoroutine(OnMove(target));
             }
         }
-        public virtual void Move(Transform target)
+        public virtual void MoveTo(Transform target)
         {
             if (IsReady)
             {
                 ActionCall = StartCoroutine(OnMove(target));
             }
         }
-
         public virtual void Wander() 
         {
             if (IsReady) 
             {
                 m_pathHandler.Wander();
+            }
+        }
+        public virtual void Flee()
+        {
+            if (IsReady)
+            {
+                ActionCall = StartCoroutine(OnMove(m_npc.SpawnLocation));
             }
         }
 

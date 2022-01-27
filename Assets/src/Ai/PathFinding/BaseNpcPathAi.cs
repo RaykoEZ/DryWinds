@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 using Pathfinding;
-using System.Collections.Generic;
 
 namespace Curry.Ai
 {
@@ -49,19 +48,19 @@ namespace Curry.Ai
 
         public void Wander()
         {
-            Vector2 randDir = GetDirection();
-            Vector2 randPos = GetDestination(position, randDir);
+            Vector2 randDir = GetRandomDirection();
+            Vector2 randPos = GetRandomDestination(position, randDir);
             Vector3 target = new Vector3(randPos.x, randPos.y, position.z);
             PlanPath(target);
         }
-        protected virtual Vector2 GetDirection()
+        protected virtual Vector2 GetRandomDirection()
         {
             float randDirX = UnityEngine.Random.Range(-1f, 1f);
             float randDirY = UnityEngine.Random.Range(-1f, 1f);
             Vector2 dir = new Vector2(randDirX, randDirY);
             return dir.normalized;
         }
-        protected virtual Vector2 GetDestination(Vector2 origin, Vector2 dir)
+        protected virtual Vector2 GetRandomDestination(Vector2 origin, Vector2 dir)
         {
             float randDegree = UnityEngine.Random.Range(-180f, 180f);
             Vector2 randRot = Quaternion.AngleAxis(randDegree, Vector3.forward) * dir;
