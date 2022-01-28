@@ -55,7 +55,7 @@ namespace Curry.Ai
 
         public override void OnTakeDamage()
         {
-            m_current += new AiEmotion(0.2f, 0.1f);
+            m_current += new AiEmotion(0f, 0.1f);
         }
 
         public override void OnThreatDetected() 

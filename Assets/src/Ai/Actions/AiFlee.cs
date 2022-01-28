@@ -11,19 +11,24 @@ namespace Curry.Ai
     {
         public override bool PreCondition(AiWorldState args)
         {
-            return args.Enemies.Count > 0 && args.Emotion.EmotionState == AiEmotionState.Fear;
+            return args.Self.Territories.Count > 0 && args.Self.Emotion.Current.EmotionState == AiEmotionState.Fear;
         }
 
         public override float Priority(AiWorldState args)
         {
-            float mod = args.Emotion.Fear - (0.5f * args.Emotion.Hatred);
-            return mod * m_basePriority;
+            float mod = args.Self.Emotion.Current.Fear;
+            return mod + m_basePriority;
         }
 
         protected override void ExecuteInternal(AiActionInput param)
         {
             Debug.Log("Fleeing!!!");
-            param.Controller.Flee();
+            NpcTerritory target = param.WorldState.Self.RandomRetreatLocation();
+            if(target != null) 
+            {
+                param.Controller.InterruptAction();
+                param.Controller.MoveTo(target.transform.position);
+            }
         }
     }
 }

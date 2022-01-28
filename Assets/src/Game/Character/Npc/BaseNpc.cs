@@ -10,12 +10,14 @@ namespace Curry.Game
     public class BaseNpc : BaseCharacter
     {
         [SerializeField] protected CharacterDetector m_detector = default;
+        [SerializeField] protected float m_defaultUpdateInterval = default;
         BaseEmotionHandler m_emotions = new BaseEmotionHandler();
         float m_timer = 0f;
+        float m_currentUpdateInterval = 1f;
         protected CharacterContextFactory m_contextFactory = new CharacterContextFactory();
         protected HashSet<BaseCharacter> m_enemies = new HashSet<BaseCharacter>();
         protected HashSet<BaseCharacter> m_allies = new HashSet<BaseCharacter>();
-        protected List<Vector3> m_retreatLocations = new List<Vector3>();
+        protected List<NpcTerritory> m_territories = new List<NpcTerritory>();
         public event OnCharacterDetected OnDetectCharacter;
         public event OnCharacterDetected OnCharacterExitDetection;
         public event OnNpcEvaluate OnEvaluate;
@@ -23,12 +25,14 @@ namespace Curry.Game
         public virtual EmotionHandler Emotion { get { return m_emotions; } } 
         public List<BaseCharacter> Enemies { get { return new List<BaseCharacter>(m_enemies); } }
         public List<BaseCharacter> Allies { get { return new List<BaseCharacter>(m_allies); } }
-        public IReadOnlyList<Vector3> RetreatLocations { get { return m_retreatLocations; } }
-        public Vector3 SpawnLocation { get { return m_retreatLocations[0]; } }
+        public IReadOnlyList<NpcTerritory> Territories { get { return m_territories; } }
+
         protected virtual void Update() 
         {
             m_timer += Time.deltaTime;
-            if(m_timer > 1f) 
+            m_currentUpdateInterval = m_emotions.Current.EmotionState != AiEmotionState.Normal?
+                0.5f * m_defaultUpdateInterval : m_defaultUpdateInterval; 
+            if (m_timer > m_currentUpdateInterval)
             {
                 m_timer = 0f;
                 m_emotions.Update(out bool emotionChanged);
@@ -40,10 +44,18 @@ namespace Curry.Game
         {
             base.Init(contextFactory);
             m_emotions.Init();
-            m_retreatLocations.Clear();
-            m_retreatLocations.Add(transform.position);
         }
 
+        public virtual void SetupTerritory(List<NpcTerritory> territories) 
+        {
+            m_territories = territories;
+        }
+        public NpcTerritory RandomRetreatLocation()
+        {
+            int rand = UnityEngine.Random.Range(0, m_territories.Count - 1);
+            NpcTerritory ret = m_territories[rand];
+            return ret;
+        }
         public override void Prepare()
         {
             Init(m_contextFactory);

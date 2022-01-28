@@ -11,7 +11,7 @@ namespace Curry.Game
         [SerializeField] Player m_player = default;
         [SerializeField] InputActionReference m_movementAction = default;
 
-        public override Player Character { get { return m_player; } }
+        protected override Player Character { get { return m_player; } }
         void FixedUpdate()
         {
             if (IsReady) 

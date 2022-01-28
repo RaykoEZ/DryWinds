@@ -9,26 +9,14 @@ namespace Curry.Game
     [RequireComponent(typeof(IPathAi))]
     public class NpcController : BaseCharacterController<BaseNpc>
     {
-        [SerializeField] protected BaseNpc m_npc = default;
+        [SerializeField] BaseNpc m_npc = default;
         protected IPathAi m_pathHandler;
-        public event OnNpcEvaluate OnEvaluate;
-        public override BaseNpc Character { get { return m_npc; } }
+        protected override BaseNpc Character { get { return m_npc; } }
         protected virtual IPathAi PathHandler { get { return m_pathHandler; } }
 
         protected void Awake()
         {
             m_pathHandler = GetComponent<IPathAi>();
-        }
-
-        protected override void OnEnable() 
-        {
-            base.OnEnable();
-            m_npc.OnEvaluate += Evaluate;
-        }
-        protected override void OnDisable()
-        {
-            base.OnDisable();
-            m_npc.OnEvaluate -= Evaluate;
         }
 
         public override void OnBasicSkill(BaseCharacter target)
@@ -53,24 +41,22 @@ namespace Curry.Game
                 ActionCall = StartCoroutine(OnMove(target));
             }
         }
+
+        public virtual void InterruptAction() 
+        {
+            if(ActionCall!= null) 
+            {
+                StopCoroutine(ActionCall);
+                ActionCall = null;
+            }
+        }
+
         public virtual void Wander() 
         {
             if (IsReady) 
             {
                 m_pathHandler.Wander();
             }
-        }
-        public virtual void Flee()
-        {
-            if (IsReady)
-            {
-                ActionCall = StartCoroutine(OnMove(m_npc.SpawnLocation));
-            }
-        }
-
-        protected virtual void Evaluate()
-        {
-            OnEvaluate?.Invoke();
         }
 
         public virtual void EquipBasicSkill(ICharacterAction<IActionInput> skill)

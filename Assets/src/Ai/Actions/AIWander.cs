@@ -18,6 +18,7 @@ namespace Curry.Ai
 
         protected override void ExecuteInternal(AiActionInput param)
         {
+            Debug.Log("W!!!");
             param.Controller.Wander();
         }
     }

@@ -8,7 +8,7 @@ namespace Curry.Game
     {
         public virtual bool IsReady { get { return ActionCall == null; } }
         protected Coroutine ActionCall { get; set; }
-        public abstract T Character { get; }
+        protected abstract T Character { get; }
 
         protected SkillActivator m_basicSkill = new SkillActivator();
         protected SkillActivator m_drawSkill = new SkillActivator();

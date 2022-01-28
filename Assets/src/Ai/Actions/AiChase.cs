@@ -13,13 +13,13 @@ namespace Curry.Ai
     {
         public override float Priority(AiWorldState args)
         {
-            float mod = args.Emotion.Hatred - args.Emotion.Fear;
+            float mod = args.Self.Emotion.Current.Hatred - args.Self.Emotion.Current.Fear;
             return mod * m_basePriority;
         }
 
         public override bool PreCondition(AiWorldState args)
         {
-            return args.Enemies.Count > 0 && args.Emotion.EmotionState != AiEmotionState.Fear;
+            return args.Enemies.Count > 0 && args.Self.Emotion.Current.EmotionState != AiEmotionState.Fear;
         }
 
         public override void Execute(AiActionInput param)

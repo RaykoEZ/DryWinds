@@ -7,6 +7,7 @@ namespace Curry.Ai
 {
     public class BaseAiStateMachine : MonoBehaviour 
     {
+        [SerializeField] protected BaseNpc m_npc = default;
         [SerializeField] protected NpcController m_controller = default;
         [SerializeField] protected AiState m_defaultState = default;
         [SerializeField] protected List<AiState> m_otherStates = default;
@@ -54,14 +55,18 @@ namespace Curry.Ai
             }
         }
 
-        protected virtual void Awake() 
+        protected void OnEnable()
         {
-            m_controller.OnEvaluate += Evaluate;
-            m_current = m_defaultState;
+            m_npc.OnEvaluate += Evaluate;
+        }
+        protected void OnDisable()
+        {
+            m_npc.OnEvaluate -= Evaluate;
         }
 
         protected virtual void Start() 
         {
+            m_current = m_defaultState;
             ResolveCurrentState();
         }
 
@@ -98,13 +103,12 @@ namespace Curry.Ai
 
         void UpdateWorldState()
         {
-            BaseNpc npc = m_controller.Character;
-            m_worldStateSnapshot.Emotion = npc.Emotion.Current;
-            m_worldStateSnapshot.CurrentStats = npc.CurrentStats;
-            m_worldStateSnapshot.Enemies = npc.Enemies;
-            m_worldStateSnapshot.Allies = npc.Allies;
-            m_worldStateSnapshot.BasicSkills = npc.BasicSkills.Skills;
-            m_worldStateSnapshot.DrawSkills = npc.DrawSkills.Skills;
+            m_worldStateSnapshot.Self = m_npc;
+            m_worldStateSnapshot.CurrentStats = m_npc.CurrentStats;
+            m_worldStateSnapshot.Enemies = m_npc.Enemies;
+            m_worldStateSnapshot.Allies = m_npc.Allies;
+            m_worldStateSnapshot.BasicSkills = m_npc.BasicSkills.Skills;
+            m_worldStateSnapshot.DrawSkills = m_npc.DrawSkills.Skills;
         }
     }
 }

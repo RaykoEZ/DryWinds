@@ -11,7 +11,7 @@ namespace Curry.Ai
     {
         public override float Priority(AiWorldState args)
         {
-            float mod = args.Emotion.Hatred - (0.5f * args.Emotion.Fear);
+            float mod = args.Self.Emotion.Current.Hatred - (0.5f * args.Self.Emotion.Current.Fear);
             return mod * m_basePriority;
         }
 
@@ -41,11 +41,6 @@ namespace Curry.Ai
             ret = (properties.ActionValue - 0.1f * properties.WindupTime) / properties.SpCost;
             // base damage score
             return ret;
-        }
-
-        protected override void ExecuteInternal(AiActionInput param)
-        {
-            throw new NotImplementedException();
         }
     }
 }

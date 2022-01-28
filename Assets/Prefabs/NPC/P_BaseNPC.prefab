@@ -294,6 +294,7 @@ MonoBehaviour:
   m_relations: 2
   m_statusManager: {fileID: 4175741410429288134}
   m_detector: {fileID: 8898458916651303178}
+  m_defaultUpdateInterval: 1
 --- !u!58 &8946931605538531584
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -322,7 +323,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 2
+  m_Mass: 3
   m_LinearDrag: 2
   m_AngularDrag: 0.05
   m_GravityScale: 0
@@ -643,7 +644,6 @@ GameObject:
   - component: {fileID: 6027880587303692430}
   - component: {fileID: 2038092983179162935}
   - component: {fileID: 169720153959242809}
-  - component: {fileID: 4535262559166737969}
   m_Layer: 0
   m_Name: StateMachine
   m_TagString: Untagged
@@ -677,12 +677,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 910daf26a6fb13a4e8b046cd19884a1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_npc: {fileID: 3546475977785711451}
   m_controller: {fileID: 5230140019612056492}
   m_defaultState:
     m_action: {fileID: 2038092983179162935}
   m_otherStates:
   - m_action: {fileID: 169720153959242809}
-  - m_action: {fileID: 4535262559166737969}
 --- !u!114 &2038092983179162935
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -709,22 +709,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc787d9d6ad5763439a6d32bde0e9ecc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_basePriority: 0.3
+  m_basePriority: 0.7
   m_cooldownTime: 2
---- !u!114 &4535262559166737969
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5223741467229661103}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cd5509efb89b1fd4394ec35e9dfd5786, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_basePriority: 0.2
-  m_cooldownTime: 0.5
 --- !u!1 &6755770046371517024
 GameObject:
   m_ObjectHideFlags: 0

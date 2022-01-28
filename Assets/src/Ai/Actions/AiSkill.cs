@@ -13,7 +13,7 @@ namespace Curry.Ai
             return args.Enemies.Count > 0 && args.BasicSkills.Count > 0;
         }
 
-        public override void Execute(AiActionInput param)
+        protected override void ExecuteInternal(AiActionInput param)
         {
             BaseCharacter target = ChooseTarget(param.WorldState.Enemies);
             ICharacterAction<IActionInput> skill = ChooseAction(param.WorldState.BasicSkills, target);
