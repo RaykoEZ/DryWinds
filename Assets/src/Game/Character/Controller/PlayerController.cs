@@ -107,9 +107,9 @@ namespace Curry.Game
             }
         }
 
-        protected override void OnInterrupt()
+        protected override void InterruptSkill()
         {
-            base.OnInterrupt();
+            base.InterruptSkill();
             // Interrupt the input stun and reapply the stun timer
             Character.Animator.SetTrigger("TakeDamage");
         }

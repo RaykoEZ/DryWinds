@@ -34,7 +34,7 @@ namespace Curry.Skill
             m_traceRef.LoadAsset();
         }
 
-        public override void Execute(IActionInput param)
+        public override void OnEnter(IActionInput param)
         {
             // If spawned traces is not ready, don't draw 
             if(!IsUsable) 

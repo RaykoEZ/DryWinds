@@ -13,27 +13,48 @@ namespace Curry.Ai
         [SerializeField] protected float m_basePriority = default;
         [SerializeField] protected float m_cooldownTime = default;
         // cooldown ends when internal execute coroutine finishes
-        public bool OnCooldown { get { return m_cooldown != null; }}
+        public bool OnCooldown { get { return m_execute != null || m_cooldown != null; }}
         public virtual bool IsUsable { get { return !OnCooldown; } }
         public virtual ActionProperty Properties { get { return m_prop; } }
         public event OnActionFinish<AiActionInput> OnFinish;
         protected ActionProperty m_prop = new ActionProperty();
-        protected Coroutine m_cooldown = null;
+        Coroutine m_cooldown = null;
+        Coroutine m_execute = null;
+        Coroutine m_executeInternal = null;
 
-        public virtual void Execute(AiActionInput param) 
+        public virtual void OnEnter(AiActionInput param) 
         {
             if (!OnCooldown) 
             {
-                ExecuteInternal(param);
-                m_cooldown = StartCoroutine(Coolingdown());
+                m_execute = StartCoroutine(ExecuteAction(param));
             }
         }
 
-        protected abstract void ExecuteInternal(AiActionInput param); 
-
-        public virtual void Interrupt()
+        IEnumerator ExecuteAction(AiActionInput param) 
         {
+            yield return m_executeInternal = StartCoroutine(ExecuteInternal(param));
+            OnActionFinish();
+        }
+        protected abstract IEnumerator ExecuteInternal(AiActionInput param);
+        protected virtual void OnActionFinish() 
+        {
+            if (m_execute != null) 
+            {
+                StopCoroutine(m_execute);
+            }
+            if (m_executeInternal != null)
+            {
+                StopCoroutine(m_executeInternal);
+            }
+            m_execute = null;
+            m_executeInternal = null;
+            m_cooldown = StartCoroutine(Coolingdown());
             OnFinish?.Invoke(this);
+        }
+
+        public void Interrupt()
+        {
+            OnActionFinish();
         }
        
         public virtual bool PreCondition(AiWorldState args)

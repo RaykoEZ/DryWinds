@@ -2,6 +2,7 @@
 
 namespace Curry.Ai
 {
+    public delegate void OnPathComplete();
     public interface IPathAi
     {
         bool TargetReached { get; }
@@ -9,5 +10,6 @@ namespace Curry.Ai
         void PlanPath(Transform target);
         void PlanPath(Vector3 target);
         void Wander();
+        void InterruptPath();
     }
 }

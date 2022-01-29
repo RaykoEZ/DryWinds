@@ -22,14 +22,14 @@ namespace Curry.Ai
             return args.Enemies.Count > 0 && args.Self.Emotion.Current.EmotionState != AiEmotionState.Fear;
         }
 
-        public override void Execute(AiActionInput param)
+        public override void OnEnter(AiActionInput param)
         {
             Debug.Log("Chase");
             Transform target = ChooseTarget(param.WorldState.Enemies).transform;
             param.Controller.MoveTo(target);
         }
 
-        protected override void ExecuteInternal(AiActionInput param)
+        protected override IEnumerator ExecuteInternal(AiActionInput param)
         {
             throw new NotImplementedException();
         }

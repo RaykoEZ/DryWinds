@@ -10,7 +10,6 @@ namespace Curry.Game
     public class BaseNpc : BaseCharacter
     {
         [SerializeField] protected CharacterDetector m_detector = default;
-        [SerializeField] protected float m_defaultUpdateInterval = default;
         BaseEmotionHandler m_emotions = new BaseEmotionHandler();
         float m_timer = 0f;
         float m_currentUpdateInterval = 1f;
@@ -30,14 +29,11 @@ namespace Curry.Game
         protected virtual void Update() 
         {
             m_timer += Time.deltaTime;
-            m_currentUpdateInterval = m_emotions.Current.EmotionState != AiEmotionState.Normal?
-                0.5f * m_defaultUpdateInterval : m_defaultUpdateInterval; 
             if (m_timer > m_currentUpdateInterval)
             {
                 m_timer = 0f;
                 m_emotions.Update(out bool emotionChanged);
                 //Debug.Log($"{Emotion.Current}");
-                OnEvaluate?.Invoke();
             }
         }
         public override void Init(CharacterContextFactory contextFactory)

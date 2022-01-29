@@ -15,7 +15,7 @@ namespace Curry.Skill
         public virtual void ActivateSkill(Vector2 target, bool isDirection = false, Dictionary<string, object> payload = null)
         {
             VectorInput param = new VectorInput(target, payload);
-            CurrentSkill?.Execute(param);
+            CurrentSkill?.OnEnter(param);
         }
 
         public virtual void InterruptSkill()

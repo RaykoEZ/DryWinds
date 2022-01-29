@@ -13,13 +13,19 @@ namespace Curry.Ai
     {
         public override bool PreCondition(AiWorldState args)
         {
-            return args.Enemies.Count == 0;
+            return args.Enemies.Count == 0 || args.Self.Emotion.Current.EmotionState == AiEmotionState.Normal;
         }
 
-        protected override void ExecuteInternal(AiActionInput param)
+        protected override IEnumerator ExecuteInternal(AiActionInput param)
         {
-            Debug.Log("W!!!");
-            param.Controller.Wander();
+            while (PreCondition(param.WorldState)) 
+            {
+                float wait = UnityEngine.Random.Range(0.5f * m_cooldownTime, m_cooldownTime);
+                yield return new WaitForSeconds(wait);
+                Debug.Log("W!!!");
+                param.Controller.Wander();
+                yield return new WaitUntil(() => { return param.Controller.PathHandlerReachedTarget; });
+            }
         }
     }
 }

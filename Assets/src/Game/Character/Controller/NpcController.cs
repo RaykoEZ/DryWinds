@@ -13,7 +13,7 @@ namespace Curry.Game
         protected IPathAi m_pathHandler;
         protected override BaseNpc Character { get { return m_npc; } }
         protected virtual IPathAi PathHandler { get { return m_pathHandler; } }
-
+        public bool PathHandlerReachedTarget { get { return PathHandler.TargetReached; } } 
         protected void Awake()
         {
             m_pathHandler = GetComponent<IPathAi>();
@@ -27,28 +27,23 @@ namespace Curry.Game
             }
         }
 
-        public override void MoveTo(Vector2 target, float unitPerStep = 0.1f)
+        public override void MoveTo(Vector2 target, float unitPerStep = 0.1f, bool interruptCurrent = false)
         {
-            if (IsReady)
+            if(!IsReady && interruptCurrent) 
             {
-                ActionCall = StartCoroutine(OnMove(target));
+                InterruptAction();
             }
-        }
-        public virtual void MoveTo(Transform target)
-        {
-            if (IsReady)
-            {
-                ActionCall = StartCoroutine(OnMove(target));
-            }
-        }
 
-        public virtual void InterruptAction() 
+            ActionCall = StartCoroutine(OnMove(target));
+        }
+        public virtual void MoveTo(Transform target, bool interruptCurrent = false)
         {
-            if(ActionCall!= null) 
+            if (!IsReady && interruptCurrent)
             {
-                StopCoroutine(ActionCall);
-                ActionCall = null;
+                InterruptAction();
             }
+
+            ActionCall = StartCoroutine(OnMove(target));
         }
 
         public virtual void Wander() 
@@ -92,10 +87,16 @@ namespace Curry.Game
             ActionCall = null;
         }
 
-        protected override void OnInterrupt()
+        protected override void InterruptSkill()
         {
-            base.OnInterrupt();
+            base.InterruptSkill();
             Character.Animator.SetBool("WindingUp", false);
         }
+        protected override void InterruptAction()
+        {
+            base.InterruptAction();
+            PathHandler.InterruptPath();
+        }
+
     }
 }

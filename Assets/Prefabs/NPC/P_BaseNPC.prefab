@@ -294,7 +294,6 @@ MonoBehaviour:
   m_relations: 2
   m_statusManager: {fileID: 4175741410429288134}
   m_detector: {fileID: 8898458916651303178}
-  m_defaultUpdateInterval: 1
 --- !u!58 &8946931605538531584
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -323,7 +322,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 3
+  m_Mass: 20
   m_LinearDrag: 2
   m_AngularDrag: 0.05
   m_GravityScale: 0
@@ -386,7 +385,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   version: 5
-  radius: 2
+  radius: 5
   height: 0.01
   canMove: 0
   maxSpeed: 3
@@ -400,17 +399,17 @@ MonoBehaviour:
   orientation: 1
   enableRotation: 0
   autoRepath:
-    mode: 0
+    mode: 2
     interval: 0.5
-    sensitivity: 1
-    maximumInterval: 20
+    sensitivity: 20
+    maximumInterval: 5
     visualizeSensitivity: 1
   targetCompatibility: {fileID: 0}
   maxAcceleration: -2.5
   rotationSpeed: 360
   slowdownDistance: 3
-  pickNextWaypointDist: 7
-  endReachedDistance: 1
+  pickNextWaypointDist: 10
+  endReachedDistance: 2
   alwaysDrawGizmos: 0
   slowWhenNotFacingTarget: 1
   whenCloseToDestination: 0
@@ -696,7 +695,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_basePriority: 0.5
-  m_cooldownTime: 5
+  m_cooldownTime: 3
 --- !u!114 &169720153959242809
 MonoBehaviour:
   m_ObjectHideFlags: 0

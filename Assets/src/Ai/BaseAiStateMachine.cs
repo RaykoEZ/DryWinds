@@ -13,6 +13,7 @@ namespace Curry.Ai
         [SerializeField] protected List<AiState> m_otherStates = default;
 
         protected AiState m_current;
+        protected AiState m_next;
         AiWorldState m_worldStateSnapshot = new AiWorldState();
         protected virtual AiWorldState WorldStateSnapshot
         {
@@ -67,7 +68,8 @@ namespace Curry.Ai
         protected virtual void Start() 
         {
             m_current = m_defaultState;
-            ResolveCurrentState();
+            UpdateWorldState();
+            EnterState();
         }
 
         // Determine state changes or additional behaviour
@@ -77,28 +79,27 @@ namespace Curry.Ai
             AiState newState = BestState;
             if (newState != m_current) 
             {
-                TransitionTo(newState);
-            }
-            else 
-            {
-                ResolveCurrentState();
+                m_next = newState;
+                TransitionTo();
             }
         }
 
-        protected virtual void TransitionTo(AiState next)
+        protected virtual void TransitionTo()
         {
-            StartCoroutine(m_current.OnTransition(next, OnTransitionFinished));
+            m_current.OnTransition();
         }
 
-        protected virtual void OnTransitionFinished(AiState next)
+        protected virtual void OnTransitionFinished()
         {
-            m_current = next;
-            ResolveCurrentState();
+            m_current.OnStateEnd -= OnTransitionFinished;
+            m_current = m_next;
+            EnterState();
         }
 
-        void ResolveCurrentState() 
+        void EnterState() 
         {
-            m_current.ResolveState(m_controller, WorldStateSnapshot);
+            m_current.OnStateEnd += OnTransitionFinished;
+            m_current.OnEnter(m_controller, WorldStateSnapshot);
         }
 
         void UpdateWorldState()

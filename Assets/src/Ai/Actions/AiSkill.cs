@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Curry.Game;
@@ -13,12 +13,13 @@ namespace Curry.Ai
             return args.Enemies.Count > 0 && args.BasicSkills.Count > 0;
         }
 
-        protected override void ExecuteInternal(AiActionInput param)
+        protected override IEnumerator ExecuteInternal(AiActionInput param)
         {
             BaseCharacter target = ChooseTarget(param.WorldState.Enemies);
             ICharacterAction<IActionInput> skill = ChooseAction(param.WorldState.BasicSkills, target);
             Debug.Log($"Using Skill: {skill.Properties.Name}");
             ActivateSkill(param.Controller, skill, target);
+            yield return null;
         }
 
         protected virtual void ActivateSkill(NpcController controller, ICharacterAction<IActionInput> skill, BaseCharacter target) 

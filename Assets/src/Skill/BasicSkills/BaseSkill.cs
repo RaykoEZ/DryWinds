@@ -60,7 +60,7 @@ namespace Curry.Skill
 
         // The logics and interactions of the skill on each target
         /// @param target: initial target for skill
-        public virtual void Execute(IActionInput param)
+        public virtual void OnEnter(IActionInput param)
         {
             if (IsUsable && m_user != null)
             {

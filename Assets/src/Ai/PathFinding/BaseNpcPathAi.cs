@@ -67,5 +67,10 @@ namespace Curry.Ai
             Vector2 future = origin + WanderDistance * randRot;
             return future;
         }
+
+        public void InterruptPath()
+        {
+            ClearPath();
+        }
     }
 }

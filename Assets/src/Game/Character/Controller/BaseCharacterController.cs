@@ -16,7 +16,7 @@ namespace Curry.Game
         protected virtual void OnEnable()
         {
             Character.OnHitStun += OnHitStun;
-            Character.OnActionInterrupt += OnInterrupt;
+            Character.OnActionInterrupt += InterruptSkill;
             Character.OnLoaded += Init;
             Character.OnDefeated += OnDefeated;
         }
@@ -24,7 +24,7 @@ namespace Curry.Game
         protected virtual void OnDisable() 
         {
             Character.OnHitStun -= OnHitStun;
-            Character.OnActionInterrupt -= OnInterrupt;
+            Character.OnActionInterrupt -= InterruptSkill;
             Character.OnLoaded -= Init;
             Character.OnDefeated -= OnDefeated;
         }
@@ -62,12 +62,14 @@ namespace Curry.Game
             ActionCall = null;
         }
 
-        public virtual void MoveTo(Vector2 direction, float unitPerStep = 0.1f)
+        public virtual void MoveTo(Vector2 direction, float unitPerStep = 0.1f, bool interruptCurrent = false)
         {
-            if (IsReady) 
+            if (!IsReady && interruptCurrent)
             {
-                Character.RigidBody.MovePosition(Character.RigidBody.position + (unitPerStep * direction * Character.CurrentStats.Speed));
+                InterruptAction();
             }
+
+            Character.RigidBody.MovePosition(Character.RigidBody.position + (unitPerStep * direction * Character.CurrentStats.Speed));      
         }
 
         public virtual void OnDrawSkill(Vector2 target) 
@@ -102,15 +104,11 @@ namespace Curry.Game
         protected void OnHitStun(float stunMod)
         {
             // Interrupt the input stun and reapply the stun timer
-            if (ActionCall != null)
-            {
-                StopCoroutine(ActionCall);
-                ActionCall = null;
-            }
-            OnInterrupt();
+            InterruptAction();
+            InterruptSkill();
             ActionCall = StartCoroutine(RecoverInput(stunMod));
         }
-        protected virtual void OnInterrupt()
+        protected virtual void InterruptSkill()
         {
             m_basicSkill.InterruptSkill();
             m_drawSkill.InterruptSkill();
@@ -125,6 +123,15 @@ namespace Curry.Game
             yield return new WaitForSeconds(stunMod * Character.CurrentStats.HitRecoveryTime);
             Character.RigidBody.velocity = Vector2.zero;
             ActionCall = null;
+        }
+
+        protected virtual void InterruptAction()
+        {
+            if (ActionCall != null)
+            {
+                StopCoroutine(ActionCall);
+                ActionCall = null;
+            }
         }
     }
 }
