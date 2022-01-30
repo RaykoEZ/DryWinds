@@ -13,12 +13,11 @@ namespace Curry.Ai
         [SerializeField] protected float m_basePriority = default;
         [SerializeField] protected float m_cooldownTime = default;
         // cooldown ends when internal execute coroutine finishes
-        public bool OnCooldown { get { return m_execute != null || m_cooldown != null; }}
+        public bool OnCooldown { get { return false; }}
         public virtual bool IsUsable { get { return !OnCooldown; } }
         public virtual ActionProperty Properties { get { return m_prop; } }
         public event OnActionFinish<AiActionInput> OnFinish;
         protected ActionProperty m_prop = new ActionProperty();
-        Coroutine m_cooldown = null;
         Coroutine m_execute = null;
         Coroutine m_executeInternal = null;
 
@@ -48,7 +47,6 @@ namespace Curry.Ai
             }
             m_execute = null;
             m_executeInternal = null;
-            m_cooldown = StartCoroutine(Coolingdown());
             OnFinish?.Invoke(this);
         }
 
@@ -70,13 +68,6 @@ namespace Curry.Ai
         protected virtual BaseCharacter ChooseTarget(List<BaseCharacter> characters) 
         {
             return HeuristicUtil.WeakestCharacter(characters);
-        }
-
-        IEnumerator Coolingdown()
-        {
-            //start cooldown and reset skill states
-            yield return new WaitForSeconds(m_cooldownTime);
-            m_cooldown = null;
         }
     }
 }

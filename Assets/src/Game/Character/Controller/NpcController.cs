@@ -23,27 +23,27 @@ namespace Curry.Game
         {
             if (IsReady)
             {
-                ActionCall = StartCoroutine(UsingSkill(target));
+                m_actionCall = StartCoroutine(UsingSkill(target));
             }
         }
 
-        public override void MoveTo(Vector2 target, float unitPerStep = 0.1f, bool interruptCurrent = false)
+        public override void MoveTo(Vector2 target, float unitPerStep = 0.1f)
         {
-            if(!IsReady && interruptCurrent) 
+            if (!IsReady) 
             {
                 InterruptAction();
             }
 
-            ActionCall = StartCoroutine(OnMove(target));
+            m_actionCall = StartCoroutine(OnMove(target));
         }
-        public virtual void MoveTo(Transform target, bool interruptCurrent = false)
+        public virtual void MoveTo(Transform target)
         {
-            if (!IsReady && interruptCurrent)
+            if (!IsReady)
             {
                 InterruptAction();
             }
 
-            ActionCall = StartCoroutine(OnMove(target));
+            m_actionCall = StartCoroutine(OnMove(target));
         }
 
         public virtual void Wander() 
@@ -77,14 +77,14 @@ namespace Curry.Game
             PathHandler.PlanPath(target);
             yield return new WaitUntil(() => { return PathHandler.TargetReached; });
             Debug.Log("Path reached");
-            ActionCall = null;
+            m_actionCall = null;
         }
         protected virtual IEnumerator OnMove(Transform target)
         {
             PathHandler.PlanPath(target);
             yield return new WaitUntil(() => { return PathHandler.TargetReached; });
             Debug.Log("Path reached");
-            ActionCall = null;
+            m_actionCall = null;
         }
 
         protected override void InterruptSkill()
@@ -96,6 +96,7 @@ namespace Curry.Game
         {
             base.InterruptAction();
             PathHandler.InterruptPath();
+            m_actionCall = null;
         }
 
     }

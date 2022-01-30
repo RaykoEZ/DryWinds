@@ -18,9 +18,8 @@ namespace Curry.Ai
         public abstract void OnThreatDetected();
         public abstract void OnHelped();
 
-        public virtual void Update(out bool emotionChanged) 
+        public virtual void Update() 
         {
-            AiEmotionState old = m_current.EmotionState;
             switch (Current.EmotionState) 
             {
                 case AiEmotionState.Normal:
@@ -42,7 +41,6 @@ namespace Curry.Ai
                     break; 
                 }
             }
-            emotionChanged = old != m_current.EmotionState;
         }
     }
 

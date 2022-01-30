@@ -11,7 +11,7 @@ namespace Curry.Ai
         [SerializeField] protected NpcController m_controller = default;
         [SerializeField] protected AiState m_defaultState = default;
         [SerializeField] protected List<AiState> m_otherStates = default;
-
+        protected float m_timer = 0f;
         protected AiState m_current;
         protected AiState m_next;
         AiWorldState m_worldStateSnapshot = new AiWorldState();
@@ -72,6 +72,16 @@ namespace Curry.Ai
             EnterState();
         }
 
+        protected virtual void Update() 
+        {
+            m_timer += Time.deltaTime;
+            if (m_timer > 1f) 
+            {
+                m_timer = 0f;
+                Evaluate();
+            }
+        }
+
         // Determine state changes or additional behaviour
         public virtual void Evaluate() 
         {
@@ -96,7 +106,7 @@ namespace Curry.Ai
             EnterState();
         }
 
-        void EnterState() 
+        void EnterState()
         {
             m_current.OnStateEnd += OnTransitionFinished;
             m_current.OnEnter(m_controller, WorldStateSnapshot);

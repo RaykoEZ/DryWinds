@@ -8,7 +8,7 @@ namespace Curry.Ai
     [AddComponentMenu("Curry/Pathfinding/AIPath (2D)")]
     public class BaseNpcPathAi : AIPath, IAstarAI, IPathAi
     {
-        protected float WanderDistance { get { return UnityEngine.Random.Range(0.6f, 1.2f) * 5f; } }
+        protected float WanderDistance { get { return UnityEngine.Random.Range(0.8f, 1.2f) * 5f; } }
 
         protected override void OnEnable()
         {

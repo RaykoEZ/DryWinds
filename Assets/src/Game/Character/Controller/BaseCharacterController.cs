@@ -6,8 +6,8 @@ namespace Curry.Game
 {
     public abstract class BaseCharacterController<T> : MonoBehaviour where T : BaseCharacter
     {
-        public virtual bool IsReady { get { return ActionCall == null; } }
-        protected Coroutine ActionCall { get; set; }
+        public virtual bool IsReady { get { return m_actionCall == null; } }
+        protected Coroutine m_actionCall = null;
         protected abstract T Character { get; }
 
         protected SkillActivator m_basicSkill = new SkillActivator();
@@ -59,17 +59,15 @@ namespace Curry.Game
 
         protected virtual void OnActionFinish(ICharacterAction<IActionInput> action) 
         {
-            ActionCall = null;
+            m_actionCall = null;
         }
 
-        public virtual void MoveTo(Vector2 direction, float unitPerStep = 0.1f, bool interruptCurrent = false)
+        public virtual void MoveTo(Vector2 direction, float unitPerStep = 0.1f)
         {
-            if (!IsReady && interruptCurrent)
+            if (IsReady)
             {
-                InterruptAction();
+                Character.RigidBody.MovePosition(Character.RigidBody.position + (unitPerStep * direction * Character.CurrentStats.Speed));
             }
-
-            Character.RigidBody.MovePosition(Character.RigidBody.position + (unitPerStep * direction * Character.CurrentStats.Speed));      
         }
 
         public virtual void OnDrawSkill(Vector2 target) 
@@ -83,7 +81,7 @@ namespace Curry.Game
         {
             if (IsReady)
             {
-                ActionCall = StartCoroutine(OnSkill(target));
+                m_actionCall = StartCoroutine(OnSkill(target));
             }
         }
 
@@ -91,7 +89,7 @@ namespace Curry.Game
         {
             if (IsReady)
             {
-                ActionCall = StartCoroutine(OnSkill(target.transform.position));
+                m_actionCall = StartCoroutine(OnSkill(target.transform.position));
             }
         }
 
@@ -106,7 +104,7 @@ namespace Curry.Game
             // Interrupt the input stun and reapply the stun timer
             InterruptAction();
             InterruptSkill();
-            ActionCall = StartCoroutine(RecoverInput(stunMod));
+            m_actionCall = StartCoroutine(RecoverInput(stunMod));
         }
         protected virtual void InterruptSkill()
         {
@@ -122,15 +120,15 @@ namespace Curry.Game
         {
             yield return new WaitForSeconds(stunMod * Character.CurrentStats.HitRecoveryTime);
             Character.RigidBody.velocity = Vector2.zero;
-            ActionCall = null;
+            m_actionCall = null;
         }
 
         protected virtual void InterruptAction()
         {
-            if (ActionCall != null)
+            if (m_actionCall != null)
             {
-                StopCoroutine(ActionCall);
-                ActionCall = null;
+                StopCoroutine(m_actionCall);
+                m_actionCall = null;
             }
         }
     }

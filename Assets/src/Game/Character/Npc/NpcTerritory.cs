@@ -10,6 +10,6 @@ namespace Curry.Ai
     public class NpcTerritory : MonoBehaviour
     {
         [SerializeField] protected Collider2D m_collider = default;
-
+        public virtual Bounds Boundary { get { return m_collider.bounds; } }
     }
 }

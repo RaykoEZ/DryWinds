@@ -22,7 +22,6 @@ namespace Curry.Ai
             {
                 float wait = UnityEngine.Random.Range(0.5f * m_cooldownTime, m_cooldownTime);
                 yield return new WaitForSeconds(wait);
-                Debug.Log("W!!!");
                 param.Controller.Wander();
                 yield return new WaitUntil(() => { return param.Controller.PathHandlerReachedTarget; });
             }

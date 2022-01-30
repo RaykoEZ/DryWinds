@@ -32,8 +32,7 @@ namespace Curry.Game
             if (m_timer > m_currentUpdateInterval)
             {
                 m_timer = 0f;
-                m_emotions.Update(out bool emotionChanged);
-                //Debug.Log($"{Emotion.Current}");
+                m_emotions.Update();
             }
         }
         public override void Init(CharacterContextFactory contextFactory)
@@ -46,7 +45,7 @@ namespace Curry.Game
         {
             m_territories = territories;
         }
-        public NpcTerritory RandomRetreatLocation()
+        public NpcTerritory RandomTerritory()
         {
             int rand = UnityEngine.Random.Range(0, m_territories.Count - 1);
             NpcTerritory ret = m_territories[rand];

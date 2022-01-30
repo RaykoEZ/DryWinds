@@ -24,10 +24,15 @@ namespace Curry.Ai
     public class AiState
     {
         [SerializeField] AiAction<IActionInput> m_action = default;
+        [SerializeField] protected string m_name = default;
         public event OnAiStateEnd OnStateEnd;
-
         public virtual bool ActionInProgress { get { return m_action.OnCooldown; } }
-        
+
+        public override string ToString()
+        {
+            return m_name;
+        }
+
         public virtual bool PreCondition(AiWorldState args)
         {
             return !ActionInProgress && m_action.IsUsable && m_action.PreCondition(args);
@@ -40,6 +45,7 @@ namespace Curry.Ai
 
         public virtual void OnEnter(NpcController controller, AiWorldState state) 
         {
+            Debug.Log("Enter State");
             m_action.OnFinish += OnActionFinished;
             AiActionInput input = new AiActionInput(controller, state);
             m_action.OnEnter(input);

@@ -401,8 +401,8 @@ MonoBehaviour:
   autoRepath:
     mode: 2
     interval: 0.5
-    sensitivity: 20
-    maximumInterval: 5
+    sensitivity: 1
+    maximumInterval: 1
     visualizeSensitivity: 1
   targetCompatibility: {fileID: 0}
   maxAcceleration: -2.5
@@ -680,8 +680,10 @@ MonoBehaviour:
   m_controller: {fileID: 5230140019612056492}
   m_defaultState:
     m_action: {fileID: 2038092983179162935}
+    m_name: Wander
   m_otherStates:
   - m_action: {fileID: 169720153959242809}
+    m_name: Flee
 --- !u!114 &2038092983179162935
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -709,7 +711,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_basePriority: 0.7
-  m_cooldownTime: 2
+  m_cooldownTime: 1
 --- !u!1 &6755770046371517024
 GameObject:
   m_ObjectHideFlags: 0
