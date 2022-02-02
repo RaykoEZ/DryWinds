@@ -55,6 +55,7 @@ namespace Curry.Game
 
         public override void OnTakeDamage(float damage)
         {
+            Animator.SetTrigger("Panic");
             m_statusManager.TakeDamage(damage);
             OnTakingDamage?.Invoke(damage);
             OnHitStun?.Invoke(1f);
