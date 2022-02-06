@@ -45,7 +45,6 @@ namespace Curry.Ai
 
         public virtual void OnEnter(NpcController controller, AiWorldState state) 
         {
-            Debug.Log("Enter State");
             m_action.OnFinish += OnActionFinished;
             AiActionInput input = new AiActionInput(controller, state);
             m_action.OnEnter(input);
