@@ -20,7 +20,7 @@ namespace Curry.Ai
         {
             while (PreCondition(param.WorldState)) 
             {
-                float wait = UnityEngine.Random.Range(0.5f * m_cooldownTime, m_cooldownTime);
+                float wait = UnityEngine.Random.Range(0.7f * m_cooldownTime, m_cooldownTime);
                 yield return new WaitForSeconds(wait);
                 param.Controller.Wander();
                 yield return new WaitUntil(() => { return param.Controller.PathHandlerReachedTarget; });

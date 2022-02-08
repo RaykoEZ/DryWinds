@@ -41,7 +41,6 @@ namespace Curry.Ai
         {
             Debug.Log("Fleeing!!!");
             NpcTerritory target = param.WorldState.Self.RandomTerritory();
-            Debug.Log(target.transform.position);
             if(target != null && !m_fleeing) 
             {
                 m_fleeing = true;

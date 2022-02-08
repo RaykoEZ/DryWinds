@@ -8,6 +8,7 @@ namespace Curry.Ai
     [AddComponentMenu("Curry/Pathfinding/AIPath (2D)")]
     public class BaseNpcPathAi : AIPath, IAstarAI, IPathAi
     {
+        public virtual bool MovementFinished { get { return reachedDestination; } }
         protected float WanderDistance { get { return UnityEngine.Random.Range(0.8f, 1.2f) * 5f; } }
 
         protected override void OnEnable()
@@ -22,13 +23,14 @@ namespace Curry.Ai
             base.OnDisable();
         }
 
-        public override void OnTargetReached()
+        public override void OnTargetReached() 
         {
             canMove = false;
         }
+
         protected override void OnPathComplete(Path newPath)
         {
-            if (newPath != null && !newPath.error) 
+            if (!newPath.error) 
             {
                 canMove = true;
                 base.OnPathComplete(newPath);

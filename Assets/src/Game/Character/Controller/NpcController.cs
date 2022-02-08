@@ -13,7 +13,7 @@ namespace Curry.Game
         protected IPathAi m_pathHandler;
         protected override BaseNpc Character { get { return m_npc; } }
         protected virtual IPathAi PathHandler { get { return m_pathHandler; } }
-        public bool PathHandlerReachedTarget { get { return PathHandler.TargetReached; } } 
+        public bool PathHandlerReachedTarget { get { return PathHandler.MovementFinished; } } 
         protected void Awake()
         {
             m_pathHandler = GetComponent<IPathAi>();
@@ -75,14 +75,14 @@ namespace Curry.Game
         protected virtual IEnumerator OnMove(Vector2 target) 
         {
             PathHandler.PlanPath(target);
-            yield return new WaitUntil(() => { return PathHandler.TargetReached; });
+            yield return new WaitUntil(() => { return PathHandler.MovementFinished; });
             Debug.Log("Path reached");
             m_actionCall = null;
         }
         protected virtual IEnumerator OnMove(Transform target)
         {
             PathHandler.PlanPath(target);
-            yield return new WaitUntil(() => { return PathHandler.TargetReached; });
+            yield return new WaitUntil(() => { return PathHandler.MovementFinished; });
             Debug.Log("Path reached");
             m_actionCall = null;
         }

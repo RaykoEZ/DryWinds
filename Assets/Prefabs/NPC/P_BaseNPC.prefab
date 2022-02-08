@@ -345,11 +345,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   version: 1
   drawGizmos: 1
-  detailedGizmos: 0
+  detailedGizmos: 1
   startEndModifier:
     addPoints: 0
-    exactStartPoint: 3
-    exactEndPoint: 3
+    exactStartPoint: 1
+    exactEndPoint: 1
     useRaycasting: 0
     mask:
       serializedVersion: 2
@@ -385,7 +385,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   version: 5
-  radius: 5
+  radius: 0.5
   height: 0.01
   canMove: 0
   maxSpeed: 3
@@ -401,16 +401,16 @@ MonoBehaviour:
   autoRepath:
     mode: 2
     interval: 0.5
-    sensitivity: 1
-    maximumInterval: 1
-    visualizeSensitivity: 1
+    sensitivity: 5
+    maximumInterval: 0.7
+    visualizeSensitivity: 0
   targetCompatibility: {fileID: 0}
   maxAcceleration: -2.5
-  rotationSpeed: 360
-  slowdownDistance: 5
-  pickNextWaypointDist: 10
-  endReachedDistance: 3
-  alwaysDrawGizmos: 0
+  rotationSpeed: 180
+  slowdownDistance: 3
+  pickNextWaypointDist: 0.25
+  endReachedDistance: 1
+  alwaysDrawGizmos: 1
   slowWhenNotFacingTarget: 1
   whenCloseToDestination: 0
   constrainInsideGraph: 0

@@ -5,7 +5,7 @@ namespace Curry.Ai
     public delegate void OnPathComplete();
     public interface IPathAi
     {
-        bool TargetReached { get; }
+        bool MovementFinished { get; }
         // Setting a target to plan a path
         void PlanPath(Transform target);
         void PlanPath(Vector3 target);
