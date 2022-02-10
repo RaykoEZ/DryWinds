@@ -6,7 +6,7 @@ namespace Curry.Ai
 {
     public struct AiWorldState 
     {
-        public BaseNpc Self { get; set; }
+        public AiEmotionState EmotionState { get; set; }
         public CharacterStats CurrentStats { get; set; }
         public List<BaseCharacter> Enemies { get; set; }
         public List<BaseCharacter> Allies { get; set; }
@@ -14,14 +14,14 @@ namespace Curry.Ai
         public List<ICharacterAction<IActionInput>> DrawSkills { get; set; }
 
         public AiWorldState(
-            BaseNpc self,
+            AiEmotionState emotion,
             CharacterStats currentStats,
             List<BaseCharacter> enemies,
             List<BaseCharacter> allies,
             List<ICharacterAction<IActionInput>> basicSkills,
             List<ICharacterAction<IActionInput>> drawSkills)
         {
-            Self = self;
+            EmotionState = emotion;
             CurrentStats = currentStats;
             Enemies = enemies;
             Allies = allies;

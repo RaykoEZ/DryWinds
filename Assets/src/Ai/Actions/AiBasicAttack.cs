@@ -9,12 +9,6 @@ namespace Curry.Ai
     [AddComponentMenu("Curry/Ai Action/Attack")]
     public class AiBasicAttack : AiSkill
     {
-        public override float Priority(AiWorldState args)
-        {
-            float mod = args.Self.Emotion.Current.Hatred - (0.5f * args.Self.Emotion.Current.Fear);
-            return mod * m_basePriority;
-        }
-
         public override bool PreCondition(AiWorldState args)
         {
             bool baseCheck = base.PreCondition(args);

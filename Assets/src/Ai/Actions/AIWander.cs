@@ -13,7 +13,7 @@ namespace Curry.Ai
     {
         public override bool PreCondition(AiWorldState args)
         {
-            return args.Enemies.Count == 0 || args.Self.Emotion.Current.EmotionState == AiEmotionState.Normal;
+            return args.Enemies.Count == 0;
         }
 
         protected override IEnumerator ExecuteInternal(AiActionInput param)

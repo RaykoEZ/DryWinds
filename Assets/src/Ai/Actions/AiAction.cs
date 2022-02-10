@@ -29,7 +29,7 @@ namespace Curry.Ai
             }
         }
 
-        IEnumerator ExecuteAction(AiActionInput param) 
+        IEnumerator ExecuteAction(AiActionInput param)
         {
             yield return m_executeInternal = StartCoroutine(ExecuteInternal(param));
             OnActionFinish();
