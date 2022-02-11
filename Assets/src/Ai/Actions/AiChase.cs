@@ -18,12 +18,9 @@ namespace Curry.Ai
 
         public override void OnEnter(AiActionInput param)
         {
-            //Debug.Log("Chase");
-            //Transform target = ChooseTarget(param.WorldState.Enemies).transform;
-            //param.Controller.MoveTo(target);
         }
 
-        protected override IEnumerator ExecuteInternal(AiActionInput param)
+        protected override void ExecuteAction(AiActionInput param)
         {
             throw new NotImplementedException();
         }

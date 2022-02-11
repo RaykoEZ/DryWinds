@@ -10,10 +10,11 @@ namespace Curry.Game
     public class NpcController : BaseCharacterController<BaseNpc>
     {
         [SerializeField] BaseNpc m_npc = default;
+        public PathState MovementState { get { return PathHandler.State; } }
         protected IPathAi m_pathHandler;
         protected override BaseNpc Character { get { return m_npc; } }
         protected virtual IPathAi PathHandler { get { return m_pathHandler; } }
-        public bool PathHandlerReachedTarget { get { return PathHandler.MovementFinished; } } 
+
         protected void Awake()
         {
             m_pathHandler = GetComponent<IPathAi>();
@@ -30,16 +31,12 @@ namespace Curry.Game
         public virtual void Flee() 
         {
             NpcTerritory target = Character.RandomTerritory();
-            PathHandler.Interrupt();
             PathHandler.Flee(target);
         }
 
         public virtual void Wander() 
         {
-            if (PathHandler.State != PathState.Wandering) 
-            {
-                m_pathHandler.Wander();
-            }
+            m_pathHandler.Wander();
         }
 
         public virtual void EquipBasicSkill(ICharacterAction<IActionInput> skill)
@@ -68,7 +65,6 @@ namespace Curry.Game
         protected override void InterruptAction()
         {
             base.InterruptAction();
-            PathHandler.Interrupt();
             m_actionCall = null;
         }
 

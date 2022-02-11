@@ -4,12 +4,18 @@ using Pathfinding;
 
 namespace Curry.Ai
 {
+    public enum PathState
+    {
+        Idle,
+        Wandering,
+        Fleeing
+    }
+
     [RequireComponent(typeof(Seeker))]
     [AddComponentMenu("Curry/Pathfinding/AIPath (2D)")]
     public class BaseNpcPathAi : AIPath, IAstarAI, IPathAi
     {
-        public virtual bool MovementFinished { get { return reachedDestination; } }
-        protected float WanderDistance { get { return UnityEngine.Random.Range(0.8f, 1.2f) * 5f; } }
+        protected float WanderDistance { get { return Random.Range(0.8f, 1.2f) * 5f; } }
         public PathState State { get { return m_pathState; } }
         protected PathState m_pathState = PathState.Idle;
 
@@ -28,14 +34,32 @@ namespace Curry.Ai
         public override void OnTargetReached() 
         {
             canMove = false;
+            UpdatePathState();
         }
 
         protected override void OnPathComplete(Path newPath)
         {
-            if (!newPath.error) 
+            canMove = true;
+            base.OnPathComplete(newPath);
+        }
+
+        public IEnumerator DelayMovement(float time) 
+        {
+            canMove = false;
+            yield return new WaitForSeconds(time);
+            canMove = true;
+        }
+
+        protected virtual void UpdatePathState() 
+        {
+            switch (m_pathState)
             {
-                canMove = true;
-                base.OnPathComplete(newPath);
+                case PathState.Wandering:
+                    Wander();
+                    break;
+                default:
+                    m_pathState = PathState.Idle;
+                    break;
             }
         }
 
@@ -45,27 +69,21 @@ namespace Curry.Ai
             SearchPath();
         }
 
-        protected virtual IEnumerator Plan(Vector2 target) 
-        {
-            PlanPath(target);
-            yield return new WaitUntil(() => { return MovementFinished; });
-            m_pathState = PathState.Idle;
-        }
-
         public virtual void Wander()
         {
             Vector2 randDir = GetRandomDirection();
             Vector2 randPos = GetRandomDestination(position, randDir);
             Vector3 target = new Vector3(randPos.x, randPos.y, position.z);
             m_pathState = PathState.Wandering;
-            StartCoroutine(Plan(target));
+            PlanPath(target);
         }
 
         public virtual void Flee(NpcTerritory territory)
         {
+            Interrupt();
             Vector2 target = territory.transform.position;
             m_pathState = PathState.Fleeing;
-            StartCoroutine(Plan(target));
+            PlanPath(target);
         }
 
         protected virtual Vector2 GetRandomDirection()
@@ -83,9 +101,8 @@ namespace Curry.Ai
             return future;
         }
 
-        public void Interrupt()
+        protected void Interrupt()
         {
-            m_pathState = PathState.Idle;
             ClearPath();
         }
     }

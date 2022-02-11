@@ -9,28 +9,16 @@ namespace Curry.Ai
     [AddComponentMenu("Curry/Ai Action/Flee")]
     public class AiFlee : AiAction<IActionInput>
     {
-        bool m_fleeing = false;
         public override bool PreCondition(AiWorldState args)
         {
-            return args.EmotionState == AiEmotionState.Fear;
+            // Only flee when scared and not already fleeing
+            //Debug.Log($"Flee: {args.EmotionState}, {args.MovementState}");
+            return args.EmotionState == AiEmotionState.Fear && args.MovementState != PathState.Fleeing;
         }
 
-        protected override void OnActionFinish()
+        protected override void ExecuteAction(AiActionInput param)
         {
-            m_fleeing = false;
-            Debug.Log("Flee Finish");
-            base.OnActionFinish();
-        }
-
-        protected override IEnumerator ExecuteInternal(AiActionInput param)
-        {
-            Debug.Log("Flee");
-            if(!m_fleeing) 
-            {
-                m_fleeing = true;
-                param.Controller.Flee();
-            }
-            yield return new WaitUntil(()=> { return param.Controller.PathHandlerReachedTarget; });
+            param.Controller.Flee();         
         }
     }
 }

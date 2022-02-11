@@ -19,15 +19,11 @@ namespace Curry.Ai
         }
     }
 
-    public delegate void OnAiStateEnd();
     [Serializable]
     public class AiState
     {
         [SerializeField] AiAction<IActionInput> m_action = default;
         [SerializeField] protected string m_name = default;
-        public event OnAiStateEnd OnStateEnd;
-        public virtual bool ActionInProgress { get { return m_action.OnCooldown; } }
-
         public override string ToString()
         {
             return m_name;
@@ -35,7 +31,7 @@ namespace Curry.Ai
 
         public virtual bool PreCondition(AiWorldState args)
         {
-            return !ActionInProgress && m_action.IsUsable && m_action.PreCondition(args);
+            return m_action.IsUsable && m_action.PreCondition(args);
         }
 
         public virtual float Priority(AiWorldState args)
@@ -45,25 +41,8 @@ namespace Curry.Ai
 
         public virtual void OnEnter(NpcController controller, AiWorldState state) 
         {
-            m_action.OnFinish += OnActionFinished;
             AiActionInput input = new AiActionInput(controller, state);
             m_action.OnEnter(input);
-        }
-
-        public virtual void OnTransition()
-        {
-            OnExit();
-        }
-
-        protected virtual void OnActionFinished(ICharacterAction<AiActionInput> acton) 
-        {
-            m_action.OnFinish -= OnActionFinished;
-            OnStateEnd?.Invoke();
-        }
-
-        protected virtual void OnExit()
-        {
-            m_action.Interrupt();
         }
     }
 }

@@ -13,7 +13,6 @@ namespace Curry.Ai
         [SerializeField] protected List<AiState> m_otherStates = default;
         protected float m_timer = 0f;
         protected AiState m_current;
-        protected AiState m_next;
         AiWorldState m_worldStateSnapshot = new AiWorldState();
         protected virtual AiWorldState WorldStateSnapshot
         {
@@ -39,21 +38,23 @@ namespace Curry.Ai
             }
         }
 
-        protected virtual AiState BestState
-        {
-            get
+        protected virtual AiState BestState()
+        {            
+            List<AiState> states = ValidStates;
+            AiState best = m_current;
+            if (states.Count > 0) 
             {
-                List<AiState> states = ValidStates;
-                AiState best = m_defaultState;
-                foreach (AiState state in states)
+                best = states[0];
+                for (int i = 0; i < states.Count; ++i)
                 {
-                    if (state.Priority(WorldStateSnapshot) > best.Priority(WorldStateSnapshot))
+                    if (states[i].Priority(WorldStateSnapshot) > best.Priority(WorldStateSnapshot))
                     {
-                        best = state;
+                        best = states[i];
                     }
                 }
-                return best;
             }
+            return best;
+            
         }
 
         protected void OnEnable()
@@ -67,9 +68,8 @@ namespace Curry.Ai
 
         protected virtual void Start() 
         {
-            m_current = m_defaultState;
             UpdateWorldState();
-            EnterState();
+            TransitionTo(m_defaultState);
         }
 
         protected virtual void Update() 
@@ -86,35 +86,23 @@ namespace Curry.Ai
         public virtual void Evaluate() 
         {
             UpdateWorldState();
-            AiState newState = BestState;
+            AiState newState = BestState();
             if (newState != m_current) 
             {
-                m_next = newState;
-                TransitionTo();
+                TransitionTo(newState);
             }
         }
 
-        protected virtual void TransitionTo()
+        protected virtual void TransitionTo(AiState newState)
         {
-            m_current.OnTransition();
-        }
-
-        protected virtual void OnTransitionFinished()
-        {
-            m_current.OnStateEnd -= OnTransitionFinished;
-            m_current = m_next;
-            EnterState();
-        }
-
-        void EnterState()
-        {
-            m_current.OnStateEnd += OnTransitionFinished;
+            m_current = newState;
             m_current.OnEnter(m_controller, WorldStateSnapshot);
         }
 
         void UpdateWorldState()
         {
             m_worldStateSnapshot.EmotionState = m_npc.Emotion.Current.EmotionState;
+            m_worldStateSnapshot.MovementState = m_controller.MovementState;
             m_worldStateSnapshot.CurrentStats = m_npc.CurrentStats;
             m_worldStateSnapshot.Enemies = m_npc.Enemies;
             m_worldStateSnapshot.Allies = m_npc.Allies;

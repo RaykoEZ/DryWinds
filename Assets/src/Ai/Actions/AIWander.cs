@@ -13,18 +13,13 @@ namespace Curry.Ai
     {
         public override bool PreCondition(AiWorldState args)
         {
-            return args.Enemies.Count == 0;
+            //Debug.Log($"Wander: {args.Enemies.Count == 0}, {args.MovementState}");
+            return args.Enemies.Count == 0 && args.MovementState == PathState.Idle;
         }
 
-        protected override IEnumerator ExecuteInternal(AiActionInput param)
+        protected override void ExecuteAction(AiActionInput param)
         {
-            while (PreCondition(param.WorldState)) 
-            {
-                float wait = UnityEngine.Random.Range(0.7f * m_cooldownTime, m_cooldownTime);
-                yield return new WaitForSeconds(wait);
-                param.Controller.Wander();
-                yield return new WaitUntil(() => { return param.Controller.PathHandlerReachedTarget; });
-            }
+            param.Controller.Wander();
         }
     }
 }
