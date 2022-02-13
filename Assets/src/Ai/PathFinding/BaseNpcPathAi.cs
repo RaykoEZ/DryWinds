@@ -15,9 +15,10 @@ namespace Curry.Ai
     [AddComponentMenu("Curry/Pathfinding/AIPath (2D)")]
     public class BaseNpcPathAi : AIPath, IAstarAI, IPathAi
     {
-        protected float WanderDistance { get { return Random.Range(0.8f, 1.2f) * 5f; } }
+        protected float WanderDistance { get { return Random.Range(0.8f, 1.2f) * 3f; } }
         public PathState State { get { return m_pathState; } }
         protected PathState m_pathState = PathState.Idle;
+
 
         protected override void OnEnable()
         {
@@ -71,8 +72,7 @@ namespace Curry.Ai
 
         public virtual void Wander()
         {
-            Vector2 randDir = GetRandomDirection();
-            Vector2 randPos = GetRandomDestination(position, randDir);
+            Vector2 randPos = GetRandomDestination();
             Vector3 target = new Vector3(randPos.x, randPos.y, position.z);
             m_pathState = PathState.Wandering;
             PlanPath(target);
@@ -86,19 +86,37 @@ namespace Curry.Ai
             PlanPath(target);
         }
 
-        protected virtual Vector2 GetRandomDirection()
+        protected virtual Vector2 GetRandomDestination()
         {
-            float randDirX = Random.Range(-1f, 1f);
-            float randDirY = Random.Range(-1f, 1f);
-            Vector2 dir = new Vector2(randDirX, randDirY);
-            return dir.normalized;
+            Vector2 randDir = Random.insideUnitCircle;
+            Vector2 dest = randDir * WanderDistance;
+            dest += (Vector2)position;
+            var graph = AstarPath.active.graphs[0];
+            var nearestNode = graph.GetNearest(dest);
+            bool walkable = nearestNode.node.Walkable;
+            if (!walkable) 
+            {
+                dest = Rotate(graph, dest, randDir);
+            }
+            return dest;
         }
-        protected virtual Vector2 GetRandomDestination(Vector2 origin, Vector2 dir)
+
+        Vector2 Rotate(NavGraph graph, Vector2 dest, Vector2 dir) 
         {
-            float randDegree = Random.Range(-180f, 180f);
-            Vector2 randRot = Quaternion.AngleAxis(randDegree, Vector3.forward) * dir;
-            Vector2 future = origin + WanderDistance * randRot;
-            return future;
+            Vector2 o = position;
+            for (int i = 1; i < 7; ++i)
+            {
+                Vector2 rot = Quaternion.AngleAxis(i * 45f, Vector3.forward) * dir;
+                dest = rot * WanderDistance;
+                dest += o;
+                var nearestNode = graph.GetNearest(dest);
+                bool walkable = nearestNode.node.Walkable;
+                if (walkable) 
+                {
+                    return dest;
+                }
+            }
+            return dest;
         }
 
         protected void Interrupt()
