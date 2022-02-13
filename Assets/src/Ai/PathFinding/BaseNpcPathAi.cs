@@ -104,16 +104,23 @@ namespace Curry.Ai
         Vector2 Rotate(NavGraph graph, Vector2 dest, Vector2 dir) 
         {
             Vector2 o = position;
+            // To allow more exploration in an enclosure, we reduce the wander distance after each unwalkable step
+            float distMod = 0.8f;
             for (int i = 1; i < 7; ++i)
             {
                 Vector2 rot = Quaternion.AngleAxis(i * 45f, Vector3.forward) * dir;
-                dest = rot * WanderDistance;
+                // reducing wander dist to explore more within an enclosure
+                dest = rot * distMod * WanderDistance;
                 dest += o;
                 var nearestNode = graph.GetNearest(dest);
                 bool walkable = nearestNode.node.Walkable;
                 if (walkable) 
                 {
                     return dest;
+                }
+                else 
+                {
+                    distMod *= distMod;
                 }
             }
             return dest;
