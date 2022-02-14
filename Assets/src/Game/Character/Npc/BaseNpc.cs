@@ -45,10 +45,19 @@ namespace Curry.Game
         {
             m_territories = territories;
         }
-        public NpcTerritory RandomTerritory()
+        public virtual NpcTerritory ChooseRetreatDestination()
         {
-            int rand = UnityEngine.Random.Range(0, m_territories.Count - 1);
-            NpcTerritory ret = m_territories[rand];
+            NpcTerritory ret = m_territories[0];
+            float leastDistance = Vector2.Distance(transform.position, ret.transform.position);
+            for (int i = 1; i < m_territories.Count; ++i) 
+            {
+                float distance = Vector2.Distance(transform.position, m_territories[i].transform.position);
+                if (distance < leastDistance) 
+                {
+                    leastDistance = distance;
+                    ret = m_territories[i];
+                }
+            }
             return ret;
         }
         public override void Prepare()

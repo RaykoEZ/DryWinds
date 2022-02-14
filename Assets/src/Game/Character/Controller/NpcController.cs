@@ -30,7 +30,7 @@ namespace Curry.Game
 
         public virtual void Flee() 
         {
-            NpcTerritory target = Character.RandomTerritory();
+            NpcTerritory target = Character.ChooseRetreatDestination();
             PathHandler.Flee(target);
         }
 
