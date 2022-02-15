@@ -57,6 +57,18 @@ namespace Curry.Game
             m_basicSkill.ActivateSkill(target.transform.position);
         }
 
+        protected override void Deactivate()
+        {
+            PathHandler.Stop();
+            base.Deactivate();
+        }
+
+        protected override void Reactivate()
+        {
+            base.Reactivate();
+            PathHandler.Startup();
+        }
+
         protected override void InterruptSkill()
         {
             base.InterruptSkill();

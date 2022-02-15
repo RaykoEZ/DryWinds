@@ -18,7 +18,9 @@ namespace Curry.Game
             Character.OnHitStun += OnHitStun;
             Character.OnActionInterrupt += InterruptSkill;
             Character.OnLoaded += Init;
-            Character.OnDefeated += OnDefeated;
+            Character.OnDefeated += Deactivate;
+            Character.OnRetreat += Deactivate;
+            Character.OnRetreatInterrupt += Reactivate;
         }
 
         protected virtual void OnDisable() 
@@ -26,7 +28,9 @@ namespace Curry.Game
             Character.OnHitStun -= OnHitStun;
             Character.OnActionInterrupt -= InterruptSkill;
             Character.OnLoaded -= Init;
-            Character.OnDefeated -= OnDefeated;
+            Character.OnDefeated -= Deactivate;
+            Character.OnRetreat -= Deactivate;
+            Character.OnRetreatInterrupt -= Reactivate;
         }
 
         protected virtual void Init()
@@ -112,10 +116,14 @@ namespace Curry.Game
             m_drawSkill.InterruptSkill();
         }
 
-        protected virtual void OnDefeated() 
-        {       
+        protected virtual void Deactivate() 
+        {
+            InterruptAction();
+            StopAllCoroutines();
         }
-
+        protected virtual void Reactivate() 
+        {        
+        }
         protected IEnumerator RecoverInput(float stunMod)
         {
             yield return new WaitForSeconds(stunMod * Character.CurrentStats.HitRecoveryTime);

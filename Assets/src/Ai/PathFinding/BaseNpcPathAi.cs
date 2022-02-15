@@ -130,5 +130,18 @@ namespace Curry.Ai
         {
             ClearPath();
         }
+
+        public void Stop()
+        {
+            canMove = false;
+            canSearch = false;
+            Interrupt();
+        }
+
+        public void Startup()
+        {
+            canMove = true;
+            canSearch = true;
+        }
     }
 }

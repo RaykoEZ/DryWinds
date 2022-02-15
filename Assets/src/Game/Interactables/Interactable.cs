@@ -68,7 +68,7 @@ namespace Curry.Game
             }
             else 
             {
-                Defeat();
+                Despawn();
             }
         }
 
@@ -78,14 +78,14 @@ namespace Curry.Game
             AstarPath.active.UpdateGraphs(bounds);
         }
 
-        IEnumerator OnDefeatSequence() 
+        protected virtual IEnumerator OnDefeatSequence() 
         {
             m_anim.SetBool("Defeated", true);
             yield return new WaitUntil(()=> { return m_anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 1f; });
-            Defeat();
+            Despawn();
         }
 
-        void Defeat() 
+        protected void Despawn() 
         {
             if (Origin != null)
             {

@@ -11,6 +11,7 @@ namespace Curry.Game
     public delegate void OnCharacterHitStun(float stunMod);
     public delegate void OnCharacterDefeated();
     public delegate void OnCharacterInterrupt();
+    public delegate void OnCharacterRetreat();
     public abstract class BaseCharacter : Interactable
     {
         [SerializeField] protected CharacterStatusManager m_statusManager = default;
@@ -34,8 +35,11 @@ namespace Curry.Game
         public event OnCharacterTakeDamage OnTakingDamage;
         public event OnCharacterHitStun OnHitStun;
         public event OnCharacterInterrupt OnActionInterrupt;
+        public event OnCharacterInterrupt OnRetreatInterrupt;
         public event OnCharacterDefeated OnDefeated;
+        public event OnCharacterRetreat OnRetreat;
 
+        protected Coroutine m_retreat;
         public virtual void Init(CharacterContextFactory contextFactory) 
         {
             m_statusManager.OnLoaded += () => { OnLoaded?.Invoke(); };
@@ -55,6 +59,8 @@ namespace Curry.Game
 
         public override void OnTakeDamage(float damage)
         {
+            // Interrupt retreat
+            InterruptRetreat();
             Animator.SetTrigger("Panic");
             m_statusManager.TakeDamage(damage);
             OnTakingDamage?.Invoke(damage);
@@ -90,6 +96,27 @@ namespace Curry.Game
         {
             OnDefeated?.Invoke();
             base.OnDefeat(animate);
+        }
+        public virtual void Retreat()
+        {
+            OnRetreat?.Invoke();
+            m_retreat = StartCoroutine(OnRetreatSequence());
+        }
+        protected virtual IEnumerator OnRetreatSequence()
+        {
+            m_anim.SetTrigger("Retreat");
+            yield return new WaitUntil(() => { return m_anim.GetBool("Retreated"); });
+            Despawn();
+        }
+
+        protected virtual void InterruptRetreat() 
+        {
+            if (m_retreat != null)
+            {
+                StopCoroutine(m_retreat);
+                m_retreat = null;
+                OnRetreatInterrupt?.Invoke();
+            }
         }
 
         public virtual void ApplyModifier(CharactertModifier mod) 
