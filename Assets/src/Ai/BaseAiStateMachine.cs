@@ -41,7 +41,7 @@ namespace Curry.Ai
         protected virtual AiState BestState()
         {            
             List<AiState> states = ValidStates;
-            AiState best = m_current;
+            AiState best;
             if (states.Count > 0) 
             {
                 best = states[0];
@@ -52,6 +52,10 @@ namespace Curry.Ai
                         best = states[i];
                     }
                 }
+            }
+            else 
+            {
+                best = m_current;
             }
             return best;
             

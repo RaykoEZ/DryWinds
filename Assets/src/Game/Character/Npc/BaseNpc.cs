@@ -20,6 +20,7 @@ namespace Curry.Game
         public event OnCharacterDetected OnDetectCharacter;
         public event OnCharacterDetected OnCharacterExitDetection;
         public event OnNpcEvaluate OnEvaluate;
+
         public virtual EmotionHandler Emotion { get { return m_emotions; } } 
         public List<BaseCharacter> Enemies { get { return new List<BaseCharacter>(m_enemies); } }
         public List<BaseCharacter> Allies { get { return new List<BaseCharacter>(m_allies); } }
@@ -34,6 +35,7 @@ namespace Curry.Game
                 m_emotions.Update();
             }
         }
+
         public override void Init(CharacterContextFactory contextFactory)
         {
             base.Init(contextFactory);

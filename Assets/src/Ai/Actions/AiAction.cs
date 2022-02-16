@@ -13,22 +13,25 @@ namespace Curry.Ai
         [SerializeField] protected float m_basePriority = default;
         [SerializeField] protected float m_cooldownTime = default;
         // cooldown ends when internal execute coroutine finishes
-        public virtual bool OnCooldown { get { return false; }}
+        bool OnCooldown { get; set; }
         public virtual bool IsUsable { get { return !OnCooldown; } }
+
+        void OnEnable()
+        {
+            OnCooldown = false;
+        }
 
         public virtual void OnEnter(AiActionInput param)
         {
-            if (IsUsable) 
-            {
-                ExecuteAction(param);
-            }
+            ExecuteAction(param);
+            StartCoroutine(Cooldown());
         }
 
         protected abstract void ExecuteAction(AiActionInput param);
        
         public virtual bool PreCondition(AiWorldState args)
         {
-            return true;
+            return IsUsable;
         }
 
         public virtual float Priority(AiWorldState args) 
@@ -39,6 +42,13 @@ namespace Curry.Ai
         protected virtual BaseCharacter ChooseTarget(List<BaseCharacter> characters) 
         {
             return HeuristicUtil.WeakestCharacter(characters);
+        }
+
+        IEnumerator Cooldown() 
+        {
+            OnCooldown = true;
+            yield return new WaitForSeconds(m_cooldownTime);
+            OnCooldown = false;
         }
     }
 }

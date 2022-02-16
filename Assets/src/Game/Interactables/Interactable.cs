@@ -18,7 +18,6 @@ namespace Curry.Game
     // A basic script for a collidable object 
     public class Interactable : MonoBehaviour, IPoolable, IClashable
     {
-        [SerializeField] protected Animator m_anim = default;
         [SerializeField] protected Rigidbody2D m_rigidbody = default;
         [SerializeField] protected ObjectRelations m_relations = default;
         CollisionStats m_defaultCollisionStats = new CollisionStats(0f, 5f);
@@ -26,7 +25,6 @@ namespace Curry.Game
         public Rigidbody2D RigidBody { get { return m_rigidbody; } }
         public ObjectRelations Relations { get { return m_relations; } }
         public virtual CollisionStats CollisionData { get { return m_defaultCollisionStats; } }
-        public Animator Animator { get { return m_anim; } }
 
         public virtual void Prepare() 
         { }
@@ -60,16 +58,9 @@ namespace Curry.Game
         {
         }
 
-        public virtual void OnDefeat(bool animate = false)
+        public virtual void OnDefeat()
         {
-            if (animate) 
-            {
-                StartCoroutine(OnDefeatSequence());
-            }
-            else 
-            {
-                Despawn();
-            }
+            Despawn();
         }
 
         protected virtual void UpdatePathfinder()
@@ -78,14 +69,7 @@ namespace Curry.Game
             AstarPath.active.UpdateGraphs(bounds);
         }
 
-        protected virtual IEnumerator OnDefeatSequence() 
-        {
-            m_anim.SetBool("Defeated", true);
-            yield return new WaitUntil(()=> { return m_anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 1f; });
-            Despawn();
-        }
-
-        protected void Despawn() 
+        public void Despawn() 
         {
             if (Origin != null)
             {

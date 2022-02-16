@@ -12,6 +12,7 @@ namespace Curry.Game
         [SerializeField] InputActionReference m_movementAction = default;
 
         protected override Player Character { get { return m_player; } }
+
         void FixedUpdate()
         {
             if (IsReady) 
@@ -63,10 +64,10 @@ namespace Curry.Game
         protected override IEnumerator OnSkill(Vector2 target) 
         {
             // trigger dash windup anim
-            Character.Animator.SetBool("DashCharging", true);
-            Character.Animator.SetTrigger("DashTrigger");
+            m_anim.SetBool("DashCharging", true);
+            m_anim.SetTrigger("DashTrigger");
             yield return new WaitForSeconds(m_basicSkill.CurrentSkill.Properties.WindupTime);
-            Character.Animator.SetBool("DashCharging", false);
+            m_anim.SetBool("DashCharging", false);
             m_basicSkill.ActivateSkill(target);
         }
 
@@ -111,7 +112,7 @@ namespace Curry.Game
         {
             base.InterruptSkill();
             // Interrupt the input stun and reapply the stun timer
-            Character.Animator.SetTrigger("TakeDamage");
+            m_anim.SetTrigger("TakeDamage");
         }
     }
 }

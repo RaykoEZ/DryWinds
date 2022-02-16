@@ -11,14 +11,5 @@ namespace Curry.Ai
     {
         [SerializeField] protected Collider2D m_collider = default;
         public virtual Bounds Boundary { get { return m_collider.bounds; } }
-
-        private void OnTriggerEnter2D(Collider2D collision)
-        {
-            BaseNpc npc = collision.gameObject?.GetComponent<BaseNpc>();
-            if(npc != null) 
-            {
-                npc.Retreat();
-            }
-        }
     }
 }

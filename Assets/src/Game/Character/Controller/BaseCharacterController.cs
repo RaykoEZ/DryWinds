@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 using Curry.Skill;
 
@@ -6,6 +7,7 @@ namespace Curry.Game
 {
     public abstract class BaseCharacterController<T> : MonoBehaviour where T : BaseCharacter
     {
+        [SerializeField] protected Animator m_anim = default;
         public virtual bool IsReady { get { return m_actionCall == null; } }
         protected Coroutine m_actionCall = null;
         protected abstract T Character { get; }
@@ -18,9 +20,7 @@ namespace Curry.Game
             Character.OnHitStun += OnHitStun;
             Character.OnActionInterrupt += InterruptSkill;
             Character.OnLoaded += Init;
-            Character.OnDefeated += Deactivate;
-            Character.OnRetreat += Deactivate;
-            Character.OnRetreatInterrupt += Reactivate;
+            Character.OnDefeated += OnDefeat;
         }
 
         protected virtual void OnDisable() 
@@ -28,9 +28,7 @@ namespace Curry.Game
             Character.OnHitStun -= OnHitStun;
             Character.OnActionInterrupt -= InterruptSkill;
             Character.OnLoaded -= Init;
-            Character.OnDefeated -= Deactivate;
-            Character.OnRetreat -= Deactivate;
-            Character.OnRetreatInterrupt -= Reactivate;
+            Character.OnDefeated -= OnDefeat;
         }
 
         protected virtual void Init()
@@ -97,14 +95,26 @@ namespace Curry.Game
             }
         }
 
+        protected virtual void OnDefeat(Action onFinish) 
+        {
+            StartCoroutine(OnDefeatSequence(onFinish));
+        }
+
         protected virtual IEnumerator OnSkill(Vector2 target) 
         {
             yield return new WaitForSeconds(m_basicSkill.CurrentSkill.Properties.WindupTime);
             m_basicSkill.ActivateSkill(target);
         }
-
-        protected void OnHitStun(float stunMod)
+        protected virtual IEnumerator OnDefeatSequence(Action onFinish)
         {
+            m_anim.SetBool("Defeated", true);
+            yield return new WaitUntil(() => { return m_anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 1f; });
+            Deactivate();
+            onFinish();
+        }
+        protected virtual void OnHitStun(float stunMod)
+        {
+            m_anim.SetTrigger("Panic");
             // Interrupt the input stun and reapply the stun timer
             InterruptAction();
             InterruptSkill();

@@ -11,9 +11,12 @@ namespace Curry.Ai
     {
         public override bool PreCondition(AiWorldState args)
         {
+            bool ret = base.PreCondition(args) && 
+                args.EmotionState == AiEmotionState.Fear && 
+                args.MovementState != PathState.Fleeing;
             // Only flee when scared and not already fleeing
             //Debug.Log($"Flee: {args.EmotionState}, {args.MovementState}");
-            return args.EmotionState == AiEmotionState.Fear && args.MovementState != PathState.Fleeing;
+            return ret;
         }
 
         protected override void ExecuteAction(AiActionInput param)

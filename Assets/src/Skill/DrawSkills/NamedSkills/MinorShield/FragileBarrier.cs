@@ -16,7 +16,7 @@ namespace Curry.Skill
     public class FragileBarrier : FragileObject, ITimeLimit, ISummonableObject<RegionInput>
     {
         [SerializeField] protected LineRenderer m_lineRenderer = default;
-
+        [SerializeField] Animator m_anim = default;
         public float Duration { get; protected set; }
         public float TimeElapsed { get; protected set; }
         public virtual GameObject Self { get { return gameObject; } }
@@ -55,14 +55,14 @@ namespace Curry.Skill
             OnDefeat();
         }
 
-        public override void OnDefeat(bool animate = false)
+        public override void OnDefeat()
         {
             TimeElapsed = 0f;
             Duration = 0f;
             HitBox.points = new Vector2[] { };
             m_lineRenderer.positionCount = 0;
             m_lineRenderer.SetPositions(new Vector3[] { });
-            base.OnDefeat(animate);
+            base.OnDefeat();
         }
     }
 }

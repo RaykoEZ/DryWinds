@@ -1,4 +1,4 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Curry.Skill;
@@ -9,7 +9,7 @@ namespace Curry.Game
     public delegate void OnCharacterHeal(float heal);
     public delegate void OnCharacterTakeDamage(float damage);
     public delegate void OnCharacterHitStun(float stunMod);
-    public delegate void OnCharacterDefeated();
+    public delegate void OnCharacterDefeated(Action onFinish);
     public delegate void OnCharacterInterrupt();
     public delegate void OnCharacterRetreat();
     public abstract class BaseCharacter : Interactable
@@ -35,11 +35,8 @@ namespace Curry.Game
         public event OnCharacterTakeDamage OnTakingDamage;
         public event OnCharacterHitStun OnHitStun;
         public event OnCharacterInterrupt OnActionInterrupt;
-        public event OnCharacterInterrupt OnRetreatInterrupt;
         public event OnCharacterDefeated OnDefeated;
-        public event OnCharacterRetreat OnRetreat;
 
-        protected Coroutine m_retreat;
         public virtual void Init(CharacterContextFactory contextFactory) 
         {
             m_statusManager.OnLoaded += () => { OnLoaded?.Invoke(); };
@@ -59,9 +56,6 @@ namespace Curry.Game
 
         public override void OnTakeDamage(float damage)
         {
-            // Interrupt retreat
-            InterruptRetreat();
-            Animator.SetTrigger("Panic");
             m_statusManager.TakeDamage(damage);
             OnTakingDamage?.Invoke(damage);
             OnHitStun?.Invoke(1f);
@@ -92,31 +86,14 @@ namespace Curry.Game
         {
             OnActionInterrupt?.Invoke();
         }
-        public override void OnDefeat(bool animate = false)
+        public override void OnDefeat()
         {
-            OnDefeated?.Invoke();
-            base.OnDefeat(animate);
-        }
-        public virtual void Retreat()
-        {
-            OnRetreat?.Invoke();
-            m_retreat = StartCoroutine(OnRetreatSequence());
-        }
-        protected virtual IEnumerator OnRetreatSequence()
-        {
-            m_anim.SetTrigger("Retreat");
-            yield return new WaitUntil(() => { return m_anim.GetBool("Retreated"); });
-            Despawn();
+            OnDefeated?.Invoke(Defeat);
         }
 
-        protected virtual void InterruptRetreat() 
+        void Defeat() 
         {
-            if (m_retreat != null)
-            {
-                StopCoroutine(m_retreat);
-                m_retreat = null;
-                OnRetreatInterrupt?.Invoke();
-            }
+            base.OnDefeat();
         }
 
         public virtual void ApplyModifier(CharactertModifier mod) 
@@ -125,7 +102,6 @@ namespace Curry.Game
             {
                 return;
             }
-
             m_statusManager.AddModifier(mod);
         }
     }
