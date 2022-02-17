@@ -107,6 +107,11 @@ namespace Curry.Game
             OnEvaluate?.Invoke();
         }
 
+        public virtual void Retreat() 
+        {
+            Despawn();
+        }
+
         public override void OnTakeDamage(float damage)
         {
             base.OnTakeDamage(damage);

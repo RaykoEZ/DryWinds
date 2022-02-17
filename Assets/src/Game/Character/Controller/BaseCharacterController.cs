@@ -17,24 +17,34 @@ namespace Curry.Game
 
         protected virtual void OnEnable()
         {
+            Activate();
             Character.OnHitStun += OnHitStun;
             Character.OnActionInterrupt += InterruptSkill;
-            Character.OnLoaded += Init;
+            Character.OnLoaded += OnAssetLoaded;
             Character.OnDefeated += OnDefeat;
         }
 
         protected virtual void OnDisable() 
         {
+            Deactivate();
             Character.OnHitStun -= OnHitStun;
             Character.OnActionInterrupt -= InterruptSkill;
-            Character.OnLoaded -= Init;
+            Character.OnLoaded -= OnAssetLoaded;
             Character.OnDefeated -= OnDefeat;
         }
 
-        protected virtual void Init()
+        protected virtual void OnAssetLoaded()
         {
             EquipeSkill(0);
             EquipeDrawSkill(0);
+        }
+        protected virtual void Activate()
+        {
+        }
+        protected virtual void Deactivate()
+        {
+            InterruptAction();
+            StopAllCoroutines();
         }
 
         public virtual void EquipeSkill(int index) 
@@ -126,15 +136,8 @@ namespace Curry.Game
             m_drawSkill.InterruptSkill();
         }
 
-        protected virtual void Deactivate() 
-        {
-            InterruptAction();
-            StopAllCoroutines();
-        }
-        protected virtual void Reactivate() 
-        {        
-        }
-        protected IEnumerator RecoverInput(float stunMod)
+
+        protected virtual IEnumerator RecoverInput(float stunMod)
         {
             yield return new WaitForSeconds(stunMod * Character.CurrentStats.HitRecoveryTime);
             Character.RigidBody.velocity = Vector2.zero;

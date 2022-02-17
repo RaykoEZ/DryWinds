@@ -55,7 +55,7 @@ namespace Curry.Skill
             OnDefeat();
         }
 
-        public override void OnDefeat()
+        protected override void OnDefeat()
         {
             TimeElapsed = 0f;
             Duration = 0f;

@@ -17,10 +17,18 @@ namespace Curry.Game
         protected override BaseNpc Character { get { return m_npc; } }
         protected virtual IPathAi PathHandler { get { return m_pathHandler; } }
 
-
-        protected void Awake()
+        protected override void Activate()
         {
             m_pathHandler = GetComponent<IPathAi>();
+            PathHandler.OnReached += OnDestinationReached;
+            PathHandler.Startup();
+            base.Activate();
+        }
+
+        protected override void Deactivate()
+        {
+            PathHandler.Stop();
+            base.Deactivate();
         }
 
         public override void OnBasicSkill(BaseCharacter target)
@@ -30,10 +38,29 @@ namespace Curry.Game
                 m_actionCall = StartCoroutine(UsingSkill(target));
             }
         }
+
+        protected virtual void OnDestinationReached() 
+        {
+            switch (PathHandler.State)
+            {
+                case PathState.Wandering:
+                    // Start doing other actions
+                    break;
+                case PathState.Fleeing:
+                    Retreat();
+                    break;
+                default:
+                    break;
+            }
+        }
+
         protected override void OnHitStun(float stunMod)
         {
-            // Interrupt retreat
-            InterruptRetreat();
+            if (m_retreat != null)
+            {
+                // Interrupt retreat
+                InterruptRetreat();
+            }
             base.OnHitStun(stunMod);
         }
         public virtual void Flee() 
@@ -47,11 +74,8 @@ namespace Curry.Game
         }
         protected virtual void InterruptRetreat()
         {
-            if (m_retreat != null)
-            {
-                StopCoroutine(m_retreat);
-                m_retreat = null;
-            }
+            StopCoroutine(m_retreat);
+            m_retreat = null;          
         }
         public virtual void Wander() 
         {
@@ -68,6 +92,13 @@ namespace Curry.Game
             m_basicSkill.CurrentSkill.OnFinish += OnActionFinish;
         }
 
+        protected override IEnumerator RecoverInput(float stunMod)
+        {
+            PathHandler.Stop();
+            yield return base.RecoverInput(stunMod);
+            PathHandler.Startup();
+        }
+
         protected virtual IEnumerator UsingSkill(BaseCharacter target)
         {
             m_anim.SetBool("WindingUp", true);
@@ -81,18 +112,7 @@ namespace Curry.Game
             m_anim.SetTrigger("Retreat");
             yield return new WaitUntil(() => { return m_anim.GetBool("Retreated"); });
             Deactivate();
-        }
-
-        protected override void Deactivate()
-        {
-            PathHandler.Stop();
-            base.Deactivate();
-        }
-
-        protected override void Reactivate()
-        {
-            base.Reactivate();
-            PathHandler.Startup();
+            Character.Retreat();
         }
 
         protected override void InterruptSkill()

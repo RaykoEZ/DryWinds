@@ -48,12 +48,6 @@ namespace Curry.Game
             m_statusManager.Shutdown();
         }
 
-        public override void OnKnockback(Vector2 direction, float knockback)
-        {
-            base.OnKnockback(direction, knockback);
-            OnHitStun?.Invoke(0.2f);
-        }
-
         public override void OnTakeDamage(float damage)
         {
             m_statusManager.TakeDamage(damage);
@@ -86,7 +80,7 @@ namespace Curry.Game
         {
             OnActionInterrupt?.Invoke();
         }
-        public override void OnDefeat()
+        protected override void OnDefeat()
         {
             OnDefeated?.Invoke(Defeat);
         }

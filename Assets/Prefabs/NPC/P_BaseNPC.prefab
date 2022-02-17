@@ -268,7 +268,7 @@ MonoBehaviour:
       m_sp: 50
       m_speed: 1
       m_spRegenPerSec: 5
-      m_hitRecoveryTime: 5
+      m_hitRecoveryTime: 1
       m_collisionStats:
         m_contactDamage: 0
         m_knockback: 1
@@ -347,8 +347,8 @@ MonoBehaviour:
   detailedGizmos: 1
   startEndModifier:
     addPoints: 0
-    exactStartPoint: 1
-    exactEndPoint: 1
+    exactStartPoint: 3
+    exactEndPoint: 3
     useRaycasting: 0
     mask:
       serializedVersion: 2
@@ -409,7 +409,7 @@ MonoBehaviour:
   rotationSpeed: 180
   slowdownDistance: 2
   pickNextWaypointDist: 0.25
-  endReachedDistance: 0.2
+  endReachedDistance: 0.5
   alwaysDrawGizmos: 1
   slowWhenNotFacingTarget: 1
   whenCloseToDestination: 0

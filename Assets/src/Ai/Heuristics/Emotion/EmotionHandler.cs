@@ -28,18 +28,6 @@ namespace Curry.Ai
                     m_current.Fear -= 0.01f;
                     break;
                 }
-                case AiEmotionState.Hatred:
-                {
-                    m_current.Hatred -= 0.01f;
-                    m_current.Fear -= 0.02f;
-                    break;
-                }
-                case AiEmotionState.Fear:
-                {
-                    m_current.Hatred -= 0.02f;
-                    m_current.Fear -= 0.01f;
-                    break; 
-                }
             }
         }
     }

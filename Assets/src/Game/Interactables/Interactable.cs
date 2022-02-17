@@ -58,7 +58,7 @@ namespace Curry.Game
         {
         }
 
-        public virtual void OnDefeat()
+        protected virtual void OnDefeat()
         {
             Despawn();
         }
@@ -69,7 +69,7 @@ namespace Curry.Game
             AstarPath.active.UpdateGraphs(bounds);
         }
 
-        public void Despawn() 
+        protected void Despawn() 
         {
             if (Origin != null)
             {

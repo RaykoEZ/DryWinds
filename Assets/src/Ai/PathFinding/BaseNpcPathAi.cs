@@ -19,6 +19,7 @@ namespace Curry.Ai
         public PathState State { get { return m_pathState; } }
         protected PathState m_pathState = PathState.Idle;
 
+        public event OnTargetReached OnReached;
 
         protected override void OnEnable()
         {
@@ -34,6 +35,7 @@ namespace Curry.Ai
 
         public override void OnTargetReached() 
         {
+            OnReached?.Invoke();
             canMove = false;
             UpdatePathState();
         }
@@ -58,6 +60,9 @@ namespace Curry.Ai
                 case PathState.Wandering:
                     Wander();
                     break;
+                case PathState.Fleeing:
+                    Stop();
+                    break;
                 default:
                     m_pathState = PathState.Idle;
                     break;
@@ -66,6 +71,7 @@ namespace Curry.Ai
 
         protected virtual void PlanPath(Vector3 target)
         {
+            autoRepath.mode = AutoRepathPolicy.Mode.Dynamic;
             destination = target;
             SearchPath();
         }
@@ -80,7 +86,7 @@ namespace Curry.Ai
 
         public virtual void Flee(NpcTerritory territory)
         {
-            Interrupt();
+            CancelCurrentPath();
             Vector2 target = territory.transform.position;
             m_pathState = PathState.Fleeing;
             PlanPath(target);
@@ -126,7 +132,7 @@ namespace Curry.Ai
             return dest;
         }
 
-        protected void Interrupt()
+        public void CancelCurrentPath()
         {
             ClearPath();
         }
@@ -134,14 +140,14 @@ namespace Curry.Ai
         public void Stop()
         {
             canMove = false;
-            canSearch = false;
-            Interrupt();
+            autoRepath.mode = AutoRepathPolicy.Mode.Never;
+            CancelCurrentPath();
         }
 
         public void Startup()
         {
             canMove = true;
-            canSearch = true;
+            autoRepath.mode = AutoRepathPolicy.Mode.Dynamic;
         }
     }
 }
