@@ -45,6 +45,7 @@ namespace Curry.Game
             {
                 case PathState.Wandering:
                     // Start doing other actions
+                    StartCoroutine(ShowHabit());
                     break;
                 case PathState.Fleeing:
                     Retreat();
@@ -52,6 +53,14 @@ namespace Curry.Game
                 default:
                     break;
             }
+        }
+
+        protected virtual IEnumerator ShowHabit() 
+        {
+            PathHandler.Stop();
+            m_anim.SetBool("ShowHabit", true);
+            yield return new WaitUntil(() => !m_anim.GetBool("ShowHabit"));
+            PathHandler.Startup();
         }
 
         protected override void OnHitStun(float stunMod)
@@ -110,7 +119,7 @@ namespace Curry.Game
         protected virtual IEnumerator OnRetreatSequence()
         {
             m_anim.SetTrigger("Retreat");
-            yield return new WaitUntil(() => { return m_anim.GetBool("Retreated"); });
+            yield return new WaitUntil(() => m_anim.GetBool("Retreated"));
             Deactivate();
             Character.Retreat();
         }
