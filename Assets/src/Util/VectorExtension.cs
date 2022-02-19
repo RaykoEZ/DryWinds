@@ -23,5 +23,11 @@ namespace Curry.Util
         {
             return new Vector3(v2.x, v2.y, 0f);
         }
+
+        public static Vector3 VectorFromDegree(float degree)
+        {
+            float rad = degree * Mathf.Deg2Rad;
+            return new Vector3(Mathf.Cos(rad), Mathf.Sin(rad));
+        }
     }
 }
