@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 6391846705114584868}
   - component: {fileID: 6391846705114584871}
   - component: {fileID: 6391846705114584870}
-  m_Layer: 0
+  m_Layer: 1
   m_Name: P_FragileBarrier
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -167,11 +167,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3254b446d7d7df44eb6e37d5ec2f1c27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_anim: {fileID: 6391846705114584871}
   m_rigidbody: {fileID: 6391846705114584870}
   m_relations: 1
   m_durability: 5
   m_lineRenderer: {fileID: 6391846705114584869}
+  m_anim: {fileID: 6391846705114584871}
 --- !u!95 &6391846705114584871
 Animator:
   serializedVersion: 3

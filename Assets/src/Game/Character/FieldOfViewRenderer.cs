@@ -11,6 +11,8 @@ namespace Curry.Game
         [SerializeField] float m_fov = default;
         [SerializeField] float m_viewDistance = default;
         [SerializeField] MeshFilter m_meshFilter = default;
+        [SerializeField] PolygonCollider2D m_collider = default;
+        [SerializeField] LayerMask m_raycastMask = default;
         Vector3[] m_verts;
         Vector2[] m_uv;
         int[] m_triangles;
@@ -22,25 +24,34 @@ namespace Curry.Game
             m_meshFilter.mesh = m_renderMesh;
         }
 
-        void Start()
+        void Update()
         {
             CreateRenderMesh();
         }
 
         void CreateRenderMesh() 
         {
-            Vector3 origin = Vector3.zero;
             float angleIncrease = m_fov / m_rayCount;
             float angle = 0f;
             m_verts = new Vector3[m_rayCount + 2];
-            m_verts[0] = origin;
+            m_verts[0] = Vector3.zero;
             m_uv = new Vector2[m_verts.Length];
             m_triangles = new int[m_rayCount * 3];
+            Vector3 origin = transform.position;
             // Calc verts for mesh
             for (int i = 0; i < m_verts.Length - 1; ++i) 
             {
-                Vector3 newV = origin + VectorExtension.VectorFromDegree(angle) * m_viewDistance;
-                m_verts[i + 1] = newV;
+                RaycastHit2D hit = Physics2D.Raycast(origin, VectorExtension.VectorFromDegree(angle), m_viewDistance, m_raycastMask);
+                // Check if there are obstacles
+                if (hit.collider != null) 
+                {
+                    m_verts[i + 1] = VectorExtension.ToVec3(hit.point);
+                }
+                else 
+                {
+                    m_verts[i + 1] = VectorExtension.VectorFromDegree(angle) * m_viewDistance;
+
+                }
                 angle -= angleIncrease;
             }
             // assign triangle order
@@ -56,6 +67,9 @@ namespace Curry.Game
             m_renderMesh.vertices = m_verts;
             m_renderMesh.uv = m_uv;
             m_renderMesh.triangles = m_triangles;
+
+            Vector2[] points = VectorExtension.ToVector2Array(m_verts);
+            m_collider.points = points;
         }
 
 

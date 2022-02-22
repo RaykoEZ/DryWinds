@@ -14,6 +14,7 @@ namespace Curry.Util
             return Array.ConvertAll(v3, ToVec3);
         }
 
+        //Converters for vecs
         public static Vector2 ToVec2(Vector3 v3)
         {
             return new Vector2(v3.x, v3.y);
