@@ -30,5 +30,11 @@ namespace Curry.Util
             float rad = degree * Mathf.Deg2Rad;
             return new Vector3(Mathf.Cos(rad), Mathf.Sin(rad));
         }
+
+        public static float DegreeFromDirection(Vector2 dir) 
+        {
+            float degree = Mathf.Rad2Deg * Mathf.Atan2(dir.y, dir.x);
+            return degree;
+        }
     }
 }
