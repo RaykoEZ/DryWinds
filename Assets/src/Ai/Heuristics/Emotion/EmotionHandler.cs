@@ -4,8 +4,9 @@ namespace Curry.Ai
 {
     public abstract class EmotionHandler
     {
-        public virtual AiEmotion Default { get { return m_default; } }
-        public virtual AiEmotion Current { get { return m_current; } }
+        protected virtual AiEmotion Default { get { return m_default; } }
+        protected virtual AiEmotion Current { get { return m_current; } }
+        public AiEmotionState CurrentEmotion { get { return m_current.EmotionState; } }
         protected AiEmotion m_default;
         protected AiEmotion m_current;
         public virtual void Init() 

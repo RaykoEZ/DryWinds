@@ -105,7 +105,7 @@ namespace Curry.Ai
 
         void UpdateWorldState()
         {
-            m_worldStateSnapshot.EmotionState = m_npc.Emotion.Current.EmotionState;
+            m_worldStateSnapshot.EmotionState = m_npc.Emotion.CurrentEmotion;
             m_worldStateSnapshot.MovementState = m_controller.MovementState;
             m_worldStateSnapshot.CurrentStats = m_npc.CurrentStats;
             m_worldStateSnapshot.Enemies = m_npc.Enemies;

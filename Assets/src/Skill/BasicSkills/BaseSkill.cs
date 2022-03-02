@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 using Curry.Game;
+using Curry.Ai;
 
 namespace Curry.Skill
 {
@@ -32,26 +33,28 @@ namespace Curry.Skill
         protected virtual void OnTriggerEnter2D(Collider2D col)
         {
             Interactable hit = col.gameObject.GetComponent<Interactable>();
-
-            if (hit == null || hit.Relations == ObjectRelations.None)
+            BodyPart part = col.gameObject.GetComponent<BodyPart>();
+            bool noHit = part == null && hit == null;
+            if (noHit || hit.Relations == ObjectRelations.None)
             {
                 return;
             }
-
             bool isAlly = m_user.Relations == hit.Relations;
             bool hitConfirm = 
                 (isAlly && m_skillProperty.TargetOptions == ObjectRelations.Ally) ||
                 (!isAlly && m_skillProperty.TargetOptions == ObjectRelations.Enemy);
             if (hitConfirm)
             {
-                OnHit(hit);
+                OnHit(hit, part);
                 return;
             }
         }
 
-        public virtual void OnHit(Interactable hit) 
-        {      
+        protected virtual void OnHit(Interactable hit, BodyPart part) 
+        {
         }
+
+        
 
         public virtual void Init(BaseCharacter user) 
         {

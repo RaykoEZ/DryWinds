@@ -47,10 +47,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 724e264067e27a247b9217e8fe39552a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_rayCount: 20
-  m_edgeSearchInterations: 2
-  m_fov: 60
-  m_edgeDistanceThreshold: 1
+  m_rayCount: 30
+  m_fov: 360
   m_viewDistance: 5
   m_meshFilter: {fileID: 6190679229787148732}
   m_collider: {fileID: 4496359553406405301}

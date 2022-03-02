@@ -17,6 +17,13 @@ namespace Curry.Game
         protected override BaseNpc Character { get { return m_npc; } }
         protected virtual IPathAi PathHandler { get { return m_pathHandler; } }
 
+        protected override void OnEnable()
+        {
+            base.OnEnable();
+            Character.OnKnockout += OnKnockedout;
+            Character.OnKnockoutRecover += OnKnockoutRecovery;
+        }
+
         protected override void Activate()
         {
             m_pathHandler = GetComponent<IPathAi>();
@@ -72,6 +79,25 @@ namespace Curry.Game
             }
             base.OnHitStun(stunMod);
         }
+
+        protected virtual void OnKnockedout() 
+        {
+            m_anim.SetBool("KnockedOut", true);
+            Deactivate();
+        }
+
+        protected virtual void OnKnockoutRecovery() 
+        {
+            m_anim.SetBool("KnockedOut", false);
+            StartCoroutine(Recover());
+        }
+
+        IEnumerator Recover() 
+        {
+            yield return new WaitForSeconds(Character.CurrentStats.HitRecoveryTime);
+            Activate();
+        }
+
         public virtual void Flee() 
         {
             NpcTerritory target = Character.ChooseRetreatDestination();

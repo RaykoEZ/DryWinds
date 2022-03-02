@@ -2,20 +2,26 @@
 using System.Collections;
 using UnityEngine;
 using Curry.Game;
+using Curry.Ai;
 
 namespace Curry.Skill
 {
     [RequireComponent(typeof(CircleCollider2D))]
-    public class ChargeAttack : BaseSkill, IHitboxEffect 
+    public class ChargeAttack : BaseSkill 
     {
         [SerializeField] protected float m_chargeDuration = default;
         [SerializeField] protected float m_recoilTime = default;
 
-        public override void OnHit(Interactable hit)
+        protected override void OnHit(Interactable hit, BodyPart part)
         {
             if (m_execute != null) 
             {
                 Interrupt();
+            }
+            
+            if (part != null) 
+            {
+                part.TakeDamage(m_skillProperty.ActionValue);
             }
 
             Vector2 diff = m_user.RigidBody.position - hit.RigidBody.position;

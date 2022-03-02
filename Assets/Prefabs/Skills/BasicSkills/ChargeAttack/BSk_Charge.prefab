@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4048156830801403012}
   - component: {fileID: 1162902964026411203}
   - component: {fileID: 8596796697600054897}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: BSk_Charge
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -130,6 +130,10 @@ PrefabInstance:
     - target: {fileID: 2631099041285634434, guid: 37893dc4b509ef54eb4ac85481a3fb8d, type: 3}
       propertyPath: m_EdgeRadius
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2631099041285634435, guid: 37893dc4b509ef54eb4ac85481a3fb8d, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 2631099041285634438, guid: 37893dc4b509ef54eb4ac85481a3fb8d, type: 3}
       propertyPath: m_Emitting
