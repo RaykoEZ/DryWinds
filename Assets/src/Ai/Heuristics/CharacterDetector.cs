@@ -15,7 +15,6 @@ namespace Curry.Ai
         {
             if(c.gameObject.TryGetComponent(out BaseCharacter character)) 
             {
-                Debug.Log("Detected");
                 OnDetected?.Invoke(character);
             }
         }

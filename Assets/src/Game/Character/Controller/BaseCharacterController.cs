@@ -124,7 +124,6 @@ namespace Curry.Game
         }
         protected virtual void OnHitStun(float stunMod)
         {
-            m_anim.SetTrigger("Panic");
             // Interrupt the input stun and reapply the stun timer
             InterruptAction();
             InterruptSkill();

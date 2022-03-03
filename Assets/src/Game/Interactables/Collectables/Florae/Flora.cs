@@ -3,7 +3,7 @@ using UnityEngine;
 namespace Curry.Game
 {
     [RequireComponent(typeof(Rigidbody2D))]
-    public class Flora : BaseItem, IFlammable, IFragile
+    public class Flora : BaseItem, IFlammable
     {
         protected override void OnCollect(Player player)
         {
@@ -15,7 +15,7 @@ namespace Curry.Game
             Debug.Log("on fire");
         }
 
-        public override void OnTakeDamage(float damage)
+        protected override void OnTakeDamage(float damage, int partDamage = 0)
         {
             Debug.Log("Flora is damaged");
         }

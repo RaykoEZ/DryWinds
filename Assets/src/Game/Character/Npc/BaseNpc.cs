@@ -78,6 +78,7 @@ namespace Curry.Game
         }
         public override void Prepare()
         {
+            base.Prepare();
             Init(m_contextFactory);
             m_emotions.Init();
             m_detector.OnDetected += OnTargetDetected;
@@ -93,7 +94,7 @@ namespace Curry.Game
         // Methods for adding/removing enemies in detection range.
         protected virtual void OnTargetDetected(BaseCharacter character)
         {
-            bool isFoe = character.Relations != Relations;
+            bool isFoe = character.name != name;
             if (isFoe)
             {
                 m_enemies.Add(character);
@@ -109,7 +110,7 @@ namespace Curry.Game
 
         protected virtual void OnLosingTarget(BaseCharacter character)
         {
-            bool isFoe = character.Relations != Relations;
+            bool isFoe = character.name != name;
             if (isFoe)
             {
                 m_enemies.Remove(character);
@@ -123,12 +124,12 @@ namespace Curry.Game
             OnEvaluate?.Invoke();
         }
 
-        public virtual void Retreat() 
+        public virtual void Retreat()
         {
             Despawn();
         }
 
-        public override void OnTakeDamage(float damage)
+        protected override void OnTakeDamage(float damage, int partDamage = 0)
         {
             base.OnTakeDamage(damage);
             if (!m_knockedout && m_statusManager.CurrentStats.CharacterStats.Stamina == 0f) 

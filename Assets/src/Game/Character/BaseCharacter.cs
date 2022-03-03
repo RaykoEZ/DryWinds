@@ -43,12 +43,25 @@ namespace Curry.Game
             m_statusManager.Init(this, contextFactory);
         }
 
+        protected override void OnBodyHit(BodyHitResult hit)
+        {
+            base.OnBodyHit(hit);
+            // Apply any modifiers on hit
+            if(hit.Modifiers != null) 
+            { 
+                foreach(CharacterModifier mod in hit.Modifiers) 
+                {
+                    ApplyModifier(mod);
+                }
+            }
+        }
+
         public virtual void Shutdown() 
         {
             m_statusManager.Shutdown();
         }
 
-        public override void OnTakeDamage(float damage)
+        protected override void OnTakeDamage(float damage, int partDamage = 0)
         {
             m_statusManager.TakeDamage(damage);
             OnTakingDamage?.Invoke(damage);
@@ -90,7 +103,7 @@ namespace Curry.Game
             base.OnDefeat();
         }
 
-        public virtual void ApplyModifier(CharactertModifier mod) 
+        public virtual void ApplyModifier(CharacterModifier mod) 
         {
             if (mod == null)
             {

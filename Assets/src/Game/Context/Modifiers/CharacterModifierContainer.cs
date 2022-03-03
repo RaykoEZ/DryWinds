@@ -5,9 +5,9 @@ namespace Curry.Game
 {
     public class CharacterModifierContainer 
     {
-        protected List<CharactertModifier> m_modifiers;
-        protected List<CharactertModifier> m_toRemove = new List<CharactertModifier>();
-        protected List<CharactertModifier> m_toAdd = new List<CharactertModifier>();
+        protected List<CharacterModifier> m_modifiers;
+        protected List<CharacterModifier> m_toRemove = new List<CharacterModifier>();
+        protected List<CharacterModifier> m_toAdd = new List<CharacterModifier>();
 
         public event OnModifierExpire OnModExpire;
         public event OnModifierChain OnModChain;
@@ -19,38 +19,38 @@ namespace Curry.Game
 
         public CharacterModifierContainer(float initVal)
         {
-            m_modifiers = new List<CharactertModifier>();
+            m_modifiers = new List<CharacterModifier>();
             m_overallValue = new CharacterModifierProperty(initVal);
         }
 
         public virtual void OnTimeElapsed(float dt) 
         {
-            foreach (CharactertModifier mod in m_modifiers)
+            foreach (CharacterModifier mod in m_modifiers)
             {
                 mod.OnTimeElapsed(dt);
             }
 
             // Clear all expired mods this frame
-            foreach (CharactertModifier expired in m_toRemove) 
+            foreach (CharacterModifier expired in m_toRemove) 
             {
                 RemoveExpiredModifier(expired);
             }
             m_toRemove.Clear();
 
             //Add all new modifiers
-            foreach (CharactertModifier newMod in m_toAdd)
+            foreach (CharacterModifier newMod in m_toAdd)
             {
                 AddModifier(newMod);
             }
             m_toAdd.Clear();
         }
 
-        public virtual void Add(CharactertModifier mod) 
+        public virtual void Add(CharacterModifier mod) 
         {
             m_toAdd.Add(mod);
         }
 
-        protected virtual void AddModifier(CharactertModifier mod) 
+        protected virtual void AddModifier(CharacterModifier mod) 
         {
             if (mod == null)
             {
@@ -63,7 +63,7 @@ namespace Curry.Game
             m_overallValue = mod.Apply(m_overallValue);
         }
 
-        protected virtual void RemoveExpiredModifier(CharactertModifier mod)
+        protected virtual void RemoveExpiredModifier(CharacterModifier mod)
         {
             if (mod == null)
             {
@@ -78,7 +78,7 @@ namespace Curry.Game
             OnModExpire?.Invoke(mod);
         }
 
-        protected virtual void OnModifierExpire(CharactertModifier mod) 
+        protected virtual void OnModifierExpire(CharacterModifier mod) 
         {
             m_toRemove.Add(mod);
         }
@@ -110,7 +110,7 @@ namespace Curry.Game
             }
         }
 
-        protected virtual void OnModifierChain(CharactertModifier newModifier) 
+        protected virtual void OnModifierChain(CharacterModifier newModifier) 
         {
             OnModChain?.Invoke(newModifier);
         }

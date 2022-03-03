@@ -128,7 +128,7 @@ namespace Curry.Game
             m_contextFactoryRef.UpdateContext(CalculateModifiedStats());
         }
 
-        public virtual void AddModifier(CharactertModifier mod) 
+        public virtual void AddModifier(CharacterModifier mod) 
         {
             CharacterModifierContainer modifierContainer;
             switch (mod.Type)
@@ -157,7 +157,7 @@ namespace Curry.Game
             m_specialMods.OnTimeElapsed(dt);
         }
 
-        protected virtual void OnModifierExpire(CharactertModifier mod) 
+        protected virtual void OnModifierExpire(CharacterModifier mod) 
         {
             Debug.Log($"{mod.Name}'s effect expired.");
             UpdateStats();

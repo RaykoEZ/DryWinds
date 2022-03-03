@@ -33,22 +33,21 @@ namespace Curry.Game
         protected virtual void OnTriggerEnter2D(Collider2D col)
         {
             Player hit = col.gameObject.GetComponent<Player>();
-            if (hit == null || hit.Relations == ObjectRelations.None)
+            if (hit != null)
             {
-                return;
+                OnCloseBy(hit);
             }
-            OnCloseBy(hit);
         }
 
         protected virtual void OnTriggerExit2D(Collider2D col)
         {
             Player hit = col.gameObject.GetComponent<Player>();
-            if (hit == null || hit.Relations == ObjectRelations.None)
+            if (hit != null)
             {
-                return;
+                OnLeaveRange?.Invoke();
+                OnLeaveRange = null;
             }
-            OnLeaveRange?.Invoke();
-            OnLeaveRange = null;
+
         }
 
         // On player entering vicinity, prompt for collection/interaction with player UI

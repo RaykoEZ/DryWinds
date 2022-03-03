@@ -11,12 +11,12 @@ namespace Curry.Game
         Special
     }
 
-    public delegate void OnModifierExpire(CharactertModifier modifier);
-    public delegate void OnModifierChain(CharactertModifier newModifier);
+    public delegate void OnModifierExpire(CharacterModifier modifier);
+    public delegate void OnModifierChain(CharacterModifier newModifier);
     public delegate void OnModifierTrigger();
 
     [Serializable]
-    public abstract class CharactertModifier
+    public abstract class CharacterModifier
     {
         // Name of the modifier, e.g. a skill/item name
         [SerializeField] protected string m_name;
@@ -37,7 +37,7 @@ namespace Curry.Game
         public float Duration { get { return m_duration; } }
         public abstract ModifierOpType Type { get; }
 
-        public CharactertModifier(string name, CharacterModifierProperty value, float duration)
+        public CharacterModifier(string name, CharacterModifierProperty value, float duration)
         {
             m_name = name;
             m_value = value;
@@ -61,7 +61,7 @@ namespace Curry.Game
             OnModifierExpire?.Invoke(this);
         }
 
-        protected virtual void OnChain(CharactertModifier newModifier) 
+        protected virtual void OnChain(CharacterModifier newModifier) 
         {
             OnModifierChain?.Invoke(newModifier);
         }

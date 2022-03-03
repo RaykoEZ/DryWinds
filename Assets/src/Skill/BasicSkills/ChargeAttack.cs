@@ -12,7 +12,7 @@ namespace Curry.Skill
         [SerializeField] protected float m_chargeDuration = default;
         [SerializeField] protected float m_recoilTime = default;
 
-        protected override void OnHit(Interactable hit, BodyPart part)
+        protected override void OnHit(BodyPart part)
         {
             if (m_execute != null) 
             {
@@ -21,17 +21,15 @@ namespace Curry.Skill
             
             if (part != null) 
             {
-                part.TakeDamage(m_skillProperty.ActionValue);
+                Vector2 source = m_user.RigidBody.position;
+                part.Hit(m_skillProperty.ActionValue,
+                    m_skillProperty.Knockback,
+                    source);
             }
 
-            Vector2 diff = m_user.RigidBody.position - hit.RigidBody.position;
-            if (hit.RigidBody.bodyType != RigidbodyType2D.Static)
-            {
-                hit.OnKnockback(-diff.normalized, m_skillProperty.Knockback);
-                hit.OnTakeDamage(m_skillProperty.ActionValue);
-            }
+            Vector2 v = m_user.RigidBody.velocity.normalized;
             m_user.RigidBody.velocity *= 0.1f;
-            m_user.OnKnockback(diff.normalized, 0.75f * m_skillProperty.Knockback);
+            m_user.OnKnockback(-v, 0.5f * m_skillProperty.Knockback);
         }
 
         protected override IEnumerator ExecuteInternal(IActionInput target)

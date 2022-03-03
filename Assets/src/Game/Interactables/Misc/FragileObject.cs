@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Curry.Game
 {
-    public class FragileObject : Interactable, IFragile
+    public class FragileObject : Interactable
     {
         [SerializeField] int m_durability = default;
 
@@ -30,7 +30,7 @@ namespace Curry.Game
             }
         }
 
-        public override void OnTakeDamage(float damage)
+        protected override void OnTakeDamage(float damage, int partDamage = 0)
         {
             m_currentDurability--;
             if (m_currentDurability <= 0)

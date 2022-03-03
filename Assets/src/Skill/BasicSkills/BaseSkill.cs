@@ -12,7 +12,6 @@ namespace Curry.Skill
         [SerializeField] protected Animator m_animator = default;
         [SerializeField] protected ActionProperty m_skillProperty = default;
         public event OnActionFinish<IActionInput> OnFinish;
-
         protected BaseCharacter m_user = default;
         protected Coroutine m_coolDown = default;
         protected Coroutine m_execute;
@@ -32,29 +31,16 @@ namespace Curry.Skill
 
         protected virtual void OnTriggerEnter2D(Collider2D col)
         {
-            Interactable hit = col.gameObject.GetComponent<Interactable>();
             BodyPart part = col.gameObject.GetComponent<BodyPart>();
-            bool noHit = part == null && hit == null;
-            if (noHit || hit.Relations == ObjectRelations.None)
+            if (part != null)
             {
-                return;
-            }
-            bool isAlly = m_user.Relations == hit.Relations;
-            bool hitConfirm = 
-                (isAlly && m_skillProperty.TargetOptions == ObjectRelations.Ally) ||
-                (!isAlly && m_skillProperty.TargetOptions == ObjectRelations.Enemy);
-            if (hitConfirm)
-            {
-                OnHit(hit, part);
-                return;
+                OnHit(part);
             }
         }
 
-        protected virtual void OnHit(Interactable hit, BodyPart part) 
+        protected virtual void OnHit(BodyPart part) 
         {
         }
-
-        
 
         public virtual void Init(BaseCharacter user) 
         {

@@ -77,6 +77,12 @@ namespace Curry.Game
                 // Interrupt retreat
                 InterruptRetreat();
             }
+            if (!m_anim.GetBool("KnockedOut"))
+            {
+                m_anim.SetTrigger("Panic");
+            }
+
+
             base.OnHitStun(stunMod);
         }
 
