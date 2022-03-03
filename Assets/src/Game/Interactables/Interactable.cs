@@ -10,28 +10,29 @@ namespace Curry.Game
     [Flags]
     public enum ObjectRelations 
     {
-        None,
+        None = 0,
         Ally = 1,
         Enemy = 1 << 1
     }
-
     // A basic script for a collidable object 
-    public class Interactable : MonoBehaviour, IPoolable
+    public class Interactable : MonoBehaviour, IPoolable, IClashable
     {
-        [SerializeField] protected Animator m_anim = default;
+        [SerializeField] protected BodyManager m_bodyManager = default;
         [SerializeField] protected Rigidbody2D m_rigidbody = default;
-        [SerializeField] protected ObjectRelations m_relations = default;
         CollisionStats m_defaultCollisionStats = new CollisionStats(0f, 5f);
         public virtual IObjectPool Origin { get; set; }
         public Rigidbody2D RigidBody { get { return m_rigidbody; } }
-        public ObjectRelations Relations { get { return m_relations; } }
-        public virtual CollisionStats CurrentCollisionStats { get { return m_defaultCollisionStats; } }
-        public Animator Animator { get { return m_anim; } }
+        public virtual CollisionStats CollisionData { get { return m_defaultCollisionStats; } }
 
         public virtual void Prepare() 
-        { }
+        {
+            m_bodyManager.OnBodyPartHit += OnBodyHit;
+            m_bodyManager.Init();
+
+        }
         public virtual void ReturnToPool()
         {
+            m_bodyManager.Shutdown();
             Origin.ReturnToPool(this);
         }
 
@@ -40,37 +41,53 @@ namespace Curry.Game
             OnClash(collision);
         }
 
-        protected virtual void OnClash(Collision2D collision)
+        public virtual void OnClash(Collision2D collision)
         {
             Interactable incomingInterable = collision.gameObject.GetComponent<Interactable>();
             if (incomingInterable != null)
             {
                 ContactPoint2D contact = collision.GetContact(0);
                 Vector2 dir = contact.normal.normalized;
-                OnKnockback(dir, incomingInterable.CurrentCollisionStats.Knockback);
+                OnKnockback(dir, incomingInterable.CollisionData.Knockback);
             }
         }
 
-        public virtual void OnKnockback(Vector2 direction, float knockback)
+        public virtual void OnKnockback(Vector2 source, float knockback)
         {
-            m_rigidbody.AddForce(knockback * direction, ForceMode2D.Impulse);
+            Vector2 diff = RigidBody.position - source;
+            m_rigidbody.AddForce(knockback * diff.normalized, ForceMode2D.Impulse);
         }
 
-
-        public virtual void OnTakeDamage(float damage) 
+        protected virtual void OnTakeDamage(float damage, int partDamage = 0) 
         {
         }
 
-        public virtual void OnDefeat(bool animate = false)
+        protected virtual void OnBodyHit(BodyHitResult hit)
         {
-            if (animate) 
+            OnTakeDamage(hit.Damage, hit.PartDamage);
+            OnKnockback(hit.KnockbackSource, hit.KnockbackMod);
+            if (hit.PartBreak) 
             {
-                StartCoroutine(OnDefeatSequence());
+                OnBodyPartBreak(hit.BodyPart);
             }
-            else 
+            if (hit.WeakpointBreak) 
             {
-                Defeat();
+                OnWeakpointBreak(hit.BodyPart);
             }
+        }
+
+        protected virtual void OnBodyPartBreak(BodyPart part) 
+        {   
+        }
+
+        protected virtual void OnWeakpointBreak(BodyPart part)
+        {
+        
+        }
+
+        protected virtual void OnDefeat()
+        {
+            Despawn();
         }
 
         protected virtual void UpdatePathfinder()
@@ -79,14 +96,7 @@ namespace Curry.Game
             AstarPath.active.UpdateGraphs(bounds);
         }
 
-        IEnumerator OnDefeatSequence() 
-        {
-            m_anim.SetBool("Defeated", true);
-            yield return new WaitUntil(()=> { return m_anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 1f; });
-            Defeat();
-        }
-
-        void Defeat() 
+        protected void Despawn() 
         {
             if (Origin != null)
             {

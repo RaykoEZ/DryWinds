@@ -1,19 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
 using UnityEngine;
 using Curry.Game;
-using Curry.Skill;
+using System.Collections;
 
 namespace Curry.Ai
 {
     [Serializable]
-    [CreateAssetMenu(menuName = "Curry/AiState/BasicAttack", order = 0)]
+    [AddComponentMenu("Curry/Ai Action/Attack")]
     public class AiBasicAttack : AiSkill
     {
         public override bool PreCondition(AiWorldState args)
         {
             bool baseCheck = base.PreCondition(args);
-            if (!baseCheck) 
+            if (!baseCheck)
             {
                 return baseCheck;
             }

@@ -14,6 +14,7 @@ namespace Curry.Util
             return Array.ConvertAll(v3, ToVec3);
         }
 
+        //Converters for vecs
         public static Vector2 ToVec2(Vector3 v3)
         {
             return new Vector2(v3.x, v3.y);
@@ -22,6 +23,18 @@ namespace Curry.Util
         public static Vector3 ToVec3(Vector2 v2)
         {
             return new Vector3(v2.x, v2.y, 0f);
+        }
+
+        public static Vector3 VectorFromDegree(float degree)
+        {
+            float rad = degree * Mathf.Deg2Rad;
+            return new Vector3(Mathf.Cos(rad), Mathf.Sin(rad));
+        }
+
+        public static float DegreeFromDirection(Vector2 dir) 
+        {
+            float degree = Mathf.Rad2Deg * Mathf.Atan2(dir.y, dir.x);
+            return degree;
         }
     }
 }

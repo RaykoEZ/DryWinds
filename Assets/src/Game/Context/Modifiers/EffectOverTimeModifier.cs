@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Curry.Game
 {
     [Serializable]
-    public class EffectOverTimeModifier : CharactertModifier
+    public class EffectOverTimeModifier : CharacterModifier
     {
         [SerializeField] protected float m_interval = default;
         protected float m_timer = 0f;

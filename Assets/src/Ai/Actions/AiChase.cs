@@ -3,23 +3,26 @@ using UnityEngine;
 using Curry.Game;
 using System.Collections.Generic;
 using Curry.Skill;
+using System.Collections;
 
 namespace Curry.Ai
 {
     [Serializable]
-    [CreateAssetMenu(menuName = "Curry/AiState/Chase", order = 0)]
+    [AddComponentMenu("Curry/Ai Action/Chase")]
     public class AiChase : AiAction<IActionInput>
     {
         public override bool PreCondition(AiWorldState args)
         {
-            return args.Enemies.Count > 0;
+            return args.Enemies.Count > 0 && args.EmotionState != AiEmotionState.Fear;
         }
 
-        public override ICharacterAction<IActionInput> Execute(NpcController controller, AiWorldState state)
+        public override void OnEnter(AiActionInput param)
         {
-            Transform target = ChooseTarget(state.Enemies).transform;
-            controller.Move(target);
-            return null;
+        }
+
+        protected override void ExecuteAction(AiActionInput param)
+        {
+            throw new NotImplementedException();
         }
     }
 }

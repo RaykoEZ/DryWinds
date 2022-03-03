@@ -1,4 +1,4 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Curry.Skill;
@@ -9,8 +9,9 @@ namespace Curry.Game
     public delegate void OnCharacterHeal(float heal);
     public delegate void OnCharacterTakeDamage(float damage);
     public delegate void OnCharacterHitStun(float stunMod);
-    public delegate void OnCharacterDefeated();
+    public delegate void OnCharacterDefeated(Action onFinish);
     public delegate void OnCharacterInterrupt();
+    public delegate void OnCharacterRetreat();
     public abstract class BaseCharacter : Interactable
     {
         [SerializeField] protected CharacterStatusManager m_statusManager = default;
@@ -23,7 +24,7 @@ namespace Curry.Game
         { 
             get { return m_statusManager.CurrentStats.CharacterStats; } 
         }
-        public override CollisionStats CurrentCollisionStats 
+        public override CollisionStats CollisionData 
         { 
             get { return m_statusManager.CurrentStats.CharacterStats.CollisionStats; } 
         }
@@ -42,18 +43,25 @@ namespace Curry.Game
             m_statusManager.Init(this, contextFactory);
         }
 
+        protected override void OnBodyHit(BodyHitResult hit)
+        {
+            base.OnBodyHit(hit);
+            // Apply any modifiers on hit
+            if(hit.Modifiers != null) 
+            { 
+                foreach(CharacterModifier mod in hit.Modifiers) 
+                {
+                    ApplyModifier(mod);
+                }
+            }
+        }
+
         public virtual void Shutdown() 
         {
             m_statusManager.Shutdown();
         }
 
-        public override void OnKnockback(Vector2 direction, float knockback)
-        {
-            base.OnKnockback(direction, knockback);
-            OnHitStun?.Invoke(1f);
-        }
-
-        public override void OnTakeDamage(float damage)
+        protected override void OnTakeDamage(float damage, int partDamage = 0)
         {
             m_statusManager.TakeDamage(damage);
             OnTakingDamage?.Invoke(damage);
@@ -85,19 +93,22 @@ namespace Curry.Game
         {
             OnActionInterrupt?.Invoke();
         }
-        public override void OnDefeat(bool animate = false)
+        protected override void OnDefeat()
         {
-            OnDefeated?.Invoke();
-            base.OnDefeat(animate);
+            OnDefeated?.Invoke(Defeat);
         }
 
-        public virtual void ApplyModifier(CharactertModifier mod) 
+        void Defeat() 
+        {
+            base.OnDefeat();
+        }
+
+        public virtual void ApplyModifier(CharacterModifier mod) 
         {
             if (mod == null)
             {
                 return;
             }
-
             m_statusManager.AddModifier(mod);
         }
     }

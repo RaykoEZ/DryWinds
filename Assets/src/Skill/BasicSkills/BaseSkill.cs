@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 using Curry.Game;
+using Curry.Ai;
 
 namespace Curry.Skill
 {
@@ -11,77 +12,34 @@ namespace Curry.Skill
         [SerializeField] protected Animator m_animator = default;
         [SerializeField] protected ActionProperty m_skillProperty = default;
         public event OnActionFinish<IActionInput> OnFinish;
-
-        protected bool m_onCD = false;
         protected BaseCharacter m_user = default;
         protected Coroutine m_coolDown = default;
+        protected Coroutine m_execute;
 
         public ActionProperty Properties { get { return m_skillProperty; } }
-        public bool ActionInProgress { get; protected set; }
-        
+        public bool OnCooldown { get { return m_coolDown != null; } }       
         public virtual bool IsUsable
         {
             get
             {
-                return !m_onCD &&
+                return !OnCooldown &&
                     m_user?.CurrentStats.SP >= m_skillProperty.SpCost;
             }
         }
 
-        protected abstract IEnumerator SkillEffect(IActionInput target);
+        protected abstract IEnumerator ExecuteInternal(IActionInput target);
 
         protected virtual void OnTriggerEnter2D(Collider2D col)
         {
-            Interactable hit = col.gameObject.GetComponent<Interactable>();
-
-            if (hit == null)
+            BodyPart part = col.gameObject.GetComponent<BodyPart>();
+            if (part != null)
             {
-                return;
-            }
-
-            bool isAlly = m_user.Relations == hit.Relations;
-            if (m_skillProperty.TargetOptions == ObjectRelations.Ally &&
-                isAlly)
-            {
-                OnHit(hit);
-                return;
-            }
-
-            if (m_skillProperty.TargetOptions == ObjectRelations.Enemy &&
-                !isAlly)
-            {
-                OnHit(hit);
-                return;
+                OnHit(part);
             }
         }
 
-        protected virtual void OnCollisionEnter2D(Collision2D col)
+        protected virtual void OnHit(BodyPart part) 
         {
-            Interactable hit = col.gameObject.GetComponent<Interactable>();
-
-            if (hit == null)
-            {
-                return;
-            }
-
-            bool isAlly = m_user.Relations == hit.Relations;
-            if (m_skillProperty.TargetOptions == ObjectRelations.Ally &&
-                isAlly) 
-            {
-                OnHit(hit);
-                return;
-            }
-
-            if (m_skillProperty.TargetOptions == ObjectRelations.Enemy &&
-                !isAlly)
-            {
-                OnHit(hit);
-                return;
-            }
-        }
-
-        public virtual void OnHit(Interactable hit) 
-        {      
         }
 
         public virtual void Init(BaseCharacter user) 
@@ -91,27 +49,30 @@ namespace Curry.Skill
 
         // The logics and interactions of the skill on each target
         /// @param target: initial target for skill
-        public virtual void Execute(IActionInput param)
+        public virtual void OnEnter(IActionInput param)
         {
             if (IsUsable && m_user != null)
             {
-                ActionInProgress = true;
                 ConsumeResource(m_skillProperty.SpCost);
                 CoolDown();
                 m_animator.SetTrigger("Start");
-                StartCoroutine(SkillEffect(param));
+                m_execute = StartCoroutine(ExecuteInternal(param));
             }
         }
         public virtual void Interrupt()
         {
             OnSkillFinish();
+            if( m_execute != null ) 
+            {
+                StopCoroutine(m_execute);
+            }
         }
 
         protected virtual void CoolDown() 
         {
             if (m_coolDown == null) 
             {
-                m_coolDown = StartCoroutine(OnCooldown());
+                m_coolDown = StartCoroutine(Coolingdown());
             }          
         }
 
@@ -122,17 +83,14 @@ namespace Curry.Skill
 
         protected virtual void OnSkillFinish() 
         {
-            ActionInProgress = false;
             OnFinish?.Invoke(this);
         }
 
-        protected virtual IEnumerator OnCooldown() 
+        protected virtual IEnumerator Coolingdown() 
         {
-            m_onCD = true;
             //start cooldown and reset skill states
             yield return new WaitForSeconds(m_skillProperty.CooldownTime);
             m_coolDown = null;
-            m_onCD = false;
         }
     }
 

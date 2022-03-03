@@ -5,9 +5,9 @@
     {
         event OnActionFinish<T> OnFinish;
         bool IsUsable { get; }
-        bool ActionInProgress { get; }
+        bool OnCooldown { get; }
         ActionProperty Properties { get; }
-        void Execute(T param);
+        void OnEnter(T param);
         void Interrupt();
     }
 }

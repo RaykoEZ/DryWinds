@@ -7,27 +7,11 @@ namespace Curry.Ai
 {
     public class BaseAiStateMachine : MonoBehaviour 
     {
-        [SerializeField] protected float m_defaultFrequency = default;
-        [SerializeField] protected float m_averageReactionInterval = default;
+        [SerializeField] protected BaseNpc m_npc = default;
         [SerializeField] protected NpcController m_controller = default;
-        [SerializeField] protected AiState m_idle = default;
-        [SerializeField] protected List<AiState> m_otherActions = default;
-        protected virtual float ReactionTime
-        {
-            get
-            {
-                return Random.Range(0.7f, 1.3f) * m_averageReactionInterval;
-            }
-        }
-
-        protected virtual bool IsReady
-        {
-            get 
-            {
-                return m_controller.IsReady && !m_current.ActionInProgress;
-            }
-        }
-        float m_evalTimer = 0f; 
+        [SerializeField] protected AiState m_defaultState = default;
+        [SerializeField] protected List<AiState> m_otherStates = default;
+        protected float m_timer = 0f;
         protected AiState m_current;
         AiWorldState m_worldStateSnapshot = new AiWorldState();
         protected virtual AiWorldState WorldStateSnapshot
@@ -43,7 +27,7 @@ namespace Curry.Ai
             get
             {
                 List<AiState> validActions = new List<AiState>();
-                foreach (AiState state in m_otherActions)
+                foreach (AiState state in m_otherStates)
                 {
                     if (state.PreCondition(WorldStateSnapshot))
                     {
@@ -54,76 +38,80 @@ namespace Curry.Ai
             }
         }
 
-        protected virtual AiState BestState
-        {
-            get
+        protected virtual AiState BestState()
+        {            
+            List<AiState> states = ValidStates;
+            AiState best;
+            if (states.Count > 0) 
             {
-                List<AiState> states = ValidStates;
-                AiState best = m_idle;
-                foreach (AiState state in states)
+                best = states[0];
+                for (int i = 0; i < states.Count; ++i)
                 {
-                    if (state.Priority(WorldStateSnapshot) > best.Priority(WorldStateSnapshot))
+                    if (states[i].Priority(WorldStateSnapshot) > best.Priority(WorldStateSnapshot))
                     {
-                        best = state;
+                        best = states[i];
                     }
                 }
-                return best;
             }
+            else 
+            {
+                best = m_current;
+            }
+            return best;
+            
+        }
+
+        protected void OnEnable()
+        {
+            m_npc.OnEvaluate += Evaluate;
+        }
+        protected void OnDisable()
+        {
+            m_npc.OnEvaluate -= Evaluate;
         }
 
         protected virtual void Start() 
         {
-            m_current = m_idle;
-            ExecuteCurrentAction();
+            UpdateWorldState();
+            TransitionTo(m_defaultState);
         }
 
         protected virtual void Update() 
         {
-            m_evalTimer += Time.deltaTime;
-            if (m_evalTimer > m_defaultFrequency && IsReady) 
+            m_timer += Time.deltaTime;
+            if (m_timer > 1f) 
             {
-               EvaluateActions();
-               m_evalTimer = 0f;
+                m_timer = 0f;
+                Evaluate();
             }
         }
 
         // Determine state changes or additional behaviour
-        protected virtual void EvaluateActions() 
+        public virtual void Evaluate() 
         {
             UpdateWorldState();
-            StartCoroutine(Evaluate());
+            AiState newState = BestState();
+            if (newState != m_current) 
+            {
+                TransitionTo(newState);
+            }
         }
 
-        protected virtual IEnumerator Evaluate() 
+        protected virtual void TransitionTo(AiState newState)
         {
-            yield return new WaitForSeconds(ReactionTime);
-            TransitionTo(BestState);
-        }
-
-        protected virtual void TransitionTo(AiState next)
-        {
-            StartCoroutine(m_current.OnTransition(next, OnTransitionFinished));
-        }
-
-        protected virtual void OnTransitionFinished(AiState next)
-        {
-            m_current = next;
-            ExecuteCurrentAction();
-        }
-
-        void ExecuteCurrentAction() 
-        {
-            m_current.Execute(m_controller, WorldStateSnapshot);
+            m_current = newState;
+            m_current.OnEnter(m_controller, WorldStateSnapshot);
         }
 
         void UpdateWorldState()
         {
-            BaseNpc npc = m_controller.Character;
-            m_worldStateSnapshot.CurrentStats = npc.CurrentStats;
-            m_worldStateSnapshot.Enemies = npc.Enemies;
-            m_worldStateSnapshot.Allies = npc.Allies;
-            m_worldStateSnapshot.BasicSkills = npc.BasicSkills.Skills;
-            m_worldStateSnapshot.DrawSkills = npc.DrawSkills.Skills;
+            m_worldStateSnapshot.EmotionState = m_npc.Emotion.CurrentEmotion;
+            m_worldStateSnapshot.MovementState = m_controller.MovementState;
+            m_worldStateSnapshot.CurrentStats = m_npc.CurrentStats;
+            m_worldStateSnapshot.Enemies = m_npc.Enemies;
+            m_worldStateSnapshot.Allies = m_npc.Allies;
+            m_worldStateSnapshot.BasicSkills = m_npc.BasicSkills.Skills;
+            m_worldStateSnapshot.DrawSkills = m_npc.DrawSkills.Skills;
         }
     }
 }

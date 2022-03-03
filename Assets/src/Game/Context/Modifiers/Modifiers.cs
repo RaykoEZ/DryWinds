@@ -3,7 +3,7 @@ using System;
 namespace Curry.Game
 {
     [Serializable]
-    public class CharacterAdder : CharactertModifier
+    public class CharacterAdder : CharacterModifier
     {
         public override ModifierOpType Type { get { return ModifierOpType.Add; } }
         public CharacterAdder(
@@ -25,7 +25,7 @@ namespace Curry.Game
     }
 
     [Serializable]
-    public class CharacterMultiplier : CharactertModifier
+    public class CharacterMultiplier : CharacterModifier
     {
         public override ModifierOpType Type { get { return ModifierOpType.Multiply; } }
 

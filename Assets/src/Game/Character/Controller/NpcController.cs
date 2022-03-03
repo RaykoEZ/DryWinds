@@ -6,72 +6,123 @@ using Curry.Ai;
 
 namespace Curry.Game
 {
-    [RequireComponent(typeof(IPathHandler))]
+    [RequireComponent(typeof(IPathAi))]
     public class NpcController : BaseCharacterController<BaseNpc>
     {
-        [SerializeField] protected BaseNpc m_npc = default;
+        [SerializeField] BaseNpc m_npc = default;
+        protected Coroutine m_retreat;
 
-        protected IPathHandler m_pathHandler;
-        public event OnCharacterTakeDamage OnTakingDamage;
-        public override BaseNpc Character { get { return m_npc; } }
-        protected virtual IPathHandler PathHandler { get { return m_pathHandler; } }
+        public PathState MovementState { get { return PathHandler.State; } }
+        protected IPathAi m_pathHandler;
+        protected override BaseNpc Character { get { return m_npc; } }
+        protected virtual IPathAi PathHandler { get { return m_pathHandler; } }
 
-        protected void Awake()
-        {
-            m_pathHandler = GetComponent<IPathHandler>();
-        }
-
-        protected override void OnEnable() 
+        protected override void OnEnable()
         {
             base.OnEnable();
-            m_npc.OnTakingDamage += OnTakeDamage;
+            Character.OnKnockout += OnKnockedout;
+            Character.OnKnockoutRecover += OnKnockoutRecovery;
         }
-        protected override void OnDisable()
+
+        protected override void Activate()
         {
-            base.OnDisable();
-            m_npc.OnTakingDamage -= OnTakeDamage;
+            m_pathHandler = GetComponent<IPathAi>();
+            PathHandler.OnReached += OnDestinationReached;
+            PathHandler.Startup();
+            base.Activate();
+        }
+
+        protected override void Deactivate()
+        {
+            PathHandler.Stop();
+            base.Deactivate();
         }
 
         public override void OnBasicSkill(BaseCharacter target)
         {
             if (IsReady)
             {
-                ActionCall = StartCoroutine(UsingSkill(target));
+                m_actionCall = StartCoroutine(UsingSkill(target));
             }
         }
 
-        public override void Move(Vector2 target)
+        protected virtual void OnDestinationReached() 
         {
-            if (IsReady)
+            switch (PathHandler.State)
             {
-                PathHandler.OnPlanned += OnPathPlanned;
-                PathHandler.PlanPath(target);
-                ActionCall = StartCoroutine(OnMove());
-            }
-        }
-        public virtual void Move(Transform target)
-        {
-            if (IsReady)
-            {
-                PathHandler.OnPlanned += OnPathPlanned;
-                PathHandler.PlanPath(target);
-                ActionCall = StartCoroutine(OnMove());
+                case PathState.Wandering:
+                    // Start doing other actions
+                    StartCoroutine(ShowHabit());
+                    break;
+                case PathState.Fleeing:
+                    Retreat();
+                    break;
+                default:
+                    break;
             }
         }
 
-        protected virtual void OnPathPlanned(bool pathPossible) 
+        protected virtual IEnumerator ShowHabit() 
         {
-            if (pathPossible) 
-            {
-                PathHandler.OnPlanned -= OnPathPlanned;
-                PathHandler.FollowPlannedPath();
-            }
+            PathHandler.Stop();
+            m_anim.SetBool("ShowHabit", true);
+            yield return new WaitUntil(() => !m_anim.GetBool("ShowHabit"));
+            PathHandler.Startup();
         }
 
-        protected virtual void OnTakeDamage(float damage)
+        protected override void OnHitStun(float stunMod)
         {
-            OnTakingDamage?.Invoke(damage);
+            if (m_retreat != null)
+            {
+                // Interrupt retreat
+                InterruptRetreat();
+            }
+            if (!m_anim.GetBool("KnockedOut"))
+            {
+                m_anim.SetTrigger("Panic");
+            }
+
+
+            base.OnHitStun(stunMod);
         }
+
+        protected virtual void OnKnockedout() 
+        {
+            m_anim.SetBool("KnockedOut", true);
+            Deactivate();
+        }
+
+        protected virtual void OnKnockoutRecovery() 
+        {
+            m_anim.SetBool("KnockedOut", false);
+            StartCoroutine(Recover());
+        }
+
+        IEnumerator Recover() 
+        {
+            yield return new WaitForSeconds(Character.CurrentStats.HitRecoveryTime);
+            Activate();
+        }
+
+        public virtual void Flee() 
+        {
+            NpcTerritory target = Character.ChooseRetreatDestination();
+            PathHandler.Flee(target);
+        }
+        protected virtual void Retreat()
+        {
+            m_retreat = StartCoroutine(OnRetreatSequence());
+        }
+        protected virtual void InterruptRetreat()
+        {
+            StopCoroutine(m_retreat);
+            m_retreat = null;          
+        }
+        public virtual void Wander() 
+        {
+            m_pathHandler.Wander();
+        }
+
         public virtual void EquipBasicSkill(ICharacterAction<IActionInput> skill)
         {
             if (m_basicSkill.CurrentSkill != null)
@@ -82,24 +133,39 @@ namespace Curry.Game
             m_basicSkill.CurrentSkill.OnFinish += OnActionFinish;
         }
 
+        protected override IEnumerator RecoverInput(float stunMod)
+        {
+            PathHandler.Stop();
+            yield return base.RecoverInput(stunMod);
+            PathHandler.Startup();
+        }
+
         protected virtual IEnumerator UsingSkill(BaseCharacter target)
         {
-            Character.Animator.SetBool("WindingUp", true);
+            m_anim.SetBool("WindingUp", true);
             yield return new WaitForSeconds(Character.BasicSkills.CurrentSkill.Properties.WindupTime);
-            Character.Animator.SetBool("WindingUp", false);
+            m_anim.SetBool("WindingUp", false);
             m_basicSkill.ActivateSkill(target.transform.position);
         }
 
-        protected virtual IEnumerator OnMove() 
+        protected virtual IEnumerator OnRetreatSequence()
         {
-            yield return new WaitUntil(() => { return PathHandler.TargetReached; });
-            ActionCall = null;
+            m_anim.SetTrigger("Retreat");
+            yield return new WaitUntil(() => m_anim.GetBool("Retreated"));
+            Deactivate();
+            Character.Retreat();
         }
 
-        protected override void OnInterrupt()
+        protected override void InterruptSkill()
         {
-            base.OnInterrupt();
-            Character.Animator.SetBool("WindingUp", false);
+            base.InterruptSkill();
+            m_anim.SetBool("WindingUp", false);
         }
+        protected override void InterruptAction()
+        {
+            base.InterruptAction();
+            m_actionCall = null;
+        }
+
     }
 }

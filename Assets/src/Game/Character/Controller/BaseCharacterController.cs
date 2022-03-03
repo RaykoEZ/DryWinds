@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 using Curry.Skill;
 
@@ -6,33 +7,44 @@ namespace Curry.Game
 {
     public abstract class BaseCharacterController<T> : MonoBehaviour where T : BaseCharacter
     {
-        public virtual bool IsReady { get { return ActionCall == null; } }
-        protected Coroutine ActionCall { get; set; }
-        public abstract T Character { get; }
+        [SerializeField] protected Animator m_anim = default;
+        public virtual bool IsReady { get { return m_actionCall == null; } }
+        protected Coroutine m_actionCall = null;
+        protected abstract T Character { get; }
 
         protected SkillActivator m_basicSkill = new SkillActivator();
         protected SkillActivator m_drawSkill = new SkillActivator();
 
         protected virtual void OnEnable()
         {
+            Activate();
             Character.OnHitStun += OnHitStun;
-            Character.OnActionInterrupt += OnInterrupt;
-            Character.OnLoaded += Init;
-            Character.OnDefeated += OnDefeated;
+            Character.OnActionInterrupt += InterruptSkill;
+            Character.OnLoaded += OnAssetLoaded;
+            Character.OnDefeated += OnDefeat;
         }
 
         protected virtual void OnDisable() 
         {
+            Deactivate();
             Character.OnHitStun -= OnHitStun;
-            Character.OnActionInterrupt -= OnInterrupt;
-            Character.OnLoaded -= Init;
-            Character.OnDefeated -= OnDefeated;
+            Character.OnActionInterrupt -= InterruptSkill;
+            Character.OnLoaded -= OnAssetLoaded;
+            Character.OnDefeated -= OnDefeat;
         }
 
-        protected virtual void Init()
+        protected virtual void OnAssetLoaded()
         {
             EquipeSkill(0);
             EquipeDrawSkill(0);
+        }
+        protected virtual void Activate()
+        {
+        }
+        protected virtual void Deactivate()
+        {
+            InterruptAction();
+            StopAllCoroutines();
         }
 
         public virtual void EquipeSkill(int index) 
@@ -59,14 +71,14 @@ namespace Curry.Game
 
         protected virtual void OnActionFinish(ICharacterAction<IActionInput> action) 
         {
-            ActionCall = null;
+            m_actionCall = null;
         }
 
-        public virtual void Move(Vector2 target)
+        public virtual void MoveTo(Vector2 direction, float unitPerStep = 0.1f)
         {
-            if (IsReady) 
+            if (IsReady)
             {
-                Character.RigidBody.AddForce(target * Character.CurrentStats.Speed);
+                Character.RigidBody.MovePosition(Character.RigidBody.position + (unitPerStep * direction * Character.CurrentStats.Speed));
             }
         }
 
@@ -81,7 +93,7 @@ namespace Curry.Game
         {
             if (IsReady)
             {
-                ActionCall = StartCoroutine(OnSkill(target));
+                m_actionCall = StartCoroutine(OnSkill(target));
             }
         }
 
@@ -89,8 +101,13 @@ namespace Curry.Game
         {
             if (IsReady)
             {
-                ActionCall = StartCoroutine(OnSkill(target.transform.position));
+                m_actionCall = StartCoroutine(OnSkill(target.transform.position));
             }
+        }
+
+        protected virtual void OnDefeat(Action onFinish) 
+        {
+            StartCoroutine(OnDefeatSequence(onFinish));
         }
 
         protected virtual IEnumerator OnSkill(Vector2 target) 
@@ -98,32 +115,41 @@ namespace Curry.Game
             yield return new WaitForSeconds(m_basicSkill.CurrentSkill.Properties.WindupTime);
             m_basicSkill.ActivateSkill(target);
         }
-
-        protected void OnHitStun(float stunMod)
+        protected virtual IEnumerator OnDefeatSequence(Action onFinish)
+        {
+            m_anim.SetBool("Defeated", true);
+            yield return new WaitUntil(() => { return m_anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 1f; });
+            Deactivate();
+            onFinish();
+        }
+        protected virtual void OnHitStun(float stunMod)
         {
             // Interrupt the input stun and reapply the stun timer
-            if (ActionCall != null)
-            {
-                StopCoroutine(ActionCall);
-                ActionCall = null;
-            }
-            OnInterrupt();
-            ActionCall = StartCoroutine(RecoverInput(stunMod));
+            InterruptAction();
+            InterruptSkill();
+            m_actionCall = StartCoroutine(RecoverInput(stunMod));
         }
-        protected virtual void OnInterrupt()
+        protected virtual void InterruptSkill()
         {
             m_basicSkill.InterruptSkill();
             m_drawSkill.InterruptSkill();
         }
 
-        protected virtual void OnDefeated() 
-        {       
-        }
 
-        protected IEnumerator RecoverInput(float stunMod)
+        protected virtual IEnumerator RecoverInput(float stunMod)
         {
             yield return new WaitForSeconds(stunMod * Character.CurrentStats.HitRecoveryTime);
-            ActionCall = null;
+            Character.RigidBody.velocity = Vector2.zero;
+            m_actionCall = null;
+        }
+
+        protected virtual void InterruptAction()
+        {
+            if (m_actionCall != null)
+            {
+                StopCoroutine(m_actionCall);
+                m_actionCall = null;
+            }
         }
     }
 }

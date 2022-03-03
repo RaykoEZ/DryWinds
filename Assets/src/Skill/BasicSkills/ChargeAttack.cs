@@ -2,48 +2,42 @@
 using System.Collections;
 using UnityEngine;
 using Curry.Game;
+using Curry.Ai;
 
 namespace Curry.Skill
 {
     [RequireComponent(typeof(CircleCollider2D))]
-    public class ChargeAttack : BaseSkill, IHitboxEffect 
+    public class ChargeAttack : BaseSkill 
     {
         [SerializeField] protected float m_chargeDuration = default;
+        [SerializeField] protected float m_recoilTime = default;
 
-        Coroutine m_dashing;
-
-        public override void OnHit(Interactable hit)
+        protected override void OnHit(BodyPart part)
         {
-            if (m_dashing != null) 
+            if (m_execute != null) 
             {
-                StopCoroutine(m_dashing);
-                OnSkillFinish();
+                Interrupt();
+            }
+            
+            if (part != null) 
+            {
+                Vector2 source = m_user.RigidBody.position;
+                part.Hit(m_skillProperty.ActionValue,
+                    m_skillProperty.Knockback,
+                    source);
             }
 
-            Vector2 diff = m_user.RigidBody.position - hit.RigidBody.position;
-            if (hit.RigidBody.bodyType != RigidbodyType2D.Static)
-            {
-                hit.RigidBody.velocity = Vector2.zero;
-                hit.OnKnockback(-diff.normalized, m_skillProperty.Knockback);
-            }
-
-            m_user.RigidBody.velocity = Vector2.zero;
-            m_user.OnKnockback(diff.normalized, 0.75f * m_skillProperty.Knockback);
-            hit.OnTakeDamage(m_skillProperty.ActionValue);
+            Vector2 v = m_user.RigidBody.velocity.normalized;
+            m_user.RigidBody.velocity *= 0.1f;
+            m_user.OnKnockback(-v, 0.5f * m_skillProperty.Knockback);
         }
 
-        protected override void OnSkillFinish() 
-        {
-            base.OnSkillFinish();
-            m_dashing = null;
-        }
-
-        protected override IEnumerator SkillEffect(IActionInput target)
+        protected override IEnumerator ExecuteInternal(IActionInput target)
         {
             if(target != null && target is VectorInput posParam) 
             {
                 Vector2 mousePos = posParam.Target;
-                m_dashing = StartCoroutine(DashMotion(m_user.RigidBody.position, mousePos));
+                m_execute = StartCoroutine(DashMotion(m_user.RigidBody.position, mousePos));
             }
             yield return null;
         }
@@ -55,11 +49,13 @@ namespace Curry.Skill
             Rigidbody2D rb = m_user.RigidBody;
             while (t < m_chargeDuration)
             {
-                rb.AddForce(dir.normalized * m_user.CurrentStats.Speed, ForceMode2D.Impulse);
+                rb.MovePosition(rb.position + (dir.normalized * (t / m_chargeDuration)));
                 t += Time.deltaTime;
                 yield return null;
             }
-            yield return null;
+            rb.AddForce(dir, ForceMode2D.Impulse);
+            yield return new WaitForSeconds(m_recoilTime);
+            rb.velocity = Vector2.zero;
             OnSkillFinish();
         }
     }
