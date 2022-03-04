@@ -38,6 +38,14 @@ namespace Curry.Game
             }
         }
 
+        protected override void OnWeakpointBreak(BodyPart part)
+        {
+            if (!m_knockedout)
+            {
+                OnKnockedout();
+            }
+        }
+
         protected virtual void OnKnockedout() 
         {
             m_knockedout = true;
@@ -47,12 +55,10 @@ namespace Curry.Game
 
         protected virtual IEnumerator KnockoutRecovery() 
         {
-            float maxStam = m_statusManager.CurrentStats.CharacterStats.MaxStamina;
-            while (m_statusManager.CurrentStats.CharacterStats.Stamina < maxStam) 
-            {
-                OnHeal(0.2f * maxStam);
-                yield return new WaitForSeconds(1f);
-            }
+            CharacterStats stat = m_statusManager.CurrentStats.CharacterStats;
+            float maxStam = stat.MaxStamina;
+            float rand = UnityEngine.Random.Range(5f, 8f);
+            yield return new WaitForSeconds(rand * stat.HitRecoveryTime);
             m_knockedout = false;
             OnKnockoutRecover?.Invoke();
         }
@@ -132,10 +138,6 @@ namespace Curry.Game
         protected override void OnTakeDamage(float damage, int partDamage = 0)
         {
             base.OnTakeDamage(damage);
-            if (!m_knockedout && m_statusManager.CurrentStats.CharacterStats.Stamina == 0f) 
-            {
-                OnKnockedout();
-            }
             m_emotions.OnTakeDamage();
             OnEvaluate?.Invoke();
         }

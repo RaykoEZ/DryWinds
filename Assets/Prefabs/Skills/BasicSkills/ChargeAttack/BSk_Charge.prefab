@@ -69,7 +69,7 @@ MonoBehaviour:
     m_spCost: 1
     m_cooldownTime: 1
     m_windupTime: 0.2
-    m_actionValue: 10
+    m_actionValue: 2
     m_knockback: 0.5
   m_chargeDuration: 0.15
   m_recoilTime: 0.2

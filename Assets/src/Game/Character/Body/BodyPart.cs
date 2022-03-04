@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -14,6 +15,7 @@ namespace Curry.Game
         [SerializeField] protected float m_hitModifier = default;
         protected bool m_breakable = false;
         protected int m_breakPoint = 0;
+        protected int m_numWeakpointBreaks = 0;
         public event OnBodyHit OnBodyHit;
 
         protected virtual bool Breakable
@@ -25,6 +27,17 @@ namespace Curry.Game
         protected virtual void Awake()
         {
             m_breakable = m_inateBreakable;
+        }
+
+        protected virtual void OnEnable() 
+        {
+            ResetProgress();
+        }
+
+        protected virtual void ResetProgress() 
+        {
+            m_numWeakpointBreaks = 0;
+            m_breakPoint = 0;
         }
 
         public virtual void Hit(
@@ -67,6 +80,7 @@ namespace Curry.Game
             // If part takes hit when weakpoint is showing, weakpoint breaks and expires
             else if (m_weaknessAnim.GetBool("Show"))
             {
+                ++m_numWeakpointBreaks;
                 HideWeakpoint();
                 weakBreak = true;
             }
@@ -78,12 +92,21 @@ namespace Curry.Game
             {
                 Breakable = false;
                 m_weaknessAnim?.SetBool("Show", true);
+                StartCoroutine(BodyPartCooldown());
             }
         }
 
         public void HideWeakpoint() 
         {
             m_weaknessAnim?.SetBool("Show", false);
+        }
+
+        protected IEnumerator BodyPartCooldown() 
+        {
+            yield return new WaitForSeconds(10f);
+            HideWeakpoint();
+            Breakable = true;
+            ResetProgress();
         }
     }
 }
