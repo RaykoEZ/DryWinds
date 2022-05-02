@@ -69,6 +69,11 @@ namespace Curry.Game
         }
         public virtual NpcTerritory ChooseRetreatDestination()
         {
+            if(m_territories.Count < 1) 
+            {
+                return null;
+            }
+
             NpcTerritory ret = m_territories[0];
             float leastDistance = Vector2.Distance(transform.position, ret.transform.position);
             for (int i = 1; i < m_territories.Count; ++i) 

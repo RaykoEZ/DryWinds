@@ -107,7 +107,10 @@ namespace Curry.Game
         public virtual void Flee() 
         {
             NpcTerritory target = Character.ChooseRetreatDestination();
-            PathHandler.Flee(target);
+            if(target != null) 
+            {
+                PathHandler.Flee(target);
+            }
         }
         protected virtual void Retreat()
         {
