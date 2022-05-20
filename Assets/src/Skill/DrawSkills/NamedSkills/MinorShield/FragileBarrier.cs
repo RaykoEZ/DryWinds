@@ -13,7 +13,7 @@ namespace Curry.Skill
 
     [RequireComponent(typeof(EdgeCollider2D))]
     [RequireComponent(typeof(LineRenderer))]
-    public class FragileBarrier : FragileObject, ITimeLimit, ISummonableObject<RegionInput>
+    public class FragileBarrier : FragileObject, ITimeLimit, ISummonableObject<LineInput>
     {
         [SerializeField] protected LineRenderer m_lineRenderer = default;
         [SerializeField] Animator m_anim = default;
@@ -23,7 +23,7 @@ namespace Curry.Skill
         public virtual EdgeCollider2D HitBox { get { return GetComponent<EdgeCollider2D>(); } }
         public virtual LineRenderer LineRenderer { get { return m_lineRenderer; } }
 
-        public void OnSummon(RegionInput param) 
+        public void OnSummon(LineInput param) 
         {
             if(param != null && param.Vertices.Count > 2) 
             {

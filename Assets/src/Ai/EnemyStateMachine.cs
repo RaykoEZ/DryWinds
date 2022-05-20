@@ -6,7 +6,7 @@ using Curry.Game;
 
 namespace Curry.Ai
 {
-    public class HunterStateMachine : BaseAiStateMachine 
+    public class EnemyStateMachine : BaseAiStateMachine 
     {
     }
 }

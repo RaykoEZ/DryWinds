@@ -63,11 +63,11 @@ namespace Curry.Ai
 
         protected void OnEnable()
         {
-            m_npc.OnEvaluate += Evaluate;
+            m_npc.OnEvaluate += OnInteraction;
         }
         protected void OnDisable()
         {
-            m_npc.OnEvaluate -= Evaluate;
+            m_npc.OnEvaluate -= OnInteraction;
         }
 
         protected virtual void Start() 
@@ -87,7 +87,7 @@ namespace Curry.Ai
         }
 
         // Determine state changes or additional behaviour
-        public virtual void Evaluate() 
+        protected virtual void Evaluate() 
         {
             UpdateWorldState();
             AiState newState = BestState();
@@ -97,6 +97,13 @@ namespace Curry.Ai
             }
         }
 
+        // Determine what we do with current interaction event
+        protected virtual void OnInteraction(InteractionContext c) 
+        {
+            Evaluate();
+        }
+
+
         protected virtual void TransitionTo(AiState newState)
         {
             m_current = newState;
@@ -105,7 +112,6 @@ namespace Curry.Ai
 
         void UpdateWorldState()
         {
-            m_worldStateSnapshot.EmotionState = m_npc.Emotion.CurrentEmotion;
             m_worldStateSnapshot.MovementState = m_controller.MovementState;
             m_worldStateSnapshot.CurrentStats = m_npc.CurrentStats;
             m_worldStateSnapshot.Enemies = m_npc.Enemies;

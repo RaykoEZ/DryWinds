@@ -12,16 +12,16 @@ namespace Curry.Skill
         void Summon(T param);
     }
 
-    public class MinorProtection : BaseDrawSkill, ISummonSkill<RegionInput>
+    public class MinorProtection : BaseDrawSkill, ISummonSkill<LineInput>
     {
         [SerializeField] float m_shieldDuration = default;
         [SerializeField] protected PrefabLoader m_barrierSpawn = default;
         
-        public ISummonableObject<RegionInput> SummonObject { get; protected set; }
+        public ISummonableObject<LineInput> SummonObject { get; protected set; }
 
         protected FragileBarrier m_currentBarrier;
 
-        public virtual void Summon(RegionInput param) 
+        public virtual void Summon(LineInput param) 
         {
             if(param.Payload == null)
             {
@@ -44,7 +44,7 @@ namespace Curry.Skill
 
         protected override IEnumerator ExecuteInternal(IActionInput target)
         {
-            if(target is RegionInput input)
+            if(target is LineInput input)
             {
                 Summon(input);
             }

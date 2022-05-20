@@ -94,7 +94,7 @@ namespace Curry.Skill
             } 
         }
 
-        protected virtual void OnSkillEffectActivate(RegionInput input) 
+        protected virtual void OnSkillEffectActivate(LineInput input) 
         {
             m_currentTracer.OnActivate -= OnSkillEffectActivate;
             m_currentTracer.OnClear();
