@@ -33,6 +33,7 @@ namespace Curry.Game
 
         protected override void Deactivate()
         {
+            PathHandler.OnReached -= OnDestinationReached;
             PathHandler.Stop();
             base.Deactivate();
         }
@@ -84,8 +85,8 @@ namespace Curry.Game
 
         protected virtual void OnKnockedout() 
         {
-            m_anim.SetBool("KnockedOut", true);
             Deactivate();
+            m_anim.SetBool("KnockedOut", true);
         }
 
         protected virtual void OnKnockoutRecovery() 
@@ -138,7 +139,10 @@ namespace Curry.Game
         {
             PathHandler.Stop();
             yield return base.RecoverInput(stunMod);
-            PathHandler.Startup();
+            if (!m_anim.GetBool("KnockedOut")) 
+            {
+                PathHandler.Startup();
+            }
         }
 
         protected virtual IEnumerator UsingSkill(BaseCharacter target)

@@ -9,7 +9,7 @@ namespace Curry.Ai
 {
     [Serializable]
     [AddComponentMenu("Curry/Ai Action/Wander")]
-    public partial class AIWander : AiAction<IActionInput>
+    public class AIWander : AiAction<IActionInput>
     {
         public override bool PreCondition(AiWorldState args)
         {

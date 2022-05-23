@@ -3,7 +3,7 @@ using Curry.UI;
 
 namespace Curry.Game
 {
-    public class NpcAnimationManager : MonoBehaviour
+    public class NpcUiAnimationManager : MonoBehaviour
     {
         [SerializeField] OverlayAnimatorHandler m_uiAnim = default;
         [SerializeField] ResourceBar m_stamBar = default;

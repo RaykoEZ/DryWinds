@@ -122,9 +122,9 @@ namespace Curry.Ai
 
         public void Stop()
         {
-            canMove = false;
             autoRepath.mode = AutoRepathPolicy.Mode.Never;
             CancelCurrentPath();
+            canMove = false;
         }
 
         public void Startup()

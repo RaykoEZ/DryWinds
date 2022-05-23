@@ -6,6 +6,19 @@ using Curry.Game;
 
 namespace Curry.Ai
 {
+    public class AiActionInput : IActionInput
+    {
+        public NpcController Controller { get; protected set; }
+        public AiWorldState WorldState { get; protected set; }
+        public Dictionary<string, object> Payload { get; protected set; }
+        public AiActionInput(NpcController controller, AiWorldState state, Dictionary<string, object> payload = null)
+        {
+            Controller = controller;
+            WorldState = state;
+            Payload = payload;
+        }
+    }
+
     public delegate void OnAiActionFinish();
     [Serializable]
     public abstract class AiAction<T> : MonoBehaviour where T : IActionInput
@@ -21,7 +34,7 @@ namespace Curry.Ai
             OnCooldown = false;
         }
 
-        public virtual void OnEnter(AiActionInput param)
+        public virtual void OnExecute(AiActionInput param)
         {
             ExecuteAction(param);
             StartCoroutine(Cooldown());

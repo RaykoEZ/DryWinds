@@ -62,7 +62,6 @@ namespace Curry.Game
         protected virtual IEnumerator KnockoutRecovery() 
         {
             CharacterStats stat = m_statusManager.CurrentStats.CharacterStats;
-            float maxStam = stat.MaxStamina;
             float rand = UnityEngine.Random.Range(5f, 8f);
             yield return new WaitForSeconds(rand * stat.HitRecoveryTime);
             m_knockedout = false;

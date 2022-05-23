@@ -635,12 +635,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_npc: {fileID: 3546475977785711451}
   m_controller: {fileID: 5230140019612056492}
-  m_defaultState:
-    m_action: {fileID: 2038092983179162935}
-    m_name: Wander
-  m_otherStates:
-  - m_action: {fileID: 169720153959242809}
-    m_name: Flee
+  m_defaultAction: {fileID: 2038092983179162935}
+  m_optionalActions:
+  - {fileID: 169720153959242809}
 --- !u!114 &2038092983179162935
 MonoBehaviour:
   m_ObjectHideFlags: 0
