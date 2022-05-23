@@ -22,7 +22,7 @@ namespace Curry.Ai
             }
         }
 
-        protected List<AiState> ValidStates
+        protected virtual List<AiState> ValidStates
         {
             get
             {
@@ -40,22 +40,22 @@ namespace Curry.Ai
 
         protected virtual AiState BestState()
         {            
-            List<AiState> states = ValidStates;
+            List<AiState> newStates = ValidStates;
             AiState best;
-            if (states.Count > 0) 
+            if (newStates.Count > 0) 
             {
-                best = states[0];
-                for (int i = 0; i < states.Count; ++i)
+                best = newStates[0];
+                for (int i = 0; i < newStates.Count; ++i)
                 {
-                    if (states[i].Priority(WorldStateSnapshot) > best.Priority(WorldStateSnapshot))
+                    if (newStates[i].Priority(WorldStateSnapshot) > best.Priority(WorldStateSnapshot))
                     {
-                        best = states[i];
+                        best = newStates[i];
                     }
                 }
             }
             else 
             {
-                best = m_current;
+                best = m_defaultState;
             }
             return best;
             
@@ -103,7 +103,6 @@ namespace Curry.Ai
             Evaluate();
         }
 
-
         protected virtual void TransitionTo(AiState newState)
         {
             m_current = newState;
@@ -112,7 +111,6 @@ namespace Curry.Ai
 
         void UpdateWorldState()
         {
-            m_worldStateSnapshot.MovementState = m_controller.MovementState;
             m_worldStateSnapshot.CurrentStats = m_npc.CurrentStats;
             m_worldStateSnapshot.Enemies = m_npc.Enemies;
             m_worldStateSnapshot.Allies = m_npc.Allies;

@@ -31,7 +31,7 @@ namespace Curry.Ai
 
         public virtual bool PreCondition(AiWorldState args)
         {
-            return m_action.IsUsable && m_action.PreCondition(args);
+            return m_action.PreCondition(args);
         }
 
         public virtual float Priority(AiWorldState args)

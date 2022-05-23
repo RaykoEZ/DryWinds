@@ -247,6 +247,14 @@ PrefabInstance:
       propertyPath: m_WasSpriteAssigned
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4175741410429288134, guid: 3b51bd00171374e4296e24e927c12a63, type: 3}
+      propertyPath: m_initStats.m_basicSkillRefs.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4175741410429288134, guid: 3b51bd00171374e4296e24e927c12a63, type: 3}
+      propertyPath: m_initStats.m_characterStats.m_maxStamina
+      value: 500
+      objectReference: {fileID: 0}
     - target: {fileID: 4608541240759470521, guid: 3b51bd00171374e4296e24e927c12a63, type: 3}
       propertyPath: m_breakThreshold
       value: 5
@@ -307,9 +315,7 @@ PrefabInstance:
       propertyPath: m_LocalRotation.w
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 2038092983179162935, guid: 3b51bd00171374e4296e24e927c12a63, type: 3}
-    - {fileID: 169720153959242809, guid: 3b51bd00171374e4296e24e927c12a63, type: 3}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3b51bd00171374e4296e24e927c12a63, type: 3}
 --- !u!4 &6491460669323620157 stripped
 Transform:

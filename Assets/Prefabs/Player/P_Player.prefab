@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 54977025414749079}
   - component: {fileID: 826281917603678357}
   - component: {fileID: 8378189346840365758}
-  - component: {fileID: 2407105008700649258}
   m_Layer: 0
   m_Name: P_Player
   m_TagString: Untagged
@@ -50,8 +49,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_bodyManager:
-    m_bodyParts:
-    - {fileID: 2407105008700649258}
+    m_bodyParts: []
   m_rigidbody: {fileID: 826281917603678357}
   m_statusManager: {fileID: 8378189346840365758}
   m_onCollectItem: {fileID: 11400000, guid: 4357e5d0d787f484c93020b4886fa636, type: 2}
@@ -125,22 +123,6 @@ MonoBehaviour:
     - m_AssetGUID: 2b4559809b5866343bf6cfccc130056a
       m_SubObjectName: 
       m_SubObjectType: 
---- !u!114 &2407105008700649258
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 897198343347735774}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 34b237a5167880a46a93693da0f06681, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_weaknessAnim: {fileID: 0}
-  m_inateBreakable: 0
-  m_breakThreshold: 0
-  m_hitModifier: 0
 --- !u!1 &897198344060202836
 GameObject:
   m_ObjectHideFlags: 0

@@ -6,13 +6,12 @@ using Curry.Ai;
 
 namespace Curry.Game
 {
+
     [RequireComponent(typeof(IPathAi))]
     public class NpcController : BaseCharacterController<BaseNpc>
     {
         [SerializeField] BaseNpc m_npc = default;
         protected Coroutine m_retreat;
-
-        public PathState MovementState { get { return PathHandler.State; } }
         protected IPathAi m_pathHandler;
         protected override BaseNpc Character { get { return m_npc; } }
         protected virtual IPathAi PathHandler { get { return m_pathHandler; } }
@@ -51,7 +50,7 @@ namespace Curry.Game
             switch (PathHandler.State)
             {
                 case PathState.Wandering:
-                    // Start doing other actions
+                    // Start doing other actions WIP
                     StartCoroutine(ShowHabit());
                     break;
                 case PathState.Fleeing:
@@ -64,7 +63,6 @@ namespace Curry.Game
 
         protected virtual IEnumerator ShowHabit() 
         {
-            PathHandler.Stop();
             m_anim.SetBool("ShowHabit", true);
             yield return new WaitUntil(() => !m_anim.GetBool("ShowHabit"));
             PathHandler.Startup();
@@ -81,8 +79,6 @@ namespace Curry.Game
             {
                 m_anim.SetTrigger("Panic");
             }
-
-
             base.OnHitStun(stunMod);
         }
 
@@ -110,6 +106,7 @@ namespace Curry.Game
             if(target != null) 
             {
                 PathHandler.Flee(target);
+                m_pathHandler.Startup();
             }
         }
         protected virtual void Retreat()
@@ -124,6 +121,7 @@ namespace Curry.Game
         public virtual void Wander() 
         {
             m_pathHandler.Wander();
+            m_pathHandler.Startup();
         }
 
         public virtual void EquipBasicSkill(ICharacterAction<IActionInput> skill)

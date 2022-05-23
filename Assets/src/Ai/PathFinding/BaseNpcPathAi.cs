@@ -35,22 +35,9 @@ namespace Curry.Ai
 
         public override void OnTargetReached() 
         {
+            Stop();
             OnReached?.Invoke();
-            canMove = false;
             UpdatePathState();
-        }
-
-        protected override void OnPathComplete(Path newPath)
-        {
-            canMove = true;
-            base.OnPathComplete(newPath);
-        }
-
-        public IEnumerator DelayMovement(float time) 
-        {
-            canMove = false;
-            yield return new WaitForSeconds(time);
-            canMove = true;
         }
 
         protected virtual void UpdatePathState() 
@@ -60,9 +47,6 @@ namespace Curry.Ai
                 case PathState.Wandering:
                     Wander();
                     break;
-                case PathState.Fleeing:
-                    Stop();
-                    break;
                 default:
                     m_pathState = PathState.Idle;
                     break;
@@ -71,7 +55,6 @@ namespace Curry.Ai
 
         protected virtual void PlanPath(Vector3 target)
         {
-            autoRepath.mode = AutoRepathPolicy.Mode.Dynamic;
             destination = target;
             SearchPath();
         }

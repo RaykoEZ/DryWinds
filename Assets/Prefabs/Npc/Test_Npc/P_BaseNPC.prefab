@@ -333,7 +333,7 @@ MonoBehaviour:
   targetCompatibility: {fileID: 0}
   maxAcceleration: -2.5
   rotationSpeed: 180
-  slowdownDistance: 2
+  slowdownDistance: 1
   pickNextWaypointDist: 0.25
   endReachedDistance: 0.5
   alwaysDrawGizmos: 1
@@ -597,7 +597,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 41816870702501673}
-  - component: {fileID: 6027880587303692430}
+  - component: {fileID: 749799107505537948}
   - component: {fileID: 2038092983179162935}
   - component: {fileID: 169720153959242809}
   m_Layer: 0
@@ -621,7 +621,7 @@ Transform:
   m_Father: {fileID: 996752384247296336}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6027880587303692430
+--- !u!114 &749799107505537948
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -630,7 +630,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5223741467229661103}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 910daf26a6fb13a4e8b046cd19884a1d, type: 3}
+  m_Script: {fileID: 11500000, guid: cc6c2005924bca5449c4f0893849eb6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_npc: {fileID: 3546475977785711451}
@@ -641,8 +641,6 @@ MonoBehaviour:
   m_otherStates:
   - m_action: {fileID: 169720153959242809}
     m_name: Flee
-  - m_action: {fileID: 2038092983179162935}
-    m_name: Wander
 --- !u!114 &2038092983179162935
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -670,7 +668,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_basePriority: 1
-  m_cooldownTime: 10
+  m_cooldownTime: 1
 --- !u!1 &6755770046371517024
 GameObject:
   m_ObjectHideFlags: 0
@@ -831,6 +829,10 @@ PrefabInstance:
       propertyPath: m_self
       value: 
       objectReference: {fileID: 996752384247296336}
+    - target: {fileID: 5872157795111065311, guid: b888ab883f061a94690acdc61771e152, type: 3}
+      propertyPath: m_viewDistance
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7970343867579339210, guid: b888ab883f061a94690acdc61771e152, type: 3}
       propertyPath: m_Name
       value: P_FieldOfView
