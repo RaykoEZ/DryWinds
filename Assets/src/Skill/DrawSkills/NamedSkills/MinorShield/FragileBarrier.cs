@@ -5,15 +5,9 @@ using Curry.Util;
 
 namespace Curry.Skill
 {
-    public interface ISummonableObject<T> where T : IActionInput 
-    {
-        GameObject Self { get; }
-        void OnSummon(T param);
-    }
-
     [RequireComponent(typeof(EdgeCollider2D))]
     [RequireComponent(typeof(LineRenderer))]
-    public class FragileBarrier : FragileObject, ITimeLimit, ISummonableObject<LineInput>
+    public class FragileBarrier : FragileObject, ITimeLimit, ISkillObject<LineInput>
     {
         [SerializeField] protected LineRenderer m_lineRenderer = default;
         [SerializeField] Animator m_anim = default;
@@ -23,7 +17,7 @@ namespace Curry.Skill
         public virtual EdgeCollider2D HitBox { get { return GetComponent<EdgeCollider2D>(); } }
         public virtual LineRenderer LineRenderer { get { return m_lineRenderer; } }
 
-        public void OnSummon(LineInput param) 
+        public void Begin(LineInput param) 
         {
             if(param != null && param.Vertices.Count > 2) 
             {
@@ -36,6 +30,11 @@ namespace Curry.Skill
                 m_anim.SetTrigger("Start");
                 StartCoroutine(Countdown());
             }
+        }
+
+        public virtual void End()
+        {
+            OnDefeat();
         }
 
         protected virtual IEnumerator Countdown()

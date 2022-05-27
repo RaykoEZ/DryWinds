@@ -6,20 +6,14 @@ using Curry.Util;
 
 namespace Curry.Skill
 {
-    public interface ISummonSkill<T> where T : IActionInput
-    { 
-        ISummonableObject<T> SummonObject { get; }
-        void Summon(T param);
-    }
-
     public class MinorProtection : BaseDrawSkill, ISummonSkill<LineInput>
     {
         [SerializeField] float m_shieldDuration = default;
         [SerializeField] protected PrefabLoader m_barrierSpawn = default;
         
-        public ISummonableObject<LineInput> SummonObject { get; protected set; }
+        public virtual ISkillObject<LineInput> SummonObject { get; protected set; }
 
-        protected FragileBarrier m_currentBarrier;
+        protected FragileBarrier m_currentBarrierInstance;
 
         public virtual void Summon(LineInput param) 
         {
@@ -28,8 +22,8 @@ namespace Curry.Skill
                 param.Payload = new Dictionary<string, object>();
             }
             param.Payload.Add("duration", m_shieldDuration);
-            m_currentBarrier = m_instanceManager.GetInstanceFromAsset(SummonObject.Self) as FragileBarrier;
-            m_currentBarrier?.OnSummon(param);
+            m_currentBarrierInstance = m_instanceManager.GetInstanceFromAsset(SummonObject.Self) as FragileBarrier;
+            m_currentBarrierInstance?.Begin(param);
         }
 
         public override void Init(BaseCharacter user)
@@ -50,6 +44,11 @@ namespace Curry.Skill
             }
             // Start animation
             yield return null;
+        }
+
+        public virtual void Unsummon()
+        {
+            m_currentBarrierInstance?.End();
         }
     }
 }
