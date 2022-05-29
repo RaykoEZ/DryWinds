@@ -8,8 +8,8 @@ namespace Curry.Game
     public abstract class BaseCharacterController<T> : MonoBehaviour where T : BaseCharacter
     {
         [SerializeField] protected Animator m_anim = default;
-        public virtual bool IsReady { get { return m_actionCall == null; } }
-        protected Coroutine m_actionCall = null;
+        public virtual bool IsReady { get { return m_isReady; } }
+        protected bool m_isReady = true;
         protected abstract T Character { get; }
 
         protected SkillActivator m_basicSkill = new SkillActivator();
@@ -40,10 +40,12 @@ namespace Curry.Game
         }
         protected virtual void Activate()
         {
+            m_isReady = true;
         }
         protected virtual void Deactivate()
         {
-            InterruptAction();
+            m_isReady = false;
+            InterruptSkill();
             StopAllCoroutines();
         }
 
@@ -71,7 +73,7 @@ namespace Curry.Game
 
         protected virtual void OnActionFinish(ICharacterAction<IActionInput> action) 
         {
-            m_actionCall = null;
+            Activate();
         }
 
         public virtual void MoveTo(Vector2 direction, float unitPerStep = 0.1f)
@@ -93,7 +95,7 @@ namespace Curry.Game
         {
             if (IsReady)
             {
-                m_actionCall = StartCoroutine(OnSkill(target));
+                m_basicSkill.ActivateSkill(target);
             }
         }
 
@@ -101,7 +103,7 @@ namespace Curry.Game
         {
             if (IsReady)
             {
-                m_actionCall = StartCoroutine(OnSkill(target.transform.position));
+                m_basicSkill.ActivateSkill(target.transform.position);
             }
         }
 
@@ -125,9 +127,8 @@ namespace Curry.Game
         protected virtual void OnHitStun(float stunMod)
         {
             // Interrupt the input stun and reapply the stun timer
-            InterruptAction();
-            InterruptSkill();
-            m_actionCall = StartCoroutine(RecoverInput(stunMod));
+            Deactivate();
+            StartCoroutine(RecoverInput(stunMod));
         }
         protected virtual void InterruptSkill()
         {
@@ -139,17 +140,8 @@ namespace Curry.Game
         protected virtual IEnumerator RecoverInput(float stunMod)
         {
             yield return new WaitForSeconds(stunMod * Character.CurrentStats.HitRecoveryTime);
+            m_isReady = true;
             Character.RigidBody.velocity = Vector2.zero;
-            m_actionCall = null;
-        }
-
-        protected virtual void InterruptAction()
-        {
-            if (m_actionCall != null)
-            {
-                StopCoroutine(m_actionCall);
-                m_actionCall = null;
-            }
         }
     }
 }

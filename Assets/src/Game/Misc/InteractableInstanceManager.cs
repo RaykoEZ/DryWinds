@@ -5,19 +5,19 @@ namespace Curry.Game
 {
     public class InteractableInstanceManager : MonoBehaviour 
     { 
-        [SerializeField] InteractablePoolCollection m_poolManager = default;
+        [SerializeField] InteractablePoolCollection m_pool = default;
         ObjectPool<Interactable> m_currentPool = default;
 
         public virtual void PrepareNewInstance(GameObject instance, Transform parent = null)
         {
             string instanceId = instance.name;
-            if (m_poolManager.ContainsPool(instanceId))
+            if (m_pool.ContainsPool(instanceId))
             {
-                m_currentPool = m_poolManager.GetPool(instanceId);
+                m_currentPool = m_pool.GetPool(instanceId);
             }
             else if (instance.TryGetComponent(out Interactable reference))
             {
-                m_currentPool = m_poolManager.AddPool(instanceId, reference, parent);
+                m_currentPool = m_pool.AddPool(instanceId, reference, parent);
             }
         }
 

@@ -21,6 +21,18 @@ MonoBehaviour:
     m_Address: DSkiill/P/MinorProtection/Summon0
     m_ReadOnly: 0
     m_SerializedLabels: []
+    m_MainAsset: {fileID: 6391846705114584865, guid: f7fd15333b915b2429510021a1cfcb51, type: 3}
+    m_TargetAsset: {fileID: 6391846705114584865, guid: f7fd15333b915b2429510021a1cfcb51, type: 3}
+  - m_GUID: ae7a2f9b192e73243ba72c10133983fb
+    m_Address: PSkills/SlashWave/P/SlashWave_Projectile
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    m_MainAsset: {fileID: 7927652418098392021, guid: ae7a2f9b192e73243ba72c10133983fb, type: 3}
+    m_TargetAsset: {fileID: 7927652418098392021, guid: ae7a2f9b192e73243ba72c10133983fb, type: 3}
+  - m_GUID: cc09dce4b631c9b469f0d6f5e07f03b3
+    m_Address: PSkills/SlashWave/P/SlashWave
+    m_ReadOnly: 0
+    m_SerializedLabels: []
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
   m_ReadOnly: 0

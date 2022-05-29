@@ -57,7 +57,7 @@ namespace Curry.Skill
             skillInstance.transform.position = Vector3.zero;
             BaseSkill skill = skillInstance.GetComponent<BaseSkill>();
             skill.Init(m_userRef);
-            ICharacterAction<IActionInput> skillAction = skill as ICharacterAction<IActionInput>;
+            ICharacterAction<IActionInput> skillAction = skill;
             m_skillSet.Add(skillAction);
             ++m_loadFinishedCount;
             LoadFinishCheck();

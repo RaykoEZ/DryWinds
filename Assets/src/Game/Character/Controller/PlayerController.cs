@@ -61,7 +61,7 @@ namespace Curry.Game
             }
         }
 
-        protected override IEnumerator OnSkill(Vector2 target) 
+        protected override IEnumerator OnSkill(Vector2 target)
         {
             // trigger dash windup anim
             m_anim.SetBool("DashCharging", true);

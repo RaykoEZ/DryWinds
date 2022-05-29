@@ -7,7 +7,6 @@ namespace Curry.Game
     public struct ActionProperty
     {
         [SerializeField] string m_name;
-        [SerializeField] ObjectRelations m_targetOptions;
         [SerializeField] float m_spCost;
         [SerializeField] float m_cooldownTime;
         [SerializeField] float m_windupTime;
@@ -15,7 +14,6 @@ namespace Curry.Game
         [SerializeField] float m_knockback;
 
         public string Name { get { return m_name; } }
-        public ObjectRelations TargetOptions { get { return m_targetOptions; } }
         public float SpCost { get { return m_spCost; } }
         public float CooldownTime { get { return m_cooldownTime; } }
         public float WindupTime { get { return m_windupTime; } }
@@ -24,7 +22,6 @@ namespace Curry.Game
 
         public ActionProperty(
             string name, 
-            ObjectRelations targetOptions,
             float spCost,
             float cooldownTime,
             float maxWindupTime,
@@ -32,7 +29,6 @@ namespace Curry.Game
             float knockback)
         {
             m_name = name;
-            m_targetOptions = targetOptions;
             m_spCost = spCost;
             m_cooldownTime = cooldownTime;
             m_windupTime = maxWindupTime;

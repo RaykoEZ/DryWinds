@@ -5,15 +5,6 @@ using Curry.Util;
 
 namespace Curry.Game
 {
-    // Player: does not damage player
-    // Enemy: damages player
-    [Flags]
-    public enum ObjectRelations 
-    {
-        None = 0,
-        Ally = 1,
-        Enemy = 1 << 1
-    }
     // A basic script for a collidable object 
     public class Interactable : MonoBehaviour, IPoolable, IClashable
     {

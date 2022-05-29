@@ -42,7 +42,7 @@ namespace Curry.Game
         {
             if (IsReady)
             {
-                m_actionCall = StartCoroutine(UsingSkill(target));
+                m_basicSkill.ActivateSkill(target.transform.position);
             }
         }
 
@@ -145,14 +145,6 @@ namespace Curry.Game
             }
         }
 
-        protected virtual IEnumerator UsingSkill(BaseCharacter target)
-        {
-            m_anim.SetBool("WindingUp", true);
-            yield return new WaitForSeconds(Character.BasicSkills.CurrentSkill.Properties.WindupTime);
-            m_anim.SetBool("WindingUp", false);
-            m_basicSkill.ActivateSkill(target.transform.position);
-        }
-
         protected virtual IEnumerator OnRetreatSequence()
         {
             m_anim.SetTrigger("Retreat");
@@ -166,11 +158,5 @@ namespace Curry.Game
             base.InterruptSkill();
             m_anim.SetBool("WindingUp", false);
         }
-        protected override void InterruptAction()
-        {
-            base.InterruptAction();
-            m_actionCall = null;
-        }
-
     }
 }

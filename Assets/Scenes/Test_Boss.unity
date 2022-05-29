@@ -15697,7 +15697,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 116f6cab5f18493419a0d660fd19a254, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_poolManager: {fileID: 1371270998}
+  m_pool: {fileID: 1371270998}
 --- !u!224 &1388214185
 RectTransform:
   m_ObjectHideFlags: 0
