@@ -156,7 +156,6 @@ namespace Curry.Game
         protected override void InterruptSkill()
         {
             base.InterruptSkill();
-            m_anim.SetBool("WindingUp", false);
         }
     }
 }

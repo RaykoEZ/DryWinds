@@ -35,6 +35,14 @@ namespace Curry.Game
 
         protected virtual void OnAssetLoaded()
         {
+            foreach(BaseSkill skill in Character.BasicSkills.Skills) 
+            {
+                skill.OnFinish += OnActionFinish;
+            }
+            foreach (BaseSkill skill in Character.DrawSkills.Skills)
+            {
+                skill.OnFinish += OnActionFinish;
+            }
             EquipeSkill(0);
             EquipeDrawSkill(0);
         }
@@ -52,23 +60,12 @@ namespace Curry.Game
         public virtual void EquipeSkill(int index) 
         {
             Character.BasicSkills.EquippedIndex = index;
-            if (m_basicSkill.CurrentSkill != null) 
-            {
-                m_basicSkill.CurrentSkill.OnFinish -= OnActionFinish;
-            }
             m_basicSkill.CurrentSkill = Character.BasicSkills.CurrentSkill;
-            m_basicSkill.CurrentSkill.OnFinish += OnActionFinish;
         }
         public virtual void EquipeDrawSkill(int index)
         {
             Character.DrawSkills.EquippedIndex = index;
-            if (m_drawSkill.CurrentSkill != null)
-            {
-                m_drawSkill.CurrentSkill.OnFinish -= OnActionFinish;
-            }
             m_drawSkill.CurrentSkill = Character.DrawSkills.CurrentSkill;
-            m_drawSkill.CurrentSkill.OnFinish += OnActionFinish;
-
         }
 
         protected virtual void OnActionFinish(ICharacterAction<IActionInput> action) 
@@ -114,8 +111,8 @@ namespace Curry.Game
 
         protected virtual IEnumerator OnSkill(Vector2 target) 
         {
-            yield return new WaitForSeconds(m_basicSkill.CurrentSkill.Properties.WindupTime);
             m_basicSkill.ActivateSkill(target);
+            yield return null;
         }
         protected virtual IEnumerator OnDefeatSequence(Action onFinish)
         {
