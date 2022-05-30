@@ -59,13 +59,32 @@ namespace Curry.Game
 
         public virtual void EquipeSkill(int index) 
         {
-            Character.BasicSkills.EquippedIndex = index;
-            m_basicSkill.CurrentSkill = Character.BasicSkills.CurrentSkill;
+            m_basicSkill.CurrentSkill = Character.BasicSkills.Skills[index];
         }
         public virtual void EquipeDrawSkill(int index)
         {
-            Character.DrawSkills.EquippedIndex = index;
-            m_drawSkill.CurrentSkill = Character.DrawSkills.CurrentSkill;
+            m_drawSkill.CurrentSkill = Character.DrawSkills.Skills[index];
+        }
+
+        public virtual void EquipeSkill(string name)
+        {
+            foreach (BaseSkill skill in Character.BasicSkills.Skills) 
+            { 
+                if(skill.Properties.Name == name) 
+                {
+                    m_basicSkill.CurrentSkill = skill;
+                }
+            }
+        }
+        public virtual void EquipeDrawSkill(string name)
+        {
+            foreach (BaseSkill skill in Character.DrawSkills.Skills)
+            {
+                if (skill.Properties.Name == name)
+                {
+                    m_drawSkill.CurrentSkill = skill;
+                }
+            }
         }
 
         protected virtual void OnActionFinish(ICharacterAction<IActionInput> action) 

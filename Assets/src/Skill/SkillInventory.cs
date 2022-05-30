@@ -20,12 +20,7 @@ namespace Curry.Skill
         protected List<PrefabLoader> m_loaders = new List<PrefabLoader>();
         public event OnSkillLoadFinish OnFinish;
         public List<ICharacterAction<IActionInput>> Skills { get { return new List<ICharacterAction<IActionInput>>(m_skillSet); } }
-        public ICharacterAction<IActionInput> CurrentSkill { get { return Skills[EquippedIndex]; } }
-
         public bool SkillAssetsLoaded { get; protected set; }
-        public int EquippedIndex { 
-            get { return m_equippedIndex; } 
-            set { m_equippedIndex = Mathf.Clamp(value, 0, m_skillSet.Count - 1); } }
 
         public void Init(BaseCharacter user, List<AssetReference> skillRefs, Transform parent) 
         {
