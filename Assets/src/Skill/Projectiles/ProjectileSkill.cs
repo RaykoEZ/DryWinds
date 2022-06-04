@@ -52,7 +52,7 @@ namespace Curry.Game
             StartCoroutine(ShootInternal(param));
         }
 
-        protected IEnumerator ShootInternal(VectorInput param)
+        protected virtual IEnumerator ShootInternal(VectorInput param)
         {
             foreach(Projectile p in m_projectiles) 
             {

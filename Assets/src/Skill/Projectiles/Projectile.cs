@@ -33,7 +33,6 @@ namespace Curry.Game
                 m_onActivate.SetTrigger("Start");
                 RigidBody.AddForce(setting.InitForce * param.Value.normalized);
             }
-
         }
 
         public virtual void End()
