@@ -55,7 +55,6 @@ namespace Curry.Game
             {
                 UpdateStats();
             }
-
             OnTimeElapsed(Time.deltaTime);
         }
 

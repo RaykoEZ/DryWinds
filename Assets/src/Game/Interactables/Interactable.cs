@@ -5,15 +5,6 @@ using Curry.Util;
 
 namespace Curry.Game
 {
-    // Player: does not damage player
-    // Enemy: damages player
-    [Flags]
-    public enum ObjectRelations 
-    {
-        None = 0,
-        Ally = 1,
-        Enemy = 1 << 1
-    }
     // A basic script for a collidable object 
     public class Interactable : MonoBehaviour, IPoolable, IClashable
     {
@@ -24,16 +15,24 @@ namespace Curry.Game
         public Rigidbody2D RigidBody { get { return m_rigidbody; } }
         public virtual CollisionStats CollisionData { get { return m_defaultCollisionStats; } }
 
+        void Awake() 
+        { 
+            // If this object isn't in a pool, init here
+            if(Origin == null) 
+            {
+                Prepare();
+            }
+        }
+
         public virtual void Prepare() 
         {
-            m_bodyManager.OnBodyPartHit += OnBodyHit;
             m_bodyManager.Init();
-
+            m_bodyManager.OnBodyPartHit += OnBodyHit;
         }
         public virtual void ReturnToPool()
         {
             m_bodyManager.Shutdown();
-            Origin.ReturnToPool(this);
+            Origin?.ReturnToPool(this);
         }
 
         protected virtual void OnCollisionEnter2D(Collision2D collision)
@@ -98,11 +97,8 @@ namespace Curry.Game
 
         protected void Despawn() 
         {
-            if (Origin != null)
-            {
-                ReturnToPool();
-            }
-            else
+            ReturnToPool();
+            if (Origin == null)
             {
                 Destroy(gameObject);
             }

@@ -9,10 +9,10 @@ namespace Curry.Ai
     {
         [SerializeField] protected BaseNpc m_npc = default;
         [SerializeField] protected NpcController m_controller = default;
-        [SerializeField] protected AiState m_defaultState = default;
-        [SerializeField] protected List<AiState> m_otherStates = default;
+        [SerializeField] protected AiAction<IActionInput> m_defaultAction = default;
+        [SerializeField] protected List<AiAction<IActionInput>> m_optionalActions = default;
         protected float m_timer = 0f;
-        protected AiState m_current;
+        protected AiAction<IActionInput> m_current;
         AiWorldState m_worldStateSnapshot = new AiWorldState();
         protected virtual AiWorldState WorldStateSnapshot
         {
@@ -22,40 +22,40 @@ namespace Curry.Ai
             }
         }
 
-        protected List<AiState> ValidStates
+        protected virtual List<AiAction<IActionInput>> ValidStates
         {
             get
             {
-                List<AiState> validActions = new List<AiState>();
-                foreach (AiState state in m_otherStates)
+                List<AiAction<IActionInput>> validActions = new List<AiAction<IActionInput>>();
+                foreach (AiAction<IActionInput> action in m_optionalActions)
                 {
-                    if (state.PreCondition(WorldStateSnapshot))
+                    if (action.PreCondition(WorldStateSnapshot))
                     {
-                        validActions.Add(state);
+                        validActions.Add(action);
                     }
                 }
                 return validActions;
             }
         }
 
-        protected virtual AiState BestState()
+        protected virtual AiAction<IActionInput> BestAction()
         {            
-            List<AiState> states = ValidStates;
-            AiState best;
-            if (states.Count > 0) 
+            List<AiAction<IActionInput>> newStates = ValidStates;
+            AiAction<IActionInput> best;
+            if (newStates.Count > 0) 
             {
-                best = states[0];
-                for (int i = 0; i < states.Count; ++i)
+                best = newStates[0];
+                for (int i = 0; i < newStates.Count; ++i)
                 {
-                    if (states[i].Priority(WorldStateSnapshot) > best.Priority(WorldStateSnapshot))
+                    if (newStates[i].Priority(WorldStateSnapshot) > best.Priority(WorldStateSnapshot))
                     {
-                        best = states[i];
+                        best = newStates[i];
                     }
                 }
             }
             else 
             {
-                best = m_current;
+                best = m_defaultAction;
             }
             return best;
             
@@ -63,50 +63,45 @@ namespace Curry.Ai
 
         protected void OnEnable()
         {
-            m_npc.OnEvaluate += Evaluate;
+            m_npc.OnEvaluate += OnInteraction;
         }
         protected void OnDisable()
         {
-            m_npc.OnEvaluate -= Evaluate;
+            m_npc.OnEvaluate -= OnInteraction;
         }
 
         protected virtual void Start() 
         {
             UpdateWorldState();
-            TransitionTo(m_defaultState);
-        }
-
-        protected virtual void Update() 
-        {
-            m_timer += Time.deltaTime;
-            if (m_timer > 1f) 
-            {
-                m_timer = 0f;
-                Evaluate();
-            }
+            ExecuteAction(m_defaultAction);
         }
 
         // Determine state changes or additional behaviour
-        public virtual void Evaluate() 
+        protected virtual void Evaluate() 
         {
             UpdateWorldState();
-            AiState newState = BestState();
+            AiAction<IActionInput> newState = BestAction();
             if (newState != m_current) 
             {
-                TransitionTo(newState);
+                ExecuteAction(newState);
             }
         }
 
-        protected virtual void TransitionTo(AiState newState)
+        // Determine what we do with current interaction event
+        protected virtual void OnInteraction(InteractionContext c) 
         {
-            m_current = newState;
-            m_current.OnEnter(m_controller, WorldStateSnapshot);
+            Evaluate();
+        }
+
+        protected virtual void ExecuteAction(AiAction<IActionInput> action)
+        {
+            m_current = action;
+            AiActionInput input = new AiActionInput(m_controller, WorldStateSnapshot);
+            m_current.OnExecute(input);
         }
 
         void UpdateWorldState()
         {
-            m_worldStateSnapshot.EmotionState = m_npc.Emotion.CurrentEmotion;
-            m_worldStateSnapshot.MovementState = m_controller.MovementState;
             m_worldStateSnapshot.CurrentStats = m_npc.CurrentStats;
             m_worldStateSnapshot.Enemies = m_npc.Enemies;
             m_worldStateSnapshot.Allies = m_npc.Allies;

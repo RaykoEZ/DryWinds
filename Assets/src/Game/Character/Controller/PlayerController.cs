@@ -61,12 +61,12 @@ namespace Curry.Game
             }
         }
 
-        protected override IEnumerator OnSkill(Vector2 target) 
+        protected override IEnumerator OnSkill(Vector2 target)
         {
             // trigger dash windup anim
             m_anim.SetBool("DashCharging", true);
             m_anim.SetTrigger("DashTrigger");
-            yield return new WaitForSeconds(m_basicSkill.CurrentSkill.Properties.WindupTime);
+            yield return new WaitUntil(() => { return m_anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 1f; });
             m_anim.SetBool("DashCharging", false);
             m_basicSkill.ActivateSkill(target);
         }

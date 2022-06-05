@@ -6,13 +6,12 @@ using Curry.Ai;
 
 namespace Curry.Game
 {
+
     [RequireComponent(typeof(IPathAi))]
     public class NpcController : BaseCharacterController<BaseNpc>
     {
         [SerializeField] BaseNpc m_npc = default;
         protected Coroutine m_retreat;
-
-        public PathState MovementState { get { return PathHandler.State; } }
         protected IPathAi m_pathHandler;
         protected override BaseNpc Character { get { return m_npc; } }
         protected virtual IPathAi PathHandler { get { return m_pathHandler; } }
@@ -34,6 +33,7 @@ namespace Curry.Game
 
         protected override void Deactivate()
         {
+            PathHandler.OnReached -= OnDestinationReached;
             PathHandler.Stop();
             base.Deactivate();
         }
@@ -42,7 +42,7 @@ namespace Curry.Game
         {
             if (IsReady)
             {
-                m_actionCall = StartCoroutine(UsingSkill(target));
+                m_basicSkill.ActivateSkill(target.transform.position);
             }
         }
 
@@ -51,7 +51,7 @@ namespace Curry.Game
             switch (PathHandler.State)
             {
                 case PathState.Wandering:
-                    // Start doing other actions
+                    // Start doing other actions WIP
                     StartCoroutine(ShowHabit());
                     break;
                 case PathState.Fleeing:
@@ -64,7 +64,6 @@ namespace Curry.Game
 
         protected virtual IEnumerator ShowHabit() 
         {
-            PathHandler.Stop();
             m_anim.SetBool("ShowHabit", true);
             yield return new WaitUntil(() => !m_anim.GetBool("ShowHabit"));
             PathHandler.Startup();
@@ -81,15 +80,13 @@ namespace Curry.Game
             {
                 m_anim.SetTrigger("Panic");
             }
-
-
             base.OnHitStun(stunMod);
         }
 
         protected virtual void OnKnockedout() 
         {
-            m_anim.SetBool("KnockedOut", true);
             Deactivate();
+            m_anim.SetBool("KnockedOut", true);
         }
 
         protected virtual void OnKnockoutRecovery() 
@@ -107,7 +104,11 @@ namespace Curry.Game
         public virtual void Flee() 
         {
             NpcTerritory target = Character.ChooseRetreatDestination();
-            PathHandler.Flee(target);
+            if(target != null) 
+            {
+                PathHandler.Flee(target);
+                m_pathHandler.Startup();
+            }
         }
         protected virtual void Retreat()
         {
@@ -121,6 +122,7 @@ namespace Curry.Game
         public virtual void Wander() 
         {
             m_pathHandler.Wander();
+            m_pathHandler.Startup();
         }
 
         public virtual void EquipBasicSkill(ICharacterAction<IActionInput> skill)
@@ -137,15 +139,10 @@ namespace Curry.Game
         {
             PathHandler.Stop();
             yield return base.RecoverInput(stunMod);
-            PathHandler.Startup();
-        }
-
-        protected virtual IEnumerator UsingSkill(BaseCharacter target)
-        {
-            m_anim.SetBool("WindingUp", true);
-            yield return new WaitForSeconds(Character.BasicSkills.CurrentSkill.Properties.WindupTime);
-            m_anim.SetBool("WindingUp", false);
-            m_basicSkill.ActivateSkill(target.transform.position);
+            if (!m_anim.GetBool("KnockedOut")) 
+            {
+                PathHandler.Startup();
+            }
         }
 
         protected virtual IEnumerator OnRetreatSequence()
@@ -159,13 +156,6 @@ namespace Curry.Game
         protected override void InterruptSkill()
         {
             base.InterruptSkill();
-            m_anim.SetBool("WindingUp", false);
         }
-        protected override void InterruptAction()
-        {
-            base.InterruptAction();
-            m_actionCall = null;
-        }
-
     }
 }

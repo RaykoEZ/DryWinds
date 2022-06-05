@@ -10,22 +10,14 @@ namespace Curry.Skill
     // A container class for skill assets
     public class SkillInventory
     {
-        protected int m_equippedIndex = 0;
         protected int m_loadFinishedCount = 0;
-        protected int m_numLoadSceduled = 0;
-
         protected Transform m_parent;
         protected BaseCharacter m_userRef;
         protected List<ICharacterAction<IActionInput>> m_skillSet = new List<ICharacterAction<IActionInput>>();
         protected List<PrefabLoader> m_loaders = new List<PrefabLoader>();
         public event OnSkillLoadFinish OnFinish;
         public List<ICharacterAction<IActionInput>> Skills { get { return new List<ICharacterAction<IActionInput>>(m_skillSet); } }
-        public ICharacterAction<IActionInput> CurrentSkill { get { return Skills[EquippedIndex]; } }
-
         public bool SkillAssetsLoaded { get; protected set; }
-        public int EquippedIndex { 
-            get { return m_equippedIndex; } 
-            set { m_equippedIndex = Mathf.Clamp(value, 0, m_skillSet.Count - 1); } }
 
         public void Init(BaseCharacter user, List<AssetReference> skillRefs, Transform parent) 
         {
@@ -46,18 +38,13 @@ namespace Curry.Skill
             }
         }
 
-        public void AddSkill(ICharacterAction<IActionInput> skill) 
-        {
-            m_skillSet.Add(skill);
-        }
-
         protected virtual void OnLoadFinish(GameObject obj) 
         {
             GameObject skillInstance = Object.Instantiate(obj, m_parent);
             skillInstance.transform.position = Vector3.zero;
             BaseSkill skill = skillInstance.GetComponent<BaseSkill>();
             skill.Init(m_userRef);
-            ICharacterAction<IActionInput> skillAction = skill as ICharacterAction<IActionInput>;
+            ICharacterAction<IActionInput> skillAction = skill;
             m_skillSet.Add(skillAction);
             ++m_loadFinishedCount;
             LoadFinishCheck();

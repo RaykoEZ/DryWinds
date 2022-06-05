@@ -7,7 +7,7 @@ using Curry.Util;
 
 namespace Curry.Skill
 {
-    public delegate void OnActivateDrawSkill(RegionInput input);
+    public delegate void OnActivateDrawSkill(LineInput input);
     // Trace is like the brush tip for paint tools but with decay behaviours, also detects patterns for skill activation
     [RequireComponent(typeof(EdgeCollider2D))]
     public class BaseTracer : Interactable
@@ -117,7 +117,7 @@ namespace Curry.Skill
         public virtual void ActivateEffect() 
         {
             List<Vector2> verts = new List<Vector2>(m_drawnVert);
-            RegionInput payload = new RegionInput(verts);
+            LineInput payload = new LineInput(verts);
             OnActivate?.Invoke(payload);
         }
 

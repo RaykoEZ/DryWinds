@@ -6,14 +6,29 @@ using Curry.Ai;
 
 namespace Curry.Game
 {
-    public delegate void OnNpcInteraction();
+    public delegate void OnNpcInteraction(InteractionContext c);
+    public delegate void OnNpcKnockout();
+    public enum InteractionType 
+    { 
+        OnDetect,
+        OnLosingTarget,
+        TakeDamage
+    }
+    public struct InteractionContext 
+    { 
+        public InteractionType Type { get { return m_type; } }
+        InteractionType m_type;
+
+        public InteractionContext(InteractionType t) 
+        {
+            m_type = t;
+        }
+    }
+
     public class BaseNpc : BaseCharacter
     {
         [SerializeField] protected CharacterDetector m_detector = default;
-        BaseEmotionHandler m_emotions = new BaseEmotionHandler();
-        float m_timer = 0f;
         bool m_knockedout = false;
-        protected CharacterContextFactory m_contextFactory = new CharacterContextFactory();
         protected HashSet<BaseCharacter> m_enemies = new HashSet<BaseCharacter>();
         protected HashSet<BaseCharacter> m_allies = new HashSet<BaseCharacter>();
         protected List<NpcTerritory> m_territories = new List<NpcTerritory>();
@@ -21,20 +36,18 @@ namespace Curry.Game
         public event OnCharacterDetected OnDetectCharacter;
         public event OnCharacterDetected OnCharacterExitDetection;
         public event OnNpcInteraction OnEvaluate;
-        public event OnNpcInteraction OnKnockout;
-        public event OnNpcInteraction OnKnockoutRecover;
-        public virtual EmotionHandler Emotion { get { return m_emotions; } } 
+        public event OnNpcKnockout OnKnockout;
+        public event OnNpcKnockout OnKnockoutRecover;
         public List<BaseCharacter> Enemies { get { return new List<BaseCharacter>(m_enemies); } }
         public List<BaseCharacter> Allies { get { return new List<BaseCharacter>(m_allies); } }
         public IReadOnlyList<NpcTerritory> Territories { get { return m_territories; } }
 
-        protected virtual void FixedUpdate() 
+
+        protected override void OnWeakpointBreak(BodyPart part)
         {
-            m_timer += Time.deltaTime;
-            if (m_timer > 1f)
+            if (!m_knockedout)
             {
-                m_timer = 0f;
-                m_emotions.Update();
+                OnKnockedout();
             }
         }
 
@@ -47,12 +60,9 @@ namespace Curry.Game
 
         protected virtual IEnumerator KnockoutRecovery() 
         {
-            float maxStam = m_statusManager.CurrentStats.CharacterStats.MaxStamina;
-            while (m_statusManager.CurrentStats.CharacterStats.Stamina < maxStam) 
-            {
-                OnHeal(0.2f * maxStam);
-                yield return new WaitForSeconds(1f);
-            }
+            CharacterStats stat = m_statusManager.CurrentStats.CharacterStats;
+            float rand = UnityEngine.Random.Range(5f, 8f);
+            yield return new WaitForSeconds(rand * stat.HitRecoveryTime);
             m_knockedout = false;
             OnKnockoutRecover?.Invoke();
         }
@@ -63,6 +73,11 @@ namespace Curry.Game
         }
         public virtual NpcTerritory ChooseRetreatDestination()
         {
+            if(m_territories.Count < 1) 
+            {
+                return null;
+            }
+
             NpcTerritory ret = m_territories[0];
             float leastDistance = Vector2.Distance(transform.position, ret.transform.position);
             for (int i = 1; i < m_territories.Count; ++i) 
@@ -79,8 +94,6 @@ namespace Curry.Game
         public override void Prepare()
         {
             base.Prepare();
-            Init(m_contextFactory);
-            m_emotions.Init();
             m_detector.OnDetected += OnTargetDetected;
             m_detector.OnExitDetection += OnLosingTarget;
         }
@@ -98,14 +111,14 @@ namespace Curry.Game
             if (isFoe)
             {
                 m_enemies.Add(character);
-                m_emotions.OnThreatDetected();
             }
             else
             {
                 m_allies.Add(character);
             }
             OnDetectCharacter?.Invoke(character);
-            OnEvaluate?.Invoke();
+            InteractionContext c = new InteractionContext(InteractionType.OnDetect);
+            OnEvaluate?.Invoke(c);
         }
 
         protected virtual void OnLosingTarget(BaseCharacter character)
@@ -121,7 +134,8 @@ namespace Curry.Game
                 m_allies.Remove(character);
                 OnCharacterExitDetection?.Invoke(character);
             }
-            OnEvaluate?.Invoke();
+            InteractionContext c = new InteractionContext(InteractionType.OnLosingTarget);
+            OnEvaluate?.Invoke(c);
         }
 
         public virtual void Retreat()
@@ -132,12 +146,8 @@ namespace Curry.Game
         protected override void OnTakeDamage(float damage, int partDamage = 0)
         {
             base.OnTakeDamage(damage);
-            if (!m_knockedout && m_statusManager.CurrentStats.CharacterStats.Stamina == 0f) 
-            {
-                OnKnockedout();
-            }
-            m_emotions.OnTakeDamage();
-            OnEvaluate?.Invoke();
+            InteractionContext c = new InteractionContext(InteractionType.TakeDamage);
+            OnEvaluate?.Invoke(c);
         }
     }
 }

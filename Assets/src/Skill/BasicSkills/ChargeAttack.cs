@@ -36,7 +36,7 @@ namespace Curry.Skill
         {
             if(target != null && target is VectorInput posParam) 
             {
-                Vector2 mousePos = posParam.Target;
+                Vector2 mousePos = posParam.Value;
                 m_execute = StartCoroutine(DashMotion(m_user.RigidBody.position, mousePos));
             }
             yield return null;

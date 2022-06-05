@@ -13,10 +13,10 @@ namespace Curry.Ai
     {
         public override bool PreCondition(AiWorldState args)
         {
-            return args.Enemies.Count > 0 && args.EmotionState != AiEmotionState.Fear;
+            return args.Enemies.Count > 0;
         }
 
-        public override void OnEnter(AiActionInput param)
+        public override void OnExecute(AiActionInput param)
         {
         }
 
