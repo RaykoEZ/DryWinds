@@ -301,8 +301,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e7f92d1e153d0e439c5fef96c7a8899, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_playerUI: {fileID: 374298730}
-  m_player: {fileID: 514589856}
   m_gameEventListener: {fileID: 932509880}
 --- !u!1001 &206638322
 PrefabInstance:
@@ -3195,6 +3193,10 @@ PrefabInstance:
       propertyPath: m_cam
       value: 
       objectReference: {fileID: 1639572726}
+    - target: {fileID: 6580273533904613876, guid: ea9ee902703f1ff42bac00a64f21ba55, type: 3}
+      propertyPath: m_playerUI
+      value: 
+      objectReference: {fileID: 374298730}
     - target: {fileID: 7132250615096554088, guid: ea9ee902703f1ff42bac00a64f21ba55, type: 3}
       propertyPath: m_AdditionalShaderChannelsFlag
       value: 25
@@ -3251,17 +3253,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 247268b5b07ab9e439d7bd2512fae885, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &514589856 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6580273533904613876, guid: ea9ee902703f1ff42bac00a64f21ba55, type: 3}
-  m_PrefabInstance: {fileID: 514589853}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0b9c4c0c6eab04142a333faf9a790664, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &731221087

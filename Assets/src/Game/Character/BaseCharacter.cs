@@ -15,6 +15,8 @@ namespace Curry.Game
     public abstract class BaseCharacter : Interactable
     {
         [SerializeField] protected CharacterStatusManager m_statusManager = default;
+        protected CharacterContextFactory m_contextFactory = new CharacterContextFactory();
+
         public event OnLoadFinish OnLoaded;
         public virtual CharacterStats BaseStats 
         { 
@@ -37,10 +39,11 @@ namespace Curry.Game
         public event OnCharacterInterrupt OnActionInterrupt;
         public event OnCharacterDefeated OnDefeated;
 
-        public virtual void Init(CharacterContextFactory contextFactory) 
+        public override void Prepare() 
         {
+            base.Prepare();
             m_statusManager.OnLoaded += () => { OnLoaded?.Invoke(); };
-            m_statusManager.Init(this, contextFactory);
+            m_statusManager.Init(this, m_contextFactory);
         }
 
         protected override void OnBodyHit(BodyHitResult hit)
@@ -56,9 +59,10 @@ namespace Curry.Game
             }
         }
 
-        public virtual void Shutdown() 
+        public override void ReturnToPool() 
         {
             m_statusManager.Shutdown();
+            base.ReturnToPool();
         }
 
         protected override void OnTakeDamage(float damage, int partDamage = 0)

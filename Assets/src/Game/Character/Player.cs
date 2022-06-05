@@ -12,6 +12,7 @@ namespace Curry.Game
     public class Player : BaseCharacter
     {
         [SerializeField] CurryGameEventSource m_onCollectItem = default;
+        [SerializeField] PlayerHUDManager m_playerUI = default;
         [SerializeField] PromptManager m_prompt = default;
         protected Camera m_cam = default;
         protected HeldInventory m_heldItems = new HeldInventory();
@@ -21,15 +22,17 @@ namespace Curry.Game
         public event OnCollectItem OnCollect;
         public event OnUseItem OnUse;
 
-        public override void Init(CharacterContextFactory contextFactory)
+        public override void Prepare()
         {
-            base.Init(contextFactory);
+            base.Prepare();
+            m_playerUI.Init(m_contextFactory, this);
             m_cam = Camera.main;
         }
 
         public override void ReturnToPool()
         {
             OnCollect = null;
+            m_playerUI.Shutdown(m_contextFactory, this);
             base.ReturnToPool();
         }
 

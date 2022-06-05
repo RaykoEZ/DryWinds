@@ -6,12 +6,8 @@ namespace Curry.Game
 {
     public class PlayerStateManager : MonoBehaviour
     {
-        [SerializeField] PlayerHUDManager m_playerUI = default;
-        [SerializeField] Player m_player = default;
         [SerializeField] GameEventManager m_gameEventListener = default;
         
-        CharacterContextFactory m_playerContextFactory = default;
-
         // Start is called before the first frame update
         void Awake()
         {
@@ -20,11 +16,6 @@ namespace Curry.Game
             m_gameEventListener.OnInteractNPC += OnPlayerInteractNPC;
             m_gameEventListener.OnItemObtained += OnItemObtained;
             m_gameEventListener.OnFloraObtained += OnFloraObtained;
-
-            CharacterContextFactory playerContextFactory = new CharacterContextFactory();
-            m_playerContextFactory = playerContextFactory;
-            m_playerUI.Init(playerContextFactory, m_player);
-            m_player.Init(playerContextFactory);
         }
 
         void OnDisable()
@@ -34,9 +25,6 @@ namespace Curry.Game
             m_gameEventListener.OnInteractNPC -= OnPlayerInteractNPC;
             m_gameEventListener.OnItemObtained -= OnItemObtained;
             m_gameEventListener.OnFloraObtained -= OnFloraObtained;
-
-            m_playerUI.Shutdown(m_playerContextFactory, m_player);
-            m_player.Shutdown();
         }
         void OnPlayerKnockout(object sender, PlayerArgs args)
         {

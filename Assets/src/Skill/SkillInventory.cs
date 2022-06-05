@@ -10,10 +10,7 @@ namespace Curry.Skill
     // A container class for skill assets
     public class SkillInventory
     {
-        protected int m_equippedIndex = 0;
         protected int m_loadFinishedCount = 0;
-        protected int m_numLoadSceduled = 0;
-
         protected Transform m_parent;
         protected BaseCharacter m_userRef;
         protected List<ICharacterAction<IActionInput>> m_skillSet = new List<ICharacterAction<IActionInput>>();
@@ -39,11 +36,6 @@ namespace Curry.Skill
             {
                 loader.LoadAsset();
             }
-        }
-
-        public void AddSkill(ICharacterAction<IActionInput> skill) 
-        {
-            m_skillSet.Add(skill);
         }
 
         protected virtual void OnLoadFinish(GameObject obj) 

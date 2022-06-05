@@ -309,10 +309,8 @@ MonoBehaviour:
   m_instanceManager: {fileID: 5751947332544427054}
   m_skillProperty:
     m_name: MinorShield
-    m_targetOptions: -1
-    m_spCost: 0.5
+    m_spCost: 0.1
     m_cooldownTime: 1
-    m_windupTime: 0
     m_actionValue: 0
     m_knockback: 1
   m_traceRef:

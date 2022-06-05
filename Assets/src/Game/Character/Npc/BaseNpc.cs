@@ -29,7 +29,6 @@ namespace Curry.Game
     {
         [SerializeField] protected CharacterDetector m_detector = default;
         bool m_knockedout = false;
-        protected CharacterContextFactory m_contextFactory = new CharacterContextFactory();
         protected HashSet<BaseCharacter> m_enemies = new HashSet<BaseCharacter>();
         protected HashSet<BaseCharacter> m_allies = new HashSet<BaseCharacter>();
         protected List<NpcTerritory> m_territories = new List<NpcTerritory>();
@@ -95,7 +94,6 @@ namespace Curry.Game
         public override void Prepare()
         {
             base.Prepare();
-            Init(m_contextFactory);
             m_detector.OnDetected += OnTargetDetected;
             m_detector.OnExitDetection += OnLosingTarget;
         }
