@@ -43,7 +43,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 41f9ec6a9c3886c4cb141f7a74e46cb6, type: 2}
+  m_Motion: {fileID: 7400000, guid: 232f23f3753f8a849965af325954e17c, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -80,7 +80,7 @@ AnimatorController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: MinorMinorProtection
+  m_Name: OnSkillInput
   serializedVersion: 5
   m_AnimatorParameters:
   - m_Name: Start
@@ -123,7 +123,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: ccf5cdf9be649c14096d8ba47b580b41, type: 2}
+  m_Motion: {fileID: 7400000, guid: e379eeea1a3baa14789c14d4713a5a83, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
