@@ -6,6 +6,6 @@ AnimatorOverrideController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: New Animator Override Controller
+  m_Name: Path
   m_Controller: {fileID: 9100000, guid: 95b1f068de115e8429083f1ea9d0989d, type: 2}
   m_Clips: []
