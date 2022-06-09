@@ -21,10 +21,6 @@ namespace Curry.Skill
         protected Queue<Vector2> m_drawnVert = new Queue<Vector2>();
         protected Queue<Vector3> m_drawnPositions = new Queue<Vector3>();
 
-        protected override void OnCollisionEnter2D(Collision2D col)
-        {
-        }
-
         public override void Prepare()
         {
             ResetAll();

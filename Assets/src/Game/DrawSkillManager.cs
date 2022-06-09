@@ -11,7 +11,6 @@ namespace Curry.Game
         [SerializeField] Camera m_cam = default;
         [SerializeField] BaseCharacter m_user = default;
         protected SkillActivator m_skillActivator = new SkillActivator();
-
         // Update is called once per frame
         void FixedUpdate()
         {
@@ -20,8 +19,7 @@ namespace Curry.Game
             bool isOutside = view.x < 0f || view.x > 1f || view.y < 0f || view.y > 1f;
             if (Mouse.current.leftButton.isPressed && !isOutside)
             {
-                Vector2 pos = m_cam.
-                    ScreenToWorldPoint(Mouse.current.position.ReadValue());
+                Vector2 pos = m_cam.ScreenToWorldPoint(mousePos);
                 UseDrawSkill(pos);
             }
             else

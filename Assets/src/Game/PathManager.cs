@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using Curry.Events;
@@ -26,8 +27,15 @@ namespace Curry.Game
             else if(info.Payload["path"] is PlayerPath path)
             {
                 m_paths.Push(path);
-                m_navMesh.BuildNavMeshAsync();
+                StartCoroutine(MakePath());            
             }
+        }
+
+        IEnumerator MakePath() 
+        {
+            AsyncOperation op = m_navMesh.BuildNavMeshAsync();
+            yield return new WaitUntil(() => { return op.isDone; });
+            Debug.Log("Navmesh done");
         }
 
         public void UndoPath() 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Curry.Game;
 using Curry.Util;
-
+using UnityEngine.InputSystem;
 namespace Curry.Skill
 {
     public abstract class BaseDrawSkill : BaseSkill
@@ -43,33 +43,34 @@ namespace Curry.Skill
             }
             if (param is VectorInput posParam) 
             {
+                Vector2 pos = posParam.Value;
                 // start a new stroke if we hold LMB (already drawing) and is moving
                 if (!m_drawInProgress)
                 {
                     EndTracer();
-                    m_previousDrawPos = posParam.Value;
+                    m_previousDrawPos = pos;
                     // make new stroke
                     m_currentTracer = m_instanceManager.GetInstanceFromAsset(TracerRef) as BaseTracer;
                     m_currentTracer.OnActivate += OnSkillEffectActivate;
                     m_drawInProgress = true;
                 }
-
-                float dist = Vector2.Distance(posParam.Value, m_previousDrawPos);
+                
+                float dist = Vector2.Distance(pos, m_previousDrawPos);
                 float totalCost = dist * Properties.SpCost;
                 if (totalCost <= m_user.CurrentStats.SP)
                 {
                     //update mousePos log
                     ConsumeResource(totalCost);
-                    m_currentTracer.OnTrace(posParam.Value);
+                    m_currentTracer.OnTrace(pos);
                 }
                 else if( m_user.CurrentStats.SP > 0f )
                 {
                     float scale = m_user.CurrentStats.SP / totalCost;
-                    Vector2 lerp = Vector2.Lerp(m_previousDrawPos, posParam.Value, scale);
+                    Vector2 lerp = Vector2.Lerp(m_previousDrawPos, pos, scale);
                     ConsumeResource(m_user.CurrentStats.SP);
                     m_currentTracer.OnTrace(lerp);
                 }
-                m_previousDrawPos = posParam.Value;
+                m_previousDrawPos = pos;
             }
         }
 
