@@ -6,7 +6,7 @@ namespace Curry.Game
     public class Projectile : Interactable, ISkillObject<VectorInput>
     {
         [SerializeField] protected Animator m_onActivate = default;
-        public virtual GameObject Self { get { return gameObject; } }
+        public virtual GameObject go { get { return gameObject; } }
         protected ProjectileSetting m_currentSetting;
         protected float m_currentDamage;
         protected float m_currentknockBack;

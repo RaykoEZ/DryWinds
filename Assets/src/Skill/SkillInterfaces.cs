@@ -6,7 +6,7 @@ namespace Curry.Skill
 {
     public interface ISkillObject<T> where T : IActionInput
     {
-        GameObject Self { get; }
+        GameObject go { get; }
         void Begin(T param);
         void End();
     }

@@ -14,18 +14,10 @@ namespace Curry.Skill
         public virtual ISkillObject<LineInput> SummonObject { get; protected set; }
 
         protected FragileBarrier m_currentBarrierInstance;
-
-        public virtual void Summon(LineInput param) 
+        protected override void OnExecute(LineInput input)
         {
-            if(param.Payload == null)
-            {
-                param.Payload = new Dictionary<string, object>();
-            }
-            param.Payload.Add("duration", m_shieldDuration);
-            m_currentBarrierInstance = m_instanceManager.GetInstanceFromAsset(SummonObject.Self) as FragileBarrier;
-            m_currentBarrierInstance?.Begin(param);
+            Summon(input);
         }
-
         public override void Init(BaseCharacter user)
         {
             base.Init(user);
@@ -36,14 +28,15 @@ namespace Curry.Skill
             m_barrierSpawn.LoadAsset();
         }
 
-        protected override IEnumerator ExecuteInternal(IActionInput target)
+        public virtual void Summon(LineInput param) 
         {
-            if(target is LineInput input)
+            if(param.Payload == null)
             {
-                Summon(input);
+                param.Payload = new Dictionary<string, object>();
             }
-            // Start animation
-            yield return null;
+            param.Payload.Add("duration", m_shieldDuration);
+            m_currentBarrierInstance = m_instanceManager.GetInstanceFromAsset(SummonObject.go) as FragileBarrier;
+            m_currentBarrierInstance?.Begin(param);
         }
 
         public virtual void Unsummon()

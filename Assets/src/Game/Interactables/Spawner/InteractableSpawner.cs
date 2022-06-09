@@ -26,7 +26,7 @@ namespace Curry.Game
         // Reference to the npc asset
         [SerializeField] protected PrefabLoader m_objRef = default;
         [SerializeField] protected SpawnerProperties m_spawnProperties = default;
-        [SerializeField] protected InteractableInstanceManager m_instanceManager = default;
+        [SerializeField] protected InstanceManager m_instanceManager = default;
         protected float m_spawnTimer = 0f;
         protected int m_spawnCounter = 0;
         public GameObject AssetRef { get; protected set; }

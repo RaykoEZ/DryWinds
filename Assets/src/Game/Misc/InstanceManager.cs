@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Curry.Game
 {
-    public class InteractableInstanceManager : MonoBehaviour 
+    public class InstanceManager : MonoBehaviour 
     { 
         [SerializeField] InteractablePoolCollection m_pool = default;
         ObjectPool<Interactable> m_currentPool = default;
@@ -26,7 +26,6 @@ namespace Curry.Game
             PrepareNewInstance(asset, parent);
             return m_currentPool?.GetItemFromPool();
         }
-
         public virtual Interactable GetInstanceFromCurrentPool() 
         {
             return m_currentPool?.GetItemFromPool();

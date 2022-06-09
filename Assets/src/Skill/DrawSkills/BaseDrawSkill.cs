@@ -9,7 +9,6 @@ namespace Curry.Skill
     public abstract class BaseDrawSkill : BaseSkill
     {
         [SerializeField] protected PrefabLoader m_traceRef = default;
-
         protected Vector2 m_previousDrawPos;
         protected BaseTracer m_currentTracer;
         public virtual float CooldownTime { get { return m_skillProperty.CooldownTime; } }
@@ -22,6 +21,7 @@ namespace Curry.Skill
                 return base.IsUsable && TracerRef != null;
             }
         }
+        protected abstract void OnExecute(LineInput input);
 
         public override void Init(BaseCharacter user)
         {
@@ -102,6 +102,15 @@ namespace Curry.Skill
             OnSkillFinish();
             m_animator.SetTrigger("Start");
             m_execute = StartCoroutine(ExecuteInternal(input));
+        }
+
+        protected override IEnumerator ExecuteInternal(IActionInput target)
+        {
+            if (target is LineInput input)
+            {
+                OnExecute(input);
+            }
+            yield return null;
         }
     }
 }

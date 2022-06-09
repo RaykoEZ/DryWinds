@@ -15,7 +15,10 @@ namespace Curry.Game
         // Update is called once per frame
         void FixedUpdate()
         {
-            if (Mouse.current.leftButton.isPressed)
+            Vector2 mousePos = Mouse.current.position.ReadValue();
+            Vector3 view = m_cam.ScreenToViewportPoint(mousePos);
+            bool isOutside = view.x < 0f || view.x > 1f || view.y < 0f || view.y > 1f;
+            if (Mouse.current.leftButton.isPressed && !isOutside)
             {
                 Vector2 pos = m_cam.
                     ScreenToWorldPoint(Mouse.current.position.ReadValue());

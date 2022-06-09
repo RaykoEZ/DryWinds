@@ -1,5 +1,5 @@
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Curry.Util
@@ -35,6 +35,14 @@ namespace Curry.Util
             }
             temp *= 0.5f;
             return Mathf.Abs(temp);
+        }
+
+        public static void RenderLine(List<Vector2> verts,  LineRenderer line, EdgeCollider2D col = null) 
+        {
+            col?.SetPoints(verts);
+            Vector3[] pos = VectorExtension.ToVector3Array(verts.ToArray());
+            line.positionCount = pos.Length;
+            line.SetPositions(pos);
         }
     }
 }

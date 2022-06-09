@@ -23,8 +23,8 @@ MonoBehaviour:
     m_SerializedLabels: []
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
-  - m_GUID: c429d02b3f4902d4591f75325c991b40
-    m_Address: P_BaseTracer
+  - m_GUID: f7fd15333b915b2429510021a1cfcb51
+    m_Address: DSkiill/P/MinorProtection/Summon0
     m_ReadOnly: 0
     m_SerializedLabels: []
     m_MainAsset: {fileID: 0}
