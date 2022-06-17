@@ -6,11 +6,12 @@ using Curry.Skill;
 
 namespace Curry.Game
 {
-    public class DrawSkillManager : MonoBehaviour
+    public class DrawingManager : MonoBehaviour
     {
         [SerializeField] Camera m_cam = default;
         [SerializeField] BaseCharacter m_user = default;
         protected SkillActivator m_skillActivator = new SkillActivator();
+
         // Update is called once per frame
         void FixedUpdate()
         {

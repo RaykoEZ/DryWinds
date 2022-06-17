@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Curry.Game;
 using Curry.Util;
-using UnityEngine.InputSystem;
+using UnityEngine.AI;
 namespace Curry.Skill
 {
     public abstract class BaseDrawSkill : BaseSkill
@@ -32,7 +32,6 @@ namespace Curry.Skill
             };
             m_traceRef.LoadAsset();
         }
-
         public override void OnEnter(IActionInput param)
         {
             // If spawned traces is not ready, don't draw 
@@ -51,7 +50,6 @@ namespace Curry.Skill
                     m_previousDrawPos = pos;
                     // make new stroke
                     m_currentTracer = m_instanceManager.GetInstanceFromAsset(TracerRef) as BaseTracer;
-                    m_currentTracer.OnActivate += OnSkillEffectActivate;
                     m_drawInProgress = true;
                 }
                 
@@ -88,17 +86,17 @@ namespace Curry.Skill
 
         protected virtual void EndTracer()
         {
-            if(m_currentTracer != null && m_currentTracer.isActiveAndEnabled) 
+            if (m_currentTracer != null && m_currentTracer.isActiveAndEnabled && m_currentTracer.Length > 0.1f) 
             {
-                m_currentTracer.ActivateEffect();
+                List<Vector2> v = new List<Vector2>(m_currentTracer.Verts);
+                LineInput input = new LineInput(v);
+                OnSkillEffectActivate(input);
             } 
         }
 
         protected virtual void OnSkillEffectActivate(LineInput input) 
         {
-            m_currentTracer.OnActivate -= OnSkillEffectActivate;
             m_currentTracer.OnClear();
-            EndTracer();
             CoolDown();
             OnSkillFinish();
             m_animator.SetTrigger("Start");

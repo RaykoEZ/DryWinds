@@ -2,25 +2,23 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using Curry.Game;
 using Curry.Util;
 
 namespace Curry.Skill
 {
-    public delegate void OnActivateDrawSkill(LineInput input);
-    // Trace is like the brush tip for paint tools but with decay behaviours, also detects patterns for skill activation
+    // Trace is the brush tip for paint tools
     [RequireComponent(typeof(EdgeCollider2D))]
     public class BaseTracer : Interactable
     {
         [SerializeField] protected LineRenderer m_lineRenderer = default;
         [SerializeField] protected EdgeCollider2D m_edgeCollider = default;
-
-        public event OnActivateDrawSkill OnActivate;
-
-        protected bool m_effectActivated = false;
         protected Queue<Vector2> m_drawnVert = new Queue<Vector2>();
         protected Queue<Vector3> m_drawnPositions = new Queue<Vector3>();
-
+        protected float m_drawnLength = 0f;
+        public Vector2[] Verts { get { return m_drawnVert.ToArray(); } }
+        public float Length { get { return m_drawnLength; } }
         public override void Prepare()
         {
             ResetAll();
@@ -32,12 +30,16 @@ namespace Curry.Skill
         }
 
         protected void AddVertex(Vector2 targetPosition) 
-        {
-            if (!m_drawnVert.Contains(targetPosition) && !m_effectActivated)
+        {        
+            if (!m_drawnVert.Contains(targetPosition))
             {
                 m_drawnVert.Enqueue(targetPosition);
                 m_drawnPositions.Enqueue(targetPosition);
                 UpdateTrace(targetPosition);
+                if (m_drawnVert.Count > 0) 
+                {
+                    m_drawnLength += Vector2.Distance(m_drawnVert.Peek(), targetPosition);
+                }
             }
         }
 
@@ -110,29 +112,15 @@ namespace Curry.Skill
             return toKeep;
         } 
 
-        public virtual void ActivateEffect() 
-        {
-            List<Vector2> verts = new List<Vector2>(m_drawnVert);
-            LineInput payload = new LineInput(verts);
-            OnActivate?.Invoke(payload);
-        }
-
         public virtual void OnClear()
         {
-            StartCoroutine(OnExit());
-        }
-
-        protected virtual IEnumerator OnExit() 
-        {
-            yield return new WaitForSeconds(0.5f);
             ResetAll();
             ReturnToPool();
         }
 
         protected virtual void ResetAll() 
         {
-            OnActivate = null;
-            m_effectActivated = false;
+            m_drawnLength = 0f;
             m_lineRenderer.positionCount = 0;
             m_drawnVert.Clear();
             m_drawnPositions.Clear();
