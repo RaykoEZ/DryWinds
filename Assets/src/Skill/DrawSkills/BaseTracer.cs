@@ -9,24 +9,32 @@ using Curry.Util;
 namespace Curry.Skill
 {
     // Trace is the brush tip for paint tools
-    [RequireComponent(typeof(EdgeCollider2D))]
     public class BaseTracer : Interactable
     {
         [SerializeField] protected LineRenderer m_lineRenderer = default;
-        [SerializeField] protected EdgeCollider2D m_edgeCollider = default;
+        [SerializeField] protected Brush m_brush = default;
         protected Queue<Vector2> m_drawnVert = new Queue<Vector2>();
         protected Queue<Vector3> m_drawnPositions = new Queue<Vector3>();
         protected float m_drawnLength = 0f;
+        protected Vector2 m_prev;
         public Vector2[] Verts { get { return m_drawnVert.ToArray(); } }
         public float Length { get { return m_drawnLength; } }
         public override void Prepare()
         {
             ResetAll();
+            m_brush.Init();
         }
 
-        public virtual void OnTrace(Vector2 target)
+        public virtual bool OnTrace(Vector2 newPosition)
         {
-            AddVertex(target);
+            m_brush.Show(newPosition);
+            bool blocked = m_brush.IsBlocked;
+            if (!blocked) 
+            {
+                AddVertex(newPosition);
+                m_prev = newPosition;
+            }
+            return !blocked;
         }
 
         protected void AddVertex(Vector2 targetPosition) 
@@ -47,70 +55,7 @@ namespace Curry.Skill
         {
             m_lineRenderer.positionCount = m_drawnPositions.Count;
             m_lineRenderer.SetPosition(m_lineRenderer.positionCount - 1, targetPosition);
-            m_edgeCollider.points = m_drawnVert.ToArray();
         }
-
-        /// <summary>
-        /// Determin whether the drawing activates the skill effect
-        /// </summary>
-        /// <returns> 
-        /// true: the draw pattern will activate the skill effect
-        /// false: no pattern detected on drawing yet
-        /// </returns>
-        protected virtual bool DetectPattern(Vector2 targetVert) 
-        {
-            bool ret = false;
-            Vector2[] verts = m_edgeCollider.points;
-            // need more than 1 points defined to have a general pattern.
-            if(verts.Length > 0) 
-            {
-                Vector2 dir = (targetVert - verts[m_edgeCollider.points.Length - 1]).normalized;
-                // move starting point from origin towards targetVert by 2x radius to avoid collision on origin.
-                Vector2 start = verts[m_edgeCollider.points.Length - 1] + (2f * m_edgeCollider.edgeRadius * dir);
-                float dist = Vector2.Distance(targetVert, start);
-                // 1 << 8 for drawing layer, CONST IN THE FUTURE
-                RaycastHit2D hit = Physics2D.CircleCast(start, m_edgeCollider.edgeRadius, dir, dist, 1 << 8);
-                ret = hit.collider == m_edgeCollider;
-            }
-            return ret;
-        }
-
-        /// <summary>
-        /// Gets the list of verts we drew that made the enclosure, gets rid of hanging edges.
-        /// </summary>
-        /// <param name="verts"> the point positions of the drawn line</param>
-        /// <param name="closureVert"> the latest point to make contact with the line to form a shape</param>
-        /// <param name="searchRadius"> the radius for searching neighbourhood points</param>
-        /// <returns></returns>
-        protected List<Vector2> GetTrimmmedPattern(Vector2[] verts, Vector2 closureVert, float searchRadius) 
-        {
-            List<Vector2> toKeep = new List<Vector2>(verts);
-            toKeep[0] = closureVert;
-            if (verts.Length > 2) 
-            {
-                List<Vector2> toRemove = new List<Vector2>();
-                for (int i = 0; i < verts.Length - 1; ++i) 
-                {
-                    // From first vert to the closest vert to closure point, remove those hanging verts and keep the rest
-                    // Stop on the first instance of finding the closest point to closure point
-                    toRemove.Add(verts[i]);
-                    searchRadius *= 1.2f;
-                    Vector2 midPoint = Vector2.Lerp(verts[i], verts[i + 1], 0.5f);
-                    bool isMidPointClose = Vector2.Distance(midPoint, closureVert) < searchRadius;
-                    bool isNearClosure = Vector2.Distance(verts[i], closureVert) < searchRadius;
-                    if (isNearClosure || isMidPointClose) 
-                    {
-                        break;
-                    }
-                }   
-
-                foreach(Vector2 remove in toRemove) 
-                {
-                    toKeep.Remove(remove);
-                }
-            }
-            return toKeep;
-        } 
 
         public virtual void OnClear()
         {
@@ -120,11 +65,12 @@ namespace Curry.Skill
 
         protected virtual void ResetAll() 
         {
+            transform.position = Vector3.zero;
+            m_brush.Hide();
             m_drawnLength = 0f;
             m_lineRenderer.positionCount = 0;
             m_drawnVert.Clear();
             m_drawnPositions.Clear();
-            m_edgeCollider.points = m_drawnVert.ToArray();
         }
     }
 }

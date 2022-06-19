@@ -21,8 +21,8 @@ MonoBehaviour:
     m_Address: P_BaseTracer
     m_ReadOnly: 0
     m_SerializedLabels: []
-    m_MainAsset: {fileID: 6937999071832126887, guid: c429d02b3f4902d4591f75325c991b40, type: 3}
-    m_TargetAsset: {fileID: 6937999071832126887, guid: c429d02b3f4902d4591f75325c991b40, type: 3}
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
   - m_GUID: ae7a2f9b192e73243ba72c10133983fb
     m_Address: PSkills/SlashWave/P/SlashWave_Projectile
     m_ReadOnly: 0
@@ -33,16 +33,28 @@ MonoBehaviour:
     m_Address: PSkills/SlashWave/P/SlashWave
     m_ReadOnly: 0
     m_SerializedLabels: []
-    m_MainAsset: {fileID: 6664932895817295306, guid: cc09dce4b631c9b469f0d6f5e07f03b3, type: 3}
-    m_TargetAsset: {fileID: 6664932895817295306, guid: cc09dce4b631c9b469f0d6f5e07f03b3, type: 3}
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
   - m_GUID: 4c3458c4a6d950147bd98ba3694a3259
     m_Address: DSkill/P/PathMaker/Path
     m_ReadOnly: 0
     m_SerializedLabels: []
-    m_MainAsset: {fileID: 2635924160268996483, guid: 4c3458c4a6d950147bd98ba3694a3259, type: 3}
-    m_TargetAsset: {fileID: 2635924160268996483, guid: 4c3458c4a6d950147bd98ba3694a3259, type: 3}
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
   - m_GUID: 0a4276c08d867c14c91cffc2ffd65d5f
     m_Address: DSkill/P/PathMaker
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 27b15929551e71f4180fc2d18466f1ff
+    m_Address: P_PathTracer
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 233afe47f11c6eb418c65dea0806e311
+    m_Address: P_PathLiner
     m_ReadOnly: 0
     m_SerializedLabels: []
     m_MainAsset: {fileID: 0}

@@ -43,31 +43,32 @@ namespace Curry.Skill
             if (param is VectorInput posParam) 
             {
                 Vector2 pos = posParam.Value;
-                // start a new stroke if we hold LMB (already drawing) and is moving
+                // start a new stroke if we started drawing whilst other brush strokes exist
                 if (!m_drawInProgress)
                 {
                     EndTracer();
                     m_previousDrawPos = pos;
                     // make new stroke
-                    m_currentTracer = m_instanceManager.GetInstanceFromAsset(TracerRef) as BaseTracer;
+                    m_currentTracer = m_instanceManager.GetInstanceFromAsset(TracerRef) as BaseTracer;          
                     m_drawInProgress = true;
                 }
                 
                 float dist = Vector2.Distance(pos, m_previousDrawPos);
                 float totalCost = dist * Properties.SpCost;
-                if (totalCost <= m_user.CurrentStats.SP)
-                {
-                    //update mousePos log
-                    ConsumeResource(totalCost);
-                    m_currentTracer.OnTrace(pos);
-                }
-                else if( m_user.CurrentStats.SP > 0f )
+                // If SP is partially sufficient, lerp up to where SP runs out.
+                if( totalCost > m_user.CurrentStats.SP && m_user.CurrentStats.SP > 0f)
                 {
                     float scale = m_user.CurrentStats.SP / totalCost;
                     Vector2 lerp = Vector2.Lerp(m_previousDrawPos, pos, scale);
-                    ConsumeResource(m_user.CurrentStats.SP);
-                    m_currentTracer.OnTrace(lerp);
+                    totalCost = m_user.CurrentStats.SP;
+                    pos = lerp;
                 }
+                //update mousePos log
+                if (m_currentTracer.OnTrace(pos))
+                {
+                    ConsumeResource(totalCost);
+                }
+
                 m_previousDrawPos = pos;
             }
         }

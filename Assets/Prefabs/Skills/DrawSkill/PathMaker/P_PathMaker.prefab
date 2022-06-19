@@ -26,7 +26,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4556525840922154639}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.74062014, y: 0.65872407, z: 10.607718}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 7455671902037086800}
@@ -68,13 +68,13 @@ MonoBehaviour:
   m_instanceManager: {fileID: 6169821849494153783}
   m_skillProperty:
     m_name: Path
-    m_spCost: 0.5
+    m_spCost: 0
     m_cooldownTime: 0
     m_actionValue: 0
     m_knockback: 0
   m_traceRef:
     m_assetRef:
-      m_AssetGUID: c429d02b3f4902d4591f75325c991b40
+      m_AssetGUID: 27b15929551e71f4180fc2d18466f1ff
       m_SubObjectName: 
       m_SubObjectType: 
   m_onMakePath: {fileID: 11400000, guid: 3e13fb20f9be3714196a5039036a2247, type: 2}
@@ -140,5 +140,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19d2c30700b6d5a439fd4fc452a2d9d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_numToPool: 1
+  m_numToPool: 2
   m_defaultParent: {fileID: 7455671902037086800}
