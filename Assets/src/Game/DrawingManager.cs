@@ -1,24 +1,25 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Interactions;
 using Curry.Skill;
 
 namespace Curry.Game
 {
-    public class DrawingManager : MonoBehaviour
+    public class DrawingManager : MonoBehaviour, IPointerDownHandler
     {
         [SerializeField] Camera m_cam = default;
         [SerializeField] BaseCharacter m_user = default;
         protected SkillActivator m_skillActivator = new SkillActivator();
-
+        bool m_drawing = false;
         // Update is called once per frame
         void FixedUpdate()
         {
             Vector2 mousePos = Mouse.current.position.ReadValue();
             Vector3 view = m_cam.ScreenToViewportPoint(mousePos);
             bool isOutside = view.x < 0f || view.x > 1f || view.y < 0f || view.y > 1f;
-            if (Mouse.current.leftButton.isPressed && !isOutside)
+            if (m_drawing && Mouse.current.leftButton.isPressed && !isOutside)
             {
                 Vector2 pos = m_cam.ScreenToWorldPoint(mousePos);
                 UseDrawSkill(pos);
@@ -58,11 +59,17 @@ namespace Curry.Game
                     case InputActionPhase.Performed:
                         // Finished a brush stroke
                         m_skillActivator.InterruptSkill();
+                        m_drawing = false;
                         break;
                     default:
                         break;
                 }
             }
+        }
+
+        public void OnPointerDown(PointerEventData eventData)
+        {
+            m_drawing = true;
         }
         #endregion
     }
