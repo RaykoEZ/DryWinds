@@ -12,12 +12,11 @@ namespace Curry.Skill
     public class BaseTracer : Interactable
     {
         [SerializeField] protected LineRenderer m_lineRenderer = default;
-        [SerializeField] protected Brush m_brush = default;
+        [SerializeField] protected PathDrone m_brush = default;
         protected Queue<Vector2> m_drawnVert = new Queue<Vector2>();
         protected Queue<Vector3> m_drawnPositions = new Queue<Vector3>();
         protected float m_drawnLength = 0f;
         protected Vector2 m_prev;
-        public Vector2[] Verts { get { return m_drawnVert.ToArray(); } }
         public float Length { get { return m_drawnLength; } }
         public override void Prepare()
         {
@@ -35,6 +34,15 @@ namespace Curry.Skill
                 m_prev = newPosition;
             }
             return !blocked;
+        }
+
+        public List<Vector2> GetSimplifiedVerts(float simplifyTolerance = 0.1f) 
+        {
+            m_lineRenderer.Simplify(simplifyTolerance);
+            Vector3[] pos = new Vector3[m_lineRenderer.positionCount];
+            m_lineRenderer.GetPositions(pos);
+            List<Vector2> ret = new List<Vector2>(VectorExtension.ToVector2Array(pos));
+            return ret;
         }
 
         protected void AddVertex(Vector2 targetPosition) 

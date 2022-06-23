@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2996936290229248302}
   - component: {fileID: 1611594455542782464}
   m_Layer: 8
-  m_Name: brush
+  m_Name: drone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -122,7 +122,7 @@ MonoBehaviour:
   m_brushCollider: {fileID: 1611594455542782464}
   CollisionFilter:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 2048
   rb: {fileID: 2996936290229248303}
 --- !u!58 &1611594455542782464
 CircleCollider2D:

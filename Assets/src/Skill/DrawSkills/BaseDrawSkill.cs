@@ -89,7 +89,7 @@ namespace Curry.Skill
         {
             if (m_currentTracer != null && m_currentTracer.isActiveAndEnabled && m_currentTracer.Length > 0.1f) 
             {
-                List<Vector2> v = new List<Vector2>(m_currentTracer.Verts);
+                List<Vector2> v = m_currentTracer.GetSimplifiedVerts();
                 LineInput input = new LineInput(v);
                 OnSkillEffectActivate(input);
             } 

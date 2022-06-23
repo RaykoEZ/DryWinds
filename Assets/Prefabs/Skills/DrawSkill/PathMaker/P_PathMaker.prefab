@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4556525840922154624}
   - component: {fileID: 4556525840922154625}
   - component: {fileID: 4556525840922154638}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: P_PathMaker
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94,7 +94,7 @@ GameObject:
   - component: {fileID: 7455671902037086800}
   - component: {fileID: 6169821849494153783}
   - component: {fileID: 7720683418908292527}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Instance
   m_TagString: Untagged
   m_Icon: {fileID: 0}

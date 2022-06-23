@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 namespace Curry.Skill
 {
     [Serializable]
-    public class Brush : MonoBehaviour
+    public class PathDrone : MonoBehaviour
     {
         [SerializeField] protected SpriteRenderer m_brushSprite = default;
         [SerializeField] protected CircleCollider2D m_brushCollider = default;
@@ -80,10 +80,6 @@ namespace Curry.Skill
         void OnCollisionEnter2D(Collision2D collision)
         {
             IsBlocked = true;
-            ContactPoint2D contact = collision.GetContact(0);
-            Vector2 dir = contact.normal;
-            Vector2 diff = rb.position - dir;
-            rb.MovePosition(rb.position + diff);
         }
 
         void OnCollisionExit2D(Collision2D collision)
