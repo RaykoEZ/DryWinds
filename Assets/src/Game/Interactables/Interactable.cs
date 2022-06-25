@@ -6,14 +6,12 @@ using Curry.Util;
 namespace Curry.Game
 {
     // A basic script for a collidable object 
-    public class Interactable : MonoBehaviour, IPoolable, IClashable
+    public class Interactable : MonoBehaviour, IPoolable
     {
         [SerializeField] protected BodyManager m_bodyManager = default;
         [SerializeField] protected Rigidbody2D m_rigidbody = default;
-        CollisionStats m_defaultCollisionStats = new CollisionStats(0f, 5f);
         public virtual IObjectPool Origin { get; set; }
         public Rigidbody2D RigidBody { get { return m_rigidbody; } }
-        public virtual CollisionStats CollisionData { get { return m_defaultCollisionStats; } }
 
         void Awake() 
         { 
@@ -47,11 +45,11 @@ namespace Curry.Game
             {
                 ContactPoint2D contact = collision.GetContact(0);
                 Vector2 dir = contact.normal.normalized;
-                OnKnockback(dir, incomingInterable.CollisionData.Knockback);
+                OnKnockback(dir);
             }
         }
 
-        public virtual void OnKnockback(Vector2 source, float knockback)
+        public virtual void OnKnockback(Vector2 source, float knockback = 1f)
         {
             Vector2 diff = RigidBody.position - source;
             m_rigidbody.AddForce(knockback * diff.normalized, ForceMode2D.Impulse);

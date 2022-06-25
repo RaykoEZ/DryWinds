@@ -4,13 +4,14 @@ using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Interactions;
 using Curry.Skill;
+using Curry.Game;
 
-namespace Curry.Game
+namespace Curry.Explore
 {
     public class DrawingManager : MonoBehaviour, IPointerDownHandler
     {
         [SerializeField] Camera m_cam = default;
-        [SerializeField] BaseCharacter m_user = default;
+        [SerializeField] MainExplorer m_user = default;
         protected SkillActivator m_skillActivator = new SkillActivator();
         bool m_drawing = false;
         // Update is called once per frame
@@ -23,10 +24,6 @@ namespace Curry.Game
             {
                 Vector2 pos = m_cam.ScreenToWorldPoint(mousePos);
                 UseDrawSkill(pos);
-            }
-            else
-            {
-                m_user.OnSPRegen();
             }
         }
 
@@ -49,6 +46,7 @@ namespace Curry.Game
             }
             m_skillActivator.ActivateSkill(target);
         }
+
         #region drawing brush
         public void OnDrawSkill(InputAction.CallbackContext c)
         {

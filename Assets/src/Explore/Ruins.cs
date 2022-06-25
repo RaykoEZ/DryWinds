@@ -1,4 +1,7 @@
-﻿namespace Curry.Explore
+﻿using UnityEngine;
+using UnityEngine.EventSystems;
+
+namespace Curry.Explore
 {
     public class Ruins : ExploreNode
     {
@@ -14,7 +17,7 @@
 
         protected override void OnReached()
         {
-            throw new System.NotImplementedException();
+            Debug.Log(name);
         }
     }
 

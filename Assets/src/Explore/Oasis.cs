@@ -1,4 +1,6 @@
-﻿namespace Curry.Explore
+﻿using UnityEngine;
+
+namespace Curry.Explore
 {
     public class Oasis : ExploreNode
     {
@@ -14,7 +16,7 @@
 
         protected override void OnReached()
         {
-            throw new System.NotImplementedException();
+            Debug.Log(name);
         }
     }
 

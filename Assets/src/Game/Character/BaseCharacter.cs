@@ -26,10 +26,6 @@ namespace Curry.Game
         { 
             get { return m_statusManager.CurrentStats.CharacterStats; } 
         }
-        public override CollisionStats CollisionData 
-        { 
-            get { return m_statusManager.CurrentStats.CharacterStats.CollisionStats; } 
-        }
         public virtual SkillInventory BasicSkills { get { return m_statusManager.BasicSkills; } }
         public virtual SkillInventory DrawSkills { get { return m_statusManager.DrawSkills; } }
 

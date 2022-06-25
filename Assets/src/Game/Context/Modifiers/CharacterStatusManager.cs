@@ -9,7 +9,6 @@ namespace Curry.Game
     {
         [SerializeField] protected CharacterContext m_initStats;
         public event OnLoadFinish OnLoaded;
-
         protected CharacterModifierContainer m_multipliers = new CharacterModifierContainer(1f);
         protected CharacterModifierContainer m_adders = new CharacterModifierContainer(0f);
         protected CharacterModifierContainer m_specialMods = new CharacterModifierContainer(0f);
