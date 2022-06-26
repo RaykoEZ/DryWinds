@@ -79,7 +79,7 @@ namespace Curry.Skill
 
         protected virtual void ConsumeResource(float val) 
         {
-            m_user.OnLoseSp(val);
+            m_user?.OnLoseSp(val);
         }
 
         protected virtual void OnSkillFinish() 

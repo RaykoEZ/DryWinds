@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.AddressableAssets;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Interactions;
 using Curry.Skill;
@@ -11,9 +12,15 @@ namespace Curry.Explore
     public class DrawingManager : MonoBehaviour, IPointerDownHandler
     {
         [SerializeField] Camera m_cam = default;
-        [SerializeField] MainExplorer m_user = default;
-        protected SkillActivator m_skillActivator = new SkillActivator();
+        [SerializeField] Explorer m_master = default;
+        [SerializeField] PathMaker m_pathMaker = default;
         bool m_drawing = false;
+
+        void Awake() 
+        {
+            m_pathMaker.Init(m_master);
+        }
+
         // Update is called once per frame
         void FixedUpdate()
         {
@@ -23,32 +30,18 @@ namespace Curry.Explore
             if (m_drawing && Mouse.current.leftButton.isPressed && !isOutside)
             {
                 Vector2 pos = m_cam.ScreenToWorldPoint(mousePos);
-                UseDrawSkill(pos);
+                MakePath(pos);
             }
         }
 
-        public void EquipSkill(string name) 
+        public virtual void MakePath(Vector2 target)
         {
-            foreach (BaseSkill skill in m_user.DrawSkills.Skills)
-            {
-                if (skill.Properties.Name == name)
-                {
-                    m_skillActivator.CurrentSkill = skill;
-                }
-            }
-        }
-
-        public virtual void UseDrawSkill(Vector2 target)
-        {
-            if(m_skillActivator.CurrentSkill == null) 
-            {
-                m_skillActivator.CurrentSkill = m_user.DrawSkills.Skills[0];
-            }
-            m_skillActivator.ActivateSkill(target);
+            VectorInput input = new VectorInput(target);
+            m_pathMaker.OnEnter(input);
         }
 
         #region drawing brush
-        public void OnDrawSkill(InputAction.CallbackContext c)
+        public void OnPathFinish(InputAction.CallbackContext c)
         {
             if (c.interaction is PressInteraction)
             {
@@ -56,7 +49,7 @@ namespace Curry.Explore
                 {
                     case InputActionPhase.Performed:
                         // Finished a brush stroke
-                        m_skillActivator.InterruptSkill();
+                        m_pathMaker.Interrupt();
                         m_drawing = false;
                         break;
                     default:

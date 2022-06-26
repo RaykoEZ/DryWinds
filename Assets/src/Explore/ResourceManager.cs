@@ -5,11 +5,16 @@ using Curry.Game;
 namespace Curry.Explore
 {
     [Serializable]
-    public class ResourceManager 
+    public class ResourceManager : MonoBehaviour
     {
         [SerializeField] protected DeploymentResource InitResource = default;
         DeploymentResource m_currentResource;
         public DeploymentResource CurrentResource { get { return m_currentResource; } }
+
+        void Awake()
+        {
+            Init();
+        }
 
         public void Init() 
         {

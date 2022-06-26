@@ -27,7 +27,7 @@ namespace Curry.Skill
         {
             base.Init(user);
             m_traceRef.OnLoadSuccess += (obj) => 
-            { 
+            {
                 TracerRef = obj;
             };
             m_traceRef.LoadAsset();

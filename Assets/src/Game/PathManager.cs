@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.AI;
 using Curry.Events;
 using Curry.Skill;
+using Curry.Explore;
+
 namespace Curry.Game
 {
     public class PathManager : MonoBehaviour

@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using Curry.Game;
 using Curry.Util;
 
@@ -16,24 +15,23 @@ namespace Curry.Skill
         protected Queue<Vector2> m_drawnVert = new Queue<Vector2>();
         protected Queue<Vector3> m_drawnPositions = new Queue<Vector3>();
         protected float m_drawnLength = 0f;
-        protected Vector2 m_prev;
         public float Length { get { return m_drawnLength; } }
         public override void Prepare()
         {
             ResetAll();
-            m_brush.Init();
+            transform.position = transform.parent.position;
+            m_brush.OnMove += OnBrushMove;
         }
 
         public virtual bool OnTrace(Vector2 newPosition)
         {
             m_brush.Show(newPosition);
-            bool blocked = m_brush.IsBlocked;
-            if (!blocked) 
-            {
-                AddVertex(newPosition);
-                m_prev = newPosition;
-            }
-            return !blocked;
+            return !m_brush.IsBlocked;
+        }
+
+        void OnBrushMove(Vector2 pos) 
+        {
+            AddVertex(pos);
         }
 
         public List<Vector2> GetSimplifiedVerts(float simplifyTolerance = 0.1f) 
@@ -73,6 +71,7 @@ namespace Curry.Skill
 
         protected virtual void ResetAll() 
         {
+            m_brush.OnMove -= OnBrushMove;
             transform.position = Vector3.zero;
             m_brush.Hide();
             m_drawnLength = 0f;

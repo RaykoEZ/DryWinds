@@ -74,7 +74,6 @@ MonoBehaviour:
   m_anim: {fileID: 4019142113508489192}
   m_collider: {fileID: 2635924160268996485}
   m_line: {fileID: 8634736207062463509}
-  m_onMakePath: {fileID: 11400000, guid: 3e13fb20f9be3714196a5039036a2247, type: 2}
 --- !u!68 &2635924160268996485
 EdgeCollider2D:
   m_ObjectHideFlags: 0

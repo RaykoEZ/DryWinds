@@ -53,7 +53,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7448103127861210229, guid: 27b15929551e71f4180fc2d18466f1ff, type: 3}
       propertyPath: m_Name
-      value: P_PathTracer
+      value: P_PathLiner
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 27b15929551e71f4180fc2d18466f1ff, type: 3}
