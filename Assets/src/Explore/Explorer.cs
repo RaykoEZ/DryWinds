@@ -37,20 +37,23 @@ namespace Curry.Explore
         public virtual void StartExploration()
         {
             StopAllCoroutines();
+            m_agent.isStopped = false;
             m_onMove = StartCoroutine(OnMove());
         }
 
         public virtual void OnDestinationReached()
         {
-            m_prevDest = CurrentPath.Destinations.Dequeue();
+            m_prevDest = CurrentDestination;
         }
 
         protected virtual IEnumerator OnMove() 
         {
             while (!CurrentPath.Finished) 
             {
-                CurrentDestination = CurrentPath.Destinations.Peek();
+                CurrentDestination = CurrentPath.Destinations.Dequeue();
                 m_agent.SetDestination(CurrentDestination);
+                // Wait for set destination to prevent corner skipping
+                yield return new WaitForSeconds(0.01f);
                 yield return new WaitUntil(() => 
                 { return m_agent.remainingDistance < m_agent.stoppingDistance; });
                 OnDestinationReached();
