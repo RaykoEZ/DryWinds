@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 2635924160268996482}
   - component: {fileID: 4019142113508489192}
   - component: {fileID: 2635924160268996484}
-  - component: {fileID: 2635924160268996485}
   - component: {fileID: 8634736207062463509}
   - component: {fileID: 7540945405649011224}
   m_Layer: 8
@@ -72,29 +71,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_anim: {fileID: 4019142113508489192}
-  m_collider: {fileID: 2635924160268996485}
   m_line: {fileID: 8634736207062463509}
---- !u!68 &2635924160268996485
-EdgeCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2635924160268996483}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_EdgeRadius: 0.25
-  m_Points:
-  - {x: 0, y: 0}
-  m_AdjacentStartPoint: {x: 0, y: 0}
-  m_AdjacentEndPoint: {x: 0, y: 0}
-  m_UseAdjacentStartPoint: 0
-  m_UseAdjacentEndPoint: 0
 --- !u!120 &8634736207062463509
 LineRenderer:
   m_ObjectHideFlags: 0

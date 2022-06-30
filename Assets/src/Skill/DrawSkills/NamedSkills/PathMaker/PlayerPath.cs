@@ -7,14 +7,13 @@ namespace Curry.Skill
     public class PlayerPath : MonoBehaviour, ISkillObject<LineInput>
     {
         [SerializeField] Animator m_anim = default;
-        [SerializeField] EdgeCollider2D m_collider = default;
         [SerializeField] LineRenderer m_line = default;
         public GameObject go { get { return gameObject; } }
         public void Begin(LineInput param)
         {
             if (param != null && param.Vertices.Count > 1)
             {
-                GameUtil.RenderLine(param.Vertices, m_line, m_collider);
+                GameUtil.RenderLine(param.Vertices, m_line);
                 StartCoroutine(PreparePath(param));
             }
         }

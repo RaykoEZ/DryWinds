@@ -13,7 +13,7 @@ namespace Curry.Game
         public virtual IObjectPool Origin { get; set; }
         public Rigidbody2D RigidBody { get { return m_rigidbody; } }
 
-        void Awake() 
+        protected virtual void Awake() 
         { 
             // If this object isn't in a pool, init here
             if(Origin == null) 

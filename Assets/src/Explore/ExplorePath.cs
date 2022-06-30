@@ -7,7 +7,7 @@ namespace Curry.Explore
 {
     public struct ExplorePath
     {
-        public Queue<Vector2> Destinations { get { return m_destinations; } }
+        public Queue<Vector2> Destinations { get { return m_destinations; } set { m_destinations = value; } }
         public bool Finished { get { return Destinations.Count == 0; } }
         Queue<Vector2> m_destinations;
         public ExplorePath(Queue<Vector2> dest) 
@@ -22,7 +22,7 @@ namespace Curry.Explore
         Vector2 CurrentDestination { get; }
 
         void StartExploration();
-        void PauseExploration();
+        void StopExploration();
         void OnDestinationReached();
     }
 }

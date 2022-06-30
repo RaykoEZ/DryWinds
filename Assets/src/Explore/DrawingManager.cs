@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.AddressableAssets;
+using UnityEngine.AI;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Interactions;
 using Curry.Skill;
@@ -51,6 +51,8 @@ namespace Curry.Explore
                         // Finished a brush stroke
                         m_pathMaker.Interrupt();
                         m_drawing = false;
+                        m_master.SetPath(m_pathMaker.CurrentPath);
+                        m_master.StartExploration();
                         break;
                     default:
                         break;

@@ -96,7 +96,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_brushSprite: {fileID: 2996936290229248288}
-  m_brushCollider: {fileID: 8750324071796811326}
+  m_brushCollider: {fileID: 7604458528514064503}
   CollisionFilter:
     serializedVersion: 2
     m_Bits: 2048
@@ -114,7 +114,7 @@ GameObject:
   - component: {fileID: 5885797551834424062}
   - component: {fileID: 3436901313207275784}
   - component: {fileID: 7679128820765877683}
-  - component: {fileID: 8750324071796811326}
+  - component: {fileID: 7604458528514064503}
   m_Layer: 8
   m_Name: P_PathTracer
   m_TagString: Untagged
@@ -290,7 +290,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!58 &8750324071796811326
+--- !u!58 &7604458528514064503
 CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
