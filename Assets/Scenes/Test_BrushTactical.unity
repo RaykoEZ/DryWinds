@@ -357,8 +357,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   InitResource:
-    Food: 5
+    Food: 10
     Water: 10
+    Parts: 5
 --- !u!4 &283726831 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8979336343757224880, guid: 0a4276c08d867c14c91cffc2ffd65d5f, type: 3}

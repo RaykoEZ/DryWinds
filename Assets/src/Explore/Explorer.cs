@@ -10,10 +10,11 @@ namespace Curry.Explore
     public class Explorer : BaseCharacter, IPathExplorer
     {
         [SerializeField] NavMeshAgent m_agent = default;
-        protected ExplorePath m_currentPath;
+        protected bool m_isPaused = false;
         protected Vector2 m_currentDest;
         protected Vector2 m_prevDest;
         protected Coroutine m_onMove;
+        protected ExplorePath m_currentPath;
         public ExplorePath CurrentPath { get { return m_currentPath; } protected set { m_currentPath = value; } }
         public Vector2 CurrentDestination { get { return m_currentDest; } protected set { m_currentDest = value; } }
 
@@ -46,6 +47,11 @@ namespace Curry.Explore
             m_prevDest = CurrentDestination;
         }
 
+        public virtual void ResumeExploration()
+        {
+            m_agent.isStopped = false;
+        }
+
         protected virtual IEnumerator OnMove() 
         {
             while (!CurrentPath.Finished) 
@@ -54,8 +60,10 @@ namespace Curry.Explore
                 m_agent.SetDestination(CurrentDestination);
                 // Wait for set destination to prevent corner skipping
                 yield return new WaitForSeconds(0.01f);
+                // Wait until destination reached
                 yield return new WaitUntil(() => 
                 { return m_agent.remainingDistance < m_agent.stoppingDistance; });
+                // Next Destination in path
                 OnDestinationReached();
             }
             StopExploration();        

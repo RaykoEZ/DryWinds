@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Curry.Explore
 {
-    public class Deployee : Explorer, IPathExplorer
+    public class Deployable : Explorer, IPathExplorer
     {
         public DeploymentResource DeployCost = default;
 

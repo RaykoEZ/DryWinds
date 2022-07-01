@@ -22,6 +22,7 @@ namespace Curry.Explore
         Vector2 CurrentDestination { get; }
 
         void StartExploration();
+        void ResumeExploration();
         void StopExploration();
         void OnDestinationReached();
     }
