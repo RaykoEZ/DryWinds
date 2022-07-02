@@ -14,8 +14,8 @@ namespace Curry.Explore
         [SerializeField] Camera m_cam = default;
         [SerializeField] Explorer m_master = default;
         [SerializeField] PathMaker m_pathMaker = default;
+        [SerializeField] CircleCollider2D m_drawRange = default;
         bool m_drawing = false;
-
         void Awake() 
         {
             m_pathMaker.Init(m_master);
@@ -24,14 +24,24 @@ namespace Curry.Explore
         // Update is called once per frame
         void FixedUpdate()
         {
-            Vector2 mousePos = Mouse.current.position.ReadValue();
+            Vector3 mousePos = Mouse.current.position.ReadValue();
             Vector3 view = m_cam.ScreenToViewportPoint(mousePos);
             bool isOutside = view.x < 0f || view.x > 1f || view.y < 0f || view.y > 1f;
             if (m_drawing && Mouse.current.leftButton.isPressed && !isOutside)
             {
-                Vector2 pos = m_cam.ScreenToWorldPoint(mousePos);
-                MakePath(pos);
+                Vector3 pos = m_cam.ScreenToWorldPoint(mousePos);
+                //Limit drawings to movement limit
+                Vector2 endPos = ClosestDrawPosition(pos);
+                MakePath(endPos);
             }
+        }
+
+        Vector2 ClosestDrawPosition(Vector2 pos) 
+        {
+            Vector2 o = m_drawRange.bounds.center;
+            Vector2 dir = pos - o;
+            Vector2 closestPosToRange = o + (m_drawRange.radius * dir.normalized);
+            return closestPosToRange;
         }
 
         public virtual void MakePath(Vector2 target)
@@ -48,11 +58,14 @@ namespace Curry.Explore
                 switch (c.phase)
                 {
                     case InputActionPhase.Performed:
-                        // Finished a brush stroke
-                        m_pathMaker.Interrupt();
-                        m_drawing = false;
-                        m_master.SetPath(m_pathMaker.CurrentPath);
-                        m_master.StartExploration();
+                        if (m_drawing) 
+                        {
+                            // Finished a brush stroke
+                            m_pathMaker.Interrupt();
+                            m_drawing = false;
+                            m_master.SetPath(m_pathMaker.CurrentPath);
+                            m_master.StartExploration();
+                        }
                         break;
                     default:
                         break;

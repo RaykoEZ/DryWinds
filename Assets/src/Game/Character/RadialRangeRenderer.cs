@@ -5,7 +5,7 @@ using Curry.Util;
 
 namespace Curry.Game
 { 
-    public class FieldOfViewRenderer : MonoBehaviour
+    public class RadialRangeRenderer : MonoBehaviour
     {
         [Range(1, 360)]
         [SerializeField] int m_rayCount = default;

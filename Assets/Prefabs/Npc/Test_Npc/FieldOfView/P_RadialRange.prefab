@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 6481470929626588910}
   - component: {fileID: 1062347456140927890}
   m_Layer: 0
-  m_Name: P_FieldOfView
+  m_Name: P_RadialRange
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
