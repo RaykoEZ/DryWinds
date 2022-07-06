@@ -17,8 +17,7 @@ namespace Curry.Explore
             if(m_timer > 3f) 
             {
                 ActivateEffect();
-            }
-        
+            }   
         }
         
         public virtual void Deploy(Vector2 pos) 

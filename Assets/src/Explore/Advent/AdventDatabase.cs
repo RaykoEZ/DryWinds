@@ -9,18 +9,24 @@ namespace Curry.Explore
     public class AdventDatabase : ScriptableObject 
     {
         // include all decks to load
-        [SerializeField] List<AdventCollection> m_collections = default;
+        [SerializeField] List<AdventCollection> m_collectionsToAdd = default;
         // includes all advent cards to load (listed from each advent collection)
         Dictionary<int, AdventCard> m_advents = new Dictionary<int, AdventCard>();
-        public IReadOnlyDictionary<int, AdventCard> AdventList { get { return m_advents; } }
+        Dictionary<int, AdventCollection> m_adventCollections = new Dictionary<int, AdventCollection>();
         int m_numToLoad = 0;
         int m_numLoaded = 0;
-        void Awake()
+        public IReadOnlyDictionary<int, AdventCard> AdventList 
+        { get { return m_advents; } }
+        public IReadOnlyDictionary<int, AdventCollection> AdventCollections 
+        { get { return m_adventCollections; } }
+
+        public void Init()
         {
             // Get unique advent catalog
             HashSet<AdventDetail> loadSet = new HashSet<AdventDetail>();
-            foreach (AdventCollection deck in m_collections)
+            foreach (AdventCollection deck in m_collectionsToAdd)
             {
+                m_adventCollections.Add(deck.Id, deck);
                 loadSet.UnionWith(deck.AdventDetails);
             }
             m_numToLoad = loadSet.Count;
@@ -48,7 +54,7 @@ namespace Curry.Explore
 
         protected void InitCollections() 
         {
-            foreach (AdventCollection c in m_collections)
+            foreach (AdventCollection c in m_collectionsToAdd)
             {
                 c.Init(AdventList);
             }
