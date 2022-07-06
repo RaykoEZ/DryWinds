@@ -9,7 +9,7 @@ namespace Curry.Explore
 {
     public class Explorer : BaseCharacter, IPathExplorer
     {
-        [SerializeField] NavMeshAgent m_agent = default;
+        [SerializeField] protected NavMeshAgent m_agent = default;
         protected bool m_isPaused = false;
         protected Vector2 m_currentDest;
         protected Vector2 m_prevDest;
@@ -17,7 +17,7 @@ namespace Curry.Explore
         protected ExplorePath m_currentPath;
         public ExplorePath CurrentPath { get { return m_currentPath; } protected set { m_currentPath = value; } }
         public Vector2 CurrentDestination { get { return m_currentDest; } protected set { m_currentDest = value; } }
-
+        public bool IsMoving { get; protected set; }
         protected override void Awake()
         {
             m_agent.updateUpAxis = false;
@@ -26,6 +26,7 @@ namespace Curry.Explore
 
         public virtual void StopExploration()
         {
+            IsMoving = false;
             m_agent.isStopped = true;
             Debug.Log("finished");
         }
@@ -54,6 +55,7 @@ namespace Curry.Explore
 
         protected virtual IEnumerator OnMove() 
         {
+            IsMoving = true;
             while (!CurrentPath.Finished) 
             {
                 CurrentDestination = CurrentPath.Destinations.Dequeue();

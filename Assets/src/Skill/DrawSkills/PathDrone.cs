@@ -23,12 +23,9 @@ namespace Curry.Skill
 
         void Awake()
         {
-            Init();
             m_isBlocking = false;
         }
-        void Init()
-        {
-        }
+
         public void Show(Vector2 target)
         {
             float dist = Vector2.Distance(target, rb.position);

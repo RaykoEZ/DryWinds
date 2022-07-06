@@ -27,7 +27,10 @@ namespace Curry.Explore
             Vector3 mousePos = Mouse.current.position.ReadValue();
             Vector3 view = m_cam.ScreenToViewportPoint(mousePos);
             bool isOutside = view.x < 0f || view.x > 1f || view.y < 0f || view.y > 1f;
-            if (m_drawing && Mouse.current.leftButton.isPressed && !isOutside)
+            if (!m_master.IsMoving && 
+                m_drawing && 
+                Mouse.current.leftButton.isPressed && 
+                !isOutside)
             {
                 Vector3 pos = m_cam.ScreenToWorldPoint(mousePos);
                 //Limit drawings to movement limit
