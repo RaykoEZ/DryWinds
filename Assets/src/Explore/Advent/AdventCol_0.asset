@@ -13,4 +13,10 @@ MonoBehaviour:
   m_Name: AdventCol_0
   m_EditorClassIdentifier: 
   m_id: 0
-  m_adventLoad: []
+  m_adventLoad:
+  - Id: 0
+    DeployableLoader:
+      m_assetRef:
+        m_AssetGUID: feeaa1f113a0d2140ae93496f42f993f
+        m_SubObjectName: 
+        m_SubObjectType: 

@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38a4e0b0227aad945a4da66e9aadb451, type: 3}
   m_Name: AdventDb_0
   m_EditorClassIdentifier: 
-  m_collectionsToAdd:
+  m_collections:
   - {fileID: 11400000, guid: afe1913d8088d3d439b23e61c3ff1e0f, type: 2}

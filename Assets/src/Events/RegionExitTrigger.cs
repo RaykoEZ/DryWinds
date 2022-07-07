@@ -14,7 +14,7 @@ namespace Curry.Events
         protected virtual void OnTriggerExit2D(Collider2D collision)
         {
             Interactable interactable = collision.gameObject.GetComponent<Interactable>();
-            if (interactable != null && !m_region.bounds.Contains(interactable.RigidBody.position)) 
+            if (interactable != null && !m_region.bounds.Contains(interactable.transform.position)) 
             {
                 Dictionary<string, object> args = new Dictionary<string, object>
                 { {"exitingObject", interactable}};

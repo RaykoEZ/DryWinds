@@ -11,6 +11,7 @@ namespace Curry.Explore
     {
         [SerializeField] protected int m_id = default;
         [SerializeField] protected List<AdventDetail> m_adventLoad = default;
+        //
         protected Dictionary<int, AdventCard> m_advents = new Dictionary<int, AdventCard>();
 
         public int Id { get { return m_id; } }

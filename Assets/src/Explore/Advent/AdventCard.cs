@@ -1,7 +1,9 @@
 ﻿using UnityEngine;
+using Curry.Game;
+
 namespace Curry.Explore
 {
-    public abstract class AdventCard : MonoBehaviour 
+    public abstract class AdventCard : Interactable
     {
         [SerializeField] protected int m_id = 0;
         [SerializeField] protected string m_name = default;
