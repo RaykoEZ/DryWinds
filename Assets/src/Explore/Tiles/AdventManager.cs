@@ -4,6 +4,8 @@ using UnityEngine.Tilemaps;
 using Curry.Game;
 namespace Curry.Explore
 {
+    // Contained database for all available advent(cards and decks)
+    // Quiries Tile info for a tile in its tilemap coordinate
     public class AdventManager : MonoBehaviour 
     {
         [SerializeField] protected AdventDatabase m_adventDb = default;
