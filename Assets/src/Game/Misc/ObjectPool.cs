@@ -55,7 +55,7 @@ namespace Curry.Game
             }
             newObj.transform.SetParent(m_parent);
             newObj.gameObject.SetActive(true);
-            newObj.transform.position = Vector3.zero;
+            newObj.transform.localPosition = Vector3.zero;
             newObj.Prepare();
             m_inUse.Add(newObj);
             // no more available, make new into pool
