@@ -88,6 +88,7 @@ GameObject:
   - component: {fileID: 8481637543372204205}
   - component: {fileID: 4687106465091492044}
   - component: {fileID: 2193163384946502428}
+  - component: {fileID: 6933493858415940082}
   m_Layer: 12
   m_Name: P_Adv_Skaters
   m_TagString: Untagged
@@ -180,3 +181,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4da015e7449ec5c48bf079a73069f116, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!225 &6933493858415940082
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5894462175879888244}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
