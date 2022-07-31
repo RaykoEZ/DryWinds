@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 using Curry.Explore;
 
 namespace Curry.Util
@@ -12,8 +13,22 @@ namespace Curry.Util
             DraggableObject draggable;
             if(eventData.pointerDrag.TryGetComponent(out draggable)) 
             {
-                draggable?.Drop(transform);
+                int dropIdx = GetDropPosition(draggable.transform.position.x);
+                draggable?.Drop(transform, dropIdx);
             }
+        }
+
+        int GetDropPosition(float dropX) 
+        {
+            int ret;
+            for( ret = 0; ret < transform.childCount; ++ret ) 
+            { 
+                if(dropX < transform.GetChild(ret).transform.position.x) 
+                {
+                    break;
+                }    
+            }
+            return ret;
         }
     }
 }

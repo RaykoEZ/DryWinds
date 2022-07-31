@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -9,9 +9,11 @@ namespace Curry.Util
     {
         Vector2 m_anchorOffset;
         Transform m_returnTo;
-        public void Drop(Transform parent) 
+        int m_returnIndex;
+        public void Drop(Transform parent, int siblingIndex = 0) 
         {
             m_returnTo = parent;
+            m_returnIndex = siblingIndex;
         }
         
         public void OnBeginDrag(PointerEventData eventData)
@@ -31,6 +33,7 @@ namespace Curry.Util
         public void OnEndDrag(PointerEventData eventData)
         {
             transform.SetParent(m_returnTo);
+            transform.SetSiblingIndex(m_returnIndex);
             GetComponent<CanvasGroup>().blocksRaycasts = true;
         }
 
