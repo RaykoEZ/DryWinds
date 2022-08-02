@@ -10,13 +10,14 @@ namespace Curry.Util
         Vector2 m_anchorOffset;
         Transform m_returnTo;
         int m_returnIndex;
-        public void Drop(Transform parent, int siblingIndex = 0) 
+        public virtual bool Droppable { get { return true; } }
+        public virtual void Drop(Transform parent, int siblingIndex = 0) 
         {
             m_returnTo = parent;
             m_returnIndex = siblingIndex;
         }
         
-        public void OnBeginDrag(PointerEventData eventData)
+        public virtual void OnBeginDrag(PointerEventData eventData)
         {
             m_returnTo = transform.parent;
             transform.SetParent(transform.parent.parent);
@@ -25,12 +26,12 @@ namespace Curry.Util
             GetComponent<CanvasGroup>().blocksRaycasts = false;
         }
 
-        public void OnDrag(PointerEventData eventData)
+        public virtual void OnDrag(PointerEventData eventData)
         {
             SetDragPosition(eventData);
         }
 
-        public void OnEndDrag(PointerEventData eventData)
+        public virtual void OnEndDrag(PointerEventData eventData)
         {
             transform.SetParent(m_returnTo);
             transform.SetSiblingIndex(m_returnIndex);
@@ -43,4 +44,5 @@ namespace Curry.Util
             transform.position = worldPos;
         }
     }
+
 }

@@ -11,7 +11,7 @@ namespace Curry.Util
         public void OnDrop(PointerEventData eventData)
         {
             DraggableObject draggable;
-            if(eventData.pointerDrag.TryGetComponent(out draggable)) 
+            if(eventData.pointerDrag.TryGetComponent(out draggable) && draggable.Droppable) 
             {
                 int dropIdx = GetDropPosition(draggable.transform.position.x);
                 draggable?.Drop(transform, dropIdx);

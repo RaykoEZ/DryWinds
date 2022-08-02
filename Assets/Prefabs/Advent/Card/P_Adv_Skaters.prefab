@@ -87,8 +87,8 @@ GameObject:
   - component: {fileID: 5894462175879888250}
   - component: {fileID: 8481637543372204205}
   - component: {fileID: 4687106465091492044}
-  - component: {fileID: 2193163384946502428}
   - component: {fileID: 6933493858415940082}
+  - component: {fileID: 5221273488511747728}
   m_Layer: 12
   m_Name: P_Adv_Skaters
   m_TagString: Untagged
@@ -169,18 +169,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &2193163384946502428
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5894462175879888244}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4da015e7449ec5c48bf079a73069f116, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!225 &6933493858415940082
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -193,3 +181,34 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!114 &5221273488511747728
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5894462175879888244}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9e1723eca4c0204bb207b13c561a111, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_card: {fileID: 5894462175879888250}
+  m_onDragEffect:
+    m_PersistentCalls:
+      m_Calls: []
+  m_onDropEffect:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5894462175879888250}
+        m_TargetAssemblyTypeName: Curry.Explore.AdventSkaters, Assembly-CSharp
+        m_MethodName: Activate
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
