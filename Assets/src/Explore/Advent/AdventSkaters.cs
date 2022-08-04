@@ -4,6 +4,7 @@ namespace Curry.Explore
 {
     public class AdventSkaters : AdventCard
     {
+        [SerializeField] GameObject m_spawnReference = default;
         protected void Start()
         {
             Activatable = true;

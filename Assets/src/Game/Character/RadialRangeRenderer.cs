@@ -11,7 +11,7 @@ namespace Curry.Game
         [SerializeField] int m_rayCount = default;
         [Range(0, 360f)]
         [SerializeField] float m_fov = default;
-        [SerializeField] float m_viewDistance = default;
+        [SerializeField] float m_viewRadius = default;
         [SerializeField] MeshFilter m_meshFilter = default;
         [SerializeField] PolygonCollider2D m_collider = default;
         [SerializeField] LayerMask m_raycastMask = default;
@@ -62,7 +62,7 @@ namespace Curry.Game
             // Set visible extent for mesh with raycasts
             for (int i = 0; i < m_verts.Count - 1; ++i)
             {
-                RaycastHit2D hit = Physics2D.Raycast(transform.position, VectorExtension.VectorFromDegree(angle), m_viewDistance, m_raycastMask);                   
+                RaycastHit2D hit = Physics2D.Raycast(transform.position, VectorExtension.VectorFromDegree(angle), m_viewRadius, m_raycastMask);                   
                 // Check if there are obstacles
                 if (hit.collider != null)
                 {
@@ -70,7 +70,7 @@ namespace Curry.Game
                 }
                 else
                 {
-                    Vector3 localPoint = VectorExtension.VectorFromDegree(angle) * m_viewDistance;
+                    Vector3 localPoint = VectorExtension.VectorFromDegree(angle) * m_viewRadius;
                     m_verts[i + 1] = localPoint;
 
                 }
