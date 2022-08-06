@@ -1,4 +1,7 @@
-﻿namespace Curry.Explore
+﻿using UnityEngine;
+using Curry.Game;
+
+namespace Curry.Explore
 {
     public class Sandstorm : RadialCrisis
     {
@@ -7,19 +10,18 @@
         {
         }
 
-        protected override void OnEnter()
+        public override void OnEnterArea(Interactable col)
         {
-            throw new System.NotImplementedException();
+            Debug.Log("Entering Crisis: " + col.gameObject);
         }
 
-        protected override void OnExit()
+        public override void OnExitArea(Interactable col)
         {
-            throw new System.NotImplementedException();
+            Debug.Log("Exiting Crisis: " + col.gameObject);
         }
 
-        protected override void OnCrisisUpdate(float dt)
+        public override void OnCrisisUpdate(float dt)
         {
-            throw new System.NotImplementedException();
         }
     }
 }

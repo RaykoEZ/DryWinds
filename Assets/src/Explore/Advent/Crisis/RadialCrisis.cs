@@ -1,6 +1,6 @@
 ﻿namespace Curry.Explore
 {
-    public abstract class RadialCrisis : Crisis 
+    public abstract class RadialCrisis : Crisis
     {
         public virtual float StartRadius { get; protected set; }
         public virtual float MaxRadius { get; protected set; }
@@ -13,8 +13,6 @@
             MaxRadius = maxRadius;
             GrowthRate = growthRate;
         }
-
-
 
     }
 }

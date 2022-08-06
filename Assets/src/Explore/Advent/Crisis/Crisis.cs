@@ -1,6 +1,8 @@
-﻿namespace Curry.Explore
+﻿using UnityEngine;
+using Curry.Game;
+namespace Curry.Explore
 {
-    public abstract class Crisis 
+    public abstract class Crisis
     {
         public virtual float Life { get; protected set; }
         public virtual float Intensity { get; protected set; }
@@ -11,9 +13,9 @@
             Intensity = intensity;
         }
 
-        protected abstract void OnEnter();
-        protected abstract void OnExit();
-        protected abstract void OnCrisisUpdate(float dt);
+        public abstract void OnEnterArea(Interactable col);
+        public abstract void OnExitArea(Interactable col);
+        public abstract void OnCrisisUpdate(float dt);
 
     }
 }
