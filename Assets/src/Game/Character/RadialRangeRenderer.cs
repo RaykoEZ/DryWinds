@@ -20,6 +20,9 @@ namespace Curry.Game
         Mesh m_renderMesh;
         float m_angleInterval;
         float m_faceAngle = 0f;
+        public float Radius { get { return m_viewRadius; } set { m_viewRadius = value; } }
+        public float FieldOfViewDegree { get { return m_fov; } set { m_fov = value; } }
+
         public void FaceTowards(Vector2 dir) 
         {
             m_faceAngle = VectorExtension.DegreeFromDirection(dir);
@@ -44,6 +47,11 @@ namespace Curry.Game
 
         void RenderMesh() 
         {
+            if(Mathf.Approximately(m_viewRadius, 0f)) 
+            {
+                return;
+            }
+
             SetVisibleExtent();
             SetTriangleIndex();
 
