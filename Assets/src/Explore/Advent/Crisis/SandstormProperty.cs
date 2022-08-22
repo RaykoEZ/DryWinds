@@ -30,13 +30,12 @@ namespace Curry.Explore
         public virtual void OnExitArea(BaseCharacter col)
         {
             m_inside.Remove(col);
-
             Debug.Log("Exiting Crisis: " + col.gameObject);
         }
 
         public virtual void OnCrisisUpdate(float dt)
         {
-            Debug.Log("Update Crisis: " + dt);
+            Debug.Log("Characters in sandstorm region: " + m_inside.Count);
 
         }
     }
