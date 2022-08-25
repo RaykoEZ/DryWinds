@@ -42,7 +42,6 @@ namespace Curry.Explore
 
         void OnAdventLoadFinish() 
         {
-            Debug.Log("Advent card finished loading, start pooling card assets");
             foreach(KeyValuePair<int, AdventCard> advent in m_adventDb.AdventList) 
             {
                 m_instance.PrepareNewInstance(advent.Value.gameObject);                

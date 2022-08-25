@@ -16,7 +16,7 @@ namespace Curry.Util
             m_returnTo = parent;
             m_returnIndex = siblingIndex;
         }
-        
+
         public virtual void OnBeginDrag(PointerEventData eventData)
         {
             m_returnTo = transform.parent;

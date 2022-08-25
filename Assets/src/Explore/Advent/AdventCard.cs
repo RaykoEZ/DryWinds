@@ -15,12 +15,13 @@ namespace Curry.Explore
         public string Description { get { return m_description; } }
         public virtual void Activate() 
         {
+            // Card Effect
+
             OnExpend();
         }
         // After activating card, maybe expend the card
         protected virtual void OnExpend() 
-        {
-            Despawn();
+        {          
         }
     }
 }

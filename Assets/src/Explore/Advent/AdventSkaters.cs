@@ -12,7 +12,6 @@ namespace Curry.Explore
         public override void Activate()
         {
             Debug.Log("Skate activate");
-            Activatable = false;
             OnExpend();
         }
     }

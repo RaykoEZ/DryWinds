@@ -273,7 +273,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &32722169
 RectTransform:
   m_ObjectHideFlags: 0
@@ -499,7 +499,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.8773585, g: 0.09518514, b: 0.36653486, a: 0}
+  m_Color: {r: 0.31132078, g: 0.31132078, b: 0.31132078, a: 0.3764706}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -2689,6 +2689,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_SandStorm
       objectReference: {fileID: 0}
+    - target: {fileID: 3870999882179401749, guid: 4cae83063aac60d4891c2e534d8dcd9e, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4cae83063aac60d4891c2e534d8dcd9e, type: 3}
 --- !u!224 &837656188 stripped
@@ -2754,6 +2758,10 @@ PrefabInstance:
     - target: {fileID: 4556525840922154639, guid: 0a4276c08d867c14c91cffc2ffd65d5f, type: 3}
       propertyPath: m_Name
       value: P_PathMaker
+      objectReference: {fileID: 0}
+    - target: {fileID: 4556525840922154639, guid: 0a4276c08d867c14c91cffc2ffd65d5f, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8979336343757224880, guid: 0a4276c08d867c14c91cffc2ffd65d5f, type: 3}
       propertyPath: m_RootOrder
@@ -4816,7 +4824,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1488958106}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b149d4964f6b2aa479d597b2a468f2aa, type: 3}
   m_Name: 
