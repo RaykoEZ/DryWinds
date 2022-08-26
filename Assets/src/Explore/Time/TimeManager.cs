@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using UnityEngine;
-using Curry.Util;
+﻿using UnityEngine;
 
 namespace Curry.Explore
 {
@@ -8,7 +6,7 @@ namespace Curry.Explore
 
     public class TimeManager : MonoBehaviour
     {
-        [Range(1f, float.MaxValue - 1f)]
+        [Range(1f, 1000f)]
         [SerializeField] float m_hoursToClear = default;
         float m_hoursLeft;
         float m_hoursSpent;
@@ -47,36 +45,6 @@ namespace Curry.Explore
             {
                 OnOutOfTimeTrigger?.Invoke(m_hoursSpent);
             }
-        }
-    }
-
-
-    public class PlayManager : MonoBehaviour 
-    {
-        [SerializeField] TimeManager m_time = default;
-        [SerializeField] CardDropZone m_dropZone = default;
-
-        void OnEnable()
-        {
-            m_time.OnOutOfTimeTrigger += OutOfTime;
-            m_dropZone.OnDropped += OnCardPlayed;
-        }
-
-        void OnDisable()
-        {
-            m_time.OnOutOfTimeTrigger -= OutOfTime;
-            m_dropZone.OnDropped -= OnCardPlayed;
-        }
-
-        void OutOfTime(float hourSpent) 
-        {
-            Debug.Log("Out of Time");
-        }
-
-        void OnCardPlayed(DraggableCard card) 
-        {
-            // Activate & Spend Time/Resource
-            card?.Card.Activate();
         }
     }
 }

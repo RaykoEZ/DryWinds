@@ -9,9 +9,10 @@ namespace Curry.Explore
         {
             Activatable = true;
         }
-        public override void Activate()
+
+        protected override void ActivateEffect(Explorer user)
         {
-            Debug.Log("Skate activate");
+            Debug.Log("Skate activate: "+ user.name);
             OnExpend();
         }
     }
