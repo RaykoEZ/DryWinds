@@ -551,6 +551,40 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_hoursToClear: 460
+  m_onSpendTime:
+    m_eventToListen: {fileID: 11400000, guid: 2178acb1d6855d044b6b15bf74dac0d6, type: 2}
+    m_responses:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 120921345}
+          m_TargetAssemblyTypeName: Curry.Explore.TimeManager, Assembly-CSharp
+          m_MethodName: SpendTime
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  m_onAddTime:
+    m_eventToListen: {fileID: 11400000, guid: 38afb4134a0001d4d9744ba8e4f36691, type: 2}
+    m_responses:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 120921345}
+          m_TargetAssemblyTypeName: Curry.Explore.TimeManager, Assembly-CSharp
+          m_MethodName: AddTime
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!114 &120921346
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -566,6 +600,8 @@ MonoBehaviour:
   m_time: {fileID: 120921345}
   m_dropZone: {fileID: 120921344}
   m_player: {fileID: 1488958111}
+  m_spendTimeTrigger:
+    m_eventToTrigger: {fileID: 11400000, guid: 2178acb1d6855d044b6b15bf74dac0d6, type: 2}
 --- !u!1 &158638371
 GameObject:
   m_ObjectHideFlags: 0
