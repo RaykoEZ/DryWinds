@@ -3,14 +3,9 @@ using Curry.Game;
 
 namespace Curry.Explore
 {
-    public interface CrisisProperty<T> where T : Interactable
+    public interface CrisisProperty
     {
         float Life { get; }
         float Intensity { get; }
-
-        void OnEnterArea(T col);
-        void OnExitArea(T col);
-        void OnCrisisUpdate(float dt);
-
     }
 }

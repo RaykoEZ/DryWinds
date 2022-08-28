@@ -1,42 +1,29 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using UnityEngine;
 using Curry.Game;
 
 namespace Curry.Explore
 {
-    public class SandstormProperty : RadialCrisisProperty<BaseCharacter>
+    [Serializable]
+    public struct SandstormProperty : RadialCrisisProperty
     {
-        HashSet<BaseCharacter> m_inside = new HashSet<BaseCharacter>();
-        public float Life { get; protected set; }
-        public float Intensity { get; protected set; }
-        public float StartRadius { get; protected set; }
-        public float GrowthRate { get; protected set; }
+        [SerializeField] float m_life;
+        [Range(0f, 1f)]
+        [SerializeField] float m_intensity;
+        [SerializeField] float m_startRadius;
+        [SerializeField] float m_growthRate;
+        public float Life { get { return m_life; } private set { m_life = value; } }
+        public float Intensity { get { return m_intensity; } private set { m_intensity = value; } }
+        public float StartRadius { get { return m_startRadius; } private set { m_startRadius = value; } }
+        public float GrowthRate { get { return m_growthRate; } private set { m_growthRate = value; } }
 
         public SandstormProperty(float life, float intensity, 
             float startRadius, float growthRate)
         {
-            Life = life;
-            Intensity = intensity;
-            StartRadius = startRadius;
-            GrowthRate = growthRate;
-        }
-
-        public virtual void OnEnterArea(BaseCharacter col)
-        {
-            m_inside.Add(col);
-            Debug.Log("Entering Crisis: " + col.gameObject);
-        }
-
-        public virtual void OnExitArea(BaseCharacter col)
-        {
-            m_inside.Remove(col);
-            Debug.Log("Exiting Crisis: " + col.gameObject);
-        }
-
-        public virtual void OnCrisisUpdate(float dt)
-        {
-            Debug.Log("Characters in sandstorm region: " + m_inside.Count);
-
+            m_life = life;
+            m_intensity = intensity;
+            m_startRadius = startRadius;
+            m_growthRate = growthRate;
         }
     }
 }

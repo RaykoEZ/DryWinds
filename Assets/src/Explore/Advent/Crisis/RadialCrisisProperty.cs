@@ -2,7 +2,7 @@
 
 namespace Curry.Explore
 {
-    public interface RadialCrisisProperty<T> : CrisisProperty<T> where T : Interactable
+    public interface RadialCrisisProperty : CrisisProperty
     {
         float StartRadius { get;}
         // radius growth in uunit per sec
