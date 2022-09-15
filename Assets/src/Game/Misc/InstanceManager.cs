@@ -32,7 +32,7 @@ namespace Curry.Game
         }
     }
 
-    public abstract class InstanceManager<T> where T : Interactable
+    public abstract class InstanceManager<T> where T : MonoBehaviour, IPoolable
     {
         protected abstract PoolCollection<T> Pool { get; }
         ObjectPool<T> m_currentPool = default;

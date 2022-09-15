@@ -28,7 +28,7 @@ namespace Curry.Game
         }
     }
 
-    public abstract class PoolCollection<T> where T : Interactable 
+    public abstract class PoolCollection<T> where T : MonoBehaviour, IPoolable 
     {
         [SerializeField] int m_numToPool = default;
         [SerializeField] Transform m_defaultParent = default;

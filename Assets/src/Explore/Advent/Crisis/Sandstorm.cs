@@ -5,13 +5,26 @@ using Curry.Game;
 
 namespace Curry.Explore
 {
-    public interface ICrisis 
+    public abstract class CrisisBehaviour : MonoBehaviour, IPoolable
     {
-        void Init();
-        void CrisisUpdate(float dt);
-        void End();
+        public IObjectPool Origin { get; set; }
+
+        public abstract void Init(CrisisProperty prop);
+        public abstract void CrisisUpdate(float dt);
+        public abstract void End();
+
+        public void Prepare()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void ReturnToPool()
+        {
+            throw new System.NotImplementedException();
+        }
     }
-    public class Sandstorm : MonoBehaviour, ICrisis
+
+    public class Sandstorm : CrisisBehaviour
     {
         [SerializeField] RadialRangeRenderer m_range = default;
         [SerializeField] SandstormProperty m_property = default;
@@ -20,15 +33,19 @@ namespace Curry.Explore
         Vector2 m_direction = Vector2.up;
         public SandstormProperty Property { get { return m_property; } set { m_property = value; } }
 
-        public virtual void Init() 
+        public override void Init(CrisisProperty prop) 
         {
+            if( prop is SandstormProperty sandstorm ) 
+            {
+                Property = sandstorm;
+            }
         }
 
         private void Start()
         {
             StartCoroutine(Grow());
         }
-        public virtual void CrisisUpdate(float dt)
+        public override void CrisisUpdate(float dt)
         {
             
         }
@@ -55,7 +72,7 @@ namespace Curry.Explore
             Vector3 diff = Time.deltaTime * Property.Intensity * m_direction.normalized;
             transform.position += diff;
         }
-        public virtual void End() 
+        public override void End() 
         {
             Destroy(gameObject);
         }
