@@ -15,6 +15,7 @@ namespace Curry.Explore
     }
 
     public delegate void OnOutOfTime(float hoursSpent);
+    public delegate void OnTimeUpdate(float hoursLeft);
 
     public class TimeManager : MonoBehaviour
     {
@@ -26,6 +27,8 @@ namespace Curry.Explore
         float m_hoursLeft;
         float m_hoursSpent;
         public OnOutOfTime OnOutOfTimeTrigger;
+        public OnTimeUpdate OnTimeSpent;
+
         public float HoursToClear { get { return m_hoursToClear; } }
         public float HoursLeft { get { return m_hoursLeft; } }
 
@@ -71,6 +74,7 @@ namespace Curry.Explore
             {
                 m_hoursLeft -= hoursToSpend;
                 m_hoursSpent += hoursToSpend;
+                OnTimeSpent?.Invoke(HoursLeft);
             }
             
             if(Mathf.Approximately(m_hoursLeft, 0f)) 

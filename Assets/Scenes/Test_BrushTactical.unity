@@ -264,6 +264,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1523102254}
     m_Modifications:
+    - target: {fileID: 331127766470196373, guid: 4ad472d5faa12c942859fb7c51148f7f, type: 3}
+      propertyPath: m_Value
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2042233191701416708, guid: 4ad472d5faa12c942859fb7c51148f7f, type: 3}
       propertyPath: m_Name
       value: P_HorizontalBar
