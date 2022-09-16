@@ -23,7 +23,7 @@ namespace Curry.Explore
         [SerializeField] float m_hoursToClear = default;
         [SerializeField] CurryGameEventListener m_onSpendTime = default;
         [SerializeField] CurryGameEventListener m_onAddTime = default;
-
+        [SerializeField] TimeGauge m_gauge = default;
         float m_hoursLeft;
         float m_hoursSpent;
         public OnOutOfTime OnOutOfTimeTrigger;
@@ -36,6 +36,8 @@ namespace Curry.Explore
         void Awake()
         {
             ResetTime();
+            m_gauge.UpdateMaxTime(HoursToClear);
+            m_gauge.UpdateTimeLeft(HoursLeft);
         }
 
         public void ResetTime()
