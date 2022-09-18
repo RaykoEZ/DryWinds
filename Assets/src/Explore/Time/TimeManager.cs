@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
 using Curry.Events;
 
@@ -14,68 +15,90 @@ namespace Curry.Explore
         }
     }
 
-    public delegate void OnOutOfTime(float hoursSpent);
+    public delegate void OnOutOfTime(int minsSpent);
+    public delegate void OnTimeUpdate(int minssLeft);
 
     public class TimeManager : MonoBehaviour
     {
-        [Range(1f, 1000f)]
-        [SerializeField] float m_hoursToClear = default;
+        [Range(1, 1000)]
+        [SerializeField] int m_minsToClear = default;
         [SerializeField] CurryGameEventListener m_onSpendTime = default;
         [SerializeField] CurryGameEventListener m_onAddTime = default;
-
-        float m_hoursLeft;
-        float m_hoursSpent;
+        [SerializeField] TimeGauge m_gauge = default;
+        [SerializeField] GameClock m_clock = default;
+        int m_minsLeft;
+        int m_minsSpent;
         public OnOutOfTime OnOutOfTimeTrigger;
-        public float HoursToClear { get { return m_hoursToClear; } }
-        public float HoursLeft { get { return m_hoursLeft; } }
+        public OnTimeUpdate OnTimeSpent;
+
+        public int MinutesToClear { get { return m_minsToClear; } }
+        public int MinutesLeft { get { return m_minsLeft; } }
 
         // Use this for initialization
         void Awake()
         {
             ResetTime();
+            m_gauge.UpdateMaxTime(MinutesToClear);
+            m_gauge.UpdateTimeLeft(MinutesLeft);
         }
 
         public void ResetTime()
         {
-            m_hoursLeft = m_hoursToClear;
-            m_hoursSpent = 0f;
+            m_minsLeft = m_minsToClear;
+            m_minsSpent = 0;
         }
 
         public void AddTime(EventInfo time)
         {
-            if (time.Payload["hour"] is float hour)
+            if (time.Payload["spendTime"] is int mins)
             {
-                m_hoursLeft += hour;
+                m_minsLeft += mins;
             }
         }
 
         // spend time and check if we run out of time
         public void SpendTime(EventInfo time)
         {
-            if (time.Payload["hour"] is float hour)
+            if (time.Payload["spendTime"] is int mins)
             {
-                SpendTime(hour, out _);
+                TrySpendTime(mins, out _);
             }
         }
 
-        public void AddTime(float hours) 
+        public void AddTime(int mins) 
         {
-            m_hoursLeft += hours;
+            m_minsLeft += mins;
         }
 
         // spend time and check if we run out of time
-        public void SpendTime(float hoursToSpend, out bool enoughTime) 
+        public void TrySpendTime(int minsToSpend, out bool enoughTime) 
         {
-            enoughTime = m_hoursLeft >= hoursToSpend;
+            enoughTime = m_minsLeft >= minsToSpend;
+            if (minsToSpend <= 0)
+            {
+                return;
+            }
             if (enoughTime) 
             {
-                m_hoursLeft -= hoursToSpend;
-                m_hoursSpent += hoursToSpend;
+                StartCoroutine(OnSpendTime(minsToSpend));
             }
-            
-            if(Mathf.Approximately(m_hoursLeft, 0f)) 
+        }
+
+        IEnumerator OnSpendTime(int increase)
+        {
+            for (int i = 0; i < increase; ++i)
             {
-                OnOutOfTimeTrigger?.Invoke(m_hoursSpent);
+                m_minsLeft--;
+                m_minsSpent++;
+                m_clock.IncrementMinute();
+                m_gauge.UpdateTimeLeft(m_minsLeft);
+                yield return new WaitForSeconds(0.1f);
+            }
+            OnTimeSpent?.Invoke(MinutesLeft);
+            
+            if (Mathf.Approximately(m_minsLeft, 0f))
+            {
+                OnOutOfTimeTrigger?.Invoke(m_minsSpent);
             }
         }
     }
