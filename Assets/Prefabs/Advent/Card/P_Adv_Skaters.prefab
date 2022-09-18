@@ -129,6 +129,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_id: 0
+  m_timeCost: 5
   m_name: Skaters
   m_description: The Skaters herald the dunes' curtains.
   m_spawnReference: {fileID: 0}

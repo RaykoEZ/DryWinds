@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using Curry.Util;
 using Curry.Events;
@@ -23,7 +24,7 @@ namespace Curry.Explore
             m_dropZone.OnDropped -= OnCardPlayed;
         }
 
-        void OutOfTime(float hourSpent) 
+        void OutOfTime(int timeSpent) 
         {
             Debug.Log("Out of Time");
         }
@@ -32,7 +33,11 @@ namespace Curry.Explore
         {
             // Activate & Spend Time/Resource
             Action<Explorer> cardEffect = card?.Card.CardEffect;
-            cardEffect?.Invoke(m_player);
+            m_time.TrySpendTime(card.Card.TimeCost, out bool enoughTime);
+            if (enoughTime) 
+            {
+                cardEffect?.Invoke(m_player);
+            }
         }
     }
 }
