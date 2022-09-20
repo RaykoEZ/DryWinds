@@ -22,7 +22,7 @@ namespace Curry.Game
         public virtual void Prepare() { }
         public virtual void ReturnToPool()
         {
-            Origin?.ReturnToPool(this);
+            Origin?.Reclaim((object)this);
         }
 
         protected virtual void OnCollisionEnter2D(Collision2D collision)
@@ -62,11 +62,7 @@ namespace Curry.Game
 
         protected void Despawn() 
         {
-            ReturnToPool();
-            if (Origin == null)
-            {
-                Destroy(gameObject);
-            }
+            ObjectPool<Interactable>.ReturnToPool(Origin, this);  
         }
     }
 }

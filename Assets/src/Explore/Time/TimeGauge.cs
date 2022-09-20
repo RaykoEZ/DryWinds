@@ -8,9 +8,9 @@ namespace Curry.Explore
     {
         [SerializeField] ResourceBar m_gauge = default;
 
-        public void UpdateTimeLeft(int timeLeft) 
+        public void UpdateTimeLeft(int timeLeft, bool forceInstant = false) 
         {
-            m_gauge.SetBarValue(timeLeft);
+            m_gauge.SetBarValue(timeLeft, forceInstant);
         }
         public void UpdateMaxTime(int maxTime)
         {

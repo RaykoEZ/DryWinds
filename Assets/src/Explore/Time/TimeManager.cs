@@ -39,7 +39,7 @@ namespace Curry.Explore
         {
             ResetTime();
             m_gauge.UpdateMaxTime(MinutesToClear);
-            m_gauge.UpdateTimeLeft(MinutesLeft);
+            m_gauge.UpdateTimeLeft(MinutesLeft, forceInstant: true);
         }
 
         public void ResetTime()

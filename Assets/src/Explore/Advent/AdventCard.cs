@@ -6,7 +6,7 @@ namespace Curry.Explore
 {
 
     // Base class for all playable cards
-    public abstract class AdventCard : Interactable
+    public abstract class AdventCard : MonoBehaviour, IPoolable
     {
         [SerializeField] protected int m_id = 0;
         [Range(0, 1000)]
@@ -20,11 +20,20 @@ namespace Curry.Explore
         public int TimeCost { get { return m_timeCost; } }
         public virtual Action<Explorer> CardEffect { get { return ActivateEffect; } }
 
+        public IObjectPool Origin { get; set; }
+
+        public abstract void Prepare();
+        public virtual void ReturnToPool()
+        {
+            ObjectPool<AdventCard>.ReturnToPool(Origin, this);
+        }
+
         // Card Effect
         protected abstract void ActivateEffect(Explorer user);
         // After activating card, maybe expend the card
         protected virtual void OnExpend() 
-        {          
+        {
+            ReturnToPool();
         }
     }
 }

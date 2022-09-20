@@ -11,20 +11,20 @@ namespace Curry.UI
         [SerializeField] float m_transitionDuration = default;
         [SerializeField] Image m_fill = default;
         [SerializeField] Gradient m_warningGradient = default;
-        [SerializeField] bool m_smoothValueChange = default; 
-
+        [SerializeField] bool m_smoothValueChange = default;
+        
         bool m_changeInProgress = false;
         float m_currentTargetVal = 0f;
         Coroutine m_currentTransition = default;
 
-        public void SetBarValue(float val) 
+        public void SetBarValue(float val, bool forceInstantChange = false) 
         {
             if(val == m_slider.value || val == m_currentTargetVal) 
             { 
                 return; 
             }
 
-            if (!m_smoothValueChange) 
+            if (!m_smoothValueChange || forceInstantChange) 
             {
                 m_slider.value = val;
                 return;

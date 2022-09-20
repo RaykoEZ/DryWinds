@@ -13,6 +13,7 @@ namespace Curry.Game
         protected Queue<T> m_pool = new Queue<T>();
         protected List<T> m_inUse = new List<T>();
 
+
         public ObjectPool(int numToPool, T poolObj, Transform parent) 
         {
             m_amountToPool = numToPool;
@@ -62,7 +63,7 @@ namespace Curry.Game
             return newObj;
         }
 
-        public virtual void ReturnToPool(T obj) 
+        public virtual void Reclaim(T obj) 
         {
             obj.gameObject.SetActive(false);
             if (m_inUse.Remove(obj)) 
@@ -71,12 +72,20 @@ namespace Curry.Game
             }
         }
 
-        public virtual void ReturnToPool(object instance)
+        public virtual void Reclaim(object instance)
         {
             // if instance is a poolable, return it to pool.
             if (instance is T)
             {
-                ReturnToPool(instance as T);
+                Reclaim(instance as T);
+            }
+        }
+        public static void ReturnToPool(IObjectPool origin, T obj)
+        {
+            origin?.Reclaim(obj);
+            if (origin == null)
+            {
+                Object.Destroy(obj.gameObject);
             }
         }
     }

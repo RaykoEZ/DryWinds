@@ -9,11 +9,11 @@ namespace Curry.Game
     }
     public interface IObjectPool
     {
-        void ReturnToPool(object obj);
+        void Reclaim(object obj);
     }
 
     public interface IObjectPool<T> : IObjectPool where T : IPoolable
     {
-        void ReturnToPool(T obj);
+        void Reclaim(T obj);
     }
 }
