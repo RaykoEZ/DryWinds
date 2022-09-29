@@ -1,7 +1,8 @@
 ﻿using System.Collections;
 using UnityEngine;
+using Curry.Util;
 
-namespace Curry.Util
+namespace Curry.UI
 {
     public class CameraManager : MonoBehaviour
     {
@@ -10,6 +11,7 @@ namespace Curry.Util
         [SerializeField] float m_zoomHalfHieght = 3.5f;
         [SerializeField] float m_defaultHalfHieght = 5.0f;
         [SerializeField] CoroutineManager m_coroutineManager = default;
+
         public void FocusCamera(Vector3 dest)
         {
             m_coroutineManager.ScheduleCoroutine(OnCameraFocus(dest, m_zoomHalfHieght), interruptNow: true);

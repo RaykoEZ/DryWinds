@@ -39,4 +39,9 @@ namespace Curry.UI
             m_spBar.SetBarValue(m_playerContext.CharacterStats.SP);
         }
     }
+
+    public class AdventHUDManager : MonoBehaviour 
+    { 
+    
+    }
 }
