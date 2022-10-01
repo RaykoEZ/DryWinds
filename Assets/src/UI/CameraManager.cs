@@ -7,7 +7,8 @@ namespace Curry.UI
     public class CameraManager : MonoBehaviour
     {
         [SerializeField] Camera m_camera = default;
-        [SerializeField] float m_deltaTime = 0.2f;
+        [Range(0.001f, 5f)]
+        [SerializeField] float m_animTime = 0.2f;
         [SerializeField] float m_zoomHalfHieght = 3.5f;
         [SerializeField] float m_defaultHalfHieght = 5.0f;
         [SerializeField] CoroutineManager m_coroutineManager = default;
@@ -29,15 +30,14 @@ namespace Curry.UI
 
         IEnumerator OnCameraFocus(Vector3 dest, float halfHeight)
         {
-            float deltaT = 0.0f;
-            while (deltaT < 1.0f)
+            float dt = 0.0f;
+            while (dt <= 1.0f)
             {
-                Vector3 newPos = Vector3.Lerp(transform.position, dest, deltaT);
+                Vector3 newPos = Vector3.Lerp(transform.position, dest, dt/m_animTime);
                 newPos.z = transform.position.z;
                 transform.position = newPos;
-                m_camera.orthographicSize = Mathf.Lerp(m_camera.orthographicSize, halfHeight, deltaT);
-
-                deltaT += m_deltaTime;
+                m_camera.orthographicSize = Mathf.Lerp(m_camera.orthographicSize, halfHeight, dt);
+                dt += Time.deltaTime;
                 yield return null;
             }
 

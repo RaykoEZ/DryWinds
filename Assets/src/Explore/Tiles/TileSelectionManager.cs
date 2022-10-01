@@ -2,6 +2,7 @@
 using UnityEngine.Tilemaps;
 using UnityEngine.InputSystem;
 using Curry.UI;
+using Curry.Events;
 
 namespace Curry.Explore
 {
@@ -11,39 +12,41 @@ namespace Curry.Explore
         [SerializeField] Tilemap m_map = default;
         [SerializeField] TileManager m_tileHighlightManager = default;
         [SerializeField] CameraManager m_cam = default;
+        [SerializeField] CurryGameEventListener m_onTileSelect = default;
         public event OnTileSelect OnTileSelected = default;
-
-        Vector3Int m_lastMouseCoordinate = default;
+        Vector3 m_lastestPos = default;
 
         void Awake()
         {
+            m_onTileSelect?.Init();
             m_tileHighlightManager.Clear();
             m_tileHighlightManager.Add(m_highlightObject, Vector3.zero, transform);
         }
 
-        void HighlightTileInternal(Vector3Int gridCoord)
+        void HighlightTileInternal(Vector3 newPos)
         {
-            bool coordMoved = m_lastMouseCoordinate != gridCoord;
-            if (coordMoved)
-            {
-                Vector3Int diff = gridCoord - m_lastMouseCoordinate;
-
-                m_tileHighlightManager.MoveTile(diff);
-                m_lastMouseCoordinate = gridCoord;
-            }
+            m_tileHighlightManager.MoveTileTo(newPos);
+            m_lastestPos = newPos;
             m_tileHighlightManager.Show();
         }
 
-        public void HandleHighlightTile()
+        public void HandleHighlightTile(EventInfo info)
         {
-            Vector3 worldPos = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
-            Vector3Int gridCoord = m_map.WorldToCell(worldPos);
-            OnTileSelected?.Invoke(gridCoord);
-            m_cam.FocusCamera(m_map.CellToWorld(gridCoord));
-            HighlightTileInternal(gridCoord);
+            if (info.Payload == null) 
+            {
+                return;
+            }
+            if (info.Payload.TryGetValue("pressPosition", out object value) && value is Vector2 pos) 
+            {
+                Vector3 worldPos = Camera.main.ScreenToWorldPoint(pos);
+                Vector3Int gridCoord = m_map.WorldToCell(worldPos);
+                Vector3 centerWorld = m_map.GetCellCenterWorld(gridCoord);
+                centerWorld.z = 0f;
+                OnTileSelected?.Invoke(gridCoord);
+                m_cam.FocusCamera(centerWorld);
+                HighlightTileInternal(centerWorld);
+            }
+
         }
-
-
-
     }
 }

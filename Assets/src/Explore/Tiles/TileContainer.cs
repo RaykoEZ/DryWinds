@@ -45,6 +45,14 @@ namespace Curry.Explore
             }
         }
 
+        public virtual void MoveTilesTo(Vector3 pos)
+        {
+            foreach (TileItem o in m_tiles)
+            {
+                o.TileObject.transform.position = pos;
+            }
+        }
+
         public virtual void DestroyTiles()
         {
             IsActive = false;

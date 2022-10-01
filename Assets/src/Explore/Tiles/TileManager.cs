@@ -34,7 +34,10 @@ namespace Curry.Explore
         {
             m_displayTiles.MoveTiles(offset);
         }
-
+        public void MoveTileTo(Vector3 target) 
+        {
+            m_displayTiles.MoveTilesTo(target);
+        }
         public void Clear() 
         {
             m_displayTiles.DestroyTiles();
