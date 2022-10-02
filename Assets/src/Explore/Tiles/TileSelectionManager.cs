@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.Tilemaps;
-using UnityEngine.InputSystem;
+using UnityEngine.EventSystems;
 using Curry.UI;
 using Curry.Events;
 
@@ -34,7 +34,13 @@ namespace Curry.Explore
             {
                 return;
             }
-            if (info.Payload.TryGetValue("pressPosition", out object value) && value is Vector2 pos) 
+
+            bool doesPosExist = info.Payload.TryGetValue("pressPosition", out object p); 
+            bool buttonPressed = info.Payload.TryGetValue("button", out object b);
+            bool valueCheck = doesPosExist && buttonPressed;
+            if (valueCheck && 
+                p is Vector2 pos && 
+                b is PointerEventData.InputButton button && button == PointerEventData.InputButton.Left) 
             {
                 Vector3 worldPos = Camera.main.ScreenToWorldPoint(pos);
                 Vector3Int gridCoord = m_map.WorldToCell(worldPos);

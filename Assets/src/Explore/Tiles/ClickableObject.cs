@@ -12,7 +12,7 @@ namespace Curry.Explore
         public void OnPointerClick(PointerEventData eventData)
         {
             Vector2 pos = eventData.pressPosition;
-            Dictionary<string, object> payload = new Dictionary<string, object> { {"pressPosition", pos } };
+            Dictionary<string, object> payload = new Dictionary<string, object> { { "pressPosition", pos }, {"button", eventData.button } };
             EventInfo info = new EventInfo(payload);
             m_onPointerClick?.TriggerEvent(info);
         }

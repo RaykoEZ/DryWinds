@@ -9,23 +9,26 @@ namespace Curry.UI
         [SerializeField] Camera m_camera = default;
         [Range(0.001f, 5f)]
         [SerializeField] float m_animTime = 0.2f;
-        [SerializeField] float m_zoomHalfHieght = 3.5f;
-        [SerializeField] float m_defaultHalfHieght = 5.0f;
+        [SerializeField] float m_zoomOrthographSize = 3.5f;
+        [SerializeField] float m_defaultOrthographSize = 5.0f;
         [SerializeField] CoroutineManager m_coroutineManager = default;
 
         public void FocusCamera(Vector3 dest)
         {
-            m_coroutineManager.ScheduleCoroutine(OnCameraFocus(dest, m_zoomHalfHieght), interruptNow: true);
+            m_coroutineManager.ScheduleCoroutine(OnCameraFocus(dest, m_zoomOrthographSize), interruptNow: true);
         }
 
         public void MoveCamera(Vector3 dest)
         {
-            m_coroutineManager.ScheduleCoroutine(OnCameraFocus(dest, m_defaultHalfHieght), interruptNow: true);
+            m_coroutineManager.ScheduleCoroutine(OnCameraFocus(dest, m_defaultOrthographSize), interruptNow: true);       
         }
 
         public void UnFocusCamera()
         {
-            m_coroutineManager.ScheduleCoroutine(OnCameraFocus(Vector3.zero, m_defaultHalfHieght), interruptNow: true);
+            if (!Mathf.Approximately(m_camera.orthographicSize, m_defaultOrthographSize))
+            {
+                m_coroutineManager.ScheduleCoroutine(OnCameraFocus(Vector3.zero, m_defaultOrthographSize), interruptNow: true);
+            }
         }
 
         IEnumerator OnCameraFocus(Vector3 dest, float halfHeight)
