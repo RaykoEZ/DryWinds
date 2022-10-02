@@ -41,7 +41,7 @@ namespace Curry.Explore
         {
             foreach (TileItem o in m_tiles)
             {
-                o.TileObject.transform.position += diff;
+                o.TileObject.transform.localPosition += diff;
             }
         }
 
@@ -49,7 +49,7 @@ namespace Curry.Explore
         {
             foreach (TileItem o in m_tiles)
             {
-                o.TileObject.transform.position = pos;
+                o.TileObject.transform.localPosition = pos;
             }
         }
 

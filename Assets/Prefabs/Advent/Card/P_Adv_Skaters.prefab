@@ -196,9 +196,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_card: {fileID: 5894462175879888250}
-  m_onDragEffect:
-    m_PersistentCalls:
-      m_Calls: []
-  m_onDropEffect:
-    m_PersistentCalls:
-      m_Calls: []
+  m_ui:
+    m_cardDragTrigger:
+      m_eventToTrigger: {fileID: 11400000, guid: 3a30f108650ad9e4ab7dd4f9d5c6b221, type: 2}
+    m_cardDropTrigger:
+      m_eventToTrigger: {fileID: 11400000, guid: 71ca7ab39e0cad445ac92f5f563f8eef, type: 2}
+  m_fx:
+    m_cardDragTrigger:
+      m_PersistentCalls:
+        m_Calls: []
+    m_cardDropTrigger:
+      m_PersistentCalls:
+        m_Calls: []

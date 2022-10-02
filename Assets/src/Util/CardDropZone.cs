@@ -2,6 +2,7 @@
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using Curry.Explore;
+using Curry.Events;
 
 namespace Curry.Util
 {
@@ -10,7 +11,6 @@ namespace Curry.Util
     public class CardDropZone : MonoBehaviour, IDropHandler
     {
         public OnCardDrop OnDropped;
-
         public void OnDrop(PointerEventData eventData)
         {
             DraggableCard draggable;

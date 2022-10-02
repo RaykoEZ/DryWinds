@@ -14,7 +14,6 @@ namespace Curry.Explore
         [SerializeField] CameraManager m_cam = default;
         [SerializeField] CurryGameEventListener m_onTileSelect = default;
         public event OnTileSelect OnTileSelected = default;
-        Vector3 m_lastestPos = default;
 
         void Awake()
         {
@@ -26,7 +25,6 @@ namespace Curry.Explore
         void HighlightTileInternal(Vector3 newPos)
         {
             m_tileHighlightManager.MoveTileTo(newPos);
-            m_lastestPos = newPos;
             m_tileHighlightManager.Show();
         }
 

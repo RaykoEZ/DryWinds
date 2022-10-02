@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using Curry.Util;
 using Curry.Events;
 
@@ -11,7 +12,14 @@ namespace Curry.Explore
         [SerializeField] TimeManager m_time = default;        
         [SerializeField] CardDropZone m_dropZone = default;
         [SerializeField] Explorer m_player = default;
-
+        [SerializeField] CurryGameEventListener m_onCardBeginDrag = default;
+        [SerializeField] CurryGameEventListener m_onCardDropped = default;
+        [SerializeField] Image m_playPanel = default;
+        protected void Awake()
+        {
+            m_onCardBeginDrag.Init();
+            m_onCardDropped.Init();
+        }
         void OnEnable()
         {
             m_time.OnOutOfTimeTrigger += OutOfTime;
@@ -29,6 +37,15 @@ namespace Curry.Explore
             Debug.Log("Out of Time");
         }
 
+        public void ShowPlayZone()
+        {
+            m_playPanel.enabled = true;
+        }
+        public void HidePlayZone()
+        {
+            m_playPanel.enabled = false;
+        }
+
         void OnCardPlayed(DraggableCard card) 
         {
             // Activate & Spend Time/Resource
@@ -38,6 +55,7 @@ namespace Curry.Explore
             {
                 cardEffect?.Invoke(m_player);
             }
+            HidePlayZone();
         }
     }
 }
