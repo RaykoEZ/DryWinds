@@ -9,10 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5100155725dc1dd42b872a1a0169d1e7, type: 3}
-  m_Name: Desert
+  m_Script: {fileID: 11500000, guid: 772224444fa865f4ea62a55dfcb3bbfd, type: 3}
+  m_Name: Mountain
   m_EditorClassIdentifier: 
-  m_Sprite: {fileID: 21300000, guid: d53dc12699c5f9246ace4e6e80b50a22, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 4e83f77d6a40ab244837af1209e73cfa, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Transform:
     e00: 1
@@ -33,6 +33,6 @@ MonoBehaviour:
     e33: 1
   m_InstancedGameObject: {fileID: 0}
   m_Flags: 1
-  m_ColliderType: 2
+  m_ColliderType: 1
   m_collectionId: 0
-  m_diffculty: 3
+  m_diffculty: 10

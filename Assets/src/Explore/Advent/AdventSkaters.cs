@@ -11,7 +11,7 @@ namespace Curry.Explore
             Activatable = true;
         }
 
-        protected override void ActivateEffect(Explorer user)
+        protected override void ActivateEffect(Adventurer user)
         {
             Activatable = false;
             Debug.Log("Skate activate: "+ user.name);

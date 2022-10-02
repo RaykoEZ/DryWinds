@@ -11,7 +11,7 @@ namespace Curry.Explore
     {
         [SerializeField] TimeManager m_time = default;        
         [SerializeField] CardDropZone m_dropZone = default;
-        [SerializeField] Explorer m_player = default;
+        [SerializeField] Adventurer m_player = default;
         [SerializeField] CurryGameEventListener m_onCardBeginDrag = default;
         [SerializeField] CurryGameEventListener m_onCardDropped = default;
         [SerializeField] Image m_playPanel = default;
@@ -49,7 +49,7 @@ namespace Curry.Explore
         void OnCardPlayed(DraggableCard card) 
         {
             // Activate & Spend Time/Resource
-            Action<Explorer> cardEffect = card?.Card.CardEffect;
+            Action<Adventurer> cardEffect = card?.Card.CardEffect;
             m_time.TrySpendTime(card.Card.TimeCost, out bool enoughTime);
             if (enoughTime) 
             {

@@ -7,6 +7,7 @@ using Curry.Game;
 
 namespace Curry.Explore
 {
+    // A character with path seeking
     public class Explorer : BaseCharacter, IPathExplorer
     {
         [SerializeField] protected NavMeshAgent m_agent = default;
@@ -71,7 +72,4 @@ namespace Curry.Explore
             StopExploration();        
         }
     }
-
-
-    
 }

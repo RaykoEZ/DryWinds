@@ -12,7 +12,7 @@ namespace Curry.Explore
         protected TileSpawner m_spawner = new TileSpawner();
         TileContainer m_displayTiles = new TileContainer();
         public bool IsActive { get { return !m_displayTiles.IsEmpty && m_displayTiles.IsActive; } }
-
+        public bool IsEmpty { get { return m_displayTiles.IsEmpty; } }
         public void Add(GameObject objectRef, Vector3 pos, Transform parent)
         {
             GameObject o = m_spawner.SpawnTile(objectRef, pos, parent, false);

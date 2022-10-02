@@ -7,25 +7,20 @@ namespace Curry.Explore
     {
         [SerializeField] TileManager m_rangeTileManager = default;
         [SerializeField] Tilemap m_map = default;
-
+        [SerializeField] RangeMapDatabase m_rangeDb = default;
         #region Methods to cancel prompt display
-        void HidePrompt()
+        public void HidePrompt()
         {
             m_rangeTileManager.Hide();
         }
         #endregion
 
         #region Show method used for spawning range tiles
-        void Show(RangeMap tileOffsets, Vector3 origin, GameObject tileRef, Transform parent, bool forceOverwrite = false)
+        void Show(RangeMap tileOffsets, Vector3 origin, GameObject tileRef, Transform parent)
         {
-            if (m_rangeTileManager.IsActive && forceOverwrite)
+            if (m_rangeTileManager.IsEmpty)
             {
-                m_rangeTileManager.Clear();
-            }
-
-            // If tiles never existed, make new tiles
-            if (!m_rangeTileManager.IsActive)
-            {
+                // If tiles never existed, make new tiles
                 Vector3Int originCoord = m_map.LocalToCell(origin);
                 // This is for showing/creating range tiles.
                 foreach (Vector3Int p in tileOffsets?.OffsetsFromOrigin)
@@ -44,16 +39,17 @@ namespace Curry.Explore
 
         public void ShowRange(
             GameObject tileToSpawn,
-            RangeMap range,
+            int range,
             Vector3 origin,
             Transform parent,
             bool toggle = false)
         {
+            RangeMap map = m_rangeDb.GetSquareRadiusMap(range);
             if (toggle)
             {
                 Toggle_Internal(
                     origin,
-                    range,
+                    map,
                     tileToSpawn,
                     parent);
             }
@@ -61,7 +57,7 @@ namespace Curry.Explore
             {
                 Show_Internal(
                     origin,
-                    range,
+                    map,
                     tileToSpawn,
                     parent);
             }
@@ -74,11 +70,10 @@ namespace Curry.Explore
             Vector3 origin,
             RangeMap rangeMap,
             GameObject tileRef,
-            Transform parent,
-            bool forceNew = false)
+            Transform parent)
         {
             m_rangeTileManager.Hide();
-            Show(rangeMap, origin, tileRef, parent, forceNew);
+            Show(rangeMap, origin, tileRef, parent);
         }
 
         // true - Display is now active
