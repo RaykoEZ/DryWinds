@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Tilemaps;
@@ -6,14 +7,45 @@ using Curry.Events;
 
 namespace Curry.Explore
 {
-    public class ClickableObject : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IPointerDownHandler
+    [Serializable]
+    public enum TileSelectionMode 
+    { 
+        Preview,
+        Play
+    }
+    public class TileSelectionInfo : EventInfo
+    {
+        public TileSelectionMode SelectionMode { get; protected set; }
+        public GameObject SelectedObject { get; protected set; }
+        public Vector3 ClickScreenPosition { get; protected set; }
+        public PointerEventData.InputButton Button { get; protected set; }
+
+        public TileSelectionInfo(
+            TileSelectionMode mode,
+            GameObject selected,
+            Vector3 clickedPos,
+            PointerEventData.InputButton button,
+            Dictionary<string, object> payload = null,
+            Action onFinishCallback = null): base(payload, onFinishCallback) 
+        {
+            SelectionMode = mode;
+            SelectedObject = selected;
+            ClickScreenPosition = clickedPos;
+            Button = button;
+        }
+    }
+
+        public class ClickableObject : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IPointerDownHandler
     {
         [SerializeField] CurryGameEventTrigger m_onPointerClick = default;
+        [SerializeField] TileSelectionMode m_selectionMode = default;
         public void OnPointerClick(PointerEventData eventData)
         {
-            Vector2 pos = eventData.pressPosition;
-            Dictionary<string, object> payload = new Dictionary<string, object> { {"clickObject", eventData.pointerEnter },{ "pressPosition", pos }, {"button", eventData.button } };
-            EventInfo info = new EventInfo(payload);
+            TileSelectionInfo info = new TileSelectionInfo(
+                m_selectionMode,
+                eventData.pointerEnter,
+                eventData.pressPosition,
+                eventData.button);
             m_onPointerClick?.TriggerEvent(info);
         }
 

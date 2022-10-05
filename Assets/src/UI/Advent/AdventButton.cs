@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using Curry.Game;
+using Curry.Events;
 
 namespace Curry.Explore 
 {
@@ -11,6 +11,13 @@ namespace Curry.Explore
         [SerializeField] GameObject m_player = default;
         [SerializeField] AdventManager m_adventManager = default;
         [SerializeField] AdventHand m_hand = default;
+        [SerializeField] CurryGameEventTrigger m_selectAdventureTile = default;
+        public void PromptAdventurePosition() 
+        {
+            EventInfo info = new EventInfo();
+            m_selectAdventureTile?.TriggerEvent(info);
+        }
+
         public void Adventure()
         {
             // Fetch advent deck from occupied tile

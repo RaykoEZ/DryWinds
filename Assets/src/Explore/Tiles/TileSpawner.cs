@@ -12,6 +12,9 @@ namespace Curry.Explore
             )
         {
             GameObject o = Object.Instantiate(objectRef, position, Quaternion.identity, parent);
+            // set local position after instantiation to prevent unintended local position override
+            position.z = 0f;
+            o.transform.localPosition = position;
             o.SetActive(isActive);
             return o;
         }

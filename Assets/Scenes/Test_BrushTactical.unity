@@ -1215,7 +1215,6 @@ GameObject:
   - component: {fileID: 611112523}
   - component: {fileID: 611112522}
   - component: {fileID: 611112521}
-  - component: {fileID: 611112524}
   m_Layer: 11
   m_Name: Tilemap_Walls
   m_TagString: Untagged
@@ -1246,8 +1245,8 @@ TilemapCollider2D:
   m_GameObject: {fileID: 611112519}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 6200000, guid: 0724c667e97e9b24da749763932bb490, type: 2}
-  m_IsTrigger: 0
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -2097,22 +2096,6 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
---- !u!114 &611112524
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 611112519}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1e3fdca004f2d45fe8abbed571a8abd5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_OverrideArea: 1
-  m_Area: 1
-  m_IgnoreFromBuild: 0
-  m_AffectedAgents: ffffffff
 --- !u!1 &615583776
 GameObject:
   m_ObjectHideFlags: 0
@@ -2697,7 +2680,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &765189989
 MonoBehaviour:
@@ -3088,7 +3071,7 @@ RectTransform:
   - {fileID: 535622463}
   - {fileID: 767100532}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -4499,6 +4482,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_onPointerClick:
     m_eventToTrigger: {fileID: 11400000, guid: c0b492fa8f79db445bfe3855193dc19a, type: 2}
+  m_selectionMode: 0
 --- !u!19719996 &1252504619
 TilemapCollider2D:
   m_ObjectHideFlags: 0
@@ -4675,7 +4659,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1334039895}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -2}
+  m_LocalPosition: {x: 0, y: 0, z: -3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1020797060}
@@ -4698,7 +4682,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b7af9f1bd079d04ab6fd88064793708, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_highlightObject: {fileID: 8655212242860225477, guid: 16154704a98ba6047a232882e4aaaf28, type: 3}
+  m_previewTile: {fileID: 8655212242860225477, guid: 16154704a98ba6047a232882e4aaaf28, type: 3}
+  m_selectionTile: {fileID: 1742876462523942320, guid: ddce333e45405b5449bb9e8d68a23ec6, type: 3}
   m_defaultSelectButton: 0
   m_map: {fileID: 1252504617}
   m_tileHighlightManager: {fileID: 1334039898}
@@ -4712,23 +4697,6 @@ MonoBehaviour:
         - m_Target: {fileID: 1334039897}
           m_TargetAssemblyTypeName: Curry.Explore.SelectionManager, Assembly-CSharp
           m_MethodName: OnSelectTile
-          m_Mode: 0
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-  m_onPlayerSelect:
-    m_eventToListen: {fileID: 11400000, guid: 0b2706962f546af458a354df88d94a7d, type: 2}
-    m_responses:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 1334039897}
-          m_TargetAssemblyTypeName: Curry.Explore.SelectionManager, Assembly-CSharp
-          m_MethodName: OnSelectPlayer
           m_Mode: 0
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -4779,7 +4747,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1488958106}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.5, y: 0.5, z: -3}
+  m_LocalPosition: {x: -1.5, y: 0.5, z: -5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 283726831}
@@ -4877,7 +4845,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_onPointerClick:
-    m_eventToTrigger: {fileID: 11400000, guid: 0b2706962f546af458a354df88d94a7d, type: 2}
+    m_eventToTrigger: {fileID: 11400000, guid: c0b492fa8f79db445bfe3855193dc19a, type: 2}
+  m_selectionMode: 0
 --- !u!95 &1488958114
 Animator:
   serializedVersion: 3
@@ -4909,7 +4878,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81cb90a397beeaf4fa89373e4ad05c80, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_scoutRange: 2
+  m_scoutRange: 1
 --- !u!1 &1523102253
 GameObject:
   m_ObjectHideFlags: 0
@@ -4986,7 +4955,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1576194953}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.5, y: 0.5, z: -3}
+  m_LocalPosition: {x: -1.5, y: 0.5, z: -4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1020797060}
@@ -5268,6 +5237,8 @@ MonoBehaviour:
   m_player: {fileID: 1488958106}
   m_adventManager: {fileID: 1024562575}
   m_hand: {fileID: 615583781}
+  m_selectAdventureTile:
+    m_eventToTrigger: {fileID: 0}
 --- !u!222 &1773398999
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -5552,7 +5523,7 @@ RectTransform:
   - {fileID: 81830745}
   - {fileID: 1078045343}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -5644,81 +5615,3 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
---- !u!1 &2096680943
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2096680946}
-  - component: {fileID: 2096680945}
-  - component: {fileID: 2096680944}
-  m_Layer: 0
-  m_Name: NavMesh_Map
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &2096680944
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2096680943}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8ae0e0d37a56e124f94a88beb33872a2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_OverrideByGrid: 0
-  m_UseMeshPrefab: {fileID: 0}
-  m_CompressBounds: 1
-  m_OverrideVector: {x: 1, y: 1, z: 1}
---- !u!114 &2096680945
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2096680943}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a5ac11cc976e418e8d13136b07e1f52, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_AgentTypeID: 0
-  m_CollectObjects: 0
-  m_Size: {x: 10, y: 10, z: 10}
-  m_Center: {x: 0, y: 2, z: 0}
-  m_LayerMask:
-    serializedVersion: 2
-    m_Bits: 2048
-  m_UseGeometry: 1
-  m_DefaultArea: 0
-  m_IgnoreNavMeshAgent: 1
-  m_IgnoreNavMeshObstacle: 1
-  m_OverrideTileSize: 0
-  m_TileSize: 256
-  m_OverrideVoxelSize: 0
-  m_VoxelSize: 0.033333335
-  m_BuildHeightMesh: 0
-  m_HideEditorLogs: 0
-  m_NavMeshData: {fileID: 23800000, guid: ac28f3536b4b90b42827a86a87a2c328, type: 2}
---- !u!4 &2096680946
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2096680943}
-  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
