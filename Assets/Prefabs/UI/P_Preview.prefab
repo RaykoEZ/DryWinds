@@ -92,7 +92,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1642879471517725927}
   m_Layer: 2
-  m_Name: P_RangeTile
+  m_Name: P_Preview
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

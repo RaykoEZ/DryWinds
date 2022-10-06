@@ -8,9 +8,9 @@ namespace Curry.Explore
 {
     public class SelectionManager : MonoBehaviour
     {
-        [SerializeField] GameObject m_previewTile = default;
+        [SerializeField] GameObject m_previewTerrainTile = default;
+        [SerializeField] GameObject m_previewRangeTile = default;
         [SerializeField] GameObject m_selectionTile = default;
-        [SerializeField] PointerEventData.InputButton m_defaultSelectButton = default;
         [SerializeField] Tilemap m_map = default;
         [SerializeField] TileManager m_tileHighlightManager = default;
         [SerializeField] CameraManager m_cam = default;
@@ -18,26 +18,34 @@ namespace Curry.Explore
         [SerializeField] CurryGameEventListener m_onTileSelect = default;
 
         public event OnTileSelect OnTileSelected = default;
+        protected ObjectId m_previewTileId;
 
         void Awake()
         {
             m_onTileSelect?.Init();
-            m_tileHighlightManager.Clear();
-            m_tileHighlightManager.Add(m_previewTile, Vector3.zero, transform);
+            m_previewTileId = new ObjectId(m_previewTerrainTile);
+            m_tileHighlightManager.Add(m_previewTerrainTile, Vector3.zero, transform);
         }
 
         void HighlightTileInternal(Vector3Int newCoord, bool focusCamera = true)
         {
-            m_rangeDisplay.HidePrompt();
+            m_rangeDisplay?.HidePrompt();
             Vector3 centerWorld = m_map.GetCellCenterWorld(newCoord);
             centerWorld.z = 0f;
             if (focusCamera) 
             {
                 m_cam.FocusCamera(centerWorld);
             }
-            m_tileHighlightManager.MoveTileTo(centerWorld);
-            m_tileHighlightManager.Show();
+            m_tileHighlightManager.MoveTileTo(m_previewTerrainTile, centerWorld);
+            m_tileHighlightManager.Show(m_previewTileId);
         }
+
+        public void CancelSelection() 
+        {
+            m_tileHighlightManager?.HideAll();
+            m_rangeDisplay?.HidePrompt();
+        }
+
         public void OnSelectTile(EventInfo info)
         {
             if (info == null) 
@@ -50,27 +58,38 @@ namespace Curry.Explore
                 return; 
             }
 
-            if (select.Button == m_defaultSelectButton) 
-            {
-                Vector3 worldPos = Camera.main.ScreenToWorldPoint(select.ClickScreenPosition);
-                Vector3Int gridCoord = m_map.WorldToCell(worldPos);
-                OnTileSelected?.Invoke(gridCoord);
-                HighlightTileInternal(gridCoord);
-            }
+            Vector3 worldPos = Camera.main.ScreenToWorldPoint(select.ClickScreenPosition);
+            Vector3Int gridCoord = m_map.WorldToCell(worldPos);
+            OnTileSelected?.Invoke(gridCoord);
+            HighlightTileInternal(gridCoord);
 
             if (select.SelectedObject != null && 
                 select.SelectedObject.TryGetComponent(out Adventurer player)) 
             {
-                GameObject rangeTile = 
-                    select.SelectionMode == TileSelectionMode.Preview? 
-                    m_previewTile : m_selectionTile;
-
-                m_rangeDisplay.ShowRange(
-                    rangeTile, 
-                    player.ScoutRange,
-                    player.transform.position, 
-                    transform);
+                OnSelectPlayer(player, select.SelectionMode);
             }
+        }
+
+        void OnSelectPlayer(Adventurer player, TileSelectionMode mode) 
+        {
+            GameObject rangeTile;
+            switch (mode)
+            {
+                case TileSelectionMode.Preview:
+                    rangeTile = m_previewRangeTile;
+                    break;
+                case TileSelectionMode.Play:
+                    rangeTile = m_selectionTile;
+                    break;
+                default:
+                    rangeTile = m_previewRangeTile;
+                    break;
+            }
+            m_rangeDisplay.ShowRange(
+                    rangeTile,
+                    player.ScoutRange,
+                    player.transform.position,
+                    transform);
         }
     }
 }
