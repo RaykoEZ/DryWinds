@@ -1,19 +1,13 @@
 ﻿using UnityEngine;
+using Curry.Game;
 
 namespace Curry.Explore
 {
     public class AdventSkaters : AdventCard
     {
-        [SerializeField] GameObject m_spawnReference = default;
-
-        private void Awake()
-        {
-            Activatable = true;
-        }
-
         protected override void ActivateEffect(Adventurer user)
         {
-            Activatable = false;
+            //Activatable = false;
             Debug.Log("Skate activate: "+ user.name);
             OnExpend();
         }

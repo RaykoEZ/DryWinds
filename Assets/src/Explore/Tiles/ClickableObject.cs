@@ -45,10 +45,10 @@ namespace Curry.Explore
             Middle = 1 << PointerEventData.InputButton.Middle
         }
 
-        [SerializeField] CurryGameEventTrigger m_onPointerClick = default;
-        [SerializeField] TileSelectionMode m_selectionMode = default;
-        [SerializeField] InputButtonFlag RegisterPointerClick = default;
-        public void OnPointerClick(PointerEventData eventData)
+        [SerializeField] protected CurryGameEventTrigger m_onPointerClick = default;
+        [SerializeField] protected TileSelectionMode m_selectionMode = default;
+        [SerializeField] protected InputButtonFlag RegisterPointerClick = default;
+        public virtual void OnPointerClick(PointerEventData eventData)
         {
             // Checking if the registered button is pressed
             InputButtonFlag buttonEnum = (InputButtonFlag)(1 << (int)eventData.button);
@@ -60,9 +60,6 @@ namespace Curry.Explore
                     eventData.pressPosition);
                 m_onPointerClick?.TriggerEvent(info);
             }
-
-
-
         }
 
         public void OnPointerDown(PointerEventData eventData)

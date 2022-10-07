@@ -36,3 +36,4 @@ MonoBehaviour:
   m_ColliderType: 2
   m_collectionId: 0
   m_diffculty: 3
+  m_activityLevel: 1

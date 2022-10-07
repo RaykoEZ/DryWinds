@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using Curry.Explore;
@@ -11,15 +12,22 @@ namespace Curry.Util
     public class CardDropZone : MonoBehaviour, IDropHandler
     {
         public OnCardDrop OnDropped;
+        // Called before the dropped card invokes its OnDragEnd, defer drop event
         public void OnDrop(PointerEventData eventData)
         {
             DraggableCard draggable;
             if(eventData.pointerDrag.TryGetComponent(out draggable) && draggable.Droppable) 
             {
-                int dropIdx = GetDropPosition(draggable.transform.position.x);
-                draggable?.Drop(transform, dropIdx);
-                OnDropped?.Invoke(draggable);
+                draggable.OnDragFinish += DeferDropEvent;
             }
+        }
+        // Drop event, called after the draggable card finishes its OnDragEnd
+        void DeferDropEvent(DraggableCard draggable) 
+        {
+            draggable.OnDragFinish -= DeferDropEvent;
+            int dropIdx = GetDropPosition(draggable.transform.position.x);
+            draggable?.Drop(transform, dropIdx);
+            OnDropped?.Invoke(draggable);
         }
 
         int GetDropPosition(float dropX) 

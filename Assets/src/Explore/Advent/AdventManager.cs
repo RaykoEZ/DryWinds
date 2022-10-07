@@ -1,9 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using Curry.Events;
 namespace Curry.Explore
 {
+    
+
+    public delegate void OnCardDraw(List<AdventCard> draw);
     // Contained database for all available advent(cards and decks)
     // Quiries Tile info for a tile in its tilemap coordinate
     public class AdventManager : MonoBehaviour 
@@ -12,6 +16,7 @@ namespace Curry.Explore
         [SerializeField] protected Tilemap m_tileMap = default;
         [SerializeField] AdventInstanceManager m_instance = default;
         [SerializeField] CurryGameEventListener m_onAdventure = default;
+        public event OnCardDraw OnDraw;
         void Awake()
         {
             m_adventDb.Init(OnAdventLoadFinish);
@@ -25,9 +30,8 @@ namespace Curry.Explore
         }
 
         public bool TryGetAdventInCollection(
-            Vector2 worldPos, out IReadOnlyDictionary<int, AdventCard> result) 
+            WorldTile tile, out IReadOnlyDictionary<int, AdventCard> result) 
         {
-            WorldTile tile = GetTile<WorldTile>(worldPos);
             if (tile == null) 
             {
                 Debug.LogWarning("Cannot find tile in tilemap");
@@ -65,14 +69,16 @@ namespace Curry.Explore
         void DrawCardsFrom(Vector3 worldPosition) 
         {
             IReadOnlyDictionary<int, AdventCard> deck;
+            WorldTile tile = GetTile<WorldTile>(worldPosition);
             // check for any existing deck
-            bool deckExist = TryGetAdventInCollection(worldPosition, out deck) &&
+            bool deckExist = TryGetAdventInCollection(tile, out deck) &&
                 deck?.Count > 0;
             if (deckExist)
             {
                 List<int> cardIds = new List<int>(deck.Keys);
                 // Draw advent card from fetched deck
-                DrawFromDeck(cardIds, 5);
+                List<AdventCard> draw = DrawFromDeck(cardIds, tile.ActivityLevel);
+                OnDraw?.Invoke(draw);
             }
             else
             {
@@ -80,20 +86,22 @@ namespace Curry.Explore
             }
         }
 
-        List<AdventCard> DrawFromDeck(List<int> cardIds, int numToDraw = 1)
+        // For drawing/spawning card object instances with provided card ID
+        List<AdventCard> DrawFromDeck(List<int> cardIds, int numToDraw)
         {
             // Draw random cards from a list of cards
             List<int> cardIdsToDraw = new List<int>();
             int rand;
             for (int i = 0; i < numToDraw; ++i)
             {
-                rand = Random.Range(0, cardIds.Count - 1);
+                rand = UnityEngine.Random.Range(0, cardIds.Count - 1);
                 cardIdsToDraw.Add(cardIds[rand]);
             }
             // Get the instance for each of the cards drawn
             List<AdventCard> ret = new List<AdventCard>();
             foreach (int id in cardIdsToDraw)
             {
+                // Instantiating cards to be drawn
                 AdventCard cardInstance = GetAdventInstance(id);
                 ret.Add(cardInstance);
             }

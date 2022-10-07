@@ -30,6 +30,10 @@ namespace Curry.Explore
         [SerializeField] AdventCard m_card = default;
         [SerializeField] UITriggers m_ui = default;
         [SerializeField] FXTriggers m_fx = default;
+
+        public delegate void OnCardFinishDrag(DraggableCard card);
+        public event OnCardFinishDrag OnDragFinish;
+
         public override bool Droppable { 
             get 
             {
@@ -56,6 +60,7 @@ namespace Curry.Explore
                 m_ui.DropTrigger?.TriggerEvent(info);
                 m_fx.DropTrigger?.Invoke();
             }
+            OnDragFinish?.Invoke(this);
         }
     }
 

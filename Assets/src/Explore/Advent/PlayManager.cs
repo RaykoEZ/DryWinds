@@ -9,7 +9,8 @@ namespace Curry.Explore
 {
     public class PlayManager : MonoBehaviour 
     {
-        [SerializeField] TimeManager m_time = default;        
+        [SerializeField] TimeManager m_time = default;
+        [SerializeField] AdventManager m_advent = default;
         [SerializeField] CardDropZone m_dropZone = default;
         [SerializeField] Adventurer m_player = default;
         [SerializeField] CurryGameEventListener m_onCardBeginDrag = default;

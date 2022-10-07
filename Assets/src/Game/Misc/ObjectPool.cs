@@ -39,7 +39,6 @@ namespace Curry.Game
             T item = Object.Instantiate(objRef, parent);
             item.Origin = this;
             item.gameObject.SetActive(false);
-            m_pool.Enqueue(item);
             return item;
         }
 

@@ -33,9 +33,9 @@ namespace Curry.Util
 
         public virtual void OnEndDrag(PointerEventData eventData)
         {
+            GetComponent<CanvasGroup>().blocksRaycasts = true;
             transform.SetParent(m_returnTo);
             transform.SetSiblingIndex(m_returnIndex);
-            GetComponent<CanvasGroup>().blocksRaycasts = true;
         }
 
         void SetDragPosition(PointerEventData e)

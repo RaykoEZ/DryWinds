@@ -13,7 +13,8 @@ namespace Curry.Explore
         [SerializeField] protected int m_timeCost = default;
         [SerializeField] protected string m_name = default;
         [SerializeField] protected string m_description = default;
-        public virtual bool Activatable { get; protected set; }
+        bool m_activatable = true;
+        public virtual bool Activatable { get { return m_activatable; } protected set { m_activatable = value; } }
         public int Id { get { return m_id; } }
         public string Name { get { return m_name; } }
         public string Description { get { return m_description; } }
@@ -22,7 +23,10 @@ namespace Curry.Explore
 
         public IObjectPool Origin { get; set; }
 
-        public abstract void Prepare();
+        public virtual void Prepare() 
+        {
+            Activatable = true;
+        }
         public virtual void ReturnToPool()
         {
             ObjectPool<AdventCard>.ReturnToPool(Origin, this);
