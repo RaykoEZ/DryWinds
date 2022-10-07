@@ -17,7 +17,7 @@ namespace Curry.Explore
         #endregion
 
         #region Show method used for spawning range tiles
-        void Show(RangeMap tileOffsets, Vector3 origin, GameObject tileRef, Transform parent)
+        void Show(RangeMap tileOffsets, GameObject tileRef, Transform parent)
         {
             if (tileRef == null) 
             { 
@@ -26,21 +26,20 @@ namespace Curry.Explore
             ObjectId newId = new ObjectId(tileRef);
             if (!m_rangeTileManager.DoTilesExist(newId))
             {
-                MakeNewTiles(tileOffsets, tileRef, origin, parent);
+                MakeNewTiles(tileOffsets, tileRef, parent);
 
             }
             m_currentObjectId = newId;
             m_rangeTileManager.Show(m_currentObjectId);
         }
 
-        void MakeNewTiles(RangeMap tileOffsets, GameObject tileRef, Vector3 origin, Transform parent) 
+        void MakeNewTiles(RangeMap tileOffsets, GameObject tileRef, Transform parent) 
         {
             // If tiles never existed, make new tiles
-            Vector3Int originCoord = m_map.LocalToCell(origin);
             // This is for showing/creating range tiles.
             foreach (Vector3Int p in tileOffsets?.OffsetsFromOrigin)
             {
-                Vector3 offsetPos = m_map.GetCellCenterLocal(originCoord + p);
+                Vector3 offsetPos = m_map.CellToWorld(p);
                 m_rangeTileManager.Add(tileRef, offsetPos, parent);
             }
         }
@@ -59,7 +58,6 @@ namespace Curry.Explore
             if (toggle)
             {
                 Toggle_Internal(
-                    origin,
                     map,
                     tileToSpawn,
                     parent);
@@ -67,7 +65,6 @@ namespace Curry.Explore
             else
             {
                 Show_Internal(
-                    origin,
                     map,
                     tileToSpawn,
                     parent);
@@ -78,19 +75,17 @@ namespace Curry.Explore
 
         #region Utility for Show/ToggleRangeMap
         void Show_Internal(
-            Vector3 origin,
             RangeMap rangeMap,
             GameObject tileRef,
             Transform parent)
         {
             m_rangeTileManager.Hide(tileRef);
-            Show(rangeMap, origin, tileRef, parent);
+            Show(rangeMap, tileRef, parent);
         }
 
         // true - Display is now active
         // false - Display is now not active
         bool Toggle_Internal(
-            Vector3 origin,
             RangeMap rangeMap,
             GameObject tileRef,
             Transform parent)
@@ -104,7 +99,7 @@ namespace Curry.Explore
             }
             m_rangeTileManager.Hide(tileRef);
 
-            Show(rangeMap, origin, tileRef, parent);
+            Show(rangeMap, tileRef, parent);
             return true;
         }
         #endregion

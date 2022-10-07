@@ -87,9 +87,9 @@ namespace Curry.Explore
             }
             m_rangeDisplay.ShowRange(
                     rangeTile,
-                    player.ScoutRange,
+                    player.Stats.ScoutRange,
                     player.transform.position,
-                    transform);
+                    player.transform);
         }
     }
 }

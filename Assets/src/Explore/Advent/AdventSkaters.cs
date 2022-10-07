@@ -1,21 +1,20 @@
 ﻿using UnityEngine;
-using Curry.Game;
+using Curry.Events;
 
 namespace Curry.Explore
 {
     public class AdventSkaters : AdventCard
     {
-        protected override void ActivateEffect(Adventurer user)
-        {
-            //Activatable = false;
-            Debug.Log("Skate activate: "+ user.name);
-            OnExpend();
-        }
+        [SerializeField] CurryGameEventTrigger m_onMove = default;
 
-        // On instance init
-        public override void Prepare()
+        protected override void ActivateEffect(AdventurerStats user)
         {
-            Activatable = true;
+            Debug.Log("Skate activate: "+ user.Name);
+            MovementInfo info = new MovementInfo().
+                SetDirection(MovementInfo.MovementDirection.Up).
+                SetMagnitude(1);
+            m_onMove?.TriggerEvent(info);
+            OnExpend();
         }
     }
 }

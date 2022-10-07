@@ -19,7 +19,7 @@ namespace Curry.Explore
         public string Name { get { return m_name; } }
         public string Description { get { return m_description; } }
         public int TimeCost { get { return m_timeCost; } }
-        public virtual Action<Adventurer> CardEffect { get { return ActivateEffect; } }
+        public virtual Action<AdventurerStats> CardEffect { get { return ActivateEffect; } }
 
         public IObjectPool Origin { get; set; }
 
@@ -33,7 +33,7 @@ namespace Curry.Explore
         }
 
         // Card Effect
-        protected abstract void ActivateEffect(Adventurer user);
+        protected abstract void ActivateEffect(AdventurerStats user);
         // After activating card, maybe expend the card
         protected virtual void OnExpend() 
         {

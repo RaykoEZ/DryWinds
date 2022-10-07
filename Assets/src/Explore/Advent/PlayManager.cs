@@ -10,7 +10,6 @@ namespace Curry.Explore
     public class PlayManager : MonoBehaviour 
     {
         [SerializeField] TimeManager m_time = default;
-        [SerializeField] AdventManager m_advent = default;
         [SerializeField] CardDropZone m_dropZone = default;
         [SerializeField] Adventurer m_player = default;
         [SerializeField] CurryGameEventListener m_onCardBeginDrag = default;
@@ -50,11 +49,11 @@ namespace Curry.Explore
         void OnCardPlayed(DraggableCard card) 
         {
             // Activate & Spend Time/Resource
-            Action<Adventurer> cardEffect = card?.Card.CardEffect;
+            Action<AdventurerStats> cardEffect = card?.Card.CardEffect;
             m_time.TrySpendTime(card.Card.TimeCost, out bool enoughTime);
             if (enoughTime) 
             {
-                cardEffect?.Invoke(m_player);
+                cardEffect?.Invoke(m_player.Stats);
             }
             HidePlayZone();
         }
