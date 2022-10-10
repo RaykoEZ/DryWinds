@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityEngine;
 using Curry.Events;
+using Curry.UI;
 
 namespace Curry.Explore
 {
@@ -24,7 +25,7 @@ namespace Curry.Explore
         [SerializeField] int m_minsToClear = default;
         [SerializeField] CurryGameEventListener m_onSpendTime = default;
         [SerializeField] CurryGameEventListener m_onAddTime = default;
-        [SerializeField] TimeGauge m_gauge = default;
+        [SerializeField] ResourceBar m_gauge = default;
         [SerializeField] GameClock m_clock = default;
         int m_minsLeft;
         int m_minsSpent;
@@ -38,8 +39,10 @@ namespace Curry.Explore
         void Awake()
         {
             ResetTime();
-            m_gauge.UpdateMaxTime(MinutesToClear);
-            m_gauge.UpdateTimeLeft(MinutesLeft, forceInstant: true);
+            m_onSpendTime?.Init();
+            m_onAddTime?.Init();
+            m_gauge.SetMaxValue(MinutesLeft);
+            m_gauge.SetBarValue(MinutesToClear, forceInstantChange: true);
         }
 
         public void ResetTime()
@@ -83,19 +86,19 @@ namespace Curry.Explore
                 StartCoroutine(OnSpendTime(minsToSpend));
             }
         }
-
         IEnumerator OnSpendTime(int increase)
         {
+            m_minsLeft -= increase;
+            m_minsSpent+= increase;
+            m_gauge.SetBarValue(m_minsLeft);
+            // Animate clock
             for (int i = 0; i < increase; ++i)
             {
-                m_minsLeft--;
-                m_minsSpent++;
                 m_clock.IncrementMinute();
-                m_gauge.UpdateTimeLeft(m_minsLeft);
-                yield return new WaitForSeconds(0.1f);
+                yield return new WaitForSeconds(0.05f);
             }
             OnTimeSpent?.Invoke(MinutesLeft);
-            
+
             if (Mathf.Approximately(m_minsLeft, 0f))
             {
                 OnOutOfTimeTrigger?.Invoke(m_minsSpent);

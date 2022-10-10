@@ -40,6 +40,11 @@ namespace Curry.Explore
             }
         }
 
+        public static List<AdventCard> DrawCards(AdventCollection deck, int numToDraw = 1) 
+        {
+            return deck.GetRandom(numToDraw);
+        }
+
         protected virtual void OnLoaded(GameObject obj)
         {
             if (obj.TryGetComponent(out AdventCard deploy))

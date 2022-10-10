@@ -11,12 +11,12 @@ namespace Curry.UI
         [SerializeField] float m_transitionDuration = default;
         [SerializeField] Image m_fill = default;
         [SerializeField] Gradient m_warningGradient = default;
+        [SerializeField] AnimationCurve m_lerpSpeed = default;
         [SerializeField] bool m_smoothValueChange = default;
         
         bool m_changeInProgress = false;
         float m_currentTargetVal = 0f;
         Coroutine m_currentTransition = default;
-
         public void SetBarValue(float val, bool forceInstantChange = false) 
         {
             if(val == m_slider.value || val == m_currentTargetVal) 
@@ -54,10 +54,10 @@ namespace Curry.UI
             float elapsedTime = 0f;
             while(elapsedTime < m_transitionDuration) 
             {
-                m_slider.value = Mathf.Lerp(m_slider.value, m_currentTargetVal, elapsedTime / m_transitionDuration);
+                elapsedTime += Time.smoothDeltaTime;
+                m_slider.value = Mathf.Lerp(m_slider.value, m_currentTargetVal, m_lerpSpeed.Evaluate(elapsedTime / m_transitionDuration));
                 m_fill.color = m_warningGradient.Evaluate(m_slider.normalizedValue);
-                elapsedTime += Time.deltaTime;
-                yield return null;
+                yield return new WaitForEndOfFrame();
             }
             m_changeInProgress = false;
         }

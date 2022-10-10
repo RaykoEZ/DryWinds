@@ -30,7 +30,7 @@ namespace Curry.Explore
         }
 
         public bool TryGetAdventInCollection(
-            WorldTile tile, out IReadOnlyDictionary<int, AdventCard> result) 
+            WorldTile tile, out AdventCollection result) 
         {
             if (tile == null) 
             {
@@ -41,15 +41,14 @@ namespace Curry.Explore
             int retId = tile.CollectionId;
             AdventCollection collection;
             bool ret = m_adventDb.AdventCollections.TryGetValue(retId, out collection);
-            result = collection?.AdventDictionary;
+            result = collection;
             return ret;
         }
 
-        public AdventCard GetAdventInstance(int cardId) 
+        public AdventCard InstantiateCard(AdventCard cardRef) 
         {
-            AdventCard advent = m_adventDb.AdventList[cardId];
             AdventCard ret;
-            ret = m_instance.GetInstanceFromAsset(advent.gameObject);
+            ret = m_instance.GetInstanceFromAsset(cardRef.gameObject);
             return ret;
         }
 
@@ -68,44 +67,28 @@ namespace Curry.Explore
 
         void DrawCardsFrom(Vector3 worldPosition) 
         {
-            IReadOnlyDictionary<int, AdventCard> deck;
+            AdventCollection deck;
             WorldTile tile = GetTile<WorldTile>(worldPosition);
             // check for any existing deck
             bool deckExist = TryGetAdventInCollection(tile, out deck) &&
-                deck?.Count > 0;
-            if (deckExist)
-            {
-                List<int> cardIds = new List<int>(deck.Keys);
-                // Draw advent card from fetched deck
-                List<AdventCard> draw = DrawFromDeck(cardIds, tile.ActivityLevel);
-                OnDraw?.Invoke(draw);
-            }
-            else
+                deck?.AdventDictionary.Count > 0;
+
+            if (!deckExist)
             {
                 Debug.Log("Nothing to see here");
+                return;
             }
-        }
-
-        // For drawing/spawning card object instances with provided card ID
-        List<AdventCard> DrawFromDeck(List<int> cardIds, int numToDraw)
-        {
-            // Draw random cards from a list of cards
-            List<int> cardIdsToDraw = new List<int>();
-            int rand;
-            for (int i = 0; i < numToDraw; ++i)
-            {
-                rand = UnityEngine.Random.Range(0, cardIds.Count - 1);
-                cardIdsToDraw.Add(cardIds[rand]);
-            }
-            // Get the instance for each of the cards drawn
-            List<AdventCard> ret = new List<AdventCard>();
-            foreach (int id in cardIdsToDraw)
+            // Draw advent card from fetched deck
+            List<AdventCard> drawRefs = AdventDatabase.DrawCards(deck, tile.ActivityLevel);
+            List<AdventCard> cardInstances = new List<AdventCard>();
+            foreach (AdventCard cardRef in drawRefs)
             {
                 // Instantiating cards to be drawn
-                AdventCard cardInstance = GetAdventInstance(id);
-                ret.Add(cardInstance);
+                AdventCard cardInstance = InstantiateCard(cardRef);
+                cardInstances.Add(cardInstance);
             }
-            return ret;
+
+            OnDraw?.Invoke(cardInstances);
         }
 
         void OnAdventLoadFinish() 

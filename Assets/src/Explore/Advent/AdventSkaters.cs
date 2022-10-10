@@ -9,7 +9,6 @@ namespace Curry.Explore
 
         protected override void ActivateEffect(AdventurerStats user)
         {
-            Debug.Log("Skate activate: "+ user.Name);
             MovementInfo info = new MovementInfo().
                 SetDirection(MovementInfo.MovementDirection.Up).
                 SetMagnitude(1);

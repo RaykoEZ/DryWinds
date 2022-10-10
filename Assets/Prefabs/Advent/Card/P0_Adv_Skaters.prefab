@@ -90,7 +90,7 @@ GameObject:
   - component: {fileID: 6933493858415940082}
   - component: {fileID: 5221273488511747728}
   m_Layer: 12
-  m_Name: P_Adv_Skaters
+  m_Name: P0_Adv_Skaters
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

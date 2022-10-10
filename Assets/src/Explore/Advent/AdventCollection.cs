@@ -12,11 +12,11 @@ namespace Curry.Explore
         [SerializeField] protected int m_id = default;
         [SerializeField] protected List<AdventDetail> m_adventLoad = default;
         //
-        protected Dictionary<int, AdventCard> m_advents = new Dictionary<int, AdventCard>();
+        protected List<AdventCard> m_advents = new List<AdventCard>();
 
         public int Id { get { return m_id; } }
         public List<AdventDetail> AdventDetails { get { return m_adventLoad; } }
-        public IReadOnlyDictionary<int, AdventCard> AdventDictionary { get { return m_advents; } }
+        public IReadOnlyList<AdventCard> AdventDictionary { get { return m_advents; } }
 
         public virtual void Init(IReadOnlyDictionary<int, AdventCard> adventList) 
         {
@@ -24,12 +24,12 @@ namespace Curry.Explore
             {
                 if(adventList.TryGetValue(detail.Id, out AdventCard advent)) 
                 {
-                    m_advents.Add(detail.Id, advent);
+                    m_advents.Add(advent);
                 }
             }
         }
 
-        public List<AdventCard> GetRandom(int numToGet = 5) 
+        public List<AdventCard> GetRandom(int numToGet = 1) 
         {
             int rand;
             List<AdventCard> ret = new List<AdventCard>();

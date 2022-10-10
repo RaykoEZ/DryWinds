@@ -9,6 +9,7 @@ namespace Curry.Explore
 {
     public class PlayManager : MonoBehaviour 
     {
+        [SerializeField] AdventManager m_advent = default;
         [SerializeField] TimeManager m_time = default;
         [SerializeField] CardDropZone m_dropZone = default;
         [SerializeField] Adventurer m_player = default;
@@ -24,12 +25,14 @@ namespace Curry.Explore
         {
             m_time.OnOutOfTimeTrigger += OutOfTime;
             m_dropZone.OnDropped += OnCardPlayed;
+            m_advent.OnDraw += OnEncounterDraw;
         }
 
         void OnDisable()
         {
             m_time.OnOutOfTimeTrigger -= OutOfTime;
             m_dropZone.OnDropped -= OnCardPlayed;
+            m_advent.OnDraw -= OnEncounterDraw;
         }
 
         void OutOfTime(int timeSpent) 
@@ -56,6 +59,25 @@ namespace Curry.Explore
                 cardEffect?.Invoke(m_player.Stats);
             }
             HidePlayZone();
+        }
+
+        void OnEncounterDraw(List<AdventCard> draw) 
+        {
+            List<Encounter> encounters = new List<Encounter>();
+            foreach(AdventCard card in draw) 
+            { 
+                if(card is Encounter encounter) 
+                {
+                    encounters.Add(encounter);
+                }
+            }
+            int totalCost = 0;
+            foreach(Encounter encounter in encounters) 
+            {
+                totalCost += encounter.TimeCost;
+                encounter?.OnDrawEffect(m_player.Stats);
+            }
+            m_time.TrySpendTime(totalCost, out bool _);
         }
     }
 }

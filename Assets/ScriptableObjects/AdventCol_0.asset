@@ -20,3 +20,9 @@ MonoBehaviour:
         m_AssetGUID: feeaa1f113a0d2140ae93496f42f993f
         m_SubObjectName: 
         m_SubObjectType: 
+  - Id: -1
+    DeployableLoader:
+      m_assetRef:
+        m_AssetGUID: 2861c2f728e9f5b4b8c9b3f0aedddfad
+        m_SubObjectName: 
+        m_SubObjectType: 
