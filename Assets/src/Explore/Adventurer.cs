@@ -73,7 +73,7 @@ namespace Curry.Explore
             float timeElapsed = 0f;
             while (timeElapsed <= duration) 
             {
-                timeElapsed += Time.smoothDeltaTime;
+                timeElapsed += Time.deltaTime;
                 transform.position = Vector3.Lerp(transform.position, target, timeElapsed / duration);
                 yield return null;
             }
