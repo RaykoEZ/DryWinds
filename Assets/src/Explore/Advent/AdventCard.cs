@@ -14,6 +14,8 @@ namespace Curry.Explore
         [SerializeField] protected string m_name = default;
         [SerializeField] protected string m_description = default;
         bool m_activatable = true;
+        // Whether keep card upon moving to a new tile
+        public virtual bool RetainCard { get { return false; } }
         public virtual bool Activatable { get { return m_activatable; } protected set { m_activatable = value; } }
         public int Id { get { return m_id; } }
         public string Name { get { return m_name; } }

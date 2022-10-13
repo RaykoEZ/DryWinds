@@ -15,24 +15,24 @@ namespace Curry.Explore
         [SerializeField] Adventurer m_player = default;
         [SerializeField] CurryGameEventListener m_onCardBeginDrag = default;
         [SerializeField] CurryGameEventListener m_onCardDropped = default;
+        [SerializeField] CurryGameEventListener m_onCardDraw = default;
         [SerializeField] Image m_playPanel = default;
         protected void Awake()
         {
-            m_onCardBeginDrag.Init();
-            m_onCardDropped.Init();
+            m_onCardDraw?.Init();
+            m_onCardBeginDrag?.Init();
+            m_onCardDropped?.Init();
         }
         void OnEnable()
         {
             m_time.OnOutOfTimeTrigger += OutOfTime;
             m_dropZone.OnDropped += OnCardPlayed;
-            m_advent.OnDraw += OnEncounterDraw;
         }
 
         void OnDisable()
         {
             m_time.OnOutOfTimeTrigger -= OutOfTime;
             m_dropZone.OnDropped -= OnCardPlayed;
-            m_advent.OnDraw -= OnEncounterDraw;
         }
 
         void OutOfTime(int timeSpent) 
@@ -61,18 +61,19 @@ namespace Curry.Explore
             HidePlayZone();
         }
 
-        void OnEncounterDraw(List<AdventCard> draw) 
+        public void OnCardDrawn(EventInfo info) 
         {
-            List<Encounter> encounters = new List<Encounter>();
-            foreach(AdventCard card in draw) 
-            { 
-                if(card is Encounter encounter) 
-                {
-                    encounters.Add(encounter);
-                }
+            if (info == null) return;
+            if(info is CardDrawInfo draw) 
+            {
+                OnEncounterDraw(draw.Encounters);
             }
+        }
+
+        void OnEncounterDraw(IReadOnlyList<Encounter> draw) 
+        {
             int totalCost = 0;
-            foreach(Encounter encounter in encounters) 
+            foreach(Encounter encounter in draw) 
             {
                 totalCost += encounter.TimeCost;
                 encounter?.OnDrawEffect(m_player.Stats);

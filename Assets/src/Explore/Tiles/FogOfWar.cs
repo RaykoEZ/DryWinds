@@ -22,6 +22,10 @@ namespace Curry.Explore
         {
             Vector3Int mapCoord = m_map.WorldToCell(worldPos);
             TileBase tileToSet = clearFog ? m_clearTile : m_fogTile;
+            if (m_map.GetTile(mapCoord) == tileToSet) 
+            {
+                return;
+            }
             m_map.SetTile(mapCoord, tileToSet);
         }
 

@@ -133,7 +133,7 @@ MonoBehaviour:
   m_name: Skaters
   m_description: The Skaters herald the dunes' curtains.
   m_onMove:
-    m_eventToTrigger: {fileID: 11400000, guid: b388116c0ace42949a308c2e07cc7524, type: 2}
+    m_eventToTrigger: {fileID: 11400000, guid: 736b70e15b9efe8408d6fe321c5396e4, type: 2}
 --- !u!222 &8481637543372204205
 CanvasRenderer:
   m_ObjectHideFlags: 0

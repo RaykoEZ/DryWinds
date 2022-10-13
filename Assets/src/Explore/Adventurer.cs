@@ -39,7 +39,8 @@ namespace Curry.Explore
     {
         [SerializeField] AdventurerStats m_stats = default;
         [SerializeField] CurryGameEventListener m_onMove = default;
-        [SerializeField] CurryGameEventTrigger m_onLocationReached = default;
+        // Pings player status to trigger card draw events etc
+        [SerializeField] CurryGameEventTrigger m_onPlayerPing = default;
         public AdventurerStats Stats { get { return m_stats; } }
         void Awake()
         {
@@ -47,28 +48,36 @@ namespace Curry.Explore
         }
         void Start()
         {
+            // Ping once at start
             PlayerInfo info = new PlayerInfo(new AdventurerStats(m_stats));
-            m_onLocationReached?.TriggerEvent(info);
+            m_onPlayerPing?.TriggerEvent(info);
         }
         public void Move(EventInfo info) 
         {
             if (info == null) return;
-            MovementInfo move = info as MovementInfo;
-            if (move == null) return;
-            // Collision check
-            Vector3 target = transform.position + move.ResultVector;
-            RaycastHit2D hit = Physics2D.Linecast(
-                    transform.position,
-                    target,
-                    LayerMask.GetMask("Obstacles"));
-            if (!hit) 
+
+            Vector3 target;
+            // Depending on event param type, set target target position 
+            if (info is PositionInfo select) 
             {
+                target = select.WorldPosition;
+                target.z = transform.position.z;
                 StartCoroutine(Move_Internal(target));
             }
         }
 
         IEnumerator Move_Internal(Vector3 target) 
         {
+            RaycastHit2D hit = Physics2D.Linecast(
+                    transform.position,
+                    target,
+                    LayerMask.GetMask("Obstacles"));
+            // Check for walls
+            if (hit) 
+            { 
+                yield break; 
+            }
+
             float duration = 1f;
             float timeElapsed = 0f;
             while (timeElapsed <= duration) 
@@ -78,7 +87,7 @@ namespace Curry.Explore
                 yield return null;
             }
             PlayerInfo info = new PlayerInfo(new AdventurerStats(m_stats));
-            m_onLocationReached?.TriggerEvent(info);
+            m_onPlayerPing?.TriggerEvent(info);
         }
     }
 }

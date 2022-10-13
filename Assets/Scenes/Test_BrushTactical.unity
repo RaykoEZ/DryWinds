@@ -742,6 +742,23 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+  m_onCardDraw:
+    m_eventToListen: {fileID: 11400000, guid: cdd360b59762d3f48943143dadafba20, type: 2}
+    m_responses:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 120921346}
+          m_TargetAssemblyTypeName: Curry.Explore.PlayManager, Assembly-CSharp
+          m_MethodName: OnCardDrawn
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
   m_playPanel: {fileID: 120921342}
 --- !u!1 &158638371
 GameObject:
@@ -2251,7 +2268,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_camera: {fileID: 765189985}
   m_animTime: 1
-  m_zoomOrthographSize: 2.5
+  m_zoomOrthographSize: 3
   m_defaultOrthographSize: 4.5
   m_coroutineManager: {fileID: 765189986}
 --- !u!1 &767100531
@@ -2617,6 +2634,27 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+  m_onAdventureMove:
+    m_eventToTrigger: {fileID: 11400000, guid: b388116c0ace42949a308c2e07cc7524, type: 2}
+  m_onPlayerMoved:
+    m_eventToListen: {fileID: 11400000, guid: b9f05c250782bdf49b964bc6c4d7abe9, type: 2}
+    m_responses:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1024562575}
+          m_TargetAssemblyTypeName: Curry.Explore.AdventManager, Assembly-CSharp
+          m_MethodName: OnPlayerMoved
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  m_onCardDraw:
+    m_eventToTrigger: {fileID: 11400000, guid: cdd360b59762d3f48943143dadafba20, type: 2}
 --- !u!1 &1078045342
 GameObject:
   m_ObjectHideFlags: 0
@@ -4322,7 +4360,7 @@ GameObject:
   - component: {fileID: 1488958116}
   - component: {fileID: 1488958108}
   m_Layer: 10
-  m_Name: P_MainExplorer
+  m_Name: P_Adventurer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4487,7 +4525,7 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-  m_onLocationReached:
+  m_onPlayerPing:
     m_eventToTrigger: {fileID: 11400000, guid: b9f05c250782bdf49b964bc6c4d7abe9, type: 2}
 --- !u!1 &1523102253
 GameObject:
@@ -6874,7 +6912,7 @@ Tilemap:
     m_Data: {r: 1, g: 1, b: 1, a: 1}
   m_TileObjectToInstantiateArray: []
   m_AnimationFrameRate: 1
-  m_Color: {r: 0.3018868, g: 0.3018868, b: 0.3018868, a: 1}
+  m_Color: {r: 0.3018868, g: 0.3018868, b: 0.3018868, a: 0.7019608}
   m_Origin: {x: -8, y: -5, z: 0}
   m_Size: {x: 17, y: 10, z: 1}
   m_TileAnchor: {x: 0.5, y: 0.5, z: 0}

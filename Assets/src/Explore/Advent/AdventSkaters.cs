@@ -9,9 +9,8 @@ namespace Curry.Explore
 
         protected override void ActivateEffect(AdventurerStats user)
         {
-            MovementInfo info = new MovementInfo().
-                SetDirection(MovementInfo.MovementDirection.Up).
-                SetMagnitude(1);
+            Vector3 dest = user.WorldPosition + Vector3.up;
+            PositionInfo info = new PositionInfo(dest);
             m_onMove?.TriggerEvent(info);
             OnExpend();
         }
