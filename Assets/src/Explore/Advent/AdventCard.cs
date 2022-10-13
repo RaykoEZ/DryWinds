@@ -4,25 +4,30 @@ using Curry.Game;
 
 namespace Curry.Explore
 {
-
+    [Serializable]
+    public struct CardAttribute 
+    {
+        [SerializeField] public int Id;
+        [SerializeField] public string Name;
+        [SerializeField] public string Description;
+        [Range(0, 1000)]
+        [SerializeField] public int TimeCost;
+        [SerializeField] public bool RetailCard;
+    }
     // Base class for all playable cards
     public abstract class AdventCard : MonoBehaviour, IPoolable
     {
-        [SerializeField] protected int m_id = 0;
-        [Range(0, 1000)]
-        [SerializeField] protected int m_timeCost = default;
-        [SerializeField] protected string m_name = default;
-        [SerializeField] protected string m_description = default;
+        [SerializeField] CardAttribute m_attribute = default;
         bool m_activatable = true;
-        // Whether keep card upon moving to a new tile
-        public virtual bool RetainCard { get { return false; } }
-        public virtual bool Activatable { get { return m_activatable; } protected set { m_activatable = value; } }
-        public int Id { get { return m_id; } }
-        public string Name { get { return m_name; } }
-        public string Description { get { return m_description; } }
-        public int TimeCost { get { return m_timeCost; } }
-        public virtual Action<AdventurerStats> CardEffect { get { return ActivateEffect; } }
 
+        public int Id { get { return m_attribute.Id; } }
+        public string Name { get { return m_attribute.Name; } }
+        public string Description { get { return m_attribute.Description; } }
+        public int TimeCost { get { return m_attribute.TimeCost; } }
+        public virtual bool RetainCard { get { return m_attribute.RetailCard; } }
+        public virtual Action<AdventurerStats> CardEffect { get { return ActivateEffect; } }
+        // Whether keep card upon moving to a new tile
+        public virtual bool Activatable { get { return m_activatable; } protected set { m_activatable = value; } }
         public IObjectPool Origin { get; set; }
 
         public virtual void Prepare() 

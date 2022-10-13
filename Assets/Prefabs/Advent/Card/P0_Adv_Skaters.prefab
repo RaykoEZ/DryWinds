@@ -128,10 +128,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 88f5102e475c1cf4eb3b4bba9046dda8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_id: 0
-  m_timeCost: 5
-  m_name: Skaters
-  m_description: The Skaters herald the dunes' curtains.
+  m_attribute:
+    Id: 0
+    Name: Skater
+    Description: Wowowo
+    TimeCost: 10
+    RetailCard: 0
   m_onMove:
     m_eventToTrigger: {fileID: 11400000, guid: 736b70e15b9efe8408d6fe321c5396e4, type: 2}
 --- !u!222 &8481637543372204205
