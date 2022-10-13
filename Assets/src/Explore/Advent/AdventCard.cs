@@ -33,9 +33,13 @@ namespace Curry.Explore
         {
             ObjectPool<AdventCard>.ReturnToPool(Origin, this);
         }
-
+        public virtual void OnDiscard()
+        {
+            OnExpend();
+        }
         // Card Effect
         protected abstract void ActivateEffect(AdventurerStats user);
+
         // After activating card, maybe expend the card
         protected virtual void OnExpend() 
         {

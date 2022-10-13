@@ -704,9 +704,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1eb0c9c2c357487419be9899b39163b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_advent: {fileID: 1024562575}
   m_time: {fileID: 81830746}
-  m_dropZone: {fileID: 120921344}
+  m_playZone: {fileID: 120921344}
   m_player: {fileID: 1488958116}
   m_onCardBeginDrag:
     m_eventToListen: {fileID: 11400000, guid: 3a30f108650ad9e4ab7dd4f9d5c6b221, type: 2}
@@ -751,6 +750,23 @@ MonoBehaviour:
           m_TargetAssemblyTypeName: Curry.Explore.PlayManager, Assembly-CSharp
           m_MethodName: OnCardDrawn
           m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  m_onDiscardHand:
+    m_eventToListen: {fileID: 11400000, guid: a53b758f71322444f9f948da82c4bd21, type: 2}
+    m_responses:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 120921346}
+          m_TargetAssemblyTypeName: Curry.Explore.PlayManager, Assembly-CSharp
+          m_MethodName: DiscardHand
+          m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -2655,6 +2671,8 @@ MonoBehaviour:
           m_CallState: 2
   m_onCardDraw:
     m_eventToTrigger: {fileID: 11400000, guid: cdd360b59762d3f48943143dadafba20, type: 2}
+  m_onDiscardHand:
+    m_eventToTrigger: {fileID: 11400000, guid: a53b758f71322444f9f948da82c4bd21, type: 2}
 --- !u!1 &1078045342
 GameObject:
   m_ObjectHideFlags: 0

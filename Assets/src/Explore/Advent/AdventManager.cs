@@ -46,6 +46,7 @@ namespace Curry.Explore
         [SerializeField] CurryGameEventListener m_onPlayerMoved = default;
         // After player moved, we draw card from player position, trigger this
         [SerializeField] CurryGameEventTrigger m_onCardDraw = default;
+        [SerializeField] CurryGameEventTrigger m_onDiscardHand = default;
 
         void Awake()
         {
@@ -115,6 +116,7 @@ namespace Curry.Explore
 
             if (info is PlayerInfo player) 
             {
+                m_onDiscardHand?.TriggerEvent(new EventInfo());
                 DrawCardsFrom(player.PlayerStats.WorldPosition);
             }
         }
