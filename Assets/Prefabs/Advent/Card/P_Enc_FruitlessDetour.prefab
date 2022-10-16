@@ -89,7 +89,7 @@ GameObject:
   - component: {fileID: 5218861219846289648}
   - component: {fileID: 5218861219846289651}
   m_Layer: 12
-  m_Name: P-1_Enc_FruitlessDetour
+  m_Name: P_Enc_FruitlessDetour
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -136,7 +136,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_attribute:
-    Id: 1
+    Id: -1
     Name: Fruitless Detour
     Description: Ohhhhhhh noo.
     TimeCost: 10

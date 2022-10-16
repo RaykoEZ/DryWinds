@@ -12,16 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44bc30d5d6089414e8655a6b2cbf9e0b, type: 3}
   m_Name: AdventCol_0
   m_EditorClassIdentifier: 
-  m_id: 0
+  m_deckId: 0
   m_adventLoad:
-  - Id: 0
-    DeployableLoader:
+  - DeployableLoader:
       m_assetRef:
         m_AssetGUID: feeaa1f113a0d2140ae93496f42f993f
         m_SubObjectName: 
         m_SubObjectType: 
-  - Id: -1
-    DeployableLoader:
+  - DeployableLoader:
       m_assetRef:
         m_AssetGUID: 2861c2f728e9f5b4b8c9b3f0aedddfad
         m_SubObjectName: 

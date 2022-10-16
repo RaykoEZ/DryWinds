@@ -2609,7 +2609,7 @@ MonoBehaviour:
   m_onAdventureMove:
     m_eventToTrigger: {fileID: 11400000, guid: b388116c0ace42949a308c2e07cc7524, type: 2}
   m_onPlayerMoved:
-    m_eventToListen: {fileID: 11400000, guid: b9f05c250782bdf49b964bc6c4d7abe9, type: 2}
+    m_eventToListen: {fileID: 11400000, guid: 0e128c7b7c151be489c076a4a83ee69b, type: 2}
     m_responses:
       m_PersistentCalls:
         m_Calls:
@@ -4380,8 +4380,8 @@ GameObject:
   - component: {fileID: 1488958107}
   - component: {fileID: 1488958112}
   - component: {fileID: 1488958114}
-  - component: {fileID: 1488958113}
   - component: {fileID: 1488958116}
+  - component: {fileID: 1488958113}
   - component: {fileID: 1488958108}
   m_Layer: 10
   m_Name: P_Adventurer
@@ -4551,6 +4551,8 @@ MonoBehaviour:
           m_CallState: 2
   m_onPlayerPing:
     m_eventToTrigger: {fileID: 11400000, guid: b9f05c250782bdf49b964bc6c4d7abe9, type: 2}
+  m_onPlayerDraw:
+    m_eventToTrigger: {fileID: 11400000, guid: 0e128c7b7c151be489c076a4a83ee69b, type: 2}
 --- !u!1 &1523102253
 GameObject:
   m_ObjectHideFlags: 0

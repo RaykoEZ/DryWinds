@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
-
+using Curry.Explore;
 namespace Curry.Util
 {
 
@@ -11,7 +11,7 @@ namespace Curry.Util
     {
         [SerializeField] protected AssetReference m_assetRef = default;
 
-        public event IAssetLoader<GameObject>.OnAssetLoadSuccess OnLoadSuccess;
+        public virtual event IAssetLoader<GameObject>.OnAssetLoadSuccess OnLoadSuccess;
         public AssetReference AssetRef { get { return m_assetRef; }}
 
         public void LoadAsset() 
@@ -32,5 +32,26 @@ namespace Curry.Util
                 OnLoadSuccess?.Invoke(obj.Result);
             }
         }
+    }
+
+    [Serializable]
+    public class CardLoader : PrefabLoader
+    {
+        public int CardId { get; protected set; }
+        public override event IAssetLoader<GameObject>.OnAssetLoadSuccess OnLoadSuccess;
+
+        public CardLoader(AssetReference assetRef, IAssetLoader<GameObject>.OnAssetLoadSuccess callback) : base(assetRef, callback)
+        {
+        }
+
+        protected override void OnLoaded(AsyncOperationHandle<GameObject> obj)
+        {
+            if (obj.Status == AsyncOperationStatus.Succeeded && obj.Result.TryGetComponent(out AdventCard card))
+            {
+                CardId = card.Id;
+                OnLoadSuccess?.Invoke(obj.Result);
+            }
+        }
+
     }
 }

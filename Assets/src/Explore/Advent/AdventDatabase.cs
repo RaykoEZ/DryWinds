@@ -13,12 +13,12 @@ namespace Curry.Explore
         // includes all advent cards to load (listed from each advent collection)
         // These are for advent card prefab instantiations, 
         Dictionary<int, AdventCard> m_advents = new Dictionary<int, AdventCard>();
-        Dictionary<int, AdventCollection> m_adventCollections = new Dictionary<int, AdventCollection>();
+        Dictionary<string, AdventCollection> m_adventCollections = new Dictionary<string, AdventCollection>();
         int m_numToLoad = 0;
         int m_numLoaded = 0;
         public IReadOnlyDictionary<int, AdventCard> AdventList 
         { get { return m_advents; } }
-        public IReadOnlyDictionary<int, AdventCollection> AdventCollections 
+        public IReadOnlyDictionary<string, AdventCollection> AdventCollections 
         { get { return m_adventCollections; } }
         Action onLoadFinish;
         public void Init(Action onFinishLoading = null)
@@ -28,7 +28,7 @@ namespace Curry.Explore
             HashSet<AdventDetail> loadSet = new HashSet<AdventDetail>();
             foreach (AdventCollection deck in m_collections)
             {
-                m_adventCollections.Add(deck.Id, deck);
+                m_adventCollections.Add(deck.DeckId, deck);
                 loadSet.UnionWith(deck.AdventDetails);
             }
             m_numToLoad = loadSet.Count;

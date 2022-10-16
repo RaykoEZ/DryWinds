@@ -41,6 +41,7 @@ namespace Curry.Explore
         [SerializeField] CurryGameEventListener m_onMove = default;
         // Pings player status to trigger card draw events etc
         [SerializeField] CurryGameEventTrigger m_onPlayerPing = default;
+        [SerializeField] CurryGameEventTrigger m_onPlayerDraw = default;
         public AdventurerStats Stats { get { return m_stats; } }
         void Awake()
         {
@@ -87,7 +88,7 @@ namespace Curry.Explore
                 yield return null;
             }
             PlayerInfo info = new PlayerInfo(new AdventurerStats(m_stats));
-            m_onPlayerPing?.TriggerEvent(info);
+            m_onPlayerDraw?.TriggerEvent(info);
         }
     }
 }

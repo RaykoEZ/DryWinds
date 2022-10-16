@@ -70,7 +70,7 @@ namespace Curry.Explore
                 result = null;
                 return false; 
             }
-            int retId = tile.CollectionId;
+            string retId = tile.CollectionId;
             AdventCollection collection;
             bool ret = m_adventDb.AdventCollections.TryGetValue(retId, out collection);
             result = collection;
@@ -127,7 +127,7 @@ namespace Curry.Explore
             WorldTile tile = GetTile<WorldTile>(worldPosition);
             // check for any existing deck
             bool deckExist = TryGetAdventInCollection(tile, out deck) &&
-                deck?.AdventDictionary.Count > 0;
+                deck?.Cards.Count > 0;
 
             if (!deckExist)
             {

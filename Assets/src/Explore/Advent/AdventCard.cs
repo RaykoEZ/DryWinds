@@ -7,7 +7,6 @@ namespace Curry.Explore
     [Serializable]
     public struct CardAttribute 
     {
-        [SerializeField] public int Id;
         [SerializeField] public string Name;
         [SerializeField] public string Description;
         [Range(0, 1000)]
@@ -20,7 +19,7 @@ namespace Curry.Explore
         [SerializeField] CardAttribute m_attribute = default;
         bool m_activatable = true;
 
-        public int Id { get { return m_attribute.Id; } }
+        public int Id { get { return $"{m_attribute.Name}/{gameObject.name}".GetHashCode(); } }
         public string Name { get { return m_attribute.Name; } }
         public string Description { get { return m_attribute.Description; } }
         public int TimeCost { get { return m_attribute.TimeCost; } }

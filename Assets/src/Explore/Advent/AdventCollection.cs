@@ -9,22 +9,22 @@ namespace Curry.Explore
     [CreateAssetMenu(fileName = "AdventCollection", menuName = "Curry/AdventCollection", order = 1)]
     public class AdventCollection : ScriptableObject
     {
-        [SerializeField] protected int m_id = default;
+        [SerializeField] protected string m_deckId = default;
         [SerializeField] protected List<AdventDetail> m_adventLoad = default;
         //
-        protected List<AdventCard> m_advents = new List<AdventCard>();
+        protected HashSet<AdventCard> m_cards = new HashSet<AdventCard>();
 
-        public int Id { get { return m_id; } }
-        public List<AdventDetail> AdventDetails { get { return m_adventLoad; } }
-        public IReadOnlyList<AdventCard> AdventDictionary { get { return m_advents; } }
+        public string DeckId { get { return m_deckId; } }
+        public IReadOnlyList<AdventDetail> AdventDetails { get { return m_adventLoad; } }
+        public IReadOnlyCollection<AdventCard> Cards { get { return m_cards; } }
 
         public virtual void Init(IReadOnlyDictionary<int, AdventCard> adventList) 
         {
-            foreach(AdventDetail detail in m_adventLoad) 
+            foreach (AdventDetail detail in m_adventLoad) 
             {
-                if(adventList.TryGetValue(detail.Id, out AdventCard advent)) 
+                if(adventList.TryGetValue(detail.DeployableLoader.CardId, out AdventCard advent)) 
                 {
-                    m_advents.Add(advent);
+                    m_cards.Add(advent);
                 }
             }
         }
@@ -33,10 +33,11 @@ namespace Curry.Explore
         {
             int rand;
             List<AdventCard> ret = new List<AdventCard>();
+            List<AdventCard> cards = new List<AdventCard>(m_cards);
             for(int i = 0; i <  numToGet; ++i) 
             {
-                rand = UnityEngine.Random.Range(0, m_advents.Count - 1);
-                ret.Add(AdventDictionary[rand]);
+                rand = UnityEngine.Random.Range(0, m_cards.Count);
+                ret.Add(cards[rand]);
             }
             return ret;
         }
