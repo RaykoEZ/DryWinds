@@ -5,6 +5,15 @@ namespace Curry.Util
 {
     public static class VectorExtension
     {
+        static readonly Vector3[] s_cardinal = new Vector3[] 
+        { Vector3.up, Vector3.down, Vector3.left, Vector3.right };
+        public static Vector3 RandomCardinalVector() 
+        {
+            int rand = UnityEngine.Random.Range(0, s_cardinal.Length);
+            Vector3 ret = s_cardinal[rand];
+            return ret;
+        }
+
         public static Vector2[] ToVector2Array(Vector3[] v3)
         {
             return Array.ConvertAll(v3, ToVec2);
