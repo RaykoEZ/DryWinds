@@ -10,17 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 44bc30d5d6089414e8655a6b2cbf9e0b, type: 3}
-  m_Name: AdventCol_0
+  m_Name: Deck1
   m_EditorClassIdentifier: 
-  m_deckId: 0
-  m_adventLoad:
-  - DeployableLoader:
-      m_assetRef:
-        m_AssetGUID: feeaa1f113a0d2140ae93496f42f993f
-        m_SubObjectName: 
-        m_SubObjectType: 
-  - DeployableLoader:
-      m_assetRef:
-        m_AssetGUID: 2861c2f728e9f5b4b8c9b3f0aedddfad
-        m_SubObjectName: 
-        m_SubObjectType: 
+  m_deckId: 1
+  m_cardsInDeck:
+  - {fileID: 5894462175879888250, guid: feeaa1f113a0d2140ae93496f42f993f, type: 3}

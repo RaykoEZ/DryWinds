@@ -62,7 +62,7 @@ namespace Curry.Explore
         }
 
         public bool TryGetAdventInCollection(
-            WorldTile tile, out AdventCollection result) 
+            WorldTile tile, out AdventDeck result) 
         {
             if (tile == null) 
             {
@@ -71,8 +71,8 @@ namespace Curry.Explore
                 return false; 
             }
             string retId = tile.CollectionId;
-            AdventCollection collection;
-            bool ret = m_adventDb.AdventCollections.TryGetValue(retId, out collection);
+            AdventDeck collection;
+            bool ret = m_adventDb.AdventDecks.TryGetValue(retId, out collection);
             result = collection;
             return ret;
         }
@@ -123,7 +123,7 @@ namespace Curry.Explore
 
         void DrawCardsFrom(Vector3 worldPosition) 
         {
-            AdventCollection deck;
+            AdventDeck deck;
             WorldTile tile = GetTile<WorldTile>(worldPosition);
             // check for any existing deck
             bool deckExist = TryGetAdventInCollection(tile, out deck) &&

@@ -12,5 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38a4e0b0227aad945a4da66e9aadb451, type: 3}
   m_Name: AdventDb_0
   m_EditorClassIdentifier: 
-  m_collections:
+  m_cardAssets:
+  - m_AssetGUID: feeaa1f113a0d2140ae93496f42f993f
+    m_SubObjectName: 
+    m_SubObjectType: 
+  - m_AssetGUID: 2861c2f728e9f5b4b8c9b3f0aedddfad
+    m_SubObjectName: 
+    m_SubObjectType: 
+  m_decks:
   - {fileID: 11400000, guid: afe1913d8088d3d439b23e61c3ff1e0f, type: 2}
+  - {fileID: 11400000, guid: 9c12cb7fd1704f64d84025369a753130, type: 2}
