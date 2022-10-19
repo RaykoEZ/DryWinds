@@ -2112,75 +2112,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 704104444}
   m_CullTransparentMesh: 1
---- !u!1 &759458750
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 759458751}
-  - component: {fileID: 759458752}
-  m_Layer: 0
-  m_Name: P_Vip
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &759458751
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 759458750}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 1020797060}
-  m_RootOrder: 5
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &759458752
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 759458750}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c3f66ae0fc6bcc04b8caa1fe4010945b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_onTalk:
-    m_eventToListen: {fileID: 11400000, guid: 1596805060775e145857debd47ba7226, type: 2}
-    m_responses:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 759458752}
-          m_TargetAssemblyTypeName: Curry.Explore.Vip, Assembly-CSharp
-          m_MethodName: OnTalk
-          m_Mode: 0
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-  m_onCaptured:
-    m_eventToTrigger: {fileID: 11400000, guid: 41cb3f4f05da7a4489656f44510734ef, type: 2}
-  m_onRescued:
-    m_eventToTrigger: {fileID: 11400000, guid: 6642b74b261015741a70e2f4e4853eb6, type: 2}
 --- !u!1 &765189984
 GameObject:
   m_ObjectHideFlags: 0
@@ -2577,7 +2508,6 @@ RectTransform:
   - {fileID: 1488958107}
   - {fileID: 535622463}
   - {fileID: 767100532}
-  - {fileID: 759458751}
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2824,7 +2754,7 @@ GameObject:
   - component: {fileID: 1252504618}
   - component: {fileID: 1252504619}
   m_Layer: 6
-  m_Name: Tilemap_Ground
+  m_Name: Tilemap_Terrain
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4217,7 +4147,7 @@ GameObject:
   - component: {fileID: 1285027076}
   - component: {fileID: 1285027075}
   m_Layer: 0
-  m_Name: Tilemap_Monuments
+  m_Name: Tilemap_Locations
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
