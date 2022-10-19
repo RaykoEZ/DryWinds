@@ -6,6 +6,8 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 using Curry.Util;
 namespace Curry.Explore
 {
+    // A collection of all cards to be loaded
+    // Also contains all decks  
     [Serializable]
     [CreateAssetMenu(fileName = "AdventDatabase", menuName = "Curry/AdventDatatbase", order = 1)]
     public class AdventDatabase : ScriptableObject 
@@ -27,18 +29,28 @@ namespace Curry.Explore
         public void Init(Action onFinishLoading = null)
         {
             onLoadFinish = onFinishLoading;
+            // Load all cards
             m_cardLoader = new CardLoader(m_cardAssets, OnLoaded);
             m_cardLoader.LoadAssets();
+            // Put all decks into a dictionary
             foreach(AdventDeck deck in m_decks) 
             {
                 m_deckDictionary.Add(deck.DeckId, deck);
             }
         }
 
+        // Randomly draw card from a deck
         public static List<AdventCard> DrawCards(AdventDeck deck, int numToDraw = 1) 
         {
             return deck.GetRandom(numToDraw);
         }
+        // Draw a specific card
+        public bool TryGetCard(int adventId, out AdventCard card) 
+        {
+            bool cardExists = m_advents.TryGetValue(adventId, out AdventCard ret);
+            card = ret;
+            return cardExists;
+        } 
 
         protected virtual void OnLoaded(ICollection<GameObject> objs)
         {

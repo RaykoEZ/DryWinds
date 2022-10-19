@@ -31,9 +31,9 @@ MonoBehaviour:
     e31: 0
     e32: 0
     e33: 1
-  m_InstancedGameObject: {fileID: 0}
+  m_InstancedGameObject: {fileID: 2845103375547118802, guid: e4a3134e2db9b36409d792a0d1880004, type: 3}
   m_Flags: 1
   m_ColliderType: 1
   m_collectionId: 1
-  m_diffculty: 3
-  m_activityLevel: 4
+  m_diffculty: 2
+  m_activityLevel: 3
