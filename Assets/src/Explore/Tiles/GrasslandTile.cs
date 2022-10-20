@@ -2,7 +2,7 @@
 
 namespace Curry.Explore
 {
-    [CreateAssetMenu(fileName = "Grassland", menuName = "Curry/Tiles/Grassland", order = 1)]
+    [CreateAssetMenu(fileName = "Grassland", menuName = "Curry/Tiles/Terrain/Grassland", order = 1)]
     public class GrasslandTile : WorldTile
     {
     }

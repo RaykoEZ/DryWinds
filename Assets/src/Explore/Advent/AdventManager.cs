@@ -36,7 +36,8 @@ namespace Curry.Explore
     public class AdventManager : MonoBehaviour 
     {
         [SerializeField] protected AdventDatabase m_adventDb = default;
-        [SerializeField] protected Tilemap m_tileMap = default;
+        [SerializeField] protected Tilemap m_terrain = default;
+        [SerializeField] protected Tilemap m_locations = default;
         [SerializeField] AdventInstanceManager m_instance = default;
         // When adventure starts and player needs to move to a tile
         [SerializeField] CurryGameEventListener m_onAdventure = default;
@@ -55,10 +56,10 @@ namespace Curry.Explore
             m_onPlayerMoved?.Init();
         }
 
-        public T GetTile<T>(Vector2 worldPos) where T : WorldTile
+        public static T GetTile<T>(Tilemap map, Vector2 worldPos) where T : WorldTile
         {
-            Vector3Int p = m_tileMap.WorldToCell(worldPos);
-            return m_tileMap.GetTile<T>(p);
+            Vector3Int p = map.WorldToCell(worldPos);
+            return map.GetTile<T>(p);
         }
 
         public bool TryGetAdventInCollection(
@@ -77,12 +78,7 @@ namespace Curry.Explore
             return ret;
         }
 
-        public AdventCard InstantiateCard(AdventCard cardRef) 
-        {
-            AdventCard ret;
-            ret = m_instance.GetInstanceFromAsset(cardRef.gameObject);
-            return ret;
-        }
+
 
         public void Adventure(EventInfo info)
         {
@@ -104,12 +100,14 @@ namespace Curry.Explore
             {
                 return; 
             }
-            Vector3Int cell = m_tileMap.WorldToCell(worldPos);
+            // Trigger player to move to selected tile
+            Vector3Int cell = m_terrain.WorldToCell(worldPos);
             PositionInfo e = new PositionInfo(
-                    m_tileMap.GetCellCenterWorld(cell));
+                    m_terrain.GetCellCenterWorld(cell));
             m_onAdventureMove?.TriggerEvent(e);
         }
 
+        // When player reached selected tile, draw cards and trigger events
         public void OnPlayerMoved(EventInfo info) 
         {
             if (info == null) return;
@@ -117,36 +115,59 @@ namespace Curry.Explore
             if (info is PlayerInfo player) 
             {
                 m_onDiscardHand?.TriggerEvent(new EventInfo());
-                DrawCardsFrom(player.PlayerStats.WorldPosition);
+                DrawFromMap(m_terrain, player.PlayerStats.WorldPosition);
+                DrawFromMap(m_locations, player.PlayerStats.WorldPosition);
+                LocationEvents(player.PlayerStats.WorldPosition);
             }
         }
 
-        void DrawCardsFrom(Vector3 worldPosition) 
+        void LocationEvents(Vector3 worldPosition) 
+        {
+            LocationTile tile = GetTile<LocationTile>(m_locations, worldPosition);
+            if (tile == null)
+            {
+                return;
+            }
+            DrawCards(tile.Events);
+        }
+
+        void DrawFromMap(Tilemap map, Vector3 worldPosition) 
         {
             AdventDeck deck;
-            WorldTile tile = GetTile<WorldTile>(worldPosition);
+            WorldTile tile = GetTile<WorldTile>(map, worldPosition);
+            if (tile == null) 
+            { 
+                return; 
+            }
             // check for any existing deck
             bool deckExist = TryGetAdventInCollection(tile, out deck) &&
                 deck?.Cards.Count > 0;
 
             if (!deckExist)
             {
-                Debug.Log("Nothing to see here");
+                Debug.Log("Nothing to see here at: " + map.name);
                 return;
             }
-            // Draw advent card from fetched deck
-            List<AdventCard> drawRefs = AdventDatabase.DrawCards(deck, tile.ActivityLevel);
+            // Get card prefab refs from fetched deck and instantiate
+            List<AdventCard> drawRefs = AdventDatabase.DrawCards(deck);
+            DrawCards(drawRefs);
+        }
+
+        // Instantiate cards and trigger game events OnCardDraw
+        void DrawCards(IReadOnlyList<AdventCard> cardsToDraw) 
+        {
             List<AdventCard> cardInstances = new List<AdventCard>();
             List<Encounter> encounters = new List<Encounter>();
-            foreach (AdventCard cardRef in drawRefs)
+
+            foreach (AdventCard cardRef in cardsToDraw)
             {
                 // Instantiating cards to be drawn
                 AdventCard cardInstance = InstantiateCard(cardRef);
-                if(cardInstance is Encounter encounter) 
+                if (cardInstance is Encounter encounter)
                 {
                     encounters.Add(encounter);
                 }
-                else 
+                else
                 {
                     cardInstances.Add(cardInstance);
                 }
@@ -157,6 +178,13 @@ namespace Curry.Explore
                 SetEncounters(encounters);
 
             m_onCardDraw?.TriggerEvent(info);
+        }
+
+        AdventCard InstantiateCard(AdventCard cardRef)
+        {
+            AdventCard ret;
+            ret = m_instance.GetInstanceFromAsset(cardRef.gameObject);
+            return ret;
         }
 
         void OnAdventLoadFinish() 

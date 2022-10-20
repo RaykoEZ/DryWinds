@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5100155725dc1dd42b872a1a0169d1e7, type: 3}
-  m_Name: Desert_Ruin0
+  m_Script: {fileID: 11500000, guid: 9ec8b3b72157fa444bc97466f0a61b68, type: 3}
+  m_Name: Location_DesertRuin
   m_EditorClassIdentifier: 
   m_Sprite: {fileID: 21300000, guid: beec22ae807a4044f9bbd597af209fa1, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -35,5 +35,7 @@ MonoBehaviour:
   m_Flags: 1
   m_ColliderType: 1
   m_collectionId: 1
-  m_diffculty: 2
-  m_activityLevel: 3
+  m_diffculty: 3
+  m_events:
+  - {fileID: 5218861219846289650, guid: 2861c2f728e9f5b4b8c9b3f0aedddfad, type: 3}
+  - {fileID: 5218861219846289650, guid: 2861c2f728e9f5b4b8c9b3f0aedddfad, type: 3}

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7478817269357891374}
   - component: {fileID: 3284915329089748194}
   m_Layer: 31
-  m_Name: Monuments
+  m_Name: Locations
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -85,7 +85,7 @@ Tilemap:
   m_GameObject: {fileID: 6672459228118530514}
   m_Enabled: 1
   m_Tiles:
-  - first: {x: -2, y: 1, z: 0}
+  - first: {x: -3, y: 1, z: 0}
     second:
       serializedVersion: 2
       m_TileIndex: 0
@@ -98,7 +98,7 @@ Tilemap:
   m_AnimatedTiles: {}
   m_TileAssetArray:
   - m_RefCount: 1
-    m_Data: {fileID: 11400000, guid: 3b74412c5298e5c4aaa5a530338c6a67, type: 2}
+    m_Data: {fileID: 11400000, guid: 0e4f5a5a6ec0aec41801b74c0e436f3c, type: 2}
   m_TileSpriteArray:
   - m_RefCount: 1
     m_Data: {fileID: 21300000, guid: beec22ae807a4044f9bbd597af209fa1, type: 3}
@@ -129,8 +129,8 @@ Tilemap:
     m_Data: {fileID: 2845103375547118802, guid: e4a3134e2db9b36409d792a0d1880004, type: 3}
   m_AnimationFrameRate: 1
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Origin: {x: -2, y: 0, z: 0}
-  m_Size: {x: 2, y: 2, z: 1}
+  m_Origin: {x: -3, y: 0, z: 0}
+  m_Size: {x: 3, y: 2, z: 1}
   m_TileAnchor: {x: 0.5, y: 0.5, z: 0}
   m_TileOrientation: 0
   m_TileOrientationMatrix:
@@ -198,7 +198,7 @@ TilemapRenderer:
   m_Mode: 0
   m_DetectChunkCullingBounds: 0
   m_MaskInteraction: 0
---- !u!114 &4091919532332683474
+--- !u!114 &2064951378485370957
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

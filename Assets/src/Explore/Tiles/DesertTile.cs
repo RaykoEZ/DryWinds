@@ -3,7 +3,7 @@ using UnityEngine.Tilemaps;
 
 namespace Curry.Explore
 {
-    [CreateAssetMenu(fileName = "Desert", menuName = "Curry/Tiles/Desert", order = 1)]
+    [CreateAssetMenu(fileName = "Desert", menuName = "Curry/Tiles/Terrain/Desert", order = 1)]
     public class DesertTile : WorldTile
     {
     }
