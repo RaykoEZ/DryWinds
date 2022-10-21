@@ -90,7 +90,6 @@ namespace Curry.Explore
             PlayerInfo info = new PlayerInfo(new AdventurerStats(m_stats));
             m_onPlayerDraw?.TriggerEvent(info);
             m_onPlayerPing?.TriggerEvent(info);
-
         }
     }
 }

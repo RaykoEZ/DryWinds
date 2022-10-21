@@ -61,6 +61,15 @@ namespace Curry.Explore
             Vector3Int p = map.WorldToCell(worldPos);
             return map.GetTile<T>(p);
         }
+        public static bool TryGetTileComponent<T>(Tilemap map, Vector3 worldPos, out T component) where T : MonoBehaviour
+        {
+            Vector3Int p = map.WorldToCell(worldPos);
+            GameObject obj = map.GetInstantiatedObject(p);
+            bool ret = obj != null;
+            ret &= obj.TryGetComponent(out T comp);
+            component = comp;
+            return ret;
+        }
 
         public bool TryGetAdventInCollection(
             WorldTile tile, out AdventDeck result) 
@@ -77,8 +86,6 @@ namespace Curry.Explore
             result = collection;
             return ret;
         }
-
-
 
         public void Adventure(EventInfo info)
         {
@@ -118,9 +125,10 @@ namespace Curry.Explore
                 DrawFromMap(m_terrain, player.PlayerStats.WorldPosition);
                 DrawFromMap(m_locations, player.PlayerStats.WorldPosition);
                 LocationEvents(player.PlayerStats.WorldPosition);
+                SpecialEvents(player.PlayerStats.WorldPosition);
             }
         }
-
+        // static events in locations
         void LocationEvents(Vector3 worldPosition) 
         {
             LocationTile tile = GetTile<LocationTile>(m_locations, worldPosition);
@@ -129,6 +137,18 @@ namespace Curry.Explore
                 return;
             }
             DrawCards(tile.Events);
+
+        }
+        // one time events in locations
+        void SpecialEvents(Vector3 worldPosition) 
+        {
+            // If there are special events in this location, trigger them
+            if (TryGetTileComponent(m_locations, worldPosition, out SpecialEventHandler e) && e.EventCards.Count > 0)
+            {
+                DrawCards(e.EventCards);
+                // Remove events after drawing those special event cards
+                e.RemoveEvents();
+            }
         }
 
         void DrawFromMap(Tilemap map, Vector3 worldPosition) 

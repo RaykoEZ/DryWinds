@@ -9,6 +9,7 @@ namespace Curry.Explore
         [SerializeField] protected List<AdventCard> m_events = default;
         // event cardids to give to player upon reaching this tile 
         public IReadOnlyList<AdventCard> Events { get { return m_events; } }
+
         public void AddEvent(AdventCard newEvent) 
         {
             if (newEvent == null) return;

@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2845103375547118803}
   - component: {fileID: 2845103375547118812}
+  - component: {fileID: 1683427807745112331}
   m_Layer: 0
   m_Name: P_Ruins_0
   m_TagString: Untagged
@@ -87,3 +88,17 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1683427807745112331
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2845103375547118802}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7df6b1868c355ac4e886ecf4d7618d02, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_eventCards:
+  - {fileID: 5894462175879888250, guid: feeaa1f113a0d2140ae93496f42f993f, type: 3}
