@@ -65,8 +65,13 @@ namespace Curry.Explore
         {
             Vector3Int p = map.WorldToCell(worldPos);
             GameObject obj = map.GetInstantiatedObject(p);
-            bool ret = obj != null;
-            ret &= obj.TryGetComponent(out T comp);
+            if (obj != null) 
+            {
+                component = null;
+                return false; 
+            }
+
+            bool ret = obj.TryGetComponent(out T comp);
             component = comp;
             return ret;
         }
