@@ -9,9 +9,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 44bc30d5d6089414e8655a6b2cbf9e0b, type: 3}
-  m_Name: Deck1
+  m_Script: {fileID: 11500000, guid: ca40755bb94719b44af0e32e62475ff7, type: 3}
+  m_Name: ScoutTile
   m_EditorClassIdentifier: 
-  m_deckId: 1
-  m_cardsInDeck:
-  - {fileID: 9203526775296008998, guid: 0ecd928d489bcba4abe4b21cb061381a, type: 3}

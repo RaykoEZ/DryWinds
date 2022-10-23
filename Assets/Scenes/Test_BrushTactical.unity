@@ -2051,11 +2051,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4499789418524853004, guid: a78920314311f6f40bb2bc7017065353, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 4.5
+      value: -1.5
       objectReference: {fileID: 0}
     - target: {fileID: 4499789418524853004, guid: a78920314311f6f40bb2bc7017065353, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -4
+      value: -2
       objectReference: {fileID: 0}
     - target: {fileID: 4499789418524853004, guid: a78920314311f6f40bb2bc7017065353, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -2072,6 +2072,10 @@ PrefabInstance:
     - target: {fileID: 4499789418524853005, guid: a78920314311f6f40bb2bc7017065353, type: 3}
       propertyPath: m_Name
       value: P_Vip
+      objectReference: {fileID: 0}
+    - target: {fileID: 4499789418524853005, guid: a78920314311f6f40bb2bc7017065353, type: 3}
+      propertyPath: m_Layer
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a78920314311f6f40bb2bc7017065353, type: 3}
@@ -4710,6 +4714,7 @@ GameObject:
   - component: {fileID: 1488958116}
   - component: {fileID: 1488958113}
   - component: {fileID: 1488958108}
+  - component: {fileID: 1488958109}
   m_Layer: 10
   m_Name: P_Adventurer
   m_TagString: Untagged
@@ -4755,8 +4760,29 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.5, y: 0.5}
   m_EdgeRadius: 0
+--- !u!50 &1488958109
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1488958106}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!212 &1488958112
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -4878,6 +4904,8 @@ MonoBehaviour:
           m_CallState: 2
   m_onPlayerPing:
     m_eventToTrigger: {fileID: 11400000, guid: b9f05c250782bdf49b964bc6c4d7abe9, type: 2}
+  m_onScout:
+    m_eventToTrigger: {fileID: 11400000, guid: b6f5cd82da90f44418857008c95416af, type: 2}
   m_onPlayerDraw:
     m_eventToTrigger: {fileID: 11400000, guid: 0e128c7b7c151be489c076a4a83ee69b, type: 2}
 --- !u!1 &1523102253
@@ -7304,7 +7332,7 @@ MonoBehaviour:
   m_clearTile: {fileID: 11400000, guid: c6fac76493dcda345b01d040057292a7, type: 2}
   m_fogTile: {fileID: 11400000, guid: 945a0a644d810e84e910bd42c8adddd9, type: 2}
   m_onTileReveal:
-    m_eventToListen: {fileID: 11400000, guid: b9f05c250782bdf49b964bc6c4d7abe9, type: 2}
+    m_eventToListen: {fileID: 11400000, guid: b6f5cd82da90f44418857008c95416af, type: 2}
     m_responses:
       m_PersistentCalls:
         m_Calls:

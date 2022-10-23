@@ -70,7 +70,6 @@ namespace Curry.Explore
                 component = null;
                 return false; 
             }
-
             bool ret = obj.TryGetComponent(out T comp);
             component = comp;
             return ret;

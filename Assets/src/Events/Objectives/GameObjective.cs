@@ -47,4 +47,25 @@ namespace Curry.Events
             return ObjectiveCondition.GetHashCode();
         }
     }
+
+    [Serializable]
+    public class ResueObjective : GameObjective
+    {
+        [SerializeField] AmountAchieved m_condition = default;
+        public override string Title { get { return "VIP Rescue"; } }
+
+        public override string Description { get { return "Rescue VIP within time limit: " + m_condition.Description; } }
+
+        public override ICondition<IComparable> ObjectiveCondition { get { return m_condition as ICondition<IComparable>; } }
+
+        public override void Init(GameEventManager eventManager)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void Shutdown(GameEventManager eventManager)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }

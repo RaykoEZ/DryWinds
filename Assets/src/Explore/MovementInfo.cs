@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using Curry.Events;
 
 namespace Curry.Explore
@@ -59,6 +60,13 @@ namespace Curry.Explore
         {
             WorldPosition = pos;
         }
-
+    }
+    public class RangeInfo : EventInfo 
+    {
+        public List<Vector3> WorldPositions { get; protected set; }
+        public RangeInfo(List<Vector3> rangeWorldPos) 
+        {
+            WorldPositions = rangeWorldPos;
+        }
     }
 }

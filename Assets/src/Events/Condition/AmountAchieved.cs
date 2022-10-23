@@ -27,7 +27,7 @@ namespace Curry.Events
             }
         }
 
-        public string Description => throw new NotImplementedException();
+        public string Description { get { return $"{Progress} / {Target}"; } }
 
         public virtual bool UpdateProgress(int progress)
         {

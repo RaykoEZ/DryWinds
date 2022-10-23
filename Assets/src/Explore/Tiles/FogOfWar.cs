@@ -57,6 +57,13 @@ namespace Curry.Explore
             {
                 SetFogOfWar(player.PlayerStats.WorldPosition);
             }
+            else if (info is RangeInfo range) 
+            { 
+                foreach(Vector3 pos in range.WorldPositions) 
+                {
+                    SetFogOfWar(pos);
+                }
+            }
         }
     }
 }

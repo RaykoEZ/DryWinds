@@ -19,6 +19,9 @@ MonoBehaviour:
   - m_AssetGUID: 2861c2f728e9f5b4b8c9b3f0aedddfad
     m_SubObjectName: 
     m_SubObjectType: 
+  - m_AssetGUID: 0ecd928d489bcba4abe4b21cb061381a
+    m_SubObjectName: 
+    m_SubObjectType: 
   m_decks:
   - {fileID: 11400000, guid: afe1913d8088d3d439b23e61c3ff1e0f, type: 2}
   - {fileID: 11400000, guid: 9c12cb7fd1704f64d84025369a753130, type: 2}

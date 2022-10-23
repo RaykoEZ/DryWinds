@@ -28,6 +28,16 @@ namespace Curry.Util
 
             return ret;
         }
+        public List<Vector3> ApplyRangeOffsets(Vector3 origin)
+        {
+            List<Vector3> ret = new List<Vector3>();
+            foreach (Vector3 offset in m_offsetList)
+            {
+                ret.Add(origin + offset);
+            }
+
+            return ret;
+        }
 
         public bool IsInRange(Vector3Int origin, Vector3Int target)
         {
