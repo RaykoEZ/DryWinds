@@ -9,6 +9,7 @@ namespace Curry.Events
     {
         [SerializeField] protected ItemObtained m_condition = default;
         [SerializeField] protected DialogueTrigger m_dialogueTrigger = default;
+        [SerializeField] protected CurryGameEventListener m_onItemObtain = default;
         [SerializeField] protected Dialogue m_dialogue = default;
 
         public override ICondition<IComparable> ObjectiveCondition 
@@ -20,20 +21,21 @@ namespace Curry.Events
         public override string Description { get { return "Get Description."; } }
 
 
-        public override void Init(GameEventManager eventManager)
+        public override void Init()
         {
-            eventManager.OnItemObtained += OnItemObtain;
+            m_onItemObtain?.Init();
         }
 
-        public override void Shutdown(GameEventManager eventManager)
+        public override void Shutdown()
         {
-            eventManager.OnItemObtained -= OnItemObtain;
+            m_onItemObtain?.Shutdown();
         }
 
-        protected void OnItemObtain(object sender, ItemArgs arg) 
+        public virtual void OnItemObtain(EventInfo arg) 
         {
-            ItemGain gain = new ItemGain { Amount = 1, ItemSerialNumber = 0 };
-            if (ObjectiveCondition.UpdateProgress(gain)) 
+            if (arg == null) return;
+
+            if(arg is ItemGain gain && ObjectiveCondition.UpdateProgress(gain)) 
             {
                 OnCompleteCallback();
             }

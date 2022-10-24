@@ -5,26 +5,14 @@ using Curry.Events;
 namespace Curry.Game
 {
     public class PlayerStateManager : MonoBehaviour
-    {
-        [SerializeField] GameEventManager m_gameEventListener = default;
-        
+    {        
         // Start is called before the first frame update
         void Awake()
         {
-            m_gameEventListener.OnPlayerKnockout += OnPlayerKnockout;
-            m_gameEventListener.OnInteract += OnPlayerInteract;
-            m_gameEventListener.OnInteractNPC += OnPlayerInteractNPC;
-            m_gameEventListener.OnItemObtained += OnItemObtained;
-            m_gameEventListener.OnFloraObtained += OnFloraObtained;
         }
 
         void OnDisable()
         {
-            m_gameEventListener.OnPlayerKnockout -= OnPlayerKnockout;
-            m_gameEventListener.OnInteract -= OnPlayerInteract;
-            m_gameEventListener.OnInteractNPC -= OnPlayerInteractNPC;
-            m_gameEventListener.OnItemObtained -= OnItemObtained;
-            m_gameEventListener.OnFloraObtained -= OnFloraObtained;
         }
         void OnPlayerKnockout(object sender, PlayerArgs args)
         {

@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Curry.Events
 {
     [Serializable]
-    public class ItemGain : IComparable
+    public class ItemGain : EventInfo, IComparable
     {
         public int ItemSerialNumber;
         public int Amount;

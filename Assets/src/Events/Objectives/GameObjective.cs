@@ -7,17 +7,22 @@ namespace Curry.Events
     public abstract class GameObjective : MonoBehaviour, IObjective, IEquatable<GameObjective>
     {
         public event OnObjectiveComplete OnComplete;
+        public event OnObjectiveFail OnFail;
+
         public abstract string Title { get; }
         public abstract string Description { get; }
         public abstract ICondition<IComparable> ObjectiveCondition { get; }
 
-        public abstract void Init(GameEventManager eventManager);
-        public abstract void Shutdown(GameEventManager eventManager);
+        public abstract void Init();
+        public abstract void Shutdown();
         protected virtual void OnCompleteCallback() 
         {
             OnComplete?.Invoke(this);
         }
-
+        protected virtual void OnFailCallback()
+        {
+            OnFail?.Invoke(this);
+        }
         public static bool operator ==(GameObjective t1, GameObjective t2)
         {
             return t1.ObjectiveCondition == t2.ObjectiveCondition;
@@ -45,27 +50,6 @@ namespace Curry.Events
         public override int GetHashCode()
         {
             return ObjectiveCondition.GetHashCode();
-        }
-    }
-
-    [Serializable]
-    public class ResueObjective : GameObjective
-    {
-        [SerializeField] AmountAchieved m_condition = default;
-        public override string Title { get { return "VIP Rescue"; } }
-
-        public override string Description { get { return "Rescue VIP within time limit: " + m_condition.Description; } }
-
-        public override ICondition<IComparable> ObjectiveCondition { get { return m_condition as ICondition<IComparable>; } }
-
-        public override void Init(GameEventManager eventManager)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void Shutdown(GameEventManager eventManager)
-        {
-            throw new NotImplementedException();
         }
     }
 }
