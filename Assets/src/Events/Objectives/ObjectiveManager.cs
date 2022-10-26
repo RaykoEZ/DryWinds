@@ -5,7 +5,6 @@ using Curry.Events;
 
 namespace Curry.Game
 {
-    [RequireComponent(typeof(DialogueTrigger))]
     public class ObjectiveManager : MonoBehaviour
     {
         [SerializeField] protected List<GameObjective> m_objectives = default;

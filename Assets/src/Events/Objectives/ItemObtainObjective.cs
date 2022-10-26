@@ -12,10 +12,6 @@ namespace Curry.Events
         [SerializeField] protected CurryGameEventListener m_onItemObtain = default;
         [SerializeField] protected Dialogue m_dialogue = default;
 
-        public override ICondition<IComparable> ObjectiveCondition 
-        { 
-            get { return m_condition as ICondition<IComparable>; } 
-        }
         public override string Title { get { return "Get Title."; } }
 
         public override string Description { get { return "Get Description."; } }
@@ -35,7 +31,7 @@ namespace Curry.Events
         {
             if (arg == null) return;
 
-            if(arg is ItemGain gain && ObjectiveCondition.UpdateProgress(gain)) 
+            if(arg is ItemGain gain && m_condition.UpdateProgress(gain)) 
             {
                 OnCompleteCallback();
             }

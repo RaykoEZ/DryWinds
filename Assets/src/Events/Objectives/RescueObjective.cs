@@ -10,9 +10,7 @@ namespace Curry.Events
         [SerializeField] CurryGameEventListener m_onOutOfTime = default;
         public override string Title { get { return "VIP Rescue"; } }
 
-        public override string Description { get { return "Rescue VIP within time limit: " + m_numberRescue.Description; } }
-
-        public override ICondition<IComparable> ObjectiveCondition { get { return m_numberRescue as ICondition<IComparable>; } }
+        public override string Description { get { return m_numberRescue.Description; } }
 
         public override void Init()
         {
@@ -29,7 +27,7 @@ namespace Curry.Events
         public virtual void OnRescue(EventInfo info) 
         {
             Debug.Log("Rescued VIP in time, well done");
-            if (ObjectiveCondition.UpdateProgress(1))
+            if (m_numberRescue.UpdateProgress(1))
             {
                 OnCompleteCallback();
             }

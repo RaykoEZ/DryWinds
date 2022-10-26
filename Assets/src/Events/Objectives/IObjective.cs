@@ -10,7 +10,7 @@ namespace Curry.Events
     {
         string Title { get; }
         string Description { get; }
-        ICondition<IComparable> ObjectiveCondition { get; }
+
         event OnObjectiveComplete OnComplete;
         event OnObjectiveFail OnFail;
         void Init();

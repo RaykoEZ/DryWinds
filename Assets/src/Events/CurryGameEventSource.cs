@@ -11,7 +11,7 @@ namespace Curry.Events
     public class CurryGameEventSource : ScriptableObject
     {
         readonly HashSet<CurryGameEventListener> m_eventListeners = new HashSet<CurryGameEventListener>();
-
+        HashSet<CurryGameEventListener> m_toRemove = new HashSet<CurryGameEventListener>();
         public void Listen(CurryGameEventListener callme)
         {
             m_eventListeners.Add(callme);
@@ -21,7 +21,7 @@ namespace Curry.Events
         {
             if (m_eventListeners.Contains(unCallme))
             {
-                m_eventListeners.Remove(unCallme);
+                m_toRemove.Add(unCallme);
             }
         }
 
@@ -32,6 +32,14 @@ namespace Curry.Events
                 listener.OnEventTriggered(eventInfo);
             }
 
+            if (m_toRemove.Count > 0) 
+            {
+                foreach(CurryGameEventListener remove in m_toRemove) 
+                {
+                    m_eventListeners.Remove(remove);
+                }
+                m_toRemove.Clear();
+            }
         }
     }
 }

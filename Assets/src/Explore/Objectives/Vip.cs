@@ -25,12 +25,5 @@ namespace Curry.Explore
             EventInfo info = new EventInfo();
             m_onRescued?.TriggerEvent(info);
         }
-        protected virtual void OnTriggerEnter2D(Collider2D collider)
-        {
-            if (collider.gameObject.TryGetComponent(out Adventurer player))
-            {
-                OnTalk(new EventInfo());
-            }
-        }
     }
 }

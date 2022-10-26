@@ -43,6 +43,7 @@ namespace Curry.Explore
         [SerializeField] CurryGameEventTrigger m_onPlayerPing = default;
         [SerializeField] CurryGameEventTrigger m_onScout = default;
         [SerializeField] CurryGameEventTrigger m_onPlayerDraw = default;
+        IRescue m_rescuee;
         public AdventurerStats Stats { get { return m_stats; } }
         void Awake()
         {
@@ -92,6 +93,19 @@ namespace Curry.Explore
             m_onPlayerDraw?.TriggerEvent(info);
             m_onPlayerPing?.TriggerEvent(info);
             m_onScout?.TriggerEvent(info);
+
+            if(m_rescuee != null) 
+            {
+                m_rescuee.Rescue();
+            }
+        }
+
+        protected virtual void OnTriggerEnter2D(Collider2D collider)
+        {
+            if (collider.gameObject.TryGetComponent(out IRescue rescue))
+            {
+                m_rescuee = rescue;
+            }
         }
     }
 }
