@@ -15,7 +15,7 @@ namespace Curry.Explore
         public void PromptAdventurePosition() 
         {
             TileSelectionInfo info = new TileSelectionInfo(
-                TileSelectionMode.Play,
+                TileSelectionMode.Adventure,
                 m_player,
                 Camera.main.WorldToScreenPoint(m_player.transform.position));
             m_selectAdventureTile?.TriggerEvent(info);

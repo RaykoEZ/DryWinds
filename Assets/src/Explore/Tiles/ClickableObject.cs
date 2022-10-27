@@ -11,7 +11,8 @@ namespace Curry.Explore
     public enum TileSelectionMode 
     { 
         Preview,
-        Play
+        Adventure,
+        Position
     }
 
 
@@ -36,6 +37,7 @@ namespace Curry.Explore
 
     public class ClickableObject : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IPointerDownHandler
     {
+        // Choose which mouse button click is detected
         [Serializable]
         [Flags]
         protected enum InputButtonFlag
@@ -52,14 +54,31 @@ namespace Curry.Explore
         {
             // Checking if the registered button is pressed
             InputButtonFlag buttonEnum = (InputButtonFlag)(1 << (int)eventData.button);
-            if ((RegisterPointerClick & buttonEnum) != 0) 
-            {
-                TileSelectionInfo info = new TileSelectionInfo(
-                    m_selectionMode,
-                    eventData.pointerEnter,
-                    eventData.pressPosition);
-                m_onPointerClick?.TriggerEvent(info);
+            if ((RegisterPointerClick & buttonEnum) == 0)
+            { 
+                return; 
             }
+
+            switch (m_selectionMode)
+            {
+                case TileSelectionMode.Position:
+                    {
+                        PositionInfo info = new PositionInfo(transform.position);
+                        m_onPointerClick?.TriggerEvent(info);
+                        break;
+                    }
+                default:
+                    { 
+                        TileSelectionInfo info = new TileSelectionInfo(
+                            m_selectionMode,
+                            eventData.pointerEnter,
+                            eventData.pressPosition);
+                        m_onPointerClick?.TriggerEvent(info);
+                        break;
+                    }
+            }
+
+
         }
 
         public void OnPointerDown(PointerEventData eventData)

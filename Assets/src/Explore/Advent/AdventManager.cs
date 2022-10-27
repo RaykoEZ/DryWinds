@@ -41,10 +41,11 @@ namespace Curry.Explore
         [SerializeField] AdventInstanceManager m_instance = default;
         // When adventure starts and player needs to move to a tile
         [SerializeField] CurryGameEventListener m_onAdventure = default;
-        // Trigger this to move player
-        [SerializeField] CurryGameEventTrigger m_onAdventureMove = default;
         // When player finishes moving during an adventure
         [SerializeField] CurryGameEventListener m_onPlayerMoved = default;
+        // Trigger this to move player
+        [SerializeField] CurryGameEventTrigger m_onAdventureMove = default;
+
         // After player moved, we draw card from player position, trigger this
         [SerializeField] CurryGameEventTrigger m_onCardDraw = default;
         [SerializeField] CurryGameEventTrigger m_onDiscardHand = default;

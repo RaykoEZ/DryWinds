@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
 using Curry.Util;
-
 namespace Curry.UI
 {
     public class CameraManager : MonoBehaviour

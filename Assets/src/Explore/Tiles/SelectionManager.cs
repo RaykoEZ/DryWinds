@@ -78,7 +78,7 @@ namespace Curry.Explore
                 case TileSelectionMode.Preview:
                     rangeTile = m_previewRangeTile;
                     break;
-                case TileSelectionMode.Play:
+                case TileSelectionMode.Adventure:
                     rangeTile = m_selectionTile;
                     break;
                 default:

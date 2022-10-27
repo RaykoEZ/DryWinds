@@ -119,8 +119,6 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-  m_onCaptured:
-    m_eventToTrigger: {fileID: 11400000, guid: 41cb3f4f05da7a4489656f44510734ef, type: 2}
   m_onRescued:
     m_eventToTrigger: {fileID: 11400000, guid: 6642b74b261015741a70e2f4e4853eb6, type: 2}
 --- !u!61 &6251463340504498966
@@ -147,7 +145,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.5, y: 0.5}
+  m_Size: {x: 0.1, y: 0.1}
   m_EdgeRadius: 0
 --- !u!50 &6804864750952041762
 Rigidbody2D:

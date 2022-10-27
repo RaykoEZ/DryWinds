@@ -711,6 +711,8 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+  m_cardActivated:
+    m_eventToTrigger: {fileID: 11400000, guid: 856b99b46ebcaee409c7fb6d66575bcd, type: 2}
   m_playPanel: {fileID: 120921342}
 --- !u!1 &158638371
 GameObject:
@@ -2302,7 +2304,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 4.5
+  orthographic size: 4
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -2377,14 +2379,48 @@ MonoBehaviour:
   m_GameObject: {fileID: 765189984}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cef237d7d508b494f936c613918b663d, type: 3}
+  m_Script: {fileID: 11500000, guid: 9ff5576a7a94ab7459f397bd1b2c33f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_camera: {fileID: 765189985}
   m_animTime: 1
-  m_zoomOrthographSize: 3
-  m_defaultOrthographSize: 4.5
+  m_zoomOrthographSize: 2.5
+  m_defaultOrthographSize: 4
   m_coroutineManager: {fileID: 765189986}
+  m_onCamFollow:
+    m_eventToListen: {fileID: 11400000, guid: 736b70e15b9efe8408d6fe321c5396e4, type: 2}
+    m_responses:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 765189990}
+          m_TargetAssemblyTypeName: Curry.UI.TacticalCameraManager, Assembly-CSharp
+          m_MethodName: OnFollowPlayer
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  m_onCardPlay:
+    m_eventToListen: {fileID: 11400000, guid: 856b99b46ebcaee409c7fb6d66575bcd, type: 2}
+    m_responses:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 765189990}
+          m_TargetAssemblyTypeName: Curry.UI.TacticalCameraManager, Assembly-CSharp
+          m_MethodName: OnFollowPlayer
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &767100531
 GameObject:
   m_ObjectHideFlags: 0
@@ -2738,20 +2774,6 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-        - m_Target: {fileID: 765189990}
-          m_TargetAssemblyTypeName: Curry.UI.CameraManager, Assembly-CSharp
-          m_MethodName: UnFocusCamera
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-  m_onAdventureMove:
-    m_eventToTrigger: {fileID: 11400000, guid: b388116c0ace42949a308c2e07cc7524, type: 2}
   m_onPlayerMoved:
     m_eventToListen: {fileID: 11400000, guid: 0e128c7b7c151be489c076a4a83ee69b, type: 2}
     m_responses:
@@ -2769,6 +2791,8 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+  m_onAdventureMove:
+    m_eventToTrigger: {fileID: 11400000, guid: b388116c0ace42949a308c2e07cc7524, type: 2}
   m_onCardDraw:
     m_eventToTrigger: {fileID: 11400000, guid: cdd360b59762d3f48943143dadafba20, type: 2}
   m_onDiscardHand:
@@ -4796,7 +4820,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.5, y: 0.5}
+  m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
 --- !u!50 &1488958109
 Rigidbody2D:

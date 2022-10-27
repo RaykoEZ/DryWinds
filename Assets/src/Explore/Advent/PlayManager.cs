@@ -16,6 +16,7 @@ namespace Curry.Explore
         [SerializeField] CurryGameEventListener m_onCardDropped = default;
         [SerializeField] CurryGameEventListener m_onCardDraw = default;
         [SerializeField] CurryGameEventListener m_onDiscardHand = default;
+        [SerializeField] CurryGameEventTrigger m_cardActivated = default;
         [SerializeField] Image m_playPanel = default;
         Hand m_hand = new Hand();
 
@@ -59,6 +60,8 @@ namespace Curry.Explore
             m_time.TrySpendTime(card.Card.TimeCost, out bool enoughTime);
             if (enoughTime) 
             {
+                PositionInfo info = new PositionInfo(m_player.Stats.WorldPosition);
+                m_cardActivated?.TriggerEvent(info);
                 m_hand.PlayCard(card.Card, m_player.Stats);
             }
             HidePlayZone();
@@ -89,6 +92,7 @@ namespace Curry.Explore
         {
             m_hand.DiscardCards();
         }
+
 
         public delegate void OnDiscard(List<AdventCard> discarded);
         public class Hand

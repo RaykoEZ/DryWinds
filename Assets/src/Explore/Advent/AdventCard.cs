@@ -16,7 +16,7 @@ namespace Curry.Explore
     // Base class for all playable cards
     public abstract class AdventCard : MonoBehaviour, IPoolable
     {
-        [SerializeField] CardAttribute m_attribute = default;
+        [SerializeField] CardAttribute m_attribute = default; 
         bool m_activatable = true;
 
         public int Id { get { return $"{m_attribute.Name}/{gameObject.name}".GetHashCode(); } }
