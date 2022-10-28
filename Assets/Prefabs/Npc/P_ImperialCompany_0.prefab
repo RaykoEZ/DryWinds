@@ -11,8 +11,6 @@ GameObject:
   - component: {fileID: 4063988590427125917}
   - component: {fileID: 4063988590427125915}
   - component: {fileID: 4063988590427125916}
-  - component: {fileID: 4063988590427125914}
-  - component: {fileID: 4063988590427125913}
   m_Layer: 0
   m_Name: P_ImperialCompany_0
   m_TagString: Untagged
@@ -51,19 +49,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eccb24e81493d3f469be0632cdd926e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_bodyManager:
-    m_bodyParts: []
-  m_rigidbody: {fileID: 4063988590427125916}
-  m_statusManager: {fileID: 4063988590427125914}
-  m_agent: {fileID: 4063988590427125913}
-  Id: 0
-  DeployCost:
-    Food: 0
-    Water: 0
-    Parts: 0
-  Name: ImperialCompany
-  Description: Enlisted to pioneer the expedition into the territory of their former
-    constituent.
 --- !u!50 &4063988590427125916
 Rigidbody2D:
   serializedVersion: 4
@@ -85,48 +70,3 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &4063988590427125914
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4063988590427125918}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1cc72c2d6010ab64ebc7a597826d014b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_initStats:
-    m_characterStats:
-      m_maxStamina: 10
-      m_maxSp: 0
-      m_stamina: 10
-      m_sp: 0
-      m_moveSpeed: 1
-      m_spRegenPerSec: 0
-      m_hitRecoveryTime: 0
-    m_basicSkillRefs: []
-    m_drawSkillRefs: []
---- !u!195 &4063988590427125913
-NavMeshAgent:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4063988590427125918}
-  m_Enabled: 1
-  m_AgentTypeID: 0
-  m_Radius: 0.5
-  m_Speed: 3.5
-  m_Acceleration: 8
-  avoidancePriority: 50
-  m_AngularSpeed: 120
-  m_StoppingDistance: 0
-  m_AutoTraverseOffMeshLink: 1
-  m_AutoBraking: 1
-  m_AutoRepath: 1
-  m_Height: 2
-  m_BaseOffset: 0
-  m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 4

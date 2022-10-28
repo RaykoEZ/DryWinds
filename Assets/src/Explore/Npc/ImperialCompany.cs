@@ -2,17 +2,15 @@
 
 namespace Curry.Explore
 {
-    public class ImperialCompany : Deployable
+    public interface IEnemy 
     {
-        protected override void ActivateAbility()
-        {
-            Debug.Log("AbiAbi");
-        }
+        void Spot();
+    
+    }
 
-        protected override void OnDeploy()
-        {
-            Debug.Log("ImpImp");
-        }
+    public class ImperialCompany : MonoBehaviour
+    {
+
     }
 
 }

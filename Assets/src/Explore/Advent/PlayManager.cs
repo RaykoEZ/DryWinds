@@ -56,7 +56,6 @@ namespace Curry.Explore
         void OnCardPlayed(DraggableCard card) 
         {
             // Activate & Spend Time/Resource
-            Action<AdventurerStats> cardEffect = card?.Card.CardEffect;
             m_time.TrySpendTime(card.Card.TimeCost, out bool enoughTime);
             if (enoughTime) 
             {

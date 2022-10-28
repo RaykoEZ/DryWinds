@@ -5,32 +5,6 @@ using UnityEngine.Tilemaps;
 using Curry.Events;
 namespace Curry.Explore
 {
-    public class CardDrawInfo : EventInfo
-    { 
-        // All basic cards drawn (excludes all subclass AdventCard instances
-        // e.g. Encounters 
-        public IReadOnlyList<AdventCard> CardsDrawn { get; protected set; }
-        public IReadOnlyList<Encounter> Encounters { get; protected set; }
-
-        public CardDrawInfo SetCardDraw(List<AdventCard> draw) 
-        {
-            if (draw != null) 
-            {
-                CardsDrawn = draw;
-            }
-            return this;
-        }
-
-        public CardDrawInfo SetEncounters(List<Encounter> encounters) 
-        {
-            if (encounters != null) 
-            {
-                Encounters = encounters;
-            }
-            return this;
-        }
-    }
-
     // Contained database for all available advent(cards and decks)
     // Quiries Tile info for a tile in its tilemap coordinate
     public class AdventManager : MonoBehaviour 

@@ -53,7 +53,7 @@ namespace Curry.Explore
         {
             // Ping once at start
             PlayerInfo info = new PlayerInfo(new AdventurerStats(m_stats));
-            m_onPlayerPing?.TriggerEvent(info);
+            m_onScout?.TriggerEvent(info);
         }
         public void Move(EventInfo info) 
         {
