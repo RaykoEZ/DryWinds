@@ -1,16 +1,10 @@
-﻿using UnityEngine;
+﻿using System;
 
 namespace Curry.Explore
 {
-    public interface IEnemy 
-    {
-        void Spot();
-    
-    }
-
-    public class ImperialCompany : MonoBehaviour
+    // A basic enemy unit for now, may add more features
+    public class ImperialCompany : TacticalEnemy, IEnemy
     {
 
     }
-
 }
