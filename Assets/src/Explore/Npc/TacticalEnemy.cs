@@ -35,6 +35,7 @@ namespace Curry.Explore
         public virtual void TakeHit() 
         {
             Debug.Log("Ahh, me ded");
+            m_anim?.SetTrigger("takeHit");
             m_anim?.SetBool("defeat", true);
         }
 
