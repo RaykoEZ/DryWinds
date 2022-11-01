@@ -22,14 +22,13 @@ namespace Curry.Explore
         public virtual void Reveal() 
         {
             m_current.Visibility = TacticalVisibility.Visible;
-            m_anim.SetTrigger("reveal");
+            m_anim.SetBool("hidden", false);
         }
         public virtual void Hide() 
         {
             m_current.Visibility = TacticalVisibility.Hidden;
-            m_anim.SetTrigger("hide");
+            m_anim.SetBool("hidden", true);
         }
-
         public virtual void TakeHit() 
         {
             Debug.Log("Ahh, me ded");
@@ -38,7 +37,7 @@ namespace Curry.Explore
         }
         protected virtual void OnCombat() 
         {
-            m_anim?.SetBool("engage", true);
+            m_anim?.SetTrigger("engage");
 
         }
         public virtual void Affect(Func<TacticalStats, TacticalStats> effect)

@@ -70,7 +70,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eccb24e81493d3f469be0632cdd926e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_renderer: {fileID: 124719436035578632}
+  m_sprite: {fileID: 124719436035578632}
   m_initStats:
     ScoutRange: 1
     Speed: 1
