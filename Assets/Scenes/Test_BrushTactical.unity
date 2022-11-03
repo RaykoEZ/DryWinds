@@ -3004,6 +3004,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_ImperialCompany_0
       objectReference: {fileID: 0}
+    - target: {fileID: 7562132297625843052, guid: 613f89d64653ca341b7e26c82704d43c, type: 3}
+      propertyPath: m_Radius
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 613f89d64653ca341b7e26c82704d43c, type: 3}
 --- !u!224 &1087661465 stripped

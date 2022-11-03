@@ -1,5 +1,6 @@
 using UnityEngine;
 using Curry.Game;
+using Curry.Explore;
 
 namespace Curry.Ai
 {
@@ -27,4 +28,5 @@ namespace Curry.Ai
             }
         }
     }
+
 }
