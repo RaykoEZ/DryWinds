@@ -1,4 +1,5 @@
-﻿namespace Curry.Explore
+﻿using UnityEngine;
+namespace Curry.Explore
 {
     public class TurnStart : Phase
     {
@@ -9,6 +10,7 @@
 
         protected override void Evaluate()
         {
+            Debug.Log("Turn Start");
         }
     }
 

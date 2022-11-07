@@ -19,7 +19,6 @@ namespace Curry.Explore
         [SerializeField] CurryGameEventTrigger m_cardActivated = default;
         [SerializeField] Image m_playPanel = default;
         Hand m_hand = new Hand();
-
         protected void Awake()
         {
             m_onCardDraw?.Init();
@@ -29,21 +28,24 @@ namespace Curry.Explore
         }
         void OnEnable()
         {
+            EnablePlay();
             m_time.OnOutOfTimeTrigger += OutOfTime;
-            m_playZone.OnDropped += OnCardPlayed;
         }
 
         void OnDisable()
         {
+            DisablePlay();
             m_time.OnOutOfTimeTrigger -= OutOfTime;
-            m_playZone.OnDropped -= OnCardPlayed;
         }
-
-        void OutOfTime(int timeSpent) 
+        public void OnCardDrawn(EventInfo info)
         {
-            Debug.Log("Out of Time");
+            if (info == null) return;
+            if (info is CardDrawInfo draw)
+            {
+                OnEncounterDraw(draw.Encounters);
+                m_hand.Draw(draw.CardsDrawn);
+            }
         }
-
         public void ShowPlayZone()
         {
             m_playPanel.enabled = true;
@@ -51,6 +53,26 @@ namespace Curry.Explore
         public void HidePlayZone()
         {
             m_playPanel.enabled = false;
+        }
+        public void DiscardHand()
+        {
+            m_hand.DiscardCards();
+        }
+        public void EnablePlay()
+        {
+            m_playZone.OnDropped += OnCardPlayed;
+            m_onCardBeginDrag?.Init();
+            m_onCardDropped?.Init();
+        }
+        public void DisablePlay() 
+        {
+            m_playZone.OnDropped -= OnCardPlayed;
+            m_onCardBeginDrag?.Shutdown();
+            m_onCardDropped?.Shutdown();
+        }
+        void OutOfTime(int timeSpent) 
+        {
+            Debug.Log("Out of Time");
         }
 
         void OnCardPlayed(DraggableCard card) 
@@ -65,17 +87,6 @@ namespace Curry.Explore
             }
             HidePlayZone();
         }
-
-        public void OnCardDrawn(EventInfo info) 
-        {
-            if (info == null) return;
-            if(info is CardDrawInfo draw) 
-            {
-                OnEncounterDraw(draw.Encounters);
-                m_hand.Draw(draw.CardsDrawn);
-            }
-        }
-
         void OnEncounterDraw(IReadOnlyList<Encounter> draw) 
         {
             int totalCost = 0;
@@ -86,12 +97,6 @@ namespace Curry.Explore
             }
             m_time.TrySpendTime(totalCost, out bool _);
         }
-
-        public void DiscardHand() 
-        {
-            m_hand.DiscardCards();
-        }
-
 
         public delegate void OnDiscard(List<AdventCard> discarded);
         public class Hand

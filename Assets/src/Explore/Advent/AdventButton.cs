@@ -11,9 +11,15 @@ namespace Curry.Explore
     {
         [SerializeField] GameObject m_player = default;
         [SerializeField] CurryGameEventTrigger m_selectAdventureTile = default;
-
+        public bool Interactable { get; set; }
+        private void Awake()
+        {
+            Interactable = false;
+        }
         public void PromptAdventurePosition() 
         {
+            if (!Interactable) { return; }
+
             TileSelectionInfo info = new TileSelectionInfo(
                 TileSelectionMode.Adventure,
                 m_player,

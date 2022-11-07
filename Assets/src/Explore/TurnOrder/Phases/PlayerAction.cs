@@ -6,6 +6,7 @@ namespace Curry.Explore
     [Serializable]
     public class PlayerAction : Phase
     {
+        [SerializeField] PlayerInputController m_inputControl = default;
         public override void Init()
         {
             NextState = typeof(EnemyAction);
@@ -13,8 +14,13 @@ namespace Curry.Explore
 
         protected override void Evaluate()
         {
-            throw new System.NotImplementedException();
+            Debug.Log("Player Action");
+            m_inputControl.EnableInput();
+        }
+        protected override Type TransitionTo()
+        {
+            m_inputControl.DisableInput();
+            return base.TransitionTo();
         }
     }
-
 }

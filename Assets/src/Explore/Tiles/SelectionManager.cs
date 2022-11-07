@@ -26,20 +26,15 @@ namespace Curry.Explore
             m_previewTileId = new ObjectId(m_previewTerrainTile);
             m_tileHighlightManager.Add(m_previewTerrainTile, Vector3.zero, transform);
         }
-
-        void HighlightTileInternal(Vector3Int newCoord, bool focusCamera = true)
+        public void EnableSelection()
         {
-            m_rangeDisplay?.HidePrompt();
-            Vector3 centerWorld = m_map.GetCellCenterWorld(newCoord);
-            centerWorld.z = 0f;
-            if (focusCamera) 
-            {
-                m_cam.FocusCamera(centerWorld);
-            }
-            m_tileHighlightManager.MoveTileTo(m_previewTerrainTile, centerWorld);
-            m_tileHighlightManager.Show(m_previewTileId);
-        }
+            m_onTileSelect?.Init();
 
+        }
+        public void DisableSelection()
+        {
+            m_onTileSelect?.Shutdown();
+        }
         public void CancelSelection() 
         {
             m_tileHighlightManager?.HideAll();
@@ -69,7 +64,18 @@ namespace Curry.Explore
                 OnSelectPlayer(player, select.SelectionMode);
             }
         }
-
+        void HighlightTileInternal(Vector3Int newCoord, bool focusCamera = true)
+        {
+            m_rangeDisplay?.HidePrompt();
+            Vector3 centerWorld = m_map.GetCellCenterWorld(newCoord);
+            centerWorld.z = 0f;
+            if (focusCamera)
+            {
+                m_cam.FocusCamera(centerWorld);
+            }
+            m_tileHighlightManager.MoveTileTo(m_previewTerrainTile, centerWorld);
+            m_tileHighlightManager.Show(m_previewTileId);
+        }
         void OnSelectPlayer(Adventurer player, TileSelectionMode mode) 
         {
             GameObject rangeTile;

@@ -15,7 +15,6 @@ namespace Curry.Explore
         Position
     }
 
-
     public class TileSelectionInfo : EventInfo
     {
         public TileSelectionMode SelectionMode { get; protected set; }
@@ -77,8 +76,6 @@ namespace Curry.Explore
                         break;
                     }
             }
-
-
         }
 
         public void OnPointerDown(PointerEventData eventData)
