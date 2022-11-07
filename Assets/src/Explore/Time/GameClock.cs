@@ -13,7 +13,7 @@ namespace Curry.Explore
     public class GameClock : MonoBehaviour 
     {       
         [SerializeField] TextMeshProUGUI m_dayCountLabel = default;
-        [SerializeField] TextMeshProUGUI m_minuteLabel = default;
+        [SerializeField] TextMeshProUGUI m_timeLabel = default;
         int m_dayCount = 0;
         TimeOfDay m_timeOfDay = new TimeOfDay {Minute = 0};
 
@@ -48,7 +48,7 @@ namespace Curry.Explore
         {
             // Add zero to display text if we only have one digit
             string minute = m_timeOfDay.Minute > 9 ? m_timeOfDay.Minute.ToString() : $"0{m_timeOfDay.Minute}";
-            m_minuteLabel.text = minute;
+            m_timeLabel.text = minute;
         }
     }
 }

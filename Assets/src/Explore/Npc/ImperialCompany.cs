@@ -7,8 +7,9 @@ namespace Curry.Explore
     public class ImperialCompany : TacticalEnemy, IEnemy
     {
         [SerializeField] AdventurerDetector m_detect = default;
-        void Awake()
+        protected override void Awake()
         {
+            base.Awake();
             m_detect.OnDetected += OnDetectEnter;
             m_detect.OnExitDetection += OnDetectExit;
         }
@@ -16,6 +17,8 @@ namespace Curry.Explore
         void OnDetectEnter(Adventurer explorer) 
         {
             Debug.Log("target acquired");
+            OnDetectReaction();
+            OnCombat();
         }
         void OnDetectExit(Adventurer explorer)
         {
