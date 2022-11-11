@@ -10,23 +10,26 @@ namespace Curry.Explore
     {
         [SerializeField] Phase m_initPhase = default;
         [SerializeField] List<Phase> m_allPhases = default;
-        Phase m_current;
         Phase m_previous;
         public event OnTurnPhaseTransition OnPhaseChange = default;
-
+        // For Interrupting current phases
+        Stack<Phase> m_phaseStack = new Stack<Phase>();
         // Add all game states into the dictionary
-        Dictionary<Type, Phase> m_turnStateCollection;
-        public Phase CurrentPhase { get { return m_current; } }
+        Dictionary<Type, Phase> m_turnStateCollection = new Dictionary<Type, Phase>();
+        protected Phase CurrentPhase { get { return m_phaseStack.Peek(); } }
 
         private void Awake()
         {
             m_turnStateCollection = new Dictionary<Type, Phase> { };
             foreach(Phase phase in m_allPhases) 
             {
+                phase.Init();
                 m_turnStateCollection.Add(phase.GetType(), phase);
+                phase.OnInterrupt += HandleInterrupt;
             }
             if (!m_turnStateCollection.ContainsValue(m_initPhase)) 
             {
+                m_initPhase.Init();
                 m_turnStateCollection.Add(m_initPhase.GetType(), m_initPhase);
             }
         }
@@ -38,12 +41,29 @@ namespace Curry.Explore
         {
             SetCurrentState(m_initPhase.GetType());
         }
+        void HandleInterrupt(Phase interrupt) 
+        {
+            if (interrupt == null) return;
+
+            m_previous = CurrentPhase;
+            // Pause current phase (e.g. UI)
+            m_previous.Pause();
+            m_phaseStack.Push(interrupt);
+            interrupt.OnGameStateTransition += InterruptResolved;
+            interrupt.OnEnter(m_previous);
+        }
+        void InterruptResolved(Type _) 
+        {
+            m_previous = m_phaseStack.Pop();
+            m_previous.OnGameStateTransition -= InterruptResolved;
+            // Resume previous phase operations
+            CurrentPhase.Resume();
+        }
         void SetCurrentState(Type type)
         {
-            m_current = m_turnStateCollection[type];
-            m_current.Init();
-            m_current.OnGameStateTransition += OnStateTransition;
-            m_current?.OnEnter(m_previous);
+            m_phaseStack.Push(m_turnStateCollection[type]);
+            CurrentPhase.OnGameStateTransition += OnStateTransition;
+            CurrentPhase?.OnEnter(m_previous);
         }
         void OnStateTransition(Type type)
         {
@@ -52,8 +72,8 @@ namespace Curry.Explore
         }
         void TransitionToNextState(Type newGameState)
         {
-            m_current.OnGameStateTransition -= OnStateTransition;
-            m_previous = m_current;
+            m_previous = m_phaseStack.Pop();
+            m_previous.OnGameStateTransition -= OnStateTransition;
             SetCurrentState(newGameState);
         }
     }

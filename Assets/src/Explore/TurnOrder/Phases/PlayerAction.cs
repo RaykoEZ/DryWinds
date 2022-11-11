@@ -11,7 +11,14 @@ namespace Curry.Explore
         {
             NextState = typeof(EnemyAction);
         }
-
+        public override void Pause()
+        {
+            m_inputControl.DisableInput();
+        }
+        public override void Resume()
+        {
+            m_inputControl.EnableInput();
+        }
         protected override void Evaluate()
         {
             Debug.Log("Player Action");

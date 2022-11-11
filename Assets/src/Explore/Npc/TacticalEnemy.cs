@@ -1,28 +1,53 @@
 ﻿using System;
 using System.Collections;
 using UnityEngine;
-using Curry.Events;
+using Curry.Game;
 using TMPro;
 namespace Curry.Explore
 {
+    // countdown: can be negative
+    public delegate void OnEnemyCountdownUpdate(int countdown, Action onInterrupt = null);
+    public delegate void OnEnemyUpdate(TacticalEnemy enemy);
     // Base enemy class
-    public abstract class TacticalEnemy: MonoBehaviour, IEnemy 
+    public abstract class TacticalEnemy: MonoBehaviour, IEnemy, IPoolable 
     {
         [SerializeField] protected TacticalStats m_initStats = default;
         [SerializeField] protected Animator m_anim = default;
-        [SerializeField] protected CurryGameEventListener m_onCountdownTick = default;
         [SerializeField] TextMeshPro m_countdownText = default;
+        public event OnEnemyCountdownUpdate OnCountdownUpdate;
+        public event OnEnemyUpdate OnActivate;
+        public event OnEnemyUpdate OnStandby;
+        public event OnEnemyUpdate OnDefeat;
+
         protected int m_countdown;
         protected TacticalStats m_current;
         public TacticalStats InitStatus { get { return m_initStats; } }
         public TacticalStats CurrentStatus { 
             get { return m_current; } 
             protected set { m_current = value; } }
+        public IObjectPool Origin { get; set; }
 
-        protected virtual void Awake()
+        public virtual void Prepare()
         {
             m_current = m_initStats;
             m_countdown = m_current.AttackCountdown;
+        }
+
+        public virtual void ReturnToPool()
+        {
+            OnCountdownUpdate = null;
+            OnActivate = null;
+            OnStandby = null;
+            OnDefeat = null;
+            Origin?.Reclaim(this);
+        }
+
+        protected virtual void Awake()
+        {
+            if (Origin == null) 
+            {
+                Prepare();
+            }
         }
         public virtual void Reveal() 
         {
@@ -34,11 +59,20 @@ namespace Curry.Explore
             m_current.Visibility = TacticalVisibility.Hidden;
             m_anim.SetBool("hidden", true);
         }
+        public virtual void Affect(Func<TacticalStats, TacticalStats> effect)
+        {
+            if (effect == null) return;
+            CurrentStatus = effect.Invoke(CurrentStatus);
+        }
         public virtual void TakeHit() 
         {
             Debug.Log("Ahh, me ded");
             m_anim?.SetTrigger("takeHit");
             m_anim?.SetBool("defeat", true);
+        }
+        protected virtual void ExecuteAction()
+        {
+            m_anim?.SetTrigger("strike");
         }
         protected virtual void OnCombat() 
         {
@@ -48,47 +82,32 @@ namespace Curry.Explore
         protected virtual void OnDetectReaction() 
         {
             m_anim?.SetTrigger("detect");
+            OnActivate?.Invoke(this);
         }
-        protected virtual void Strike() 
+        protected virtual void Standby() 
         {
-            m_anim?.SetTrigger("strike");
-            m_onCountdownTick?.Shutdown();
+            OnStandby?.Invoke(this);
+        }
+        protected virtual void Defeat() 
+        {
+            OnDefeat?.Invoke(this);
         }
         protected virtual void StartAttackCountdown() 
         {
             m_countdown = m_current.AttackCountdown;
             m_countdownText.text = m_countdown.ToString();
-            // Start listening to time intervals for countdowns updates
-            m_onCountdownTick?.Init();
         }
 
         // countdown updates whenever tme is spent 
-        public void OnTimeSpent(EventInfo time)
+        public virtual IEnumerator CountdownTick(int dt) 
         {
-            if (time is TimeInfo spend)
-            {
-                StartCoroutine(CountdownTick(spend.Time));
-            }
-        }
-        protected IEnumerator CountdownTick(int dt) 
-        { 
             for (int i = 0; i < dt; ++i) 
             {
-                m_countdown = Mathf.Max(m_countdown - 1, 0);
-                m_countdownText.text = m_countdown.ToString();
-                yield return new WaitForSeconds(0.5f);
+                m_countdown--;
+                m_countdownText.text = Mathf.Max(m_countdown, 0).ToString();
+                yield return new WaitForSeconds(0.1f);
             }
-
-            if (m_countdown == 0) 
-            {
-                Strike();
-            }
-        }
-
-        public virtual void Affect(Func<TacticalStats, TacticalStats> effect)
-        {
-            if (effect == null) return;
-            CurrentStatus = effect.Invoke(CurrentStatus);
+            OnCountdownUpdate?.Invoke(m_countdown, ExecuteAction);
         }
     }
 
