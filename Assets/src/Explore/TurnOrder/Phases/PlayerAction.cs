@@ -24,10 +24,10 @@ namespace Curry.Explore
             Debug.Log("Player Action");
             m_inputControl.EnableInput();
         }
-        protected override Type TransitionTo()
+        protected override void TransitionTo()
         {
             m_inputControl.DisableInput();
-            return base.TransitionTo();
+            base.TransitionTo();
         }
     }
 }

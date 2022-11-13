@@ -11,6 +11,7 @@ namespace Curry.Explore
         protected override void Evaluate()
         {
             Debug.Log("Turn Start");
+            TransitionTo();
         }
     }
 

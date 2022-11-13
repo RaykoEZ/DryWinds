@@ -9,7 +9,6 @@
 
         protected override void Evaluate()
         {
-            throw new System.NotImplementedException();
         }
     }
 

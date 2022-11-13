@@ -7,6 +7,10 @@ namespace Curry.Explore
         [SerializeField] AdventButton m_adventureInput = default;
         [SerializeField] SelectionManager m_selectInput = default;
         [SerializeField] PlayManager m_cardPlay = default;
+        private void Awake()
+        {
+            DisableInput();
+        }
         public void EnableInput() 
         {
             m_adventureInput.Interactable = true;
