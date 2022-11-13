@@ -35,7 +35,6 @@ namespace Curry.Explore
             coordWorldPos.z = -2f;
             Vector3 origin = spawnCoord - new Vector3(0f, 0f, 10f);
             bool hit = Physics.Raycast(origin, Vector3.forward, 10f, m_doNotSpawnOn);
-            Debug.Log(hit);
             if (!hit)
             {
                 EnemySpawnInfo info = new EnemySpawnInfo(coordWorldPos, enemy, parent);

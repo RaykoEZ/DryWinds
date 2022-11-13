@@ -12,34 +12,41 @@ namespace Curry.Events
     {
         readonly HashSet<CurryGameEventListener> m_eventListeners = new HashSet<CurryGameEventListener>();
         HashSet<CurryGameEventListener> m_toRemove = new HashSet<CurryGameEventListener>();
+        HashSet<CurryGameEventListener> m_toAdd= new HashSet<CurryGameEventListener>();
+
         public void Listen(CurryGameEventListener callme)
         {
-            m_eventListeners.Add(callme);
+            m_toAdd.Add(callme);
         }
 
         public void Unlisten(CurryGameEventListener unCallme)
         {
-            if (m_eventListeners.Contains(unCallme))
-            {
-                m_toRemove.Add(unCallme);
-            }
+            m_toRemove.Add(unCallme);
         }
-
         public void Broadcast(EventInfo eventInfo)
         {
+            UpdateListeners();
             foreach (CurryGameEventListener listener in m_eventListeners)
             {
                 listener.OnEventTriggered(eventInfo);
             }
+            UpdateListeners();
+        }
 
-            if (m_toRemove.Count > 0) 
+        void UpdateListeners()
+        {
+            // Remove doubled add & remove listeners
+            m_toRemove.ExceptWith(m_toAdd);
+            foreach (CurryGameEventListener remove in m_toRemove)
             {
-                foreach(CurryGameEventListener remove in m_toRemove) 
-                {
-                    m_eventListeners.Remove(remove);
-                }
-                m_toRemove.Clear();
+                m_eventListeners.Remove(remove);
             }
+            m_toRemove.Clear();
+            foreach(CurryGameEventListener add in m_toAdd)
+            {
+                m_eventListeners.Add(add);
+            }
+            m_toAdd.Clear();
         }
     }
 }

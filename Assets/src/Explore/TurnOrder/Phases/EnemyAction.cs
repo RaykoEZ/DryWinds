@@ -22,7 +22,7 @@ namespace Curry.Explore
         }
         protected override void Evaluate()
         {
-            // If we need to resolve interrupts, do it first
+            // If we need to resolve interrupts from activated enemies, do it first
             if(m_interruptBuffer != null && m_interruptBuffer.Count > 0) 
             {
                 foreach(Action call in m_interruptBuffer) 
@@ -31,7 +31,9 @@ namespace Curry.Explore
                 }
                 m_interruptBuffer.Clear();
             }
-            // Main process
+            // Main process for all standby enemies
+            m_enemy.OnPhaseBegin();
+            TransitionTo();
         }
     }
 }

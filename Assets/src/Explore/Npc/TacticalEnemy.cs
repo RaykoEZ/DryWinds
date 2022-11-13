@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using Curry.Game;
 using TMPro;
@@ -14,6 +15,8 @@ namespace Curry.Explore
         [SerializeField] protected TacticalStats m_initStats = default;
         [SerializeField] protected Animator m_anim = default;
         [SerializeField] TextMeshPro m_countdownText = default;
+        [SerializeField] AdventurerDetector m_detect = default;
+
         public event OnEnemyCountdownUpdate OnCountdownUpdate;
         public event OnEnemyUpdate OnActivate;
         public event OnEnemyUpdate OnStandby;
@@ -26,11 +29,14 @@ namespace Curry.Explore
             get { return m_current; } 
             protected set { m_current = value; } }
         public IObjectPool Origin { get; set; }
+        protected HashSet<Adventurer> m_targetsInSight = new HashSet<Adventurer>();
 
         public virtual void Prepare()
         {
             m_current = m_initStats;
             m_countdown = m_current.AttackCountdown;
+            m_detect.OnDetected += OnDetectEnter;
+            m_detect.OnExitDetection += OnDetectExit;
         }
 
         public virtual void ReturnToPool()
@@ -39,6 +45,8 @@ namespace Curry.Explore
             OnActivate = null;
             OnStandby = null;
             OnDefeat = null;
+            m_detect.OnDetected -= OnDetectEnter;
+            m_detect.OnExitDetection -= OnDetectExit;
             Origin?.Reclaim(this);
         }
 
@@ -86,6 +94,10 @@ namespace Curry.Explore
         }
         protected virtual void Standby() 
         {
+            //reset anim state and countdown
+            m_anim?.SetTrigger("cancel");
+            m_countdown = m_current.AttackCountdown;
+            m_countdownText.text = "";
             OnStandby?.Invoke(this);
         }
         protected virtual void Defeat() 
@@ -97,7 +109,14 @@ namespace Curry.Explore
             m_countdown = m_current.AttackCountdown;
             m_countdownText.text = m_countdown.ToString();
         }
-
+        public virtual void StandbyBehaviour() 
+        {
+            if(m_targetsInSight.Count > 0) 
+            {
+                OnDetectReaction();
+                OnCombat();
+            }
+        }
         // countdown updates whenever tme is spent 
         public virtual IEnumerator CountdownTick(int dt) 
         {
@@ -108,6 +127,19 @@ namespace Curry.Explore
                 yield return new WaitForSeconds(0.1f);
             }
             OnCountdownUpdate?.Invoke(m_countdown, ExecuteAction);
+        }
+
+        void OnDetectEnter(Adventurer adv)
+        {
+            m_targetsInSight.Add(adv);
+        }
+        void OnDetectExit(Adventurer adv)
+        {
+            if (m_targetsInSight.Remove(adv))
+            {
+                // Do some animation here
+                Standby();
+            }
         }
     }
 

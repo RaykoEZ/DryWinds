@@ -42,7 +42,7 @@ namespace Curry.Explore
         // Pings player status to trigger card draw events etc
         [SerializeField] CurryGameEventTrigger m_onPlayerPing = default;
         [SerializeField] CurryGameEventTrigger m_onScout = default;
-        [SerializeField] CurryGameEventTrigger m_onPlayerDraw = default;
+        [SerializeField] CurryGameEventTrigger m_moveFinish = default;
         IRescue m_rescuee;
         public AdventurerStats Stats { get { return m_stats; } }
         void Awake()
@@ -90,7 +90,7 @@ namespace Curry.Explore
                 yield return null;
             }
             PlayerInfo info = new PlayerInfo(new AdventurerStats(m_stats));
-            m_onPlayerDraw?.TriggerEvent(info);
+            m_moveFinish?.TriggerEvent(info);
             m_onPlayerPing?.TriggerEvent(info);
             m_onScout?.TriggerEvent(info);
 

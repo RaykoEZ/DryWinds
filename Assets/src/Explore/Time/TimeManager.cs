@@ -30,8 +30,8 @@ namespace Curry.Explore
         [SerializeField] GameClock m_clock = default;
         int m_timeLeft;
         int m_timeSpent;
-        public OnOutOfTime OnOutOfTimeTrigger;
-        public OnTimeUpdate OnTimeSpent;
+        public event OnOutOfTime OnOutOfTimeTrigger;
+        public event OnTimeUpdate OnTimeSpent;
 
         public int TimeToClear { get { return m_timeToClear; } }
         public int TimeLeft { get { return m_timeLeft; } }
@@ -96,7 +96,7 @@ namespace Curry.Explore
             for (int i = 0; i < toSpend; ++i)
             {
                 m_clock.IncrementMinute();
-                yield return new WaitForSeconds(0.05f);
+                yield return new WaitForSeconds(0.02f);
             }
             OnTimeSpent?.Invoke(toSpend, TimeLeft);
             m_onTimeSpent?.TriggerEvent(new TimeInfo(toSpend));

@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEngine;
 using Curry.Game;
+using Curry.Events;
 
 namespace Curry.Explore
 {
@@ -16,9 +17,9 @@ namespace Curry.Explore
     // Base class for all playable cards
     public abstract class AdventCard : MonoBehaviour, IPoolable
     {
-        [SerializeField] CardAttribute m_attribute = default; 
+        [SerializeField] CardAttribute m_attribute = default;
+        [SerializeField] CurryGameEventTrigger m_cardActivated = default;
         bool m_activatable = true;
-
         public int Id { get { return $"{m_attribute.Name}/{gameObject.name}".GetHashCode(); } }
         public string Name { get { return m_attribute.Name; } }
         public string Description { get { return m_attribute.Description; } }
@@ -42,7 +43,10 @@ namespace Curry.Explore
             OnExpend();
         }
         // Card Effect
-        protected abstract void ActivateEffect(AdventurerStats user);
+        protected virtual void ActivateEffect(AdventurerStats user) 
+        {
+            m_cardActivated?.TriggerEvent(new EventInfo());
+        }
 
         // After activating card, maybe expend the card
         protected virtual void OnExpend() 

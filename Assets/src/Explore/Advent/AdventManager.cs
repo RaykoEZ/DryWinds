@@ -5,6 +5,7 @@ using UnityEngine.Tilemaps;
 using Curry.Events;
 namespace Curry.Explore
 {
+    public delegate void OnAdventureFinish();
     // Contained database for all available advent(cards and decks)
     // Quiries Tile info for a tile in its tilemap coordinate
     public class AdventManager : MonoBehaviour 
@@ -24,6 +25,7 @@ namespace Curry.Explore
         [SerializeField] CurryGameEventTrigger m_onCardDraw = default;
         [SerializeField] CurryGameEventTrigger m_onDiscardHand = default;
 
+        public event OnAdventureFinish OnFinish;
         void Awake()
         {
             m_adventDb.Init(OnAdventLoadFinish);
@@ -105,6 +107,7 @@ namespace Curry.Explore
                 DrawFromMap(m_locations, player.PlayerStats.WorldPosition);
                 LocationEvents(player.PlayerStats.WorldPosition);
                 SpecialEvents(player.PlayerStats.WorldPosition);
+                OnFinish?.Invoke();
             }
         }
         // static events in locations

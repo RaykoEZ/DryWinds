@@ -1,4 +1,5 @@
-﻿namespace Curry.Explore
+﻿using UnityEngine;
+namespace Curry.Explore
 {
     public class TurnEnd : Phase
     {
@@ -9,6 +10,8 @@
 
         protected override void Evaluate()
         {
+            Debug.Log("Turn End");
+            TransitionTo();
         }
     }
 

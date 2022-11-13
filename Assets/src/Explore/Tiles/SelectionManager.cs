@@ -33,6 +33,7 @@ namespace Curry.Explore
         }
         public void DisableSelection()
         {
+            CancelSelection();
             m_onTileSelect?.Shutdown();
         }
         public void CancelSelection() 

@@ -143,8 +143,8 @@ MonoBehaviour:
     m_eventToTrigger: {fileID: 11400000, guid: b9f05c250782bdf49b964bc6c4d7abe9, type: 2}
   m_onScout:
     m_eventToTrigger: {fileID: 11400000, guid: b6f5cd82da90f44418857008c95416af, type: 2}
-  m_onPlayerDraw:
-    m_eventToTrigger: {fileID: 11400000, guid: 0e128c7b7c151be489c076a4a83ee69b, type: 2}
+  m_moveFinish:
+    m_eventToTrigger: {fileID: 11400000, guid: 42e931a230a71a74e8f64ade4fcbd69e, type: 2}
 --- !u!114 &2571672766922976635
 MonoBehaviour:
   m_ObjectHideFlags: 0

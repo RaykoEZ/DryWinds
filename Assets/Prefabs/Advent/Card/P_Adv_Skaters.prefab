@@ -129,11 +129,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_attribute:
-    Id: 0
     Name: Skater
     Description: Wowowo
     TimeCost: 10
     RetailCard: 0
+  m_cardActivated:
+    m_eventToTrigger: {fileID: 11400000, guid: 856b99b46ebcaee409c7fb6d66575bcd, type: 2}
   m_onMove:
     m_eventToTrigger: {fileID: 11400000, guid: 736b70e15b9efe8408d6fe321c5396e4, type: 2}
 --- !u!222 &8481637543372204205

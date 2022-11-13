@@ -12,6 +12,7 @@ namespace Curry.Explore
             Vector3 dest = user.WorldPosition + VectorExtension.RandomCardinalVector();
             PositionInfo info = new PositionInfo(dest);
             m_onMove?.TriggerEvent(info);
+            base.ActivateEffect(user);
             OnExpend();
         }
     }

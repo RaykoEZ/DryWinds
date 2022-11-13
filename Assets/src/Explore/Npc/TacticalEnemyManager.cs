@@ -28,6 +28,8 @@ namespace Curry.Explore
         public event OnInterrupt OnEnemyInterrupt;
         List<TacticalEnemy> m_standby = new List<TacticalEnemy>();
         List<TacticalEnemy> m_activatedEnemies = new List<TacticalEnemy>();
+        HashSet<TacticalEnemy> m_deactivating = new HashSet<TacticalEnemy>();
+        HashSet<TacticalEnemy> m_activating = new HashSet<TacticalEnemy>();
         static Stack<Action> m_executingCalls = new Stack<Action>();
         int m_numDirty = 0;
         private void Awake()
@@ -62,21 +64,53 @@ namespace Curry.Explore
                 UpdateActiveEnemies(spend.Time);
             }
         }
-
-        void OnEnemyActivate(TacticalEnemy activatedEnemy) 
+        public void OnPhaseBegin() 
         {
-            if (m_standby.Remove(activatedEnemy))
+            UpdateEnemyLists();
+            m_numDirty = m_standby.Count;
+            foreach (TacticalEnemy enemy in m_standby)
             {
-                m_activatedEnemies.Add(activatedEnemy);
+                enemy.StandbyBehaviour();
             }
+        }
+        void OnEnemyActivate(TacticalEnemy activated) 
+        {
+            m_activating.Add(activated);
         }
         void OnEnemyStandby(TacticalEnemy deactivated) 
         {
-            if (m_activatedEnemies.Remove(deactivated)) 
-            {
-                m_standby.Add(deactivated);
-            }
+            m_deactivating.Add(deactivated);
         }
+        void UpdateEnemyLists() 
+        {
+            // Remove double-switch ops
+            m_activating.ExceptWith(m_deactivating);
+            UpdateActivatedList();
+            UpdateStandbyList();
+        }
+        void UpdateActivatedList() 
+        {
+            foreach(TacticalEnemy e in m_activating) 
+            {
+                if (m_standby.Remove(e)) 
+                {
+                    m_activatedEnemies.Add(e);
+                }
+            }
+            m_activating.Clear();
+        }
+        void UpdateStandbyList() 
+        {
+            foreach (TacticalEnemy e in m_deactivating)
+            {
+                if (m_activatedEnemies.Remove(e))
+                {
+                    m_standby.Add(e);
+                }
+            }
+            m_deactivating.Clear();
+        }
+
         void OnEnemyDefeated(TacticalEnemy defeated) 
         {
             m_standby.Remove(defeated);
@@ -86,18 +120,22 @@ namespace Curry.Explore
         void OnCountdownUpdate(int countdown, Action onInterrupt = null) 
         {
             m_numDirty--;
+            // If this update has an interruptingaction, push it to the stack
             if(countdown <= 0 && onInterrupt != null) 
             {
                 m_executingCalls.Push(onInterrupt);
             }
-            // When all finished updating...
+            // When all finished updating, send the call stack to execute
+            // and update any changes to enemy lists
             if(m_numDirty <= 0) 
             {
                 OnEnemyInterrupt?.Invoke(m_executingCalls);
+                UpdateEnemyLists();
             }
         }
         void UpdateActiveEnemies(int dt) 
         {
+            UpdateEnemyLists();
             m_numDirty = m_activatedEnemies.Count;
             foreach (TacticalEnemy enemy in m_activatedEnemies) 
             {          
