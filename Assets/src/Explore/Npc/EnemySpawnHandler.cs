@@ -32,7 +32,7 @@ namespace Curry.Explore
                 return;
             }
             Vector3 coordWorldPos = m_spawnMap.GetCellCenterWorld(spawnCoord);
-            coordWorldPos.z = -2f;
+            coordWorldPos.z = -1f;
             Vector3 origin = spawnCoord - new Vector3(0f, 0f, 10f);
             bool hit = Physics.Raycast(origin, Vector3.forward, 10f, m_doNotSpawnOn);
             if (!hit)

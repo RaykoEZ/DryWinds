@@ -248,23 +248,6 @@ MonoBehaviour:
     AttackCountdown: 3
     Visibility: 1
   m_anim: {fileID: 3642215462890439483}
-  m_onCountdownTick:
-    m_eventToListen: {fileID: 11400000, guid: d1ce1a53da3a18a4a8e131d2a9c798f2, type: 2}
-    m_responses:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 4063988590427125915}
-          m_TargetAssemblyTypeName: Curry.Explore.TacticalEnemy, Assembly-CSharp
-          m_MethodName: OnTimeSpent
-          m_Mode: 0
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
   m_countdownText: {fileID: 6612072387905013795}
   m_detect: {fileID: 9158939930621903418}
 --- !u!50 &4063988590427125916
@@ -349,7 +332,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2298291764430493493}
   - component: {fileID: 9158939930621903418}
-  - component: {fileID: 6971661345122077118}
+  - component: {fileID: 8011449079695596528}
   m_Layer: 9
   m_Name: DetectionRange
   m_TagString: Untagged
@@ -388,8 +371,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc52006ec18f36f4ebcf9fa3ead0cc78, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!61 &6971661345122077118
-BoxCollider2D:
+--- !u!58 &8011449079695596528
+CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -398,19 +381,9 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
-  m_EdgeRadius: 0
+  m_Radius: 0.5

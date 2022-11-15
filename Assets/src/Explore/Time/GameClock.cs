@@ -7,26 +7,27 @@ namespace Curry.Explore
     [Serializable]
     public struct TimeOfDay
     {
-        [Range(0, 60)]
-        public int Minute;
+        [Range(0, 23)]
+        public int Hour;
     }
     public class GameClock : MonoBehaviour 
     {       
         [SerializeField] TextMeshProUGUI m_dayCountLabel = default;
         [SerializeField] TextMeshProUGUI m_timeLabel = default;
+
         int m_dayCount = 0;
-        TimeOfDay m_timeOfDay = new TimeOfDay {Minute = 0};
+        TimeOfDay m_timeOfDay = new TimeOfDay {Hour = 0};
 
         public void IncrementMinute()
         {
-            if(m_timeOfDay.Minute == 60) 
+            if(m_timeOfDay.Hour == 23) 
             {
-                m_timeOfDay.Minute = 0;
+                m_timeOfDay.Hour = 0;
                 IncrementDay();
             }
             else 
             {
-                m_timeOfDay.Minute++;
+                m_timeOfDay.Hour++;
             }
             UpdateClockLabels();
         }
@@ -47,7 +48,7 @@ namespace Curry.Explore
         void UpdateClockLabels()
         {
             // Add zero to display text if we only have one digit
-            string minute = m_timeOfDay.Minute > 9 ? m_timeOfDay.Minute.ToString() : $"0{m_timeOfDay.Minute}";
+            string minute = m_timeOfDay.Hour > 9 ? m_timeOfDay.Hour.ToString() : $"0{m_timeOfDay.Hour}";
             m_timeLabel.text = minute;
         }
     }

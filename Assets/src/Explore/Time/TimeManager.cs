@@ -91,6 +91,13 @@ namespace Curry.Explore
         {
             m_timeLeft -= toSpend;
             m_timeSpent+= toSpend;
+            //Trigger event
+            OnTimeSpent?.Invoke(toSpend, TimeLeft);
+            m_onTimeSpent?.TriggerEvent(new TimeInfo(toSpend));
+            if (Mathf.Approximately(m_timeLeft, 0f))
+            {
+                OnOutOfTimeTrigger?.Invoke(m_timeSpent);
+            }
             m_gauge.SetBarValue(m_timeLeft);
             // Animate clock
             for (int i = 0; i < toSpend; ++i)
@@ -98,12 +105,7 @@ namespace Curry.Explore
                 m_clock.IncrementMinute();
                 yield return new WaitForSeconds(0.02f);
             }
-            OnTimeSpent?.Invoke(toSpend, TimeLeft);
-            m_onTimeSpent?.TriggerEvent(new TimeInfo(toSpend));
-            if (Mathf.Approximately(m_timeLeft, 0f))
-            {
-                OnOutOfTimeTrigger?.Invoke(m_timeSpent);
-            }
+
         }
     }
 }
