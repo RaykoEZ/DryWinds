@@ -83,7 +83,7 @@ namespace Curry.Explore
         }
         void UpdateEnemyLists() 
         {
-            // Remove double-switch ops
+            // Remove double-switching enemies
             m_activating.ExceptWith(m_deactivating);
             UpdateActivatedList();
             UpdateStandbyList();
@@ -137,9 +137,10 @@ namespace Curry.Explore
         {
             UpdateEnemyLists();
             m_numDirty = m_activatedEnemies.Count;
-            foreach (TacticalEnemy enemy in m_activatedEnemies) 
+            int cd;
+            foreach (TacticalEnemy enemy in m_activatedEnemies)
             {          
-                StartCoroutine(enemy.CountdownTick(dt));
+                cd = enemy.UpdateCountdown(dt);
             }
         }
     }

@@ -1,19 +1,16 @@
 ﻿using System;
 using UnityEngine;
+using Curry.Events;
 namespace Curry.Explore
 {
     // Need to listen to win detector, if won/loss, => GaemEnd
     [Serializable]
     public class PlayerAction : Phase
     {
+        [SerializeField] Adventurer m_player = default;
+        [SerializeField] CurryGameEventTrigger m_onTurnStart = default;
         [SerializeField] PlayerInputController m_inputControl = default;
         [SerializeField] EndTurnTrigger m_turnEnd = default;
-        // Hours availble to spend on playing cards before ending a turn
-        [Range(0, 23)]
-        [SerializeField] protected int m_startWorkAt = default;
-        [Range(1, 23)]
-        [SerializeField] protected int m_dailyWorkHour = default;
-        protected int m_hoursWorked;
         public override void Init()
         {
             NextState = typeof(EnemyAction);
@@ -31,7 +28,7 @@ namespace Curry.Explore
         }
         protected override void Evaluate()
         {
-            m_hoursWorked = 0;
+            m_onTurnStart?.TriggerEvent(new TimeInfo(m_player.Stats.TimePerTurn));
             Debug.Log("Player Action");
             m_turnEnd.SetInteractable(true);
             m_inputControl.EnableInput();

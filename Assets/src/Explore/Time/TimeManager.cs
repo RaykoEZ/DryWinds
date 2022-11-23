@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine;
 using Curry.Events;
 using Curry.UI;
-
+using TMPro;
 namespace Curry.Explore
 {
     public class TimeInfo : EventInfo 
@@ -16,39 +16,48 @@ namespace Curry.Explore
         }
     }
 
-    public delegate void OnOutOfTime(int minsSpent);
-    public delegate void OnTimeUpdate(int timeSpent, int timeLeft);
-
+    public delegate void OutOfTime(int timeSpent);
+    public delegate void TimeSpent(int timeSpent, int timeLeft);
+    public delegate void ClockTimeUpdate(TimeOfDay time);
     public class TimeManager : MonoBehaviour
     {
         [Range(1, 1000)]
         [SerializeField] int m_timeToClear = default;
+        [SerializeField] CurryGameEventListener m_onPlayerTurn = default;
         [SerializeField] CurryGameEventListener m_onSpendTime = default;
         [SerializeField] CurryGameEventListener m_onAddTime = default;
         [SerializeField] CurryGameEventTrigger m_onTimeSpent = default;
         [SerializeField] ResourceBar m_gauge = default;
         [SerializeField] GameClock m_clock = default;
-        int m_timeLeft;
+        [SerializeField] TextMeshProUGUI m_turnTimer = default;
+        int m_timeLeftToClear;
         int m_timeSpent;
-        public event OnOutOfTime OnOutOfTimeTrigger;
-        public event OnTimeUpdate OnTimeSpent;
-
+        public event OutOfTime OnOutOfTimeTrigger;
+        public event TimeSpent OnTimeSpent;
+        public int TimeLeftThisTurn { get; protected set; }
         public int TimeToClear { get { return m_timeToClear; } }
-        public int TimeLeft { get { return m_timeLeft; } }
-
+        public int TimeLeftToClear { get { return m_timeLeftToClear; } }
         // Use this for initialization
         void Awake()
         {
             ResetTime();
+            m_onPlayerTurn?.Init();
             m_onSpendTime?.Init();
             m_onAddTime?.Init();
-            m_gauge.SetMaxValue(TimeLeft);
+            m_gauge.SetMaxValue(TimeLeftToClear);
             m_gauge.SetBarValue(TimeToClear, forceInstantChange: true);
         }
-
+        public void OnPlayerTurn(EventInfo info)
+        {
+            if (info is TimeInfo time)
+            {
+                TimeLeftThisTurn = time.Time;
+                UpdateTurnTimer();
+            }
+        }
         public void ResetTime()
         {
-            m_timeLeft = m_timeToClear;
+            m_timeLeftToClear = m_timeToClear;
             m_timeSpent = 0;
         }
 
@@ -56,7 +65,7 @@ namespace Curry.Explore
         {
             if (time is TimeInfo add)
             {
-                m_timeLeft += add.Time;
+                m_timeLeftToClear += add.Time;
             }
         }
 
@@ -71,13 +80,14 @@ namespace Curry.Explore
 
         public void AddTime(int time) 
         {
-            m_timeLeft += time;
+            m_timeLeftToClear += time;
         }
 
         // spend time and check if we run out of time
         public void TrySpendTime(int timeToSpend, out bool enoughTime) 
         {
-            enoughTime = m_timeLeft >= timeToSpend;
+            enoughTime = m_timeLeftToClear >= timeToSpend &&
+                TimeLeftThisTurn >= timeToSpend;
             if (timeToSpend <= 0)
             {
                 return;
@@ -87,18 +97,25 @@ namespace Curry.Explore
                 StartCoroutine(OnSpendTime(timeToSpend));
             }
         }
+
+        void UpdateTurnTimer()
+        {
+            m_turnTimer.text = TimeLeftThisTurn.ToString();
+        }
         IEnumerator OnSpendTime(int toSpend)
         {
-            m_timeLeft -= toSpend;
-            m_timeSpent+= toSpend;
+            TimeLeftThisTurn -= toSpend;
+            m_timeLeftToClear -= toSpend;
+            UpdateTurnTimer();
+            m_timeSpent += toSpend;
             //Trigger event
-            OnTimeSpent?.Invoke(toSpend, TimeLeft);
+            OnTimeSpent?.Invoke(toSpend, TimeLeftToClear);
             m_onTimeSpent?.TriggerEvent(new TimeInfo(toSpend));
-            if (Mathf.Approximately(m_timeLeft, 0f))
+            if (Mathf.Approximately(m_timeLeftToClear, 0f))
             {
                 OnOutOfTimeTrigger?.Invoke(m_timeSpent);
             }
-            m_gauge.SetBarValue(m_timeLeft);
+            m_gauge.SetBarValue(m_timeLeftToClear);
             // Animate clock
             for (int i = 0; i < toSpend; ++i)
             {

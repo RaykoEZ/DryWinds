@@ -120,6 +120,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_stats:
     m_name: Adventurer
+    m_TimePerTurn: 10
     m_scoutRange: 1
     m_adventurer: {fileID: 2571672766922976577}
   m_onMove:

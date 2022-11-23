@@ -10,6 +10,7 @@ namespace Curry.Explore
     // Quiries Tile info for a tile in its tilemap coordinate
     public class AdventManager : MonoBehaviour 
     {
+        [SerializeField] TimeManager m_time = default;
         [SerializeField] protected AdventDatabase m_adventDb = default;
         [SerializeField] protected Tilemap m_terrain = default;
         [SerializeField] protected Tilemap m_locations = default;
@@ -74,6 +75,8 @@ namespace Curry.Explore
             {
                 return;
             }
+
+
             // Set destination world position
             Vector3 worldPos;
             if (info is PositionInfo move) 

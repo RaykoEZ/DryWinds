@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
-using Curry.Util;
 
 namespace Curry.Explore
 {
     [Serializable]
-    [CreateAssetMenu(fileName = "Deck_", menuName = "Curry/AdventCollection", order = 1)]
+    [CreateAssetMenu(fileName = "Deck_", menuName = "Curry/AdventDeck", order = 1)]
     public class AdventDeck : ScriptableObject
     {
         [SerializeField] protected string m_deckId = default;

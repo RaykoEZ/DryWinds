@@ -55,8 +55,10 @@ MonoBehaviour:
   m_attribute:
     Name: Sweep Scan
     Description: Scanning...
-    TimeCost: 25
+    TimeCost: 5
     RetailCard: 1
+  m_cardActivated:
+    m_eventToTrigger: {fileID: 0}
   m_scoutRange: 2
   m_scan:
     m_eventToTrigger: {fileID: 11400000, guid: b6f5cd82da90f44418857008c95416af, type: 2}

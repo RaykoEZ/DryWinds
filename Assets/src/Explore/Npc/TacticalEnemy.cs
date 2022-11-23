@@ -6,6 +6,19 @@ using TMPro;
 using UnityEngine;
 namespace Curry.Explore
 {
+    public struct EnemyId : IComparable
+    {
+        public int CompareTo(object obj)
+        {
+            throw new NotImplementedException();
+        }
+        public int CompareTo(EnemyId id) 
+        {
+            throw new NotImplementedException();
+
+        }
+
+    }
     // countdown: can be negative
     public delegate void OnEnemyCountdownUpdate(int countdown, Action onInterrupt = null);
     public delegate void OnEnemyUpdate(TacticalEnemy enemy);
@@ -24,6 +37,7 @@ namespace Curry.Explore
         protected HashSet<Adventurer> m_targetsInSight = new HashSet<Adventurer>();
         protected int m_countdown;
         protected TacticalStats m_current;
+        public virtual EnemyId Id { get; }
         public TacticalStats InitStatus { get { return m_initStats; } }
         public TacticalStats CurrentStatus
         {
@@ -79,6 +93,22 @@ namespace Curry.Explore
             m_anim?.SetTrigger("takeHit");
             m_anim?.SetBool("defeat", true);
         }
+        public virtual void StandbyBehaviour()
+        {
+            if (m_targetsInSight.Count > 0)
+            {
+                OnDetectReaction();
+                OnCombat();
+            }
+        }
+
+        public virtual int UpdateCountdown(int dt)
+        {
+            StartCoroutine(CountdownTick(dt, m_countdown));
+            m_countdown -= dt;
+            return m_countdown;
+        }
+
         protected virtual void ExecuteAction()
         {
             m_anim?.SetTrigger("strike");
@@ -90,7 +120,7 @@ namespace Curry.Explore
         }
         protected virtual void OnDetectReaction()
         {
-            m_anim?.SetTrigger("detect");
+            //m_anim?.SetTrigger("detect");
             OnActivate?.Invoke(this);
         }
         protected virtual void Standby()
@@ -110,21 +140,15 @@ namespace Curry.Explore
             m_countdown = m_current.AttackCountdown;
             m_countdownText.text = m_countdown.ToString();
         }
-        public virtual void StandbyBehaviour()
+
+        // countdown text & fx update
+        protected virtual IEnumerator CountdownTick(int dt, int startFrom)
         {
-            if (m_targetsInSight.Count > 0)
-            {
-                OnDetectReaction();
-                OnCombat();
-            }
-        }
-        // countdown updates whenever tme is spent 
-        public virtual IEnumerator CountdownTick(int dt)
-        {
+
             for (int i = 0; i < dt; ++i)
             {
-                m_countdown--;
-                m_countdownText.text = Mathf.Max(m_countdown, 0).ToString();
+                startFrom--;
+                m_countdownText.text = Mathf.Max(startFrom, 0).ToString();
                 yield return new WaitForSeconds(0.1f);
             }
             OnCountdownUpdate?.Invoke(m_countdown, ExecuteAction);

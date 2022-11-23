@@ -136,11 +136,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_attribute:
-    Id: -1
     Name: Fruitless Detour
     Description: Ohhhhhhh noo.
-    TimeCost: 10
+    TimeCost: 1
     RetailCard: 0
+  m_cardActivated:
+    m_eventToTrigger: {fileID: 0}
 --- !u!114 &5218861219846289648
 MonoBehaviour:
   m_ObjectHideFlags: 0

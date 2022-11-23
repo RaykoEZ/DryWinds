@@ -8,7 +8,7 @@ using Curry.Events;
 namespace Curry.Explore
 {
     public delegate void OnCardPlayed(AdventCard played);
-    public class PlayManager : MonoBehaviour 
+    public class PlayManager : MonoBehaviour
     {
         [SerializeField] TimeManager m_time = default;
         [SerializeField] CardDropZone m_playZone = default;
@@ -37,6 +37,7 @@ namespace Curry.Explore
             DisablePlay();
             m_time.OnOutOfTimeTrigger -= OutOfTime;
         }
+        
         public void OnCardDrawn(EventInfo info)
         {
             if (info == null) return;
@@ -81,7 +82,6 @@ namespace Curry.Explore
             m_time.TrySpendTime(card.Card.TimeCost, out bool enoughTime);
             if (enoughTime) 
             {
-                PositionInfo info = new PositionInfo(m_player.Stats.WorldPosition);
                 m_hand.PlayCard(card.Card, m_player.Stats);
             }
             HidePlayZone();

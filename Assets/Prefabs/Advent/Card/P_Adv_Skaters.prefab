@@ -131,7 +131,7 @@ MonoBehaviour:
   m_attribute:
     Name: Skater
     Description: Wowowo
-    TimeCost: 10
+    TimeCost: 1
     RetailCard: 0
   m_cardActivated:
     m_eventToTrigger: {fileID: 11400000, guid: 856b99b46ebcaee409c7fb6d66575bcd, type: 2}

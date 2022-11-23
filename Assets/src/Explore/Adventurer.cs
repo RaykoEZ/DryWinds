@@ -10,16 +10,21 @@ namespace Curry.Explore
     public struct AdventurerStats
     {
         [SerializeField] string m_name;
+        [SerializeField] int m_TimePerTurn;
         [Range(1, 3)]
         [SerializeField] int m_scoutRange;
         [SerializeField] Transform m_adventurer;
         public string Name { get { return m_name; } }
+        public int TimePerTurn { get { return m_TimePerTurn; } }
+
         public int ScoutRange { get { return m_scoutRange; } }
+
         public Vector3 WorldPosition { get { return m_adventurer.position; } }
 
         public AdventurerStats(AdventurerStats stats) 
         {
             m_name = stats.Name;
+            m_TimePerTurn = stats.TimePerTurn;
             m_scoutRange = stats.ScoutRange;
             m_adventurer = stats.m_adventurer;
         }
