@@ -7,30 +7,33 @@ namespace Curry.Explore
     public class EnemyAction : Phase
     {
         [SerializeField] TacticalEnemyManager m_enemy = default;
-        List<Action> m_interruptBuffer = new List<Action>();
+        Stack<List<Action>> m_interruptBuffer = new Stack<List<Action>>();
         public override void Init()
         {
             NextState = typeof(TurnEnd);
             m_enemy.OnEnemyInterrupt += OnEnemyInterrupting;
         }
-        void OnEnemyInterrupting(Stack<Action> interrupt) 
+        void OnEnemyInterrupting(List<Action> interrupt) 
         {
-            // store interrupting actions to call after interrupting
-            m_interruptBuffer.AddRange(interrupt);
+            // push interrupts to call after interrupting
+            m_interruptBuffer.Push(interrupt);
             // Request interrupt
             Interrupt();
         }
         protected override void Evaluate()
         {
-            // If we need to resolve interrupts from activated enemies, do it first
-            if(m_interruptBuffer != null && m_interruptBuffer.Count > 0) 
+            if( m_interruptBuffer != null) 
             {
-                foreach(Action call in m_interruptBuffer) 
+                // If we need to resolve interrupts from activated enemies, do it first
+                while (m_interruptBuffer.Count > 0)
                 {
-                    call?.Invoke();
+                    foreach (Action call in m_interruptBuffer.Pop())
+                    {
+                        call?.Invoke();
+                    }
                 }
-                m_interruptBuffer.Clear();
             }
+
             // Main process for all standby enemies
             m_enemy.OnPhaseBegin();
             TransitionTo();

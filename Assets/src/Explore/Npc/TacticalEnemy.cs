@@ -6,21 +6,8 @@ using TMPro;
 using UnityEngine;
 namespace Curry.Explore
 {
-    public struct EnemyId : IComparable
-    {
-        public int CompareTo(object obj)
-        {
-            throw new NotImplementedException();
-        }
-        public int CompareTo(EnemyId id) 
-        {
-            throw new NotImplementedException();
-
-        }
-
-    }
     // countdown: can be negative
-    public delegate void OnEnemyCountdownUpdate(int countdown, Action onInterrupt = null);
+    public delegate void OnEnemyCountdownUpdate(TacticalEnemy enemy);
     public delegate void OnEnemyUpdate(TacticalEnemy enemy);
     // Base enemy class
     public abstract class TacticalEnemy : MonoBehaviour, IEnemy, IPoolable
@@ -35,9 +22,10 @@ namespace Curry.Explore
         public event OnEnemyUpdate OnStandby;
         public event OnEnemyUpdate OnDefeat;
         protected HashSet<Adventurer> m_targetsInSight = new HashSet<Adventurer>();
-        protected int m_countdown;
+        public int Countdown { get; protected set; }
         protected TacticalStats m_current;
-        public virtual EnemyId Id { get; }
+        public virtual EnemyId Id { get; protected set; }
+        public Action ExecuteCall { get { return ExecuteAction; } }
         public TacticalStats InitStatus { get { return m_initStats; } }
         public TacticalStats CurrentStatus
         {
@@ -48,8 +36,10 @@ namespace Curry.Explore
 
         public virtual void Prepare()
         {
+            // Get new id for enemy
+            Id = new EnemyId(gameObject.name);
             m_current = m_initStats;
-            m_countdown = m_current.AttackCountdown;
+            Countdown = m_current.AttackCountdown;
             m_detect.OnDetected += OnDetectEnter;
             m_detect.OnExitDetection += OnDetectExit;
         }
@@ -104,9 +94,9 @@ namespace Curry.Explore
 
         public virtual int UpdateCountdown(int dt)
         {
-            StartCoroutine(CountdownTick(dt, m_countdown));
-            m_countdown -= dt;
-            return m_countdown;
+            StartCoroutine(CountdownTick(dt, Countdown));
+            Countdown -= dt;
+            return Countdown;
         }
 
         protected virtual void ExecuteAction()
@@ -127,7 +117,7 @@ namespace Curry.Explore
         {
             //reset anim state and countdown
             m_anim?.SetTrigger("cancel");
-            m_countdown = m_current.AttackCountdown;
+            Countdown = m_current.AttackCountdown;
             m_countdownText.text = "";
             OnStandby?.Invoke(this);
         }
@@ -137,8 +127,8 @@ namespace Curry.Explore
         }
         protected virtual void StartAttackCountdown()
         {
-            m_countdown = m_current.AttackCountdown;
-            m_countdownText.text = m_countdown.ToString();
+            Countdown = m_current.AttackCountdown;
+            m_countdownText.text = Countdown.ToString();
         }
 
         // countdown text & fx update
@@ -151,7 +141,7 @@ namespace Curry.Explore
                 m_countdownText.text = Mathf.Max(startFrom, 0).ToString();
                 yield return new WaitForSeconds(0.1f);
             }
-            OnCountdownUpdate?.Invoke(m_countdown, ExecuteAction);
+            OnCountdownUpdate?.Invoke(this);
         }
 
         void OnDetectEnter(Adventurer adv)

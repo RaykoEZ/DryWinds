@@ -17,10 +17,54 @@ namespace Curry.Explore
         [SerializeField] EnemyPoolCollection m_pool = default;
         protected override PoolCollection<TacticalEnemy> Pool { get { return m_pool; } }
     }
-    public delegate void OnInterrupt(Stack<Action> interrupts);
+    public delegate void OnInterrupt(List<Action> interrupts);
     // Monitors all spawned enemies, triggers enemy action phases
     public class TacticalEnemyManager : MonoBehaviour 
     {
+        #region Comparer class
+        // Comparer<TacticalEnemy> for priority sorting 
+        protected class EnemyPriorityComparer : IComparer<TacticalEnemy>
+        {
+            public int Compare(TacticalEnemy x, TacticalEnemy y)
+            {
+                if (x.Id == y.Id)
+                {
+                    return 0;
+                }
+                if (x == null)
+                {
+                    if (y == null)
+                    {
+                        // If x is null and y is null, they're
+                        // equal.
+                        return 0;
+                    }
+                    else
+                    {
+                        // If x is null and y is not null, y
+                        // is greater.
+                        return -1;
+                    }
+                }
+                else
+                {
+                    // If x is not null...
+                    //
+                    if (y == null)
+                    // ...and y is null, x is greater.
+                    {
+                        return 1;
+                    }
+                    else
+                    {
+                        // ...and y is not null, return countdown difference
+                        return x.Countdown - y.Countdown;
+                    }
+                }
+            }
+        }
+        #endregion
+        #region Class Body
         [SerializeField] EnemyInstanceManager m_instance = default;
         [SerializeField] protected CurryGameEventListener m_onSpawn = default;
         // When tme ticks, update all enemies with countdowns 
@@ -28,10 +72,16 @@ namespace Curry.Explore
         public event OnInterrupt OnEnemyInterrupt;
         List<TacticalEnemy> m_standby = new List<TacticalEnemy>();
         List<TacticalEnemy> m_activatedEnemies = new List<TacticalEnemy>();
+        // from activated to standby
         HashSet<TacticalEnemy> m_deactivating = new HashSet<TacticalEnemy>();
+        // rom standby to activated
         HashSet<TacticalEnemy> m_activating = new HashSet<TacticalEnemy>();
-        static Stack<Action> m_executingCalls = new Stack<Action>();
+        // enemies about to trigger actions
+        List<TacticalEnemy> m_executing = new List<TacticalEnemy>();
         int m_numDirty = 0;
+
+        // Comparer for enemy priority
+        EnemyPriorityComparer m_priorityComparer = new EnemyPriorityComparer();
         private void Awake()
         {
             m_onSpawn?.Init();
@@ -117,24 +167,32 @@ namespace Curry.Explore
             m_activatedEnemies.Remove(defeated);
             defeated?.ReturnToPool();
         }
-        void OnCountdownUpdate(int countdown, Action onInterrupt = null) 
+        void OnCountdownUpdate(TacticalEnemy enemy) 
         {
             m_numDirty--;
             // If this update has an interruptingaction, push it to the stack
-            if(countdown <= 0 && onInterrupt != null) 
+            if(enemy.Countdown <= 0) 
             {
-                m_executingCalls.Push(onInterrupt);
+                m_executing.Add(enemy);
             }
             // When all finished updating, send the call stack to execute
             // and update any changes to enemy lists
             if(m_numDirty <= 0) 
             {
-                OnEnemyInterrupt?.Invoke(m_executingCalls);
+                // Sort executing enemies by lowest countdown, ascendingly
+                m_executing.Sort(m_priorityComparer);
+                List<Action> calls = new List<Action>();
+                foreach (TacticalEnemy e in m_executing)
+                {
+                    calls.Add(e.ExecuteCall);
+                }
+                OnEnemyInterrupt?.Invoke(calls);
                 UpdateEnemyLists();
             }
         }
         void UpdateActiveEnemies(int dt) 
         {
+            // Make sure we have a valid list of active enemies
             UpdateEnemyLists();
             m_numDirty = m_activatedEnemies.Count;
             int cd;
@@ -143,5 +201,8 @@ namespace Curry.Explore
                 cd = enemy.UpdateCountdown(dt);
             }
         }
+        #endregion
     }
+
+
 }
