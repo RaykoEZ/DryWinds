@@ -1,16 +1,14 @@
-﻿using System;
+﻿using Curry.Events;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using Curry.Events;
 namespace Curry.Explore
 {
     public delegate void OnAdventureFinish();
     // Contained database for all available advent(cards and decks)
     // Quiries Tile info for a tile in its tilemap coordinate
-    public class AdventManager : MonoBehaviour 
+    public class AdventManager : MonoBehaviour
     {
-        [SerializeField] TimeManager m_time = default;
         [SerializeField] protected AdventDatabase m_adventDb = default;
         [SerializeField] protected Tilemap m_terrain = default;
         [SerializeField] protected Tilemap m_locations = default;
@@ -21,10 +19,8 @@ namespace Curry.Explore
         [SerializeField] CurryGameEventListener m_onPlayerMoved = default;
         // Trigger this to move player
         [SerializeField] CurryGameEventTrigger m_onAdventureMove = default;
-
         // After player moved, we draw card from player position, trigger this
         [SerializeField] CurryGameEventTrigger m_onCardDraw = default;
-        [SerializeField] CurryGameEventTrigger m_onDiscardHand = default;
 
         public event OnAdventureFinish OnFinish;
         void Awake()
@@ -43,10 +39,10 @@ namespace Curry.Explore
         {
             Vector3Int p = map.WorldToCell(worldPos);
             GameObject obj = map.GetInstantiatedObject(p);
-            if (obj == null) 
+            if (obj == null)
             {
                 component = null;
-                return false; 
+                return false;
             }
             bool ret = obj.TryGetComponent(out T comp);
             component = comp;
@@ -54,13 +50,13 @@ namespace Curry.Explore
         }
 
         public bool TryGetAdventInCollection(
-            WorldTile tile, out AdventDeck result) 
+            WorldTile tile, out AdventDeck result)
         {
-            if (tile == null) 
+            if (tile == null)
             {
                 Debug.LogWarning("Cannot find tile in tilemap");
                 result = null;
-                return false; 
+                return false;
             }
             string retId = tile.CollectionId;
             AdventDeck collection;
@@ -79,17 +75,17 @@ namespace Curry.Explore
 
             // Set destination world position
             Vector3 worldPos;
-            if (info is PositionInfo move) 
+            if (info is PositionInfo move)
             {
                 worldPos = move.WorldPosition;
             }
-            else if (info is TileSelectionInfo select) 
+            else if (info is TileSelectionInfo select)
             {
                 worldPos = Camera.main.ScreenToWorldPoint(select.ClickScreenPosition);
             }
-            else 
+            else
             {
-                return; 
+                return;
             }
             // Trigger player to move to selected tile
             Vector3Int cell = m_terrain.WorldToCell(worldPos);
@@ -99,13 +95,12 @@ namespace Curry.Explore
         }
 
         // When player reached selected tile, draw cards and trigger events
-        public void OnPlayerMoved(EventInfo info) 
+        public void OnPlayerMoved(EventInfo info)
         {
             if (info == null) return;
 
-            if (info is PlayerInfo player) 
+            if (info is PlayerInfo player)
             {
-                m_onDiscardHand?.TriggerEvent(new EventInfo());
                 DrawFromMap(m_terrain, player.PlayerStats.WorldPosition);
                 DrawFromMap(m_locations, player.PlayerStats.WorldPosition);
                 LocationEvents(player.PlayerStats.WorldPosition);
@@ -114,7 +109,7 @@ namespace Curry.Explore
             }
         }
         // static events in locations
-        void LocationEvents(Vector3 worldPosition) 
+        void LocationEvents(Vector3 worldPosition)
         {
             LocationTile tile = GetTile<LocationTile>(m_locations, worldPosition);
             if (tile == null)
@@ -125,7 +120,7 @@ namespace Curry.Explore
 
         }
         // one time events in locations
-        void SpecialEvents(Vector3 worldPosition) 
+        void SpecialEvents(Vector3 worldPosition)
         {
             // If there are special events in this location, trigger them
             if (TryGetTileComponent(m_locations, worldPosition, out SpecialEventHandler e) && e.EventCards.Count > 0)
@@ -136,13 +131,13 @@ namespace Curry.Explore
             }
         }
 
-        void DrawFromMap(Tilemap map, Vector3 worldPosition) 
+        void DrawFromMap(Tilemap map, Vector3 worldPosition)
         {
             AdventDeck deck;
             WorldTile tile = GetTile<WorldTile>(map, worldPosition);
-            if (tile == null) 
-            { 
-                return; 
+            if (tile == null)
+            {
+                return;
             }
             // check for any existing deck
             bool deckExist = TryGetAdventInCollection(tile, out deck) &&
@@ -159,7 +154,7 @@ namespace Curry.Explore
         }
 
         // Instantiate cards and trigger game events OnCardDraw
-        void DrawCards(IReadOnlyList<AdventCard> cardsToDraw) 
+        void DrawCards(IReadOnlyList<AdventCard> cardsToDraw)
         {
             List<AdventCard> cardInstances = new List<AdventCard>();
             List<Encounter> encounters = new List<Encounter>();
@@ -192,11 +187,11 @@ namespace Curry.Explore
             return ret;
         }
 
-        void OnAdventLoadFinish() 
+        void OnAdventLoadFinish()
         {
-            foreach(KeyValuePair<int, AdventCard> advent in m_adventDb.AdventList) 
+            foreach (KeyValuePair<int, AdventCard> advent in m_adventDb.AdventList)
             {
-                m_instance.PrepareNewInstance(advent.Value.gameObject);                
+                m_instance.PrepareNewInstance(advent.Value.gameObject);
             }
         }
     }

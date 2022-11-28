@@ -7,6 +7,7 @@ using Curry.Events;
 
 namespace Curry.Explore
 {
+    public delegate void OnEffectActivate(int timeSpent, List<Action> onActivate = null);
     public delegate void OnCardPlayed(AdventCard played);
     public class PlayManager : MonoBehaviour
     {
@@ -19,6 +20,7 @@ namespace Curry.Explore
         [SerializeField] CurryGameEventListener m_onDiscardHand = default;
         [SerializeField] Image m_playPanel = default;
         Hand m_hand = new Hand();
+        public event OnEffectActivate OnActivate;
         protected void Awake()
         {
             m_onCardDraw?.Init();
@@ -82,19 +84,23 @@ namespace Curry.Explore
             m_time.TrySpendTime(card.Card.TimeCost, out bool enoughTime);
             if (enoughTime) 
             {
-                m_hand.PlayCard(card.Card, m_player.Stats);
+                List<Action> actions = new List<Action>();
+                actions.Add(
+                    () => {
+                        m_hand.PlayCard(card.Card, m_player.Stats);
+                    }
+                    );
+                OnActivate?.Invoke(card.Card.TimeCost, actions);
             }
             HidePlayZone();
         }
         void OnEncounterDraw(IReadOnlyList<Encounter> draw) 
         {
-            int totalCost = 0;
-            foreach(Encounter encounter in draw) 
+            foreach (Encounter encounter in draw) 
             {
-                totalCost += encounter.TimeCost;
+                m_time.TrySpendTime(encounter.TimeCost, out bool _);
                 encounter?.OnDrawEffect(m_player.Stats);
             }
-            m_time.TrySpendTime(totalCost, out bool _);
         }
 
         public delegate void OnDiscard(List<AdventCard> discarded);

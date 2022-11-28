@@ -23,5 +23,9 @@ namespace Curry.Explore
             m_selectInput?.DisableSelection();
             m_cardPlay?.DisablePlay();
         }
+        public void DiscardPlayerHand() 
+        {
+            m_cardPlay?.DiscardHand();
+        }
     }
 }

@@ -6,7 +6,6 @@ namespace Curry.Explore
     {
         protected override void ActivateEffect(AdventurerStats user)
         {
-            Debug.Log("Wasting time is cool too");
             OnExpend();
         }
     }

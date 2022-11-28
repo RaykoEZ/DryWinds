@@ -16,16 +16,11 @@ namespace Curry.Explore
         [SerializeField] protected Animator m_anim = default;
         [SerializeField] TextMeshPro m_countdownText = default;
         [SerializeField] AdventurerDetector m_detect = default;
-
-        public event OnEnemyCountdownUpdate OnCountdownUpdate;
-        public event OnEnemyUpdate OnActivate;
-        public event OnEnemyUpdate OnStandby;
         public event OnEnemyUpdate OnDefeat;
         protected HashSet<Adventurer> m_targetsInSight = new HashSet<Adventurer>();
         public int Countdown { get; protected set; }
         protected TacticalStats m_current;
         public virtual EnemyId Id { get; protected set; }
-        public Action ExecuteCall { get { return ExecuteAction; } }
         public TacticalStats InitStatus { get { return m_initStats; } }
         public TacticalStats CurrentStatus
         {
@@ -46,9 +41,6 @@ namespace Curry.Explore
 
         public virtual void ReturnToPool()
         {
-            OnCountdownUpdate = null;
-            OnActivate = null;
-            OnStandby = null;
             OnDefeat = null;
             m_detect.OnDetected -= OnDetectEnter;
             m_detect.OnExitDetection -= OnDetectExit;
@@ -83,7 +75,7 @@ namespace Curry.Explore
             m_anim?.SetTrigger("takeHit");
             m_anim?.SetBool("defeat", true);
         }
-        public virtual void StandbyBehaviour()
+        public virtual void OnDetect()
         {
             if (m_targetsInSight.Count > 0)
             {
@@ -92,40 +84,39 @@ namespace Curry.Explore
             }
         }
 
-        public virtual int UpdateCountdown(int dt)
+        public virtual bool UpdateCountdown(int dt)
         {
             StartCoroutine(CountdownTick(dt, Countdown));
             Countdown -= dt;
-            return Countdown;
+            bool countDownEnds = Countdown <= 0;
+            return countDownEnds;
         }
 
-        protected virtual void ExecuteAction()
+        public virtual void ExecuteAction()
         {
+            ResetCountdown();
             m_anim?.SetTrigger("strike");
         }
         protected virtual void OnCombat()
         {
-            m_anim?.SetTrigger("engage");
-            StartAttackCountdown();
+            ResetCountdown();
+            m_anim?.SetBool("combat", true);
         }
         protected virtual void OnDetectReaction()
         {
-            //m_anim?.SetTrigger("detect");
-            OnActivate?.Invoke(this);
         }
         protected virtual void Standby()
         {
             //reset anim state and countdown
-            m_anim?.SetTrigger("cancel");
+            m_anim?.SetBool("combat", false);
             Countdown = m_current.AttackCountdown;
             m_countdownText.text = "";
-            OnStandby?.Invoke(this);
         }
         protected virtual void Defeat()
         {
             OnDefeat?.Invoke(this);
         }
-        protected virtual void StartAttackCountdown()
+        protected virtual void ResetCountdown()
         {
             Countdown = m_current.AttackCountdown;
             m_countdownText.text = Countdown.ToString();
@@ -134,19 +125,18 @@ namespace Curry.Explore
         // countdown text & fx update
         protected virtual IEnumerator CountdownTick(int dt, int startFrom)
         {
-
             for (int i = 0; i < dt; ++i)
             {
                 startFrom--;
                 m_countdownText.text = Mathf.Max(startFrom, 0).ToString();
                 yield return new WaitForSeconds(0.1f);
             }
-            OnCountdownUpdate?.Invoke(this);
         }
 
         void OnDetectEnter(Adventurer adv)
         {
             m_targetsInSight.Add(adv);
+            OnDetect();
         }
         void OnDetectExit(Adventurer adv)
         {

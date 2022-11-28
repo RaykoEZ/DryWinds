@@ -17,7 +17,6 @@ namespace Curry.Explore
         [SerializeField] EnemyPoolCollection m_pool = default;
         protected override PoolCollection<TacticalEnemy> Pool { get { return m_pool; } }
     }
-    public delegate void OnInterrupt(List<Action> interrupts);
     // Monitors all spawned enemies, triggers enemy action phases
     public class TacticalEnemyManager : MonoBehaviour 
     {
@@ -67,25 +66,15 @@ namespace Curry.Explore
         #region Class Body
         [SerializeField] EnemyInstanceManager m_instance = default;
         [SerializeField] protected CurryGameEventListener m_onSpawn = default;
-        // When tme ticks, update all enemies with countdowns 
-        [SerializeField] protected CurryGameEventListener m_onTimeTick = default;
-        public event OnInterrupt OnEnemyInterrupt;
-        List<TacticalEnemy> m_standby = new List<TacticalEnemy>();
-        List<TacticalEnemy> m_activatedEnemies = new List<TacticalEnemy>();
-        // from activated to standby
-        HashSet<TacticalEnemy> m_deactivating = new HashSet<TacticalEnemy>();
-        // rom standby to activated
-        HashSet<TacticalEnemy> m_activating = new HashSet<TacticalEnemy>();
-        // enemies about to trigger actions
-        List<TacticalEnemy> m_executing = new List<TacticalEnemy>();
-        int m_numDirty = 0;
+        List<TacticalEnemy> m_activeEnemies = new List<TacticalEnemy>();
+        HashSet<TacticalEnemy> m_toRemove = new HashSet<TacticalEnemy>();
+        HashSet<TacticalEnemy> m_toAdd = new HashSet<TacticalEnemy>();
 
         // Comparer for enemy priority
         EnemyPriorityComparer m_priorityComparer = new EnemyPriorityComparer();
         private void Awake()
         {
             m_onSpawn?.Init();
-            m_onTimeTick?.Init();
         }
         public void SpawnEnemy(EventInfo info) 
         { 
@@ -98,111 +87,62 @@ namespace Curry.Explore
         {
             TacticalEnemy spawn = m_instance.GetInstanceFromAsset(enemy.gameObject, parent);
             spawn.gameObject.transform.position = position;
-            spawn.OnCountdownUpdate += OnCountdownUpdate;
-            spawn.OnActivate += OnEnemyActivate;
-            spawn.OnStandby += OnEnemyStandby;
             spawn.OnDefeat += OnEnemyDefeated;
-            m_standby.Add(spawn);
+            m_toAdd.Add(spawn);
         }
-        
-        // countdown updates whenever tme is spent 
-        public void OnTimeSpent(EventInfo time)
+        // Whenever player spends time, update all enemies with countdowns 
+        // returns: whether there are Responses from active enemies
+        // out: enemy responses
+        public bool OnPlayerAction(int timeSpent, out List<Action> resp)
         {
-            if (time is TimeInfo spend)
-            {
-                // Update all enemy countdowns here
-                UpdateActiveEnemies(spend.Time);
-            }
-        }
-        public void OnPhaseBegin() 
-        {
-            UpdateEnemyLists();
-            m_numDirty = m_standby.Count;
-            foreach (TacticalEnemy enemy in m_standby)
-            {
-                enemy.StandbyBehaviour();
-            }
-        }
-        void OnEnemyActivate(TacticalEnemy activated) 
-        {
-            m_activating.Add(activated);
-        }
-        void OnEnemyStandby(TacticalEnemy deactivated) 
-        {
-            m_deactivating.Add(deactivated);
-        }
-        void UpdateEnemyLists() 
-        {
-            // Remove double-switching enemies
-            m_activating.ExceptWith(m_deactivating);
-            UpdateActivatedList();
-            UpdateStandbyList();
-        }
-        void UpdateActivatedList() 
-        {
-            foreach(TacticalEnemy e in m_activating) 
-            {
-                if (m_standby.Remove(e)) 
-                {
-                    m_activatedEnemies.Add(e);
-                }
-            }
-            m_activating.Clear();
-        }
-        void UpdateStandbyList() 
-        {
-            foreach (TacticalEnemy e in m_deactivating)
-            {
-                if (m_activatedEnemies.Remove(e))
-                {
-                    m_standby.Add(e);
-                }
-            }
-            m_deactivating.Clear();
+            // Update all enemy countdowns here and get all responses
+            resp = UpdateActiveEnemies(timeSpent);
+            return resp.Count > 0;
         }
 
-        void OnEnemyDefeated(TacticalEnemy defeated) 
+        void OnEnemyDefeated(TacticalEnemy defeated)
         {
-            m_standby.Remove(defeated);
-            m_activatedEnemies.Remove(defeated);
+            m_toRemove.Add(defeated);
             defeated?.ReturnToPool();
         }
-        void OnCountdownUpdate(TacticalEnemy enemy) 
+        // add and remove scheduled updates to the enemy list
+        void UpdateActivity() 
         {
-            m_numDirty--;
-            // If this update has an interruptingaction, push it to the stack
-            if(enemy.Countdown <= 0) 
+            foreach (TacticalEnemy e in m_toAdd)
             {
-                m_executing.Add(enemy);
+                m_activeEnemies.Add(e);
             }
-            // When all finished updating, send the call stack to execute
-            // and update any changes to enemy lists
-            if(m_numDirty <= 0) 
+            foreach (TacticalEnemy e in m_toRemove) 
             {
-                // Sort executing enemies by lowest countdown, ascendingly
-                m_executing.Sort(m_priorityComparer);
-                List<Action> calls = new List<Action>();
-                foreach (TacticalEnemy e in m_executing)
-                {
-                    calls.Add(e.ExecuteCall);
-                }
-                OnEnemyInterrupt?.Invoke(calls);
-                UpdateEnemyLists();
+                m_activeEnemies.Remove(e);
+                e.ReturnToPool();
             }
+            m_toAdd.Clear();
+            m_toRemove.Clear();
         }
-        void UpdateActiveEnemies(int dt) 
+        List<Action> UpdateActiveEnemies(int dt) 
         {
-            // Make sure we have a valid list of active enemies
-            UpdateEnemyLists();
-            m_numDirty = m_activatedEnemies.Count;
-            int cd;
-            foreach (TacticalEnemy enemy in m_activatedEnemies)
-            {          
-                cd = enemy.UpdateCountdown(dt);
+            // make sure list is up to date before and after
+            UpdateActivity();
+            List<TacticalEnemy> executeOrder = new List<TacticalEnemy>();
+            foreach (TacticalEnemy enemy in m_activeEnemies)
+            {
+                // returns true if countdown reached, add to execution list
+                if (enemy.UpdateCountdown(dt)) 
+                {
+                    executeOrder.Add(enemy);
+                }
             }
+            // sort execution order by ascending countdown value
+            executeOrder.Sort(m_priorityComparer);
+            List<Action> calls = new List<Action>();
+            foreach (TacticalEnemy e in executeOrder)
+            {
+                calls.Add(e.ExecuteAction);
+            }
+            UpdateActivity();
+            return calls;
         }
         #endregion
     }
-
-
 }

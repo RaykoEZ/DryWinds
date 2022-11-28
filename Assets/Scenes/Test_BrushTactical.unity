@@ -523,7 +523,7 @@ GameObject:
   - component: {fileID: 62530892}
   - component: {fileID: 62530894}
   m_Layer: 0
-  m_Name: EnemyAction
+  m_Name: InteractionPhase
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -561,6 +561,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_enemy: {fileID: 2096668154}
+  m_play: {fileID: 120921346}
 --- !u!1 &79161747
 GameObject:
   m_ObjectHideFlags: 0
@@ -2386,24 +2387,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_button: {fileID: 653269624}
-  m_onCardPlayed:
-    m_eventToListen: {fileID: 11400000, guid: 856b99b46ebcaee409c7fb6d66575bcd, type: 2}
-    m_responses:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 653269627}
-          m_TargetAssemblyTypeName: Curry.Explore.EndTurnTrigger, Assembly-CSharp
-          m_MethodName: EndTurn
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-  m_time: {fileID: 0}
 --- !u!1 &676048862
 GameObject:
   m_ObjectHideFlags: 0
@@ -8313,23 +8296,6 @@ MonoBehaviour:
         - m_Target: {fileID: 2096668154}
           m_TargetAssemblyTypeName: Curry.Explore.TacticalEnemyManager, Assembly-CSharp
           m_MethodName: SpawnEnemy
-          m_Mode: 0
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-  m_onTimeTick:
-    m_eventToListen: {fileID: 11400000, guid: d1ce1a53da3a18a4a8e131d2a9c798f2, type: 2}
-    m_responses:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 2096668154}
-          m_TargetAssemblyTypeName: Curry.Explore.TacticalEnemyManager, Assembly-CSharp
-          m_MethodName: OnTimeSpent
           m_Mode: 0
           m_Arguments:
             m_ObjectArgument: {fileID: 0}

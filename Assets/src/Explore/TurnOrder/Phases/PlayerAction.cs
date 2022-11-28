@@ -13,7 +13,7 @@ namespace Curry.Explore
         [SerializeField] EndTurnTrigger m_turnEnd = default;
         public override void Init()
         {
-            NextState = typeof(EnemyAction);
+            NextState = typeof(TurnEnd);
             m_turnEnd.OnTurnEnd += TransitionTo;
         }
         public override void Pause()
@@ -38,6 +38,7 @@ namespace Curry.Explore
             Debug.Log("Player Ends the day");
             m_turnEnd.SetInteractable(false);
             m_inputControl.DisableInput();
+            m_inputControl.DiscardPlayerHand();
             base.TransitionTo();
         }
     }
