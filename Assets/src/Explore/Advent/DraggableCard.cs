@@ -31,8 +31,8 @@ namespace Curry.Explore
         [SerializeField] UITriggers m_ui = default;
         [SerializeField] FXTriggers m_fx = default;
 
-        public delegate void OnCardFinishDrag(DraggableCard card);
-        public event OnCardFinishDrag OnDragFinish;
+        public delegate void OnCardDragUpdate(DraggableCard card);
+        public event OnCardDragUpdate OnDragFinish;
 
         public override bool Droppable { 
             get 
@@ -53,14 +53,19 @@ namespace Curry.Explore
 
         public override void OnEndDrag(PointerEventData eventData)
         {
-            base.OnEndDrag(eventData);
             if (Droppable) 
             {
                 EventInfo info = new EventInfo();
                 m_ui.DropTrigger?.TriggerEvent(info);
                 m_fx.DropTrigger?.Invoke();
             }
+            base.OnEndDrag(eventData);
             OnDragFinish?.Invoke(this);
+        }
+
+        public virtual void OnCancel() 
+        {
+            ReturnToBeforeDrag();
         }
     }
 

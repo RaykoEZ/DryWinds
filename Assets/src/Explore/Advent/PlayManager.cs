@@ -77,20 +77,25 @@ namespace Curry.Explore
         {
             Debug.Log("Out of Time");
         }
-
-        void OnCardPlayed(DraggableCard card) 
+        // When card is trying to actvated...
+        void OnCardPlayed(AdventCard card, Action onPlay, Action onCancel) 
         {
-            // Activate & Spend Time/Resource
-            m_time.TrySpendTime(card.Card.TimeCost, out bool enoughTime);
+            //Try Spending Time/Resource, if not able, cancel
+            m_time.TrySpendTime(card.TimeCost, out bool enoughTime);
             if (enoughTime) 
             {
+                onPlay?.Invoke();
                 List<Action> actions = new List<Action>();
                 actions.Add(
                     () => {
-                        m_hand.PlayCard(card.Card, m_player.Stats);
+                        m_hand.PlayCard(card, m_player.Stats);
                     }
                     );
-                OnActivate?.Invoke(card.Card.TimeCost, actions);
+                OnActivate?.Invoke(card.TimeCost, actions);
+            }
+            else 
+            {
+                onCancel?.Invoke();
             }
             HidePlayZone();
         }
@@ -99,7 +104,7 @@ namespace Curry.Explore
             foreach (Encounter encounter in draw) 
             {
                 m_time.TrySpendTime(encounter.TimeCost, out bool _);
-                encounter?.OnDrawEffect(m_player.Stats);
+                encounter?.CardEffect?.Invoke(m_player.Stats);
             }
         }
 

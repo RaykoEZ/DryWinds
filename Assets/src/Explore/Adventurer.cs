@@ -38,7 +38,7 @@ namespace Curry.Explore
             PlayerStats = stats;
         }
     }
-
+    public delegate void OnPlayerMove();
     // A basic character for adventure mode
     public class Adventurer : MonoBehaviour 
     {
@@ -49,6 +49,7 @@ namespace Curry.Explore
         [SerializeField] CurryGameEventTrigger m_onScout = default;
         [SerializeField] CurryGameEventTrigger m_moveFinish = default;
         IRescue m_rescuee;
+        public event OnPlayerMove OnMove;
         public AdventurerStats Stats { get { return m_stats; } }
         void Awake()
         {

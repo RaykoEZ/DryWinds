@@ -7,7 +7,8 @@ using Curry.Events;
 
 namespace Curry.Util
 {
-    public delegate void OnCardDrop(DraggableCard card);
+    // onCancel: action to invoke when card activation is cancelled
+    public delegate void OnCardDrop(AdventCard card, Action onPlay, Action onCancel);
     // For deploying any interactable from hand to play zone 
     public class CardDropZone : MonoBehaviour, IDropHandler
     {
@@ -26,10 +27,12 @@ namespace Curry.Util
         {
             draggable.OnDragFinish -= DeferDropEvent;
             int dropIdx = GetDropPosition(draggable.transform.position.x);
-            draggable?.Drop(transform, dropIdx);
-            OnDropped?.Invoke(draggable);
+            Action drop = () =>
+            {
+                draggable?.DropObject(transform, dropIdx);
+            };
+            OnDropped?.Invoke(draggable.Card, drop, draggable.OnCancel);
         }
-
         int GetDropPosition(float dropX) 
         {
             int ret;

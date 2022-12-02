@@ -3292,8 +3292,6 @@ MonoBehaviour:
     m_eventToTrigger: {fileID: 11400000, guid: b388116c0ace42949a308c2e07cc7524, type: 2}
   m_onCardDraw:
     m_eventToTrigger: {fileID: 11400000, guid: cdd360b59762d3f48943143dadafba20, type: 2}
-  m_onDiscardHand:
-    m_eventToTrigger: {fileID: 11400000, guid: a53b758f71322444f9f948da82c4bd21, type: 2}
 --- !u!114 &1024562576
 MonoBehaviour:
   m_ObjectHideFlags: 0

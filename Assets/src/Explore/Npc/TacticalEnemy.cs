@@ -86,6 +86,7 @@ namespace Curry.Explore
 
         public virtual bool UpdateCountdown(int dt)
         {
+            if(m_targetsInSight.Count == 0) { return false; }
             StartCoroutine(CountdownTick(dt, Countdown));
             Countdown -= dt;
             bool countDownEnds = Countdown <= 0;

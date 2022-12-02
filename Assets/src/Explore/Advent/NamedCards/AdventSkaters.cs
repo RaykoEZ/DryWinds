@@ -16,4 +16,13 @@ namespace Curry.Explore
             OnExpend();
         }
     }
+
+    public class CloseQuarterCombat: AdventCard 
+    {
+        protected override void ActivateEffect(AdventurerStats user)
+        {
+            base.ActivateEffect(user);
+            OnExpend();
+        }
+    }
 }
