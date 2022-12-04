@@ -7,6 +7,7 @@ using Curry.Events;
 
 namespace Curry.Explore
 {
+
     // A class to trigger card effects when dragged and dropped
     public class DraggableCard : DraggableObject 
     {
