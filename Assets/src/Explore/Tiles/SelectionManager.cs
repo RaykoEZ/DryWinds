@@ -15,26 +15,25 @@ namespace Curry.Explore
         [SerializeField] TileManager m_tileHighlightManager = default;
         [SerializeField] CameraManager m_cam = default;
         [SerializeField] RangeDisplayHandler m_rangeDisplay = default;
-        [SerializeField] CurryGameEventListener m_onTileSelect = default;
-
+        [SerializeField] CurryGameEventListener m_onAdventurePrompt = default;
         public event OnTileSelect OnTileSelected = default;
         protected ObjectId m_previewTileId;
 
         void Awake()
         {
-            m_onTileSelect?.Init();
+            m_onAdventurePrompt?.Init();
             m_previewTileId = new ObjectId(m_previewTerrainTile);
             m_tileHighlightManager.Add(m_previewTerrainTile, Vector3.zero, transform);
         }
         public void EnableSelection()
         {
-            m_onTileSelect?.Init();
+            m_onAdventurePrompt?.Init();
 
         }
         public void DisableSelection()
         {
             CancelSelection();
-            m_onTileSelect?.Shutdown();
+            m_onAdventurePrompt?.Shutdown();
         }
         public void CancelSelection() 
         {
@@ -95,7 +94,6 @@ namespace Curry.Explore
             m_rangeDisplay.ShowRange(
                     rangeTile,
                     player.Stats.ScoutRange,
-                    player.transform.position,
                     player.transform);
         }
     }

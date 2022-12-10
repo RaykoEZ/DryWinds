@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using Curry.Util;
 namespace Curry.Explore
 {
     // Enables/disables player input for turn orders
@@ -7,6 +8,7 @@ namespace Curry.Explore
         [SerializeField] AdventButton m_adventureInput = default;
         [SerializeField] SelectionManager m_selectInput = default;
         [SerializeField] PlayManager m_cardPlay = default;
+        [SerializeField] HandZone m_hand = default;
         private void Awake()
         {
             DisableInput();
@@ -25,7 +27,7 @@ namespace Curry.Explore
         }
         public void DiscardPlayerHand() 
         {
-            m_cardPlay?.DiscardHand();
+            m_hand?.DiscardHand();
         }
     }
 }

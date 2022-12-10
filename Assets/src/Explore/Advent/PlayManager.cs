@@ -13,20 +13,17 @@ namespace Curry.Explore
     {
         [SerializeField] TimeManager m_time = default;
         [SerializeField] CardDropZone m_playZone = default;
+        [SerializeField] HandZone m_hand = default;
         [SerializeField] Adventurer m_player = default;
         [SerializeField] CurryGameEventListener m_onCardBeginDrag = default;
         [SerializeField] CurryGameEventListener m_onCardDropped = default;
-        [SerializeField] CurryGameEventListener m_onCardDraw = default;
-        [SerializeField] CurryGameEventListener m_onDiscardHand = default;
         [SerializeField] Image m_playPanel = default;
-        Hand m_hand = new Hand();
         public event OnEffectActivate OnActivate;
-        protected void Awake()
+        protected void Start()
         {
-            m_onCardDraw?.Init();
             m_onCardBeginDrag?.Init();
             m_onCardDropped?.Init();
-            m_onDiscardHand?.Init();
+            m_hand.OnEncounterTrigger += OnEncounterDraw;
         }
         void OnEnable()
         {
@@ -40,15 +37,6 @@ namespace Curry.Explore
             m_time.OnOutOfTimeTrigger -= OutOfTime;
         }
         
-        public void OnCardDrawn(EventInfo info)
-        {
-            if (info == null) return;
-            if (info is CardDrawInfo draw)
-            {
-                OnEncounterDraw(draw.Encounters);
-                m_hand.Draw(draw.CardsDrawn);
-            }
-        }
         public void ShowPlayZone()
         {
             m_playPanel.enabled = true;
@@ -57,10 +45,7 @@ namespace Curry.Explore
         {
             m_playPanel.enabled = false;
         }
-        public void DiscardHand()
-        {
-            m_hand.DiscardCards();
-        }
+
         public void EnablePlay()
         {
             m_playZone.OnDropped += OnCardPlayed;
@@ -77,7 +62,7 @@ namespace Curry.Explore
         {
             Debug.Log("Out of Time");
         }
-        // When card is trying to actvated...
+        // When card is trying to actvated after it is dropped...
         void OnCardPlayed(AdventCard card, Action onPlay, Action onCancel) 
         {
             //Try Spending Time/Resource, if not able, cancel
@@ -88,7 +73,7 @@ namespace Curry.Explore
                 List<Action> actions = new List<Action>();
                 actions.Add(
                     () => {
-                        m_hand.PlayCard(card, m_player.Stats);
+                        m_hand?.PlayCard(card, m_player.Stats);
                     }
                     );
                 OnActivate?.Invoke(card.TimeCost, actions);
@@ -107,47 +92,5 @@ namespace Curry.Explore
                 encounter?.CardEffect?.Invoke(m_player.Stats);
             }
         }
-
-        public delegate void OnDiscard(List<AdventCard> discarded);
-        public class Hand
-        {
-            public IReadOnlyList<AdventCard> CardsInHand { get { return m_hand; } }
-            public event OnDiscard OnDiscardHand;
-
-            List<AdventCard> m_hand = new List<AdventCard>();
-
-            public void Draw(IReadOnlyList<AdventCard> cards)
-            {
-                m_hand.AddRange(cards);
-            }
-
-            public void PlayCard(AdventCard card, AdventurerStats stats) 
-            {
-                if (m_hand.Remove(card)) 
-                {
-                    card.CardEffect?.Invoke(stats);
-                }
-
-            } 
-            // Remove all cards in hand that doesn't retain
-            public void DiscardCards() 
-            {
-                List<AdventCard> toDiscard = new List<AdventCard>();
-                foreach (AdventCard card in m_hand)
-                {
-                    if (!card.RetainCard) 
-                    {
-                        toDiscard.Add(card);
-                    }
-                }
-                foreach (AdventCard card in toDiscard)
-                {
-                    m_hand.Remove(card);
-                    card.OnDiscard();
-                }
-                OnDiscardHand?.Invoke(toDiscard);
-            }
-        }
-
     }
 }

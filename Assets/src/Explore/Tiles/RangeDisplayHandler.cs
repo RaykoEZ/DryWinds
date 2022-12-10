@@ -50,7 +50,6 @@ namespace Curry.Explore
         public void ShowRange(
             GameObject tileToSpawn,
             int range,
-            Vector3 origin,
             Transform parent,
             bool toggle = false)
         {

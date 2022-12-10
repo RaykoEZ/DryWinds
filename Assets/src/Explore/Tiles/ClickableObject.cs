@@ -33,7 +33,7 @@ namespace Curry.Explore
             ClickScreenPosition = clickedPos;
         }
     }
-
+    
     public class ClickableObject : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IPointerDownHandler
     {
         // Choose which mouse button click is detected
