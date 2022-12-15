@@ -6,12 +6,10 @@ namespace Curry.UI
     public class TacticalCameraManager : CameraManager 
     {
         [SerializeField] CurryGameEventListener m_onCamFollow = default;
-        [SerializeField] CurryGameEventListener m_onCardPlay = default;
 
         void Awake()
         {
             m_onCamFollow?.Init();
-            m_onCardPlay?.Init();
         }
 
         public void OnFollowPlayer(EventInfo info)

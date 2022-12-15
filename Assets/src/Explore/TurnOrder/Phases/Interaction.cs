@@ -4,6 +4,8 @@ using UnityEngine;
 using Curry.Game;
 namespace Curry.Explore
 {
+    // Handles player card/adventure plays
+    // Handles AI actions and reactions
     public class Interaction : Phase
     {
         [SerializeField] TacticalEnemyManager m_enemy = default;

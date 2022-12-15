@@ -5,14 +5,6 @@ using UnityEngine.EventSystems;
 
 namespace Curry.Util
 {
-    public class EffectTargetZone : IDropHandler
-    {
-        public void OnDrop(PointerEventData eventData)
-        {
-            throw new NotImplementedException();
-        }
-    }
-
     // onCancel: action to invoke when card activation is cancelled
     public delegate void OnCardDrop(AdventCard card, Action onPlay, Action onCancel);
     // For deploying any interactable from hand to play zone 
@@ -41,6 +33,7 @@ namespace Curry.Util
             };
             OnDropped?.Invoke(draggable.Card, drop, draggable.OnCancel);
         }
+        // Called when card is dropped into this zone
         protected virtual void PrepareCard(DraggableCard draggable) 
         {
         }

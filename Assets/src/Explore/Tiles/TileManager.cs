@@ -63,13 +63,6 @@ namespace Curry.Explore
                 val.HideTiles();
             }
         }
-        public virtual void ShowAll()
-        {
-            foreach(TileContainer c in m_containers.Values) 
-            {
-                c.ShowTiles();
-            }
-        }
 
         public virtual void HideAll()
         {

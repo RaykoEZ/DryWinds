@@ -1,15 +1,15 @@
-﻿using System;
+﻿using Curry.Events;
+using Curry.Util;
+using System;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
-using Curry.Util;
-using Curry.Events;
 
 namespace Curry.Explore
 {
 
     // A class to trigger card effects when dragged and dropped
-    public class DraggableCard : DraggableObject 
+    public class DraggableCard : DraggableObject
     {
         [Serializable]
         protected struct UITriggers
@@ -36,13 +36,18 @@ namespace Curry.Explore
         public event OnCardDragUpdate OnDragFinish;
         public event OnCardDragUpdate OnDragBegin;
 
-        public override bool Droppable { 
-            get 
+        public override bool Droppable
+        {
+            get
             {
                 return m_card.Activatable;
-            }   
+            }
         }
-
+        public bool DoesCardNeedTarget { get { return Card is ITargetsPosition; } }
+        protected override Transform OnDragParent
+        {
+            get { return DoesCardNeedTarget ? transform.parent : base.OnDragParent; }
+        }
         public AdventCard Card { get { return m_card; } }
 
         public override void OnBeginDrag(PointerEventData eventData)
@@ -56,7 +61,7 @@ namespace Curry.Explore
 
         public override void OnEndDrag(PointerEventData eventData)
         {
-            if (Droppable) 
+            if (Droppable)
             {
                 EventInfo info = new EventInfo();
                 m_ui.DropTrigger?.TriggerEvent(info);
@@ -65,8 +70,15 @@ namespace Curry.Explore
             base.OnEndDrag(eventData);
             OnDragFinish?.Invoke(this);
         }
-
-        public virtual void OnCancel() 
+        public override void OnDrag(PointerEventData eventData)
+        {
+            // Do not move when drag is held, if the card needs to use a target guide
+            if (!DoesCardNeedTarget) 
+            {
+                base.OnDrag(eventData);
+            }
+        }
+        public virtual void OnCancel()
         {
             ReturnToBeforeDrag();
         }

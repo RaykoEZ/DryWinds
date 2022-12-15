@@ -18,7 +18,6 @@ namespace Curry.Explore
     public abstract class AdventCard : MonoBehaviour, IPoolable
     {
         [SerializeField] CardAttribute m_attribute = default;
-        [SerializeField] CurryGameEventTrigger m_cardActivated = default;
         bool m_activatable = true;
         public int Id { get { return $"{m_attribute.Name}/{gameObject.name}".GetHashCode(); } }
         public string Name { get { return m_attribute.Name; } }
@@ -45,7 +44,6 @@ namespace Curry.Explore
         // Card Effect
         protected virtual void ActivateEffect(AdventurerStats user) 
         {
-            m_cardActivated?.TriggerEvent(new EventInfo());
         }
 
         // After activating card, maybe expend the card
