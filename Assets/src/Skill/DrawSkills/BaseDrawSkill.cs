@@ -3,13 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using Curry.Game;
 using Curry.Util;
-
+using UnityEngine.AI;
 namespace Curry.Skill
 {
     public abstract class BaseDrawSkill : BaseSkill
     {
         [SerializeField] protected PrefabLoader m_traceRef = default;
-
         protected Vector2 m_previousDrawPos;
         protected BaseTracer m_currentTracer;
         public virtual float CooldownTime { get { return m_skillProperty.CooldownTime; } }
@@ -22,17 +21,17 @@ namespace Curry.Skill
                 return base.IsUsable && TracerRef != null;
             }
         }
+        protected abstract void OnExecute(LineInput input);
 
         public override void Init(BaseCharacter user)
         {
             base.Init(user);
             m_traceRef.OnLoadSuccess += (obj) => 
-            { 
+            {
                 TracerRef = obj;
             };
             m_traceRef.LoadAsset();
         }
-
         public override void OnEnter(IActionInput param)
         {
             // If spawned traces is not ready, don't draw 
@@ -43,33 +42,34 @@ namespace Curry.Skill
             }
             if (param is VectorInput posParam) 
             {
-                // start a new stroke if we hold LMB (already drawing) and is moving
+                Vector2 pos = posParam.Value;
+                // start a new stroke if we started drawing whilst other brush strokes exist
                 if (!m_drawInProgress)
                 {
                     EndTracer();
-                    m_previousDrawPos = posParam.Value;
+                    m_previousDrawPos = pos;
                     // make new stroke
-                    m_currentTracer = m_instanceManager.GetInstanceFromAsset(TracerRef) as BaseTracer;
-                    m_currentTracer.OnActivate += OnSkillEffectActivate;
+                    m_currentTracer = m_instanceManager.GetInstanceFromAsset(TracerRef) as BaseTracer;          
                     m_drawInProgress = true;
                 }
-
-                float dist = Vector2.Distance(posParam.Value, m_previousDrawPos);
+                
+                float dist = Vector2.Distance(pos, m_previousDrawPos);
                 float totalCost = dist * Properties.SpCost;
-                if (totalCost <= m_user.CurrentStats.SP)
-                {
-                    //update mousePos log
-                    ConsumeResource(totalCost);
-                    m_currentTracer.OnTrace(posParam.Value);
-                }
-                else if( m_user.CurrentStats.SP > 0f )
+                // If SP is partially sufficient, lerp up to where SP runs out.
+                if( totalCost > m_user.CurrentStats.SP && m_user.CurrentStats.SP > 0f)
                 {
                     float scale = m_user.CurrentStats.SP / totalCost;
-                    Vector2 lerp = Vector2.Lerp(m_previousDrawPos, posParam.Value, scale);
-                    ConsumeResource(m_user.CurrentStats.SP);
-                    m_currentTracer.OnTrace(lerp);
+                    Vector2 lerp = Vector2.Lerp(m_previousDrawPos, pos, scale);
+                    totalCost = m_user.CurrentStats.SP;
+                    pos = lerp;
                 }
-                m_previousDrawPos = posParam.Value;
+                //update mousePos log
+                if (m_currentTracer.OnTrace(pos))
+                {
+                    ConsumeResource(totalCost);
+                }
+
+                m_previousDrawPos = pos;
             }
         }
 
@@ -87,21 +87,30 @@ namespace Curry.Skill
 
         protected virtual void EndTracer()
         {
-            if(m_currentTracer != null && m_currentTracer.isActiveAndEnabled) 
+            if (m_currentTracer != null && m_currentTracer.isActiveAndEnabled && m_currentTracer.Length > 0.1f) 
             {
-                m_currentTracer.ActivateEffect();
+                List<Vector2> v = m_currentTracer.GetSimplifiedVerts();
+                LineInput input = new LineInput(v);
+                OnSkillEffectActivate(input);
             } 
         }
 
         protected virtual void OnSkillEffectActivate(LineInput input) 
         {
-            m_currentTracer.OnActivate -= OnSkillEffectActivate;
             m_currentTracer.OnClear();
-            EndTracer();
             CoolDown();
             OnSkillFinish();
             m_animator.SetTrigger("Start");
             m_execute = StartCoroutine(ExecuteInternal(input));
+        }
+
+        protected override IEnumerator ExecuteInternal(IActionInput target)
+        {
+            if (target is LineInput input)
+            {
+                OnExecute(input);
+            }
+            yield return null;
         }
     }
 }

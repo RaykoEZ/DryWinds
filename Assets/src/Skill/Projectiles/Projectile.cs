@@ -6,7 +6,8 @@ namespace Curry.Game
     public class Projectile : Interactable, ISkillObject<VectorInput>
     {
         [SerializeField] protected Animator m_onActivate = default;
-        public virtual GameObject Self { get { return gameObject; } }
+        [SerializeField] Rigidbody2D m_rb = default;
+        public virtual GameObject go { get { return gameObject; } }
         protected ProjectileSetting m_currentSetting;
         protected float m_currentDamage;
         protected float m_currentknockBack;
@@ -31,7 +32,7 @@ namespace Curry.Game
                 m_currentDamage = damage;
                 m_currentknockBack = knockback;
                 m_onActivate.SetTrigger("Start");
-                RigidBody.AddForce(setting.InitForce * param.Value.normalized);
+                m_rb.AddForce(setting.InitForce * param.Value.normalized);
             }
         }
 

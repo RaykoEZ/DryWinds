@@ -96,7 +96,7 @@ namespace Curry.Game
         {
             if (IsReady)
             {
-                Character.RigidBody.MovePosition(Character.RigidBody.position + (unitPerStep * direction * Character.CurrentStats.Speed));
+                Character.RigidBody.MovePosition(Character.RigidBody.position + (unitPerStep * direction * Character.CurrentStats.MoveSpeed));
             }
         }
 

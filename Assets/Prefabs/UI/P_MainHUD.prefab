@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 3984662105553998742}
   - component: {fileID: 3984662105553998741}
   - component: {fileID: 3984662105553998737}
-  - component: {fileID: 6717865031490918797}
   m_Layer: 5
   m_Name: P_MainHUD
   m_TagString: Untagged
@@ -53,9 +52,9 @@ Canvas:
   m_GameObject: {fileID: 3984662105553998740}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 0
+  m_RenderMode: 1
   m_Camera: {fileID: 0}
-  m_PlaneDistance: 100
+  m_PlaneDistance: 1
   m_PixelPerfect: 1
   m_ReceivesEvents: 1
   m_OverrideSorting: 0
@@ -120,18 +119,6 @@ MonoBehaviour:
   m_spBar: {fileID: 6258802703738158800}
   m_stamBar: {fileID: 4746289970179079626}
   m_heldItems: {fileID: 1446163594806209714}
---- !u!114 &6717865031490918797
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3984662105553998740}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: daf271bf2dbc8be41bbbad7632df4eee, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &4434834175514662586
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -252,6 +239,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3984662105553998736}
     m_Modifications:
+    - target: {fileID: 5165141348125630409, guid: 9898915c774e4a8459a224f62936834b, type: 3}
+      propertyPath: m_fontSize
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 5165141348800992116, guid: 9898915c774e4a8459a224f62936834b, type: 3}
+      propertyPath: m_fontSize
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 5165141348800992119, guid: 9898915c774e4a8459a224f62936834b, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 10.299988
+      objectReference: {fileID: 0}
     - target: {fileID: 5165141349273256124, guid: 9898915c774e4a8459a224f62936834b, type: 3}
       propertyPath: m_Name
       value: P_DialogueManager

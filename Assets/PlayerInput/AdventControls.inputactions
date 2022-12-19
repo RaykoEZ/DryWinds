@@ -1,0 +1,33 @@
+{
+    "name": "AdventControls",
+    "maps": [
+        {
+            "name": "Gameplay UI",
+            "id": "c6ceeea3-c8f1-4b7e-83d8-bebb91bdb9d9",
+            "actions": [
+                {
+                    "name": "Unfocus Camera",
+                    "type": "Button",
+                    "id": "a8b346cf-4092-4dca-88f8-8e0653fabdd2",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "713f6a60-d736-4d00-af32-16da10a20688",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Unfocus Camera",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}

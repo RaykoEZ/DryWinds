@@ -1,0 +1,15 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!221 &22100000
+AnimatorOverrideController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: PathMaker
+  m_Controller: {fileID: 9100000, guid: 8ad275651759feb4aa8ae6b2929a1305, type: 2}
+  m_Clips:
+  - m_OriginalClip: {fileID: 7400000, guid: e379eeea1a3baa14789c14d4713a5a83, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 1b26eb31d99255f4198f8365bbce097a, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 232f23f3753f8a849965af325954e17c, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 8764dfdde6761e6458e954ad747fa963, type: 2}

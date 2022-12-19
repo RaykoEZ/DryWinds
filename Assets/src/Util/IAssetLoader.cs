@@ -1,12 +1,20 @@
-﻿using UnityEngine.AddressableAssets;
+﻿using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.AddressableAssets;
 
 namespace Curry.Util
 {
-    public interface IAssetLoader<T>
+    public interface IAssetLoader<T> where T : Object
     {
-        AssetReference AssetRef { get; }
         delegate void OnAssetLoadSuccess(T asset);
         event OnAssetLoadSuccess OnLoadSuccess;
         void LoadAsset();
+    }
+
+    public interface IAssetBatch<T> where T : Object 
+    {
+        delegate void OnAssetLoadSuccess(ICollection<T> asset);
+        event OnAssetLoadSuccess OnLoadSuccess;
+        void LoadAssets();
     }
 }

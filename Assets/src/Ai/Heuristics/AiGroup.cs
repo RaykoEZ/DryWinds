@@ -21,7 +21,6 @@ namespace Curry.Ai
     [Serializable]
     public class AiGroup : MonoBehaviour
     {
-        [SerializeField] Collider2D m_commsRange = default;
         protected List<BaseNpc> m_groupMembers = new List<BaseNpc>();
         protected AiGroupAwareness GroupAwareness { get; }
 

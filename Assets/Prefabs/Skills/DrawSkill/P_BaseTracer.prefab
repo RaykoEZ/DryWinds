@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 346624158060485392}
   - component: {fileID: 9087464718448856407}
   - component: {fileID: 6249534485216099116}
-  - component: {fileID: 3837881217764659054}
   - component: {fileID: 2929046991183055066}
   m_Layer: 8
   m_Name: P_BaseTracer
@@ -49,7 +48,7 @@ EdgeCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
-  m_EdgeRadius: 0.1
+  m_EdgeRadius: 0.4
   m_Points: []
   m_AdjacentStartPoint: {x: 0, y: 0}
   m_AdjacentEndPoint: {x: 0, y: 0}
@@ -170,27 +169,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!50 &3837881217764659054
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6937999071832126887}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 7
 --- !u!114 &2929046991183055066
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -203,8 +181,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4992002a094cde24fb8bd0ad37305548, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_anim: {fileID: 0}
-  m_rigidbody: {fileID: 3837881217764659054}
-  m_relations: -1
+  m_bodyManager:
+    m_bodyParts: []
+  m_rigidbody: {fileID: 0}
   m_lineRenderer: {fileID: 9087464718448856407}
   m_edgeCollider: {fileID: 346624158060485392}

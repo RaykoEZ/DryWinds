@@ -5,13 +5,14 @@ using Curry.Events;
 
 namespace Curry.Game
 {
-    [RequireComponent(typeof(DialogueTrigger))]
     public class ObjectiveManager : MonoBehaviour
     {
-        [SerializeField] protected GameEventManager m_eventManager = default;
         [SerializeField] protected List<GameObjective> m_objectives = default;
         protected List<IObjective> m_completedObjectives = new List<IObjective>();
+        protected List<IObjective> m_failedObjectives = new List<IObjective>();
+
         public event OnObjectiveComplete ObjectiveCompleted;
+        public event OnObjectiveComplete ObjectiveFail;
 
         public IReadOnlyList<IObjective> ActiveObjectives { get { return m_objectives; } }
         public IReadOnlyList<IObjective> CompletedObjectives { get { return m_completedObjectives; } }
@@ -44,21 +45,36 @@ namespace Curry.Game
 
         protected virtual void OnObjectiveComplete(IObjective completed) 
         {
-            completed.OnComplete -= OnObjectiveComplete;
-            completed?.Shutdown(m_eventManager);
+            CleanupObjective(completed);
             m_completedObjectives.Add(completed);
-            m_objectives.Remove(completed as GameObjective);
-            // Do some animation/notification:
             ObjectiveCompleted?.Invoke(completed);
+            // Do some animation/notification:
         }
+
+        protected virtual void OnObjectiveFail(IObjective failed)
+        {
+            CleanupObjective(failed);
+            m_failedObjectives.Add(failed);
+            ObjectiveFail?.Invoke(failed);
+            // Do some animation/notification:
+        }
+
+        void CleanupObjective(IObjective completed)
+        {
+            completed.OnComplete -= OnObjectiveComplete;
+            completed.OnFail -= OnObjectiveFail;
+            completed?.Shutdown();
+            m_objectives.Remove(completed as GameObjective);
+        }
+
         protected void PrepareObjective(GameObjective objective)
         {
-            objective?.Init(m_eventManager);
+            objective?.Init();
             objective.OnComplete += OnObjectiveComplete;
         }
         protected void ShutdownObjective(GameObjective objective)
         {
-            objective?.Shutdown(m_eventManager);
+            objective?.Shutdown();
             objective.OnComplete -= OnObjectiveComplete;
         }
 

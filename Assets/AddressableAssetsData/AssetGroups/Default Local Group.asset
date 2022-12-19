@@ -17,20 +17,62 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: cb0962f79020ccc4c8a10197b3e67f06
   m_SerializeEntries:
-  - m_GUID: f7fd15333b915b2429510021a1cfcb51
-    m_Address: DSkiill/P/MinorProtection/Summon0
+  - m_GUID: c429d02b3f4902d4591f75325c991b40
+    m_Address: P_BaseTracer
     m_ReadOnly: 0
     m_SerializedLabels: []
-    m_MainAsset: {fileID: 6391846705114584865, guid: f7fd15333b915b2429510021a1cfcb51, type: 3}
-    m_TargetAsset: {fileID: 6391846705114584865, guid: f7fd15333b915b2429510021a1cfcb51, type: 3}
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
   - m_GUID: ae7a2f9b192e73243ba72c10133983fb
     m_Address: PSkills/SlashWave/P/SlashWave_Projectile
     m_ReadOnly: 0
     m_SerializedLabels: []
-    m_MainAsset: {fileID: 7927652418098392021, guid: ae7a2f9b192e73243ba72c10133983fb, type: 3}
-    m_TargetAsset: {fileID: 7927652418098392021, guid: ae7a2f9b192e73243ba72c10133983fb, type: 3}
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
   - m_GUID: cc09dce4b631c9b469f0d6f5e07f03b3
     m_Address: PSkills/SlashWave/P/SlashWave
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 4c3458c4a6d950147bd98ba3694a3259
+    m_Address: DSkill/P/PathMaker/Path
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 0a4276c08d867c14c91cffc2ffd65d5f
+    m_Address: DSkill/P/PathMaker
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 27b15929551e71f4180fc2d18466f1ff
+    m_Address: P_PathTracer
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 233afe47f11c6eb418c65dea0806e311
+    m_Address: P_PathLiner
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: feeaa1f113a0d2140ae93496f42f993f
+    m_Address: Advent/P/Skaters
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 2861c2f728e9f5b4b8c9b3f0aedddfad
+    m_Address: Advent/P/FruitlessDetour
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 0ecd928d489bcba4abe4b21cb061381a
+    m_Address: Advent/P/Sweep
     m_ReadOnly: 0
     m_SerializedLabels: []
     m_MainAsset: {fileID: 0}

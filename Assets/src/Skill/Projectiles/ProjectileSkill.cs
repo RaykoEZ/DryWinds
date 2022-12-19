@@ -38,7 +38,7 @@ namespace Curry.Game
                 for (int i = 0; i < m_projectileSetting.NumShotsToFire; ++i)
                 {
                     Projectile projectile =
-                        m_instanceManager.GetInstanceFromAsset(Projectile.Self) as Projectile;
+                        m_instanceManager.GetInstanceFromAsset(Projectile.go) as Projectile;
 
                     m_projectiles.Add(projectile);
                 }

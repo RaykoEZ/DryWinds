@@ -14,10 +14,14 @@ namespace Curry.Game
     public delegate void OnCharacterRetreat();
     public abstract class BaseCharacter : Interactable
     {
+        [SerializeField] protected BodyManager m_bodyManager = default;
+        [SerializeField] protected Rigidbody2D m_rigidbody = default;
         [SerializeField] protected CharacterStatusManager m_statusManager = default;
         protected CharacterContextFactory m_contextFactory = new CharacterContextFactory();
 
         public event OnLoadFinish OnLoaded;
+        public Rigidbody2D RigidBody { get { return m_rigidbody; } }
+
         public virtual CharacterStats BaseStats 
         { 
             get { return m_statusManager.BaseStats.CharacterStats; } 
@@ -25,10 +29,6 @@ namespace Curry.Game
         public virtual CharacterStats CurrentStats 
         { 
             get { return m_statusManager.CurrentStats.CharacterStats; } 
-        }
-        public override CollisionStats CollisionData 
-        { 
-            get { return m_statusManager.CurrentStats.CharacterStats.CollisionStats; } 
         }
         public virtual SkillInventory BasicSkills { get { return m_statusManager.BasicSkills; } }
         public virtual SkillInventory DrawSkills { get { return m_statusManager.DrawSkills; } }
@@ -42,15 +42,26 @@ namespace Curry.Game
         public override void Prepare() 
         {
             base.Prepare();
+            m_bodyManager.Init();
+            m_bodyManager.OnBodyPartHit += OnBodyHit;
             m_statusManager.OnLoaded += () => { OnLoaded?.Invoke(); };
             m_statusManager.Init(this, m_contextFactory);
         }
 
-        protected override void OnBodyHit(BodyHitResult hit)
+        protected virtual void OnBodyHit(BodyHitResult hit)
         {
-            base.OnBodyHit(hit);
+            OnTakeDamage(hit.Damage, hit.PartDamage);
+            if (hit.PartBreak)
+            {
+                OnBodyPartBreak(hit.BodyPart);
+            }
+            if (hit.WeakpointBreak)
+            {
+                OnWeakpointBreak(hit.BodyPart);
+            }
+            
             // Apply any modifiers on hit
-            if(hit.Modifiers != null) 
+            if (hit.Modifiers != null) 
             { 
                 foreach(CharacterModifier mod in hit.Modifiers) 
                 {
@@ -59,10 +70,25 @@ namespace Curry.Game
             }
         }
 
+        protected virtual void OnBodyPartBreak(BodyPart part)
+        {
+        }
+
+        protected virtual void OnWeakpointBreak(BodyPart part)
+        {
+        }
+
         public override void ReturnToPool() 
         {
+            m_bodyManager.Shutdown();
             m_statusManager.Shutdown();
             base.ReturnToPool();
+        }
+
+        public override void OnKnockback(Vector2 source, float knockback = 1f)
+        {
+            Vector2 diff = RigidBody.position - source;
+            m_rigidbody.AddForce(knockback * diff.normalized, ForceMode2D.Impulse);
         }
 
         protected override void OnTakeDamage(float damage, int partDamage = 0)

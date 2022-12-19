@@ -14,10 +14,10 @@ TagManager:
   - Environment
   - Attack
   - Drawing
-  - 
-  - 
-  - 
-  - 
+  - Agents
+  - Player
+  - Obstacles
+  - Cards
   - 
   - 
   - 

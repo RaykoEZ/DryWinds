@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!221 &22100000
+AnimatorOverrideController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: AOC_FragileBarrier
+  m_Controller: {fileID: 9100000, guid: 95b1f068de115e8429083f1ea9d0989d, type: 2}
+  m_Clips:
+  - m_OriginalClip: {fileID: 7400000, guid: cb54ce88a173e9a4cbba5c30436797f5, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: eef5e8e083113754992bd663044fbb85, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 397f72ead78fe4947902d17b8bc209c0, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 67fd9bd52bb48374798044849094c601, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 46d6df39bb5f98042a77cdf5c340dd3d, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: d2339d1f2f30cb640829c674100f7721, type: 2}

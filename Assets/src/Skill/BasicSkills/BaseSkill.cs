@@ -10,7 +10,7 @@ namespace Curry.Skill
     public abstract class BaseSkill : MonoBehaviour, ICharacterAction<IActionInput>
     {
         [SerializeField] protected Animator m_animator = default;
-        [SerializeField] protected InteractableInstanceManager m_instanceManager = default;
+        [SerializeField] protected InstanceManager m_instanceManager = default;
         [SerializeField] protected ActionProperty m_skillProperty = default;
         public event OnActionFinish<IActionInput> OnFinish;
         protected BaseCharacter m_user = default;
@@ -79,7 +79,7 @@ namespace Curry.Skill
 
         protected virtual void ConsumeResource(float val) 
         {
-            m_user.OnLoseSp(val);
+            m_user?.OnLoseSp(val);
         }
 
         protected virtual void OnSkillFinish() 

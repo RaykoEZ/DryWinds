@@ -10,11 +10,12 @@ namespace Curry.Skill
     public class FragileBarrier : FragileObject, ITimeLimit, ISkillObject<LineInput>
     {
         [SerializeField] protected LineRenderer m_lineRenderer = default;
+        [SerializeField] protected EdgeCollider2D m_collider = default;
         [SerializeField] Animator m_anim = default;
         public float Duration { get; protected set; }
         public float TimeElapsed { get; protected set; }
-        public virtual GameObject Self { get { return gameObject; } }
-        public virtual EdgeCollider2D HitBox { get { return GetComponent<EdgeCollider2D>(); } }
+        public virtual GameObject go { get { return gameObject; } }
+        public virtual EdgeCollider2D HitBox { get { return m_collider; } }
         public virtual LineRenderer LineRenderer { get { return m_lineRenderer; } }
 
         public void Begin(LineInput param) 
@@ -22,11 +23,7 @@ namespace Curry.Skill
             if(param != null && param.Vertices.Count > 2) 
             {
                 Duration = (float)param.Payload["duration"];
-                HitBox.SetPoints(param.Vertices);
-                Vector3[] pos = VectorExtension.ToVector3Array(param.Vertices.ToArray());
-                m_lineRenderer.positionCount = pos.Length;
-                m_lineRenderer.SetPositions(pos);
-                transform.parent = null;
+                GameUtil.RenderLine(param.Vertices, m_lineRenderer, m_collider);
                 m_anim.SetTrigger("Start");
                 StartCoroutine(Countdown());
             }
@@ -58,7 +55,7 @@ namespace Curry.Skill
         {
             TimeElapsed = 0f;
             Duration = 0f;
-            HitBox.points = new Vector2[] { };
+            m_collider.points = new Vector2[] { };
             m_lineRenderer.positionCount = 0;
             m_lineRenderer.SetPositions(new Vector3[] { });
             base.OnDefeat();

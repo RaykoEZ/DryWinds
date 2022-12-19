@@ -9,35 +9,22 @@ namespace Curry.Util
     // Not using for now
     public class BattleCursorBehaviour : MonoBehaviour
     {
-        [SerializeField] SpriteRenderer Sprite = default;
-        public bool CollisionActivated { get { return m_collisionOn; } }
-
-        bool m_collisionOn = false;
-
-        void OnMouseDown()
-        {
-            BattleMode(true);
-        }
-
-
-        void OnMouseUp()
-        {
-            BattleMode(false);
-        }
-
-        void Update()
+        public Rigidbody2D rb = default;
+        void FixedUpdate()
         {
             Vector3 mousePos = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
             mousePos.z = 0.0f;
-            transform.position = mousePos;
+            rb.MovePosition(mousePos);
         }
 
-        void BattleMode(bool isOn) 
+        void OnCollisionEnter2D(Collision2D collision)
         {
-            Sprite.enabled = isOn;
-            m_collisionOn = isOn;
-        }
+            ContactPoint2D contact = collision.GetContact(0);
+            Vector2 dir = contact.normal;
+            Vector2 diff = rb.position - dir;
+            rb.MovePosition((rb.position + diff));
 
+        }
     }
 }
 
