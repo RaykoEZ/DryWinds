@@ -1073,7 +1073,7 @@ GameObject:
   - component: {fileID: 459233627}
   - component: {fileID: 459233626}
   - component: {fileID: 459233623}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: P_CloseQuarterCombat
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1153,6 +1153,9 @@ MonoBehaviour:
     Description: 
     TimeCost: 0
     RetailCard: 1
+  m_targetLayer:
+    serializedVersion: 2
+    m_Bits: 512
 --- !u!114 &459233626
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6709,7 +6712,6 @@ GameObject:
   - component: {fileID: 2017579926}
   - component: {fileID: 2017579929}
   - component: {fileID: 2017579928}
-  - component: {fileID: 2017579927}
   - component: {fileID: 2017579930}
   m_Layer: 0
   m_Name: Tilemap_FogOfWar
@@ -6732,22 +6734,6 @@ Transform:
   m_Father: {fileID: 1581318614}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!19719996 &2017579927
-TilemapCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2017579925}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_MaximumTileChangeCount: 1000
-  m_ExtrusionFactor: 0.00001
 --- !u!483693784 &2017579928
 TilemapRenderer:
   m_ObjectHideFlags: 0

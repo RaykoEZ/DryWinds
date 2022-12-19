@@ -42,7 +42,6 @@ namespace Curry.Explore
         }
         public void DisablePlay() 
         {
-            m_hand.HidePlayZone();
             m_playZone.OnDropped -= OnCardPlayed;
             m_hand.OnEncounterTrigger -= OnEncounterDraw;
             m_hand.OnCardTargetResolve -= OnCardPlayed;

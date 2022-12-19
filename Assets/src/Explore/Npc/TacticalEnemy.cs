@@ -73,7 +73,7 @@ namespace Curry.Explore
         {
             Debug.Log("Ahh, me ded");
             m_anim?.SetTrigger("takeHit");
-            m_anim?.SetBool("defeat", true);
+            Defeat();
         }
         public virtual void OnDetect()
         {
@@ -115,7 +115,7 @@ namespace Curry.Explore
         }
         protected virtual void Defeat()
         {
-            OnDefeat?.Invoke(this);
+            StartCoroutine(HandleDefeat());
         }
         protected virtual void ResetCountdown()
         {
@@ -133,7 +133,17 @@ namespace Curry.Explore
                 yield return new WaitForSeconds(0.1f);
             }
         }
-
+        IEnumerator HandleDefeat() 
+        {
+            m_anim?.SetBool("defeat", true);
+            yield return new WaitUntil(
+                () => 
+                { 
+                    return m_anim.GetCurrentAnimatorStateInfo(m_anim.GetLayerIndex("TakeHit")).IsName("Defeat") &&
+                    m_anim.GetCurrentAnimatorStateInfo(m_anim.GetLayerIndex("TakeHit")).normalizedTime >= 1.0f; 
+                });
+            OnDefeat?.Invoke(this);
+        }
         void OnDetectEnter(Adventurer adv)
         {
             m_targetsInSight.Add(adv);
