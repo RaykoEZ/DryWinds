@@ -4,7 +4,7 @@ using Curry.Util;
 
 namespace Curry.Explore
 {
-    public class AdventSkaters : AdventCard
+    public class ThreatAssessment : AdventCard
     {
         [SerializeField] CurryGameEventTrigger m_onMove = default;
         protected override void ActivateEffect(AdventurerStats user)
