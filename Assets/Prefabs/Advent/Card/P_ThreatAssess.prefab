@@ -90,7 +90,7 @@ GameObject:
   - component: {fileID: 6933493858415940082}
   - component: {fileID: 5221273488511747728}
   m_Layer: 12
-  m_Name: P_Adv_Skaters
+  m_Name: P_ThreatAssess
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -129,14 +129,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_attribute:
-    Name: Skater
-    Description: Wowowo
+    Name: Threat Assessment
+    Description: Scanning...
     TimeCost: 1
-    RetailCard: 0
-  m_cardActivated:
-    m_eventToTrigger: {fileID: 11400000, guid: 856b99b46ebcaee409c7fb6d66575bcd, type: 2}
-  m_onMove:
-    m_eventToTrigger: {fileID: 11400000, guid: 736b70e15b9efe8408d6fe321c5396e4, type: 2}
+    RetainCard: 0
+  m_detectionLevel: 1
+  m_onSonar:
+    m_eventToTrigger: {fileID: 11400000, guid: a674b44ebbb4330479457ac8b0404c40, type: 2}
 --- !u!222 &8481637543372204205
 CanvasRenderer:
   m_ObjectHideFlags: 0

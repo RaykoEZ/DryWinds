@@ -29,7 +29,16 @@ namespace Curry.Explore
             m_adventurer = stats.m_adventurer;
         }
     }
-
+    public class ScanInfo : EventInfo 
+    {
+        public int DetectionLevel { get; protected set; }
+        public float Diameter { get; protected set; }
+        public ScanInfo(int detectionLevel, float diameter)
+        {
+            DetectionLevel = detectionLevel;
+            Diameter = diameter;
+        }
+    }
     public class PlayerInfo : EventInfo
     {
         public AdventurerStats PlayerStats { get; protected set; }
@@ -44,12 +53,12 @@ namespace Curry.Explore
     {
         [SerializeField] AdventurerStats m_stats = default;
         [SerializeField] CurryGameEventListener m_onMove = default;
+
         // Pings player status to trigger card draw events etc
         [SerializeField] CurryGameEventTrigger m_onPlayerPing = default;
         [SerializeField] CurryGameEventTrigger m_onScout = default;
         [SerializeField] CurryGameEventTrigger m_moveFinish = default;
         IRescue m_rescuee;
-        public event OnPlayerMove OnMove;
         public AdventurerStats Stats { get { return m_stats; } }
         void Awake()
         {
@@ -61,6 +70,7 @@ namespace Curry.Explore
             PlayerInfo info = new PlayerInfo(new AdventurerStats(m_stats));
             m_onScout?.TriggerEvent(info);
         }
+       
         public void Move(EventInfo info) 
         {
             if (info == null) return;

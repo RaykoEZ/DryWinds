@@ -1,17 +1,18 @@
 ﻿using UnityEngine;
 using Curry.Events;
-using Curry.Util;
 
 namespace Curry.Explore
 {
     public class ThreatAssessment : AdventCard
     {
-        [SerializeField] CurryGameEventTrigger m_onMove = default;
+        [Range(0, 3)]
+        [SerializeField] int m_detectionLevel = default;
+        [SerializeField] CurryGameEventTrigger m_onSonar = default;
+
         protected override void ActivateEffect(AdventurerStats user)
         {
-            Vector3 dest = user.WorldPosition + VectorExtension.RandomCardinalVector();
-            PositionInfo info = new PositionInfo(dest);
-            m_onMove?.TriggerEvent(info);
+            ScanInfo info = new ScanInfo(m_detectionLevel, 3f);
+            m_onSonar?.TriggerEvent(info);
             base.ActivateEffect(user);
             OnExpend();
         }
