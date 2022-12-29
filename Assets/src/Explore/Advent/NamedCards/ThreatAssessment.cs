@@ -13,7 +13,6 @@ namespace Curry.Explore
         {
             ScanInfo info = new ScanInfo(m_detectionLevel, 3f);
             m_onSonar?.TriggerEvent(info);
-            base.ActivateEffect(user);
             OnExpend();
         }
     }

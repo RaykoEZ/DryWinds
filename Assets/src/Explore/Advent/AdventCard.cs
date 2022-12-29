@@ -14,6 +14,7 @@ namespace Curry.Explore
         [SerializeField] public int TimeCost;
         [SerializeField] public bool RetainCard;
     }
+    public delegate void OnCardEffectEnd();
     // Base class for all playable cards
     public abstract class AdventCard : MonoBehaviour, IPoolable
     {
@@ -28,7 +29,6 @@ namespace Curry.Explore
         // Whether keep card upon moving to a new tile
         public virtual bool Activatable { get { return m_activatable; } protected set { m_activatable = value; } }
         public IObjectPool Origin { get; set; }
-
         public virtual void Prepare() 
         {
             Activatable = true;
@@ -47,7 +47,7 @@ namespace Curry.Explore
         }
 
         // After activating card, maybe expend the card
-        protected virtual void OnExpend() 
+        protected void OnExpend() 
         {
             ReturnToPool();
         }

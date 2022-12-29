@@ -2469,6 +2469,7 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+  m_endTurn: {fileID: 653269627}
 --- !u!1 &652480100
 GameObject:
   m_ObjectHideFlags: 0
@@ -3538,7 +3539,8 @@ MonoBehaviour:
   m_adventureInput: {fileID: 1773398998}
   m_selectInput: {fileID: 1334039897}
   m_cardPlay: {fileID: 120921346}
-  m_hand: {fileID: 615583783}
+  m_interruptors:
+    m_preLoadInterrupt: []
 --- !u!1 &1078045342
 GameObject:
   m_ObjectHideFlags: 0

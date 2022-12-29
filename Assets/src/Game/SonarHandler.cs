@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Curry.Events;
@@ -6,7 +7,7 @@ using Curry.Events;
 namespace Curry.Explore
 {
     // Displays sonar visual effects and do detection checks
-    public class SonarHandler : MonoBehaviour
+    public class SonarHandler : SceneInterruptBehaviour
     {
         [SerializeField] ParticleSystem m_scanRender = default;
         [SerializeField] ParticleSystem m_hitRender = default;
@@ -74,6 +75,7 @@ namespace Curry.Explore
         }
         IEnumerator OnSonarScan()
         {
+            StartInterrupt();
             ClearHits();
             List<Collider2D> results = new List<Collider2D>();            
             // Start scanning
@@ -90,6 +92,7 @@ namespace Curry.Explore
                 }
             }
             DisplayHits();
+            EndInterrupt();
         }
     }
 }
