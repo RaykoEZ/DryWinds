@@ -8,7 +8,6 @@ using Curry.Events;
 namespace Curry.Explore
 {
     public delegate void OnEffectActivate(int timeSpent, List<Action> onActivate = null);
-    public delegate void OnCardPlayed(AdventCard played);
     // Intermediary between cards-in-hand and main play zone
     // Handles card activation validation
     public class PlayManager : MonoBehaviour
@@ -36,22 +35,22 @@ namespace Curry.Explore
 
         public void EnablePlay()
         {
-            m_playZone.OnDropped += OnCardPlayed;
+            m_playZone.OnDropped += OnCardPlay;
             m_hand.OnEncounterTrigger += OnEncounterDraw;
-            m_hand.OnCardTargetResolve += OnCardPlayed;
+            m_hand.OnCardTargetResolve += OnCardPlay;
         }
         public void DisablePlay() 
         {
-            m_playZone.OnDropped -= OnCardPlayed;
+            m_playZone.OnDropped -= OnCardPlay;
             m_hand.OnEncounterTrigger -= OnEncounterDraw;
-            m_hand.OnCardTargetResolve -= OnCardPlayed;
+            m_hand.OnCardTargetResolve -= OnCardPlay;
         }
         void OutOfTime(int timeSpent) 
         {
             Debug.Log("Out of Time");
         }
         // When card is trying to actvated after it is dropped...
-        void OnCardPlayed(AdventCard card, Action onPlay = null, Action onCancel = null) 
+        void OnCardPlay(AdventCard card, Action onPlay = null, Action onCancel = null) 
         {
             if (!card.Activatable)
             {

@@ -12,8 +12,9 @@ namespace Curry.Explore
         [SerializeField] public string Description;
         [Range(0, 1000)]
         [SerializeField] public int TimeCost;
-        [SerializeField] public bool RetailCard;
+        [SerializeField] public bool RetainCard;
     }
+    public delegate void OnCardEffectEnd();
     // Base class for all playable cards
     public abstract class AdventCard : MonoBehaviour, IPoolable
     {
@@ -23,12 +24,11 @@ namespace Curry.Explore
         public string Name { get { return m_attribute.Name; } }
         public string Description { get { return m_attribute.Description; } }
         public int TimeCost { get { return m_attribute.TimeCost; } }
-        public virtual bool RetainCard { get { return m_attribute.RetailCard; } }
+        public virtual bool RetainCard { get { return m_attribute.RetainCard; } }
         public virtual Action<AdventurerStats> CardEffect { get { return ActivateEffect; } }
         // Whether keep card upon moving to a new tile
         public virtual bool Activatable { get { return m_activatable; } protected set { m_activatable = value; } }
         public IObjectPool Origin { get; set; }
-
         public virtual void Prepare() 
         {
             Activatable = true;
@@ -47,7 +47,7 @@ namespace Curry.Explore
         }
 
         // After activating card, maybe expend the card
-        protected virtual void OnExpend() 
+        protected void OnExpend() 
         {
             ReturnToPool();
         }

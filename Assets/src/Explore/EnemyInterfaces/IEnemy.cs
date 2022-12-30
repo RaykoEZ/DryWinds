@@ -2,14 +2,14 @@
 
 namespace Curry.Explore
 {
-    public interface IEnemy 
+    public interface IEnemy
     {
         TacticalStats InitStatus { get; }
         TacticalStats CurrentStatus { get; }
         void Reveal();
         void Hide();
         void TakeHit();
-        void Affect(Func<TacticalStats,TacticalStats> effect);
+        void Affect(Func<TacticalStats, TacticalStats> effect);
     }
 
 }

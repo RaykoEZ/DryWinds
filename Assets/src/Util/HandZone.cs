@@ -15,7 +15,7 @@ namespace Curry.Util
         [SerializeField] Image m_playPanel = default;
         [SerializeField] SelectionManager m_selection = default;
         [SerializeField] CurryGameEventListener m_onDropTileSelected = default;
-
+        [SerializeField] EndTurnTrigger m_endTurn = default;
         Adventurer m_playerRef;
         // The card we are dragging into a play zone
         DraggableCard m_pendingCardRef;
@@ -33,6 +33,7 @@ namespace Curry.Util
             m_onDropTileSelected?.Init();
             m_onCardDraw?.Init();
             m_onDiscardHand?.Init();
+            m_endTurn.OnTurnEnd += DiscardHand;
             // get starting hand
             DraggableCard[] cards = m_cardHolderRoot.GetComponentsInChildren<DraggableCard>();
             foreach (DraggableCard card in cards)

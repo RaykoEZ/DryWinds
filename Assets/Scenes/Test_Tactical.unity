@@ -982,7 +982,6 @@ MonoBehaviour:
   m_player: {fileID: 1488958116}
   m_onTurnStart:
     m_eventToTrigger: {fileID: 11400000, guid: 777e550299899424b8b093d8e8e2b688, type: 2}
-  m_inputControl: {fileID: 1024562576}
   m_turnEnd: {fileID: 653269627}
 --- !u!1 &374935404
 GameObject:
@@ -1152,7 +1151,7 @@ MonoBehaviour:
     Name: 
     Description: 
     TimeCost: 0
-    RetailCard: 1
+    RetainCard: 0
   m_targetLayer:
     serializedVersion: 2
     m_Bits: 512
@@ -2469,6 +2468,7 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+  m_endTurn: {fileID: 653269627}
 --- !u!1 &652480100
 GameObject:
   m_ObjectHideFlags: 0
@@ -2724,7 +2724,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4499789418524853004, guid: a78920314311f6f40bb2bc7017065353, type: 3}
       propertyPath: m_RootOrder
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4499789418524853004, guid: a78920314311f6f40bb2bc7017065353, type: 3}
       propertyPath: m_AnchorMax.x
@@ -3123,7 +3123,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1020797060}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -3408,12 +3408,12 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 1488958107}
   - {fileID: 2096668153}
+  - {fileID: 1488958107}
   - {fileID: 1334039896}
   - {fileID: 535622463}
-  - {fileID: 679600732}
   - {fileID: 767100532}
+  - {fileID: 679600732}
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3538,7 +3538,9 @@ MonoBehaviour:
   m_adventureInput: {fileID: 1773398998}
   m_selectInput: {fileID: 1334039897}
   m_cardPlay: {fileID: 120921346}
-  m_hand: {fileID: 615583783}
+  m_interruptors:
+    m_preLoadInterrupt:
+    - {fileID: 2571672767850274779}
 --- !u!1 &1078045342
 GameObject:
   m_ObjectHideFlags: 0
@@ -5620,7 +5622,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 5894462175879888244, guid: feeaa1f113a0d2140ae93496f42f993f, type: 3}
       propertyPath: m_Name
-      value: P_Adv_Skaters
+      value: P_ThreatAssess
       objectReference: {fileID: 0}
     - target: {fileID: 5894462175879888245, guid: feeaa1f113a0d2140ae93496f42f993f, type: 3}
       propertyPath: m_Pivot.x
@@ -8611,7 +8613,7 @@ RectTransform:
   m_Children:
   - {fileID: 1422563867}
   m_Father: {fileID: 1020797060}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -8706,13 +8708,17 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1020797060}
     m_Modifications:
+    - target: {fileID: 880947670, guid: 7eb8b9e0778509a4d97901db87f5ce46, type: 3}
+      propertyPath: m_Name
+      value: P_Sonar
+      objectReference: {fileID: 0}
     - target: {fileID: 2571672766922976576, guid: 7eb8b9e0778509a4d97901db87f5ce46, type: 3}
       propertyPath: m_Name
       value: P_Adventurer
       objectReference: {fileID: 0}
     - target: {fileID: 2571672766922976577, guid: 7eb8b9e0778509a4d97901db87f5ce46, type: 3}
       propertyPath: m_RootOrder
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2571672766922976577, guid: 7eb8b9e0778509a4d97901db87f5ce46, type: 3}
       propertyPath: m_LocalPosition.x
@@ -8754,9 +8760,20 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2571672766922976638, guid: 7eb8b9e0778509a4d97901db87f5ce46, type: 3}
-      propertyPath: m_onPlayerDraw.m_eventToTrigger
-      value: 
-      objectReference: {fileID: 11400000, guid: 42e931a230a71a74e8f64ade4fcbd69e, type: 2}
+    - target: {fileID: 7564533628699516885, guid: 7eb8b9e0778509a4d97901db87f5ce46, type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7eb8b9e0778509a4d97901db87f5ce46, type: 3}
+--- !u!114 &2571672767850274779 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5723438526518807650, guid: 7eb8b9e0778509a4d97901db87f5ce46, type: 3}
+  m_PrefabInstance: {fileID: 2571672767850274778}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69b937afc38990d4eb008f04c1962c09, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
