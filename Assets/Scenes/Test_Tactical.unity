@@ -982,7 +982,6 @@ MonoBehaviour:
   m_player: {fileID: 1488958116}
   m_onTurnStart:
     m_eventToTrigger: {fileID: 11400000, guid: 777e550299899424b8b093d8e8e2b688, type: 2}
-  m_inputControl: {fileID: 1024562576}
   m_turnEnd: {fileID: 653269627}
 --- !u!1 &374935404
 GameObject:
@@ -3540,7 +3539,8 @@ MonoBehaviour:
   m_selectInput: {fileID: 1334039897}
   m_cardPlay: {fileID: 120921346}
   m_interruptors:
-    m_preLoadInterrupt: []
+    m_preLoadInterrupt:
+    - {fileID: 2571672767850274779}
 --- !u!1 &1078045342
 GameObject:
   m_ObjectHideFlags: 0
@@ -8708,6 +8708,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1020797060}
     m_Modifications:
+    - target: {fileID: 880947670, guid: 7eb8b9e0778509a4d97901db87f5ce46, type: 3}
+      propertyPath: m_Name
+      value: P_Sonar
+      objectReference: {fileID: 0}
     - target: {fileID: 2571672766922976576, guid: 7eb8b9e0778509a4d97901db87f5ce46, type: 3}
       propertyPath: m_Name
       value: P_Adventurer
@@ -8762,3 +8766,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7eb8b9e0778509a4d97901db87f5ce46, type: 3}
+--- !u!114 &2571672767850274779 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5723438526518807650, guid: 7eb8b9e0778509a4d97901db87f5ce46, type: 3}
+  m_PrefabInstance: {fileID: 2571672767850274778}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69b937afc38990d4eb008f04c1962c09, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -21,7 +21,7 @@ namespace Curry.Explore
         ParticleSystemPool m_hitPool = new ParticleSystemPool();
         #endregion
         public IReadOnlyList<Transform> LastScanHits => m_lastResults;
-        float WaitTime => m_scanRender.main.startLifetime.constant;
+        float WaitTime => m_scanRender.main.duration;
         void Start()
         {
             m_onSonar?.Init();

@@ -44,7 +44,6 @@ namespace Curry.Explore
         void HandleInterrupt(Phase interrupt) 
         {
             if (interrupt == null) return;
-
             m_previous = CurrentPhase;
             // Pause current phase (e.g. UI)
             m_previous.Pause();
