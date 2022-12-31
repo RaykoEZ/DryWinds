@@ -23,37 +23,24 @@ namespace Curry.Explore
     {
         [Range(1, 1000)]
         [SerializeField] int m_timeToClear = default;
-        [SerializeField] CurryGameEventListener m_onPlayerTurn = default;
         [SerializeField] CurryGameEventListener m_onSpendTime = default;
-        [SerializeField] CurryGameEventListener m_onAddTime = default;
         [SerializeField] CurryGameEventTrigger m_onTimeSpent = default;
         [SerializeField] ResourceBar m_gauge = default;
         [SerializeField] GameClock m_clock = default;
-        [SerializeField] TextMeshProUGUI m_turnTimer = default;
+        [SerializeField] TextMeshProUGUI m_clearTimer = default;
         int m_timeLeftToClear;
         int m_timeSpent;
         public event OutOfTime OnOutOfTimeTrigger;
         public event TimeSpent OnTimeSpent;
-        public int TimeLeftThisTurn { get; protected set; }
         public int TimeToClear { get { return m_timeToClear; } }
         public int TimeLeftToClear { get { return m_timeLeftToClear; } }
         // Use this for initialization
-        void Awake()
+        void Start()
         {
             ResetTime();
-            m_onPlayerTurn?.Init();
             m_onSpendTime?.Init();
-            m_onAddTime?.Init();
             m_gauge.SetMaxValue(TimeLeftToClear);
             m_gauge.SetBarValue(TimeToClear, forceInstantChange: true);
-        }
-        public void OnPlayerTurn(EventInfo info)
-        {
-            if (info is TimeInfo time)
-            {
-                TimeLeftThisTurn = time.Time;
-                UpdateTurnTimer();
-            }
         }
         public void ResetTime()
         {
@@ -86,8 +73,7 @@ namespace Curry.Explore
         // spend time and check if we run out of time
         public void TrySpendTime(int timeToSpend, out bool enoughTime) 
         {
-            enoughTime = m_timeLeftToClear >= timeToSpend &&
-                TimeLeftThisTurn >= timeToSpend;
+            enoughTime = m_timeLeftToClear >= timeToSpend;
             if (timeToSpend <= 0)
             {
                 return;
@@ -100,11 +86,10 @@ namespace Curry.Explore
 
         void UpdateTurnTimer()
         {
-            m_turnTimer.text = TimeLeftThisTurn.ToString();
+            m_clearTimer.text = TimeLeftToClear.ToString();
         }
         IEnumerator OnSpendTime(int toSpend)
         {
-            TimeLeftThisTurn -= toSpend;
             m_timeLeftToClear -= toSpend;
             UpdateTurnTimer();
             m_timeSpent += toSpend;

@@ -5,18 +5,33 @@ using TMPro;
 namespace Curry.Explore
 {
     [Serializable]
-    public struct TimeOfDay
+    public class TimeOfDay
     {
         [Range(0, 23)]
-        public int Hour;
+        [SerializeField] int m_currentHour = default;
+        [Range(0, 8)]
+        [SerializeField] int m_dayBreakAt = default;
+        [Range(13, 21)]
+        [SerializeField] int m_nightfallAt = default;
+        public int Hour { get { return m_currentHour; } set { m_currentHour = value; } }
+        public int DayBreakAt { get { return m_dayBreakAt; } }
+        public int NightfallAt { get { return m_nightfallAt; } }        
     }
+    public delegate void TimeOfDayChange(int Hour);
     public class GameClock : MonoBehaviour 
     {
         [SerializeField] TextMeshProUGUI m_dayCountLabel = default;
         [SerializeField] TextMeshProUGUI m_timeLabel = default;
+        [SerializeField] TextMeshProUGUI m_dayNightLabel = default;
+        [SerializeField] TimeOfDay m_timeOfDay = default;
+        public event TimeOfDayChange OnDaybreak;
+        public event TimeOfDayChange OnNightfall;
         int m_dayCount = 0;
-        TimeOfDay m_timeOfDay = new TimeOfDay {Hour = 0};
-        public TimeOfDay ClockTime { get { return m_timeOfDay; } }
+
+        void Start()
+        {
+            HandleDayNightCycle();
+        }
         public void IncrementMinute()
         {
             if(m_timeOfDay.Hour == 23) 
@@ -28,9 +43,23 @@ namespace Curry.Explore
             {
                 m_timeOfDay.Hour++;
             }
+            HandleDayNightCycle();
             UpdateClockLabels();
         }
-
+        void HandleDayNightCycle()
+        {
+            int time = m_timeOfDay.Hour;
+            if (time >= m_timeOfDay.NightfallAt || time < m_timeOfDay.DayBreakAt)
+            {
+                m_dayNightLabel.text = "Nighttime";
+                OnNightfall?.Invoke(time);
+            }
+            else if (time >= m_timeOfDay.DayBreakAt && time < m_timeOfDay.NightfallAt)
+            {
+                m_dayNightLabel.text = "Daytime";
+                OnDaybreak?.Invoke(time);
+            }
+        }
         public void IncrementDay()
         {
             m_dayCount++;
