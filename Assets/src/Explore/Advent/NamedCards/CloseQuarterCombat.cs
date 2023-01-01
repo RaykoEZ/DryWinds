@@ -24,7 +24,7 @@ namespace Curry.Explore
             RaycastHit2D[] hits = Physics2D.RaycastAll(Target + Vector3.up, Vector3.down, m_targetLayer);
             foreach(RaycastHit2D hit in hits) 
             {
-                if (hit && hit.transform.TryGetComponent(out TacticalEnemy enemy))
+                if (hit && hit.transform.TryGetComponent(out IEnemy enemy))
                 {
                     enemy.TakeHit();
                     break;

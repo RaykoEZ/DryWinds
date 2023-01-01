@@ -1,9 +1,9 @@
-﻿using Curry.Events;
-using Curry.Explore;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using Curry.Events;
+using Curry.Explore;
 namespace Curry.Util
 {
     public delegate void OnEncounter(IReadOnlyList<Encounter> encounters);
@@ -74,11 +74,17 @@ namespace Curry.Util
         {
             // Reset pending card
             m_pendingCardRef = null;
-            OnCardPlayed(card.GetComponent<DraggableCard>());
+            OnCardLeavesHand(card.GetComponent<DraggableCard>());
+            HidePlayZone();
             m_cardsInHand.PlayCard(card, stats);
         }
         internal void DiscardHand()
         {
+            foreach(AdventCard c in m_cardsInHand.CardsInHand) 
+            {
+                OnCardLeavesHand(c.GetComponent<DraggableCard>());
+            }
+            HidePlayZone();
             m_cardsInHand.DiscardCards();
         }
         internal void ShowPlayZone()
@@ -100,13 +106,20 @@ namespace Curry.Util
             m_selection.CancelSelection();
             m_playPanel.enabled = false;
         }
+
         protected override void PrepareCard(DraggableCard draggable)
         {
             if (draggable == null)
             {
                 return;
             }
+            draggable.OnReturn += OnCardReturn;
             draggable.OnDragBegin += TargetGuide;
+        }
+        void OnCardReturn(DraggableCard card)
+        {
+            m_pendingCardRef = null;
+            HidePlayZone();
         }
         protected virtual void TargetGuide(DraggableCard draggable)
         {
@@ -117,10 +130,10 @@ namespace Curry.Util
             }
             ShowPlayZone();
         }
-        protected virtual void OnCardPlayed(DraggableCard draggable)
+        protected virtual void OnCardLeavesHand(DraggableCard draggable)
         {
             draggable.OnDragBegin -= TargetGuide;
-            HidePlayZone();
+            draggable.OnReturn -= OnCardReturn;
         }
 
         public delegate void OnDiscard(List<AdventCard> discarded);

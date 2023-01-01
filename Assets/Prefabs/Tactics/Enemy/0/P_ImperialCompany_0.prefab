@@ -251,6 +251,9 @@ MonoBehaviour:
   m_countdownText: {fileID: 6612072387905013795}
   m_detect: {fileID: 9158939930621903418}
   m_stealthLevel: 1
+  m_activeTime:
+    m_activeFrom: 3
+    m_activeUntil: 5
 --- !u!50 &4063988590427125916
 Rigidbody2D:
   serializedVersion: 4

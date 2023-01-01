@@ -18,7 +18,6 @@ namespace Curry.Explore
 
     public delegate void OutOfTime(int timeSpent);
     public delegate void TimeSpent(int timeSpent, int timeLeft);
-    public delegate void ClockTimeUpdate(TimeOfDay time);
     public class TimeManager : MonoBehaviour
     {
         [Range(1, 1000)]
@@ -34,6 +33,7 @@ namespace Curry.Explore
         public event TimeSpent OnTimeSpent;
         public int TimeToClear { get { return m_timeToClear; } }
         public int TimeLeftToClear { get { return m_timeLeftToClear; } }
+        public GameClock Clock { get { return m_clock; } }
         // Use this for initialization
         void Start()
         {
@@ -104,7 +104,7 @@ namespace Curry.Explore
             // Animate clock
             for (int i = 0; i < toSpend; ++i)
             {
-                m_clock.IncrementMinute();
+                m_clock.Increment();
                 yield return new WaitForSeconds(0.02f);
             }
 

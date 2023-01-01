@@ -61,7 +61,7 @@ namespace Curry.Explore
             m_hitPool.ReturnAllToPool();
         }
 
-        protected virtual void HandleDetection(TacticalEnemy enemy) 
+        protected virtual void HandleDetection(IEnemy enemy, Transform transform) 
         {
             // Append hits if enemy is not stealthy (or has lower stealth level then scan level)
             if (enemy is IStealthy stealthy && stealthy.StealthLevel > m_currentDetectionLevel) 
@@ -70,7 +70,7 @@ namespace Curry.Explore
             }
             else 
             {
-                m_lastResults.Add(enemy.transform);
+                m_lastResults.Add(transform);
             }
         }
         IEnumerator OnSonarScan()
@@ -86,9 +86,9 @@ namespace Curry.Explore
             // Start updating results
             foreach (Collider2D c in results)
             {
-                if (c.attachedRigidbody.TryGetComponent(out TacticalEnemy enemy))
+                if (c.attachedRigidbody.TryGetComponent(out IEnemy enemy))
                 {
-                    HandleDetection(enemy);
+                    HandleDetection(enemy, c.transform);
                 }
             }
             DisplayHits();

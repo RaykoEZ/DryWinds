@@ -5998,7 +5998,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_spawner: {fileID: 1422563868}
-  m_ref: {fileID: 4063988590427125918, guid: 613f89d64653ca341b7e26c82704d43c, type: 3}
+  m_ref: {fileID: 4063988590427125915, guid: 613f89d64653ca341b7e26c82704d43c, type: 3}
 --- !u!1 &1488958106 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2571672766922976576, guid: 7eb8b9e0778509a4d97901db87f5ce46, type: 3}
@@ -6687,10 +6687,10 @@ MonoBehaviour:
   m_dayCountLabel: {fileID: 1301432315}
   m_timeLabel: {fileID: 704104446}
   m_dayNightLabel: {fileID: 199955634}
-  m_timeOfDay:
-    m_currentHour: 3
-    m_dayBreakAt: 5
-    m_nightfallAt: 19
+  m_setting:
+    m_currentHour: 0
+    m_dayBreakAt: 0
+    m_nightfallAt: 0
 --- !u!1 &1978926057
 GameObject:
   m_ObjectHideFlags: 0
@@ -8742,6 +8742,7 @@ MonoBehaviour:
     m_pool:
       m_numToPool: 3
       m_defaultParent: {fileID: 1020797060}
+  m_clock: {fileID: 1956501438}
   m_onSpawn:
     m_eventToListen: {fileID: 11400000, guid: 27a13d8605e44b14a97ee9f2c806cf0c, type: 2}
     m_responses:

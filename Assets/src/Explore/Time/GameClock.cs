@@ -5,78 +5,87 @@ using TMPro;
 namespace Curry.Explore
 {
     [Serializable]
-    public class TimeOfDay
-    {
+    public class TimeSettings
+    { 
         [Range(0, 23)]
         [SerializeField] int m_currentHour = default;
         [Range(0, 8)]
         [SerializeField] int m_dayBreakAt = default;
         [Range(13, 21)]
         [SerializeField] int m_nightfallAt = default;
-        public int Hour { get { return m_currentHour; } set { m_currentHour = value; } }
-        public int DayBreakAt { get { return m_dayBreakAt; } }
-        public int NightfallAt { get { return m_nightfallAt; } }        
+        public int Hour { get { return m_currentHour; } set { m_currentHour = Mathf.Clamp(value, 0, 23); } }
+        public int DayBreakAt { get { return m_dayBreakAt; } set { m_dayBreakAt = Mathf.Clamp(value, 0, 23); } }
+        public int NightfallAt { get { return m_nightfallAt; } set { m_nightfallAt = Mathf.Clamp(value, 0, 23); } }
     }
-    public delegate void TimeOfDayChange(int Hour);
+    public delegate void OnTimeUpdate(int dayCount, int Hour, GameClock.TimeOfDay timeOfDay);
     public class GameClock : MonoBehaviour 
     {
+        public enum TimeOfDay 
+        { 
+            Day,
+            Night
+        }
         [SerializeField] TextMeshProUGUI m_dayCountLabel = default;
         [SerializeField] TextMeshProUGUI m_timeLabel = default;
         [SerializeField] TextMeshProUGUI m_dayNightLabel = default;
-        [SerializeField] TimeOfDay m_timeOfDay = default;
-        public event TimeOfDayChange OnDaybreak;
-        public event TimeOfDayChange OnNightfall;
-        int m_dayCount = 0;
+        [SerializeField] TimeSettings m_setting = default;
+        public event OnTimeUpdate OnTimeElapsed;
 
-        void Start()
-        {
-            HandleDayNightCycle();
-        }
-        public void IncrementMinute()
-        {
-            if(m_timeOfDay.Hour == 23) 
+        public int DayCount { get; protected set; } = 0;
+        public int CurrentTime => m_setting.Hour;
+        public TimeOfDay CurrentTimeOfDay { 
+            get 
             {
-                m_timeOfDay.Hour = 0;
-                IncrementDay();
+                int time = m_setting.Hour;
+                if (time >= m_setting.NightfallAt || time < m_setting.DayBreakAt) 
+                {
+                    return TimeOfDay.Night;
+                }
+                else
+                {
+                    return TimeOfDay.Day;
+                }
+            }
+        }
+        public void Increment()
+        {
+            if(m_setting.Hour == 23) 
+            {
+                m_setting.Hour = 0;
+                DayCount++;
+                UpdateDayCountDisplay();
             }
             else 
             {
-                m_timeOfDay.Hour++;
+                m_setting.Hour++;
             }
-            HandleDayNightCycle();
-            UpdateClockLabels();
+            OnTimeElapsed?.Invoke(DayCount, CurrentTime, CurrentTimeOfDay);
+            HandleDayNightDisplay();
+            UpdateClockDisplay();
         }
-        void HandleDayNightCycle()
+        void HandleDayNightDisplay()
         {
-            int time = m_timeOfDay.Hour;
-            if (time >= m_timeOfDay.NightfallAt || time < m_timeOfDay.DayBreakAt)
+            if (CurrentTimeOfDay == TimeOfDay.Night)
             {
                 m_dayNightLabel.text = "Nighttime";
-                OnNightfall?.Invoke(time);
             }
-            else if (time >= m_timeOfDay.DayBreakAt && time < m_timeOfDay.NightfallAt)
+            else
             {
                 m_dayNightLabel.text = "Daytime";
-                OnDaybreak?.Invoke(time);
             }
         }
-        public void IncrementDay()
+
+        // Future: add animation?
+        void UpdateDayCountDisplay()
         {
-            m_dayCount++;
-            UpdateDayLabel();
+            m_dayCountLabel.text = DayCount.ToString();
         }
 
         // Future: add animation?
-        void UpdateDayLabel()
-        {
-            m_dayCountLabel.text = m_dayCount.ToString();
-        }
-
-        // Future: add animation?
-        void UpdateClockLabels()
+        void UpdateClockDisplay()
         {
             // Add zero to display text if we only have one digit
-            string minute = m_timeOfDay.Hour > 9 ? m_timeOfDay.Hour.ToString() : $"0{m_timeOfDay.Hour}";
+            string minute = m_setting.Hour > 9 ? m_setting.Hour.ToString() : $"0{m_setting.Hour}";
             m_timeLabel.text = minute;
         }
     }

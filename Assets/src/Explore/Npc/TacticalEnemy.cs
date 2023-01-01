@@ -6,11 +6,8 @@ using TMPro;
 using UnityEngine;
 namespace Curry.Explore
 {
-    // countdown: can be negative
-    public delegate void OnEnemyCountdownUpdate(TacticalEnemy enemy);
-    public delegate void OnEnemyUpdate(TacticalEnemy enemy);
     // Base enemy class
-    public abstract class TacticalEnemy : MonoBehaviour, IEnemy, IPoolable
+    public abstract class TacticalEnemy : PoolableBehaviour, IEnemy, IPoolable
     {
         [SerializeField] protected TacticalStats m_initStats = default;
         [SerializeField] protected Animator m_anim = default;
@@ -27,9 +24,8 @@ namespace Curry.Explore
             get { return m_current; }
             protected set { m_current = value; }
         }
-        public IObjectPool Origin { get; set; }
 
-        public virtual void Prepare()
+        public override void Prepare()
         {
             // Get new id for enemy
             Id = new EnemyId(gameObject.name);
@@ -39,20 +35,12 @@ namespace Curry.Explore
             m_detect.OnExitDetection += OnDetectExit;
         }
 
-        public virtual void ReturnToPool()
+        public override void ReturnToPool()
         {
             OnDefeat = null;
             m_detect.OnDetected -= OnDetectEnter;
             m_detect.OnExitDetection -= OnDetectExit;
             Origin?.Reclaim(this);
-        }
-
-        protected virtual void Awake()
-        {
-            if (Origin == null)
-            {
-                Prepare();
-            }
         }
         public virtual void Reveal()
         {
@@ -74,6 +62,10 @@ namespace Curry.Explore
             Debug.Log("Ahh, me ded");
             m_anim?.SetTrigger("takeHit");
             Defeat();
+        }
+        public virtual void OnDefeated() 
+        {
+            ReturnToPool();
         }
         public virtual void OnDetect()
         {

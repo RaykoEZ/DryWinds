@@ -1,18 +1,19 @@
 ﻿using UnityEngine;
 using UnityEngine.Tilemaps;
 using Curry.Events;
+using Curry.Game;
 
 namespace Curry.Explore
 {
     public class EnemySpawnInfo : EventInfo
     {
         public Vector3 SpawnWorldPosition { get; protected set; }
-        public TacticalEnemy SpawnRef { get; protected set; }
+        public PoolableBehaviour Behaviour { get; protected set; }
         public Transform Parent { get; protected set; }
-        public EnemySpawnInfo(Vector3 pos, TacticalEnemy spawn, Transform parent = null)
+        public EnemySpawnInfo(Vector3 pos, PoolableBehaviour behaviour, Transform parent = null)
         {
             SpawnWorldPosition = pos;
-            SpawnRef = spawn;
+            Behaviour = behaviour;
             Parent = parent;
         }
     }
@@ -22,12 +23,11 @@ namespace Curry.Explore
         [SerializeField] LayerMask m_doNotSpawnOn = default;
         [SerializeField] Tilemap m_spawnMap = default;
         [SerializeField] CurryGameEventTrigger m_spawnTrigger = default;
-        public void Spawn(Vector3Int spawnCoord, GameObject spawnRef, Transform parent = null)
+        public void Spawn(Vector3Int spawnCoord, PoolableBehaviour spawnRef, Transform parent = null)
         {
             if (
                 spawnRef == null || 
-                !m_spawnMap.HasTile(spawnCoord) || 
-                !spawnRef.TryGetComponent(out TacticalEnemy enemy)) 
+                !m_spawnMap.HasTile(spawnCoord)) 
             {
                 return;
             }
@@ -37,7 +37,7 @@ namespace Curry.Explore
             bool hit = Physics.Raycast(origin, Vector3.forward, 10f, m_doNotSpawnOn);
             if (!hit)
             {
-                EnemySpawnInfo info = new EnemySpawnInfo(coordWorldPos, enemy, parent);
+                EnemySpawnInfo info = new EnemySpawnInfo(coordWorldPos, spawnRef, parent);
                 m_spawnTrigger?.TriggerEvent(info);
             }
         }
