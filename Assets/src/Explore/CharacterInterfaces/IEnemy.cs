@@ -3,17 +3,24 @@ using UnityEngine;
 
 namespace Curry.Explore
 {
+    public interface ICharacter 
+    {
+        void Reveal();
+        void Hide();
+        void TakeHit(int hitVal);
+        void Move(Vector2Int direction);
+    }
+    public interface IPlayer : ICharacter
+    {
+    }
     public delegate void OnEnemyUpdate(IEnemy enemy);
-    public interface IEnemy
+    public interface IEnemy : ICharacter
     {
         EnemyId Id { get; }
         TacticalStats InitStatus { get; }
         TacticalStats CurrentStatus { get; }
         event OnEnemyUpdate OnDefeat;
         void ExecuteAction();
-        void Reveal();
-        void Hide();
-        void TakeHit();
         void OnDefeated();
         void Affect(Func<TacticalStats, TacticalStats> effect);
         bool UpdateCountdown(int dt);
@@ -25,13 +32,8 @@ namespace Curry.Explore
     [Serializable]
     public class ActiveTimeFrame
     {
-        [Range(0, 23)]
-        [SerializeField] int m_activeFrom = default;
-        [Range(0, 23)]
-        [SerializeField] int m_activeUntil = default;
-        public int ActiveFrom { get { return m_activeFrom; } }
-        public int ActiveUntil { get { return m_activeUntil; } }
-
+        [SerializeField] GameClock.TimeOfDay m_activeAt = default;
+        public GameClock.TimeOfDay ActiveAt { get { return m_activeAt; } }
     }
     #endregion
     public interface IOrganicLife 

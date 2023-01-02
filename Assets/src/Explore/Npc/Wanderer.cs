@@ -12,16 +12,39 @@ namespace Curry.Explore
         public ActiveTimeFrame ActiveHours => m_activeTime;
 
         public bool IsActive { get; protected set; }
-
+        protected override void Defeat()
+        {
+            m_anim.SetBool("isInActive", false);
+            base.Defeat();
+        }
+        public override void OnDetect() 
+        {
+            if (IsActive) 
+            {
+                base.OnDetect();
+            }
+        }
+        public override void ExecuteAction()
+        {
+            base.ExecuteAction();
+            foreach(IPlayer player in m_targetsInSight) 
+            {
+                player.TakeHit(1);
+                
+            }
+        }
         public void Activate()
         {
-            Debug.Log("AWAKE now");
             IsActive = true;
+            m_anim.SetBool("isInActive", false);
         }
         public void Hibernate()
         {
-            Debug.Log("ASLEEP now");
-            IsActive = false;
+            if (!m_detect.PlayerDetected) 
+            {
+                IsActive = false;
+                m_anim.SetBool("isInActive", true);
+            }
         }
     }
 }

@@ -6688,9 +6688,9 @@ MonoBehaviour:
   m_timeLabel: {fileID: 704104446}
   m_dayNightLabel: {fileID: 199955634}
   m_setting:
-    m_currentHour: 0
-    m_dayBreakAt: 0
-    m_nightfallAt: 0
+    m_currentHour: 7
+    m_dayBreakAt: 4
+    m_nightfallAt: 19
 --- !u!1 &1978926057
 GameObject:
   m_ObjectHideFlags: 0

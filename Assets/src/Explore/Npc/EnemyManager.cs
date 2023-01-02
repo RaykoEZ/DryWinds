@@ -100,7 +100,7 @@ namespace Curry.Explore
             // Update spawned enemy activeness according to time of day
             if(spawn is IOrganicLife life) 
             {
-                UpdateActiveness(life, m_clock.CurrentTime);
+                UpdateActiveness(life);
             }
         }
         void OnTimeElapsedUpdate(int dayCount, int hour, GameClock.TimeOfDay timeOfDay)
@@ -109,15 +109,14 @@ namespace Curry.Explore
             {
                 if (e is IOrganicLife life)
                 {
-                    UpdateActiveness(life, hour);
+                    UpdateActiveness(life);
                 }
             }
         }
-        void UpdateActiveness(IOrganicLife life, int hour)
+        void UpdateActiveness(IOrganicLife life)
         {
             ActiveTimeFrame activeHours = life.ActiveHours;
-            bool withActiveHours = (hour >= activeHours.ActiveFrom && hour < activeHours.ActiveUntil) ||
-                (activeHours.ActiveFrom > activeHours.ActiveUntil && hour < activeHours.ActiveUntil);
+            bool withActiveHours = life.ActiveHours.ActiveAt == m_clock.CurrentTimeOfDay;
             if (withActiveHours && !life.IsActive) 
             {
                 life.Activate();

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Curry.Events;
 
@@ -47,9 +46,10 @@ namespace Curry.Explore
             PlayerStats = stats;
         }
     }
+
     public delegate void OnPlayerMove();
     // A basic character for adventure mode
-    public class Adventurer : MonoBehaviour 
+    public class Adventurer : MonoBehaviour, IPlayer
     {
         [SerializeField] AdventurerStats m_stats = default;
         [SerializeField] CurryGameEventListener m_onMove = default;
@@ -70,7 +70,27 @@ namespace Curry.Explore
             PlayerInfo info = new PlayerInfo(new AdventurerStats(m_stats));
             m_onScout?.TriggerEvent(info);
         }
-       
+        public void Reveal()
+        {
+            Debug.Log("Reveal player");
+        }
+
+        public void Hide()
+        {
+            Debug.Log("Hide player");
+        }
+
+        public void TakeHit(int hitVal)
+        {
+            Debug.Log("Player takes" + hitVal + " damage.");
+        }
+
+        public void Move(Vector2Int direction)
+        {
+            Vector3 target = transform.position + new Vector3(direction.x, direction.y, 0f);
+            StartCoroutine(Move_Internal(target));
+        }
+
         public void Move(EventInfo info) 
         {
             if (info == null) return;

@@ -11,10 +11,10 @@ namespace Curry.Explore
     {
         [SerializeField] protected TacticalStats m_initStats = default;
         [SerializeField] protected Animator m_anim = default;
-        [SerializeField] TextMeshPro m_countdownText = default;
-        [SerializeField] AdventurerDetector m_detect = default;
+        [SerializeField] protected TextMeshPro m_countdownText = default;
+        [SerializeField] protected PlayerDetector m_detect = default;
         public event OnEnemyUpdate OnDefeat;
-        protected HashSet<Adventurer> m_targetsInSight = new HashSet<Adventurer>();
+        protected HashSet<IPlayer> m_targetsInSight = new HashSet<IPlayer>();
         public int Countdown { get; protected set; }
         protected TacticalStats m_current;
         public virtual EnemyId Id { get; protected set; }
@@ -52,12 +52,16 @@ namespace Curry.Explore
             m_current.Visibility = TacticalVisibility.Hidden;
             m_anim.SetBool("hidden", true);
         }
+        public void Move(Vector2Int direction)
+        {
+            throw new NotImplementedException();
+        }
         public virtual void Affect(Func<TacticalStats, TacticalStats> effect)
         {
             if (effect == null) return;
             CurrentStatus = effect.Invoke(CurrentStatus);
         }
-        public virtual void TakeHit()
+        public virtual void TakeHit(int hitVal)
         {
             Debug.Log("Ahh, me ded");
             m_anim?.SetTrigger("takeHit");
@@ -136,12 +140,12 @@ namespace Curry.Explore
                 });
             OnDefeat?.Invoke(this);
         }
-        void OnDetectEnter(Adventurer adv)
+        void OnDetectEnter(IPlayer adv)
         {
             m_targetsInSight.Add(adv);
             OnDetect();
         }
-        void OnDetectExit(Adventurer adv)
+        void OnDetectExit(IPlayer adv)
         {
             if (m_targetsInSight.Remove(adv))
             {

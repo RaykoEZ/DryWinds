@@ -46,7 +46,6 @@ namespace Curry.Explore
         }
         protected virtual void DisplayHits() 
         {
-            Debug.Log($" Scan Hits: {m_lastResults.Count} enemies");
             foreach (Transform t in m_lastResults)
             {
                 // get particle sys
