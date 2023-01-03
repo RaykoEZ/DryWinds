@@ -109,7 +109,7 @@ namespace Curry.Explore
             }
             m_rangeDisplay.ShowRange(
                     rangeTile,
-                    player.Stats.ScoutRange,
+                    player.CurrentStats.MoveRange,
                     player.transform);
         }
     }

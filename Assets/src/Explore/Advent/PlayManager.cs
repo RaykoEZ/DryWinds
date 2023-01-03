@@ -19,7 +19,7 @@ namespace Curry.Explore
         public event OnEffectActivate OnActivate;
         protected void Start()
         {
-            m_hand.Init(m_player);
+            m_hand.Init(m_player, m_player.transform);
         }
         void OnEnable()
         {
@@ -36,13 +36,11 @@ namespace Curry.Explore
         public void EnablePlay()
         {
             m_playZone.OnDropped += OnCardPlay;
-            m_hand.OnEncounterTrigger += OnEncounterDraw;
             m_hand.OnCardTargetResolve += OnCardPlay;
         }
         public void DisablePlay() 
         {
             m_playZone.OnDropped -= OnCardPlay;
-            m_hand.OnEncounterTrigger -= OnEncounterDraw;
             m_hand.OnCardTargetResolve -= OnCardPlay;
         }
         void OutOfTime(int timeSpent) 
@@ -67,7 +65,7 @@ namespace Curry.Explore
                 List<Action> actions = new List<Action>();
                 actions.Add(
                     () => {
-                        m_hand?.PlayCard(card, m_player.Stats);
+                        m_hand?.PlayCard(card, m_player.CurrentStats);
                     }
                     );
                 OnActivate?.Invoke(card.TimeCost, actions);
@@ -76,14 +74,6 @@ namespace Curry.Explore
             {
                 m_hand.HidePlayZone();
                 onCancel?.Invoke();
-            }
-        }
-        void OnEncounterDraw(IReadOnlyList<Encounter> draw) 
-        {
-            foreach (Encounter encounter in draw) 
-            {
-                m_time.TrySpendTime(encounter.TimeCost, out bool _);
-                encounter?.CardEffect?.Invoke(m_player.Stats);
             }
         }
     }

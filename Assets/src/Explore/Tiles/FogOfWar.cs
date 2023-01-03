@@ -18,7 +18,7 @@ namespace Curry.Explore
             m_onTileFog?.Init();
         }
 
-        void SetFogOfWar(Vector3 worldPos, bool clearFog = true) 
+        public void SetFogOfWar(Vector3 worldPos, bool clearFog = true) 
         {
             Vector3Int mapCoord = m_map.WorldToCell(worldPos);
             TileBase tileToSet = clearFog ? m_clearTile : m_fogTile;

@@ -8,7 +8,6 @@ namespace Curry.Explore
         [SerializeField] int m_stealthLevel = default;
         [SerializeField] ActiveTimeFrame m_activeTime = default;
         public int StealthLevel => m_stealthLevel;
-
         public ActiveTimeFrame ActiveHours => m_activeTime;
 
         public bool IsActive { get; protected set; }
@@ -17,20 +16,33 @@ namespace Curry.Explore
             m_anim.SetBool("isInActive", false);
             base.Defeat();
         }
-        public override void OnDetect() 
+        protected override void OnDetect() 
         {
             if (IsActive) 
             {
                 base.OnDetect();
             }
         }
+
+        public override bool UpdateCountdown(int dt)
+        {
+            if (!IsActive) return false;
+            return base.UpdateCountdown(dt);
+        }
         public override void ExecuteAction()
         {
             base.ExecuteAction();
+            Reveal();
+            if (m_targetsInSight.Count == 0) 
+            {
+                Hide();
+            }
             foreach(IPlayer player in m_targetsInSight) 
             {
                 player.TakeHit(1);
-                
+                Vector3 diff = transform.position - player.CurrentStats.WorldPosition;
+                Vector2Int push = new Vector2Int((int)-diff.x, (int)-diff.y);
+                player.Move(push);
             }
         }
         public void Activate()

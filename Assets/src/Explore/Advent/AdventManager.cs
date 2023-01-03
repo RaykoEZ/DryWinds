@@ -9,6 +9,7 @@ namespace Curry.Explore
     // Quiries Tile info for a tile in its tilemap coordinate
     public class AdventManager : MonoBehaviour
     {
+        [SerializeField] protected TimeManager m_time = default;
         [SerializeField] protected AdventDatabase m_adventDb = default;
         [SerializeField] protected Tilemap m_terrain = default;
         [SerializeField] protected Tilemap m_locations = default;
@@ -87,11 +88,20 @@ namespace Curry.Explore
             {
                 return;
             }
-            // Trigger player to move to selected tile
-            Vector3Int cell = m_terrain.WorldToCell(worldPos);
-            PositionInfo e = new PositionInfo(
-                    m_terrain.GetCellCenterWorld(cell));
-            m_onAdventureMove?.TriggerEvent(e);
+            WorldTile tile = GetTile<WorldTile>(m_terrain, worldPos);
+            m_time.TrySpendTime(tile.Difficulty, out bool enough);
+            if (enough) 
+            {
+                // Trigger player to move to selected tile
+                Vector3Int cell = m_terrain.WorldToCell(worldPos);
+                PositionInfo e = new PositionInfo(
+                        m_terrain.GetCellCenterWorld(cell));
+                m_onAdventureMove?.TriggerEvent(e);
+            }
+            else 
+            {
+                Debug.Log("Not enough time to venture into target location");
+            }
         }
 
         // When player reached selected tile, draw cards and trigger events

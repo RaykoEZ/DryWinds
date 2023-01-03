@@ -19,7 +19,7 @@ namespace Curry.Explore
             Satisfied = true;
         }
 
-        protected override void ActivateEffect(AdventurerStats user)
+        protected override void ActivateEffect(IPlayer user)
         {
             RaycastHit2D[] hits = Physics2D.RaycastAll(Target - 5f * Vector3.forward, Vector3.forward, m_targetLayer);
             foreach(RaycastHit2D hit in hits) 

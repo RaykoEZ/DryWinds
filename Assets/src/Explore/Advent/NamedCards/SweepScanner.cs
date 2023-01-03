@@ -15,9 +15,9 @@ namespace Curry.Explore
             m_rangeMap = RangeMapping.GetNeighbourRangeMap(m_scoutRange);
         }
 
-        protected override void ActivateEffect(AdventurerStats user)
+        protected override void ActivateEffect(IPlayer user)
         {
-            List<Vector3> worldPositions = m_rangeMap.ApplyRangeOffsets(user.WorldPosition);
+            List<Vector3> worldPositions = m_rangeMap.ApplyRangeOffsets(user.CurrentStats.WorldPosition);
             RangeInfo info = new RangeInfo(worldPositions);
             m_scan?.TriggerEvent(info);
             OnExpend();

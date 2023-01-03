@@ -102,7 +102,7 @@ MonoBehaviour:
   m_hitRender: {fileID: 8248424524459553894, guid: 36a5d3710cc05354484b364d9103e05d, type: 3}
   m_scanCollider: {fileID: 8284957352636771556}
   m_scanFilter:
-    useTriggers: 0
+    useTriggers: 1
     useLayerMask: 1
     useDepth: 0
     useOutsideDepth: 0
