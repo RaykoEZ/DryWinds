@@ -1,9 +1,9 @@
-﻿using Curry.Events;
-using Curry.Explore;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using Curry.Events;
+using Curry.Explore;
 namespace Curry.Util
 {
     public delegate void OnEncounter(IReadOnlyList<Encounter> encounters);
@@ -16,17 +16,17 @@ namespace Curry.Util
         [SerializeField] SelectionManager m_selection = default;
         [SerializeField] CurryGameEventListener m_onDropTileSelected = default;
         [SerializeField] EndTurnTrigger m_endTurn = default;
-        Adventurer m_playerRef;
+        IPlayer m_playerRef;
+        Transform m_playerTransform;
         // The card we are dragging into a play zone
         DraggableCard m_pendingCardRef;
-
         protected Hand m_cardsInHand = new Hand();
-        public event OnEncounter OnEncounterTrigger;
         // When a card, that targets a position, finishes targeting...
         public event OnCardDrop OnCardTargetResolve;
-        internal void Init(Adventurer player)
+        internal void Init(IPlayer player, Transform playerTransform)
         {
             m_playerRef = player;
+            m_playerTransform = playerTransform;
         }
         protected void Start()
         {
@@ -54,16 +54,14 @@ namespace Curry.Util
             }
             // do activation validation
             OnCardTargetResolve?.Invoke(m_pendingCardRef.Card, onPlay: null, onCancel: m_pendingCardRef.OnCancel);
-
         }
         internal void OnCardDrawn(EventInfo info)
         {
             if (info == null) return;
             if (info is CardDrawInfo draw)
             {
-                OnEncounterTrigger?.Invoke(draw.Encounters);
+                HandleEncounters(draw.Encounters);
                 m_cardsInHand.AddRange(draw.CardsDrawn);
-
                 foreach (AdventCard card in draw.CardsDrawn)
                 {
                     PrepareCard(card.GetComponent<DraggableCard>());
@@ -74,11 +72,17 @@ namespace Curry.Util
         {
             // Reset pending card
             m_pendingCardRef = null;
-            OnCardPlayed(card.GetComponent<DraggableCard>());
-            m_cardsInHand.PlayCard(card, stats);
+            OnCardLeavesHand(card.GetComponent<DraggableCard>());
+            HidePlayZone();
+            m_cardsInHand.PlayCard(card, m_playerRef);
         }
         internal void DiscardHand()
         {
+            foreach(AdventCard c in m_cardsInHand.CardsInHand) 
+            {
+                OnCardLeavesHand(c.GetComponent<DraggableCard>());
+            }
+            HidePlayZone();
             m_cardsInHand.DiscardCards();
         }
         internal void ShowPlayZone()
@@ -88,7 +92,7 @@ namespace Curry.Util
                 ITargetsPosition targetCard = m_pendingCardRef.Card as ITargetsPosition;
                 m_selection.SelectDropZoneTile(
                     targetCard.Range,
-                    m_playerRef.transform);
+                    m_playerTransform);
             }
             else
             {
@@ -100,13 +104,26 @@ namespace Curry.Util
             m_selection.CancelSelection();
             m_playPanel.enabled = false;
         }
+        protected virtual void HandleEncounters(IReadOnlyList<Encounter> draw) 
+        {
+            foreach (Encounter encounter in draw)
+            {
+                encounter?.CardEffect?.Invoke(m_playerRef);
+            }
+        }
         protected override void PrepareCard(DraggableCard draggable)
         {
             if (draggable == null)
             {
                 return;
             }
+            draggable.OnReturn += OnCardReturn;
             draggable.OnDragBegin += TargetGuide;
+        }
+        void OnCardReturn(DraggableCard card)
+        {
+            m_pendingCardRef = null;
+            HidePlayZone();
         }
         protected virtual void TargetGuide(DraggableCard draggable)
         {
@@ -117,12 +134,12 @@ namespace Curry.Util
             }
             ShowPlayZone();
         }
-        protected virtual void OnCardPlayed(DraggableCard draggable)
+        protected virtual void OnCardLeavesHand(DraggableCard draggable)
         {
             draggable.OnDragBegin -= TargetGuide;
-            HidePlayZone();
+            draggable.OnReturn -= OnCardReturn;
         }
-
+        #region Hand Class
         public delegate void OnDiscard(List<AdventCard> discarded);
         public class Hand
         {
@@ -138,11 +155,11 @@ namespace Curry.Util
             {
                 m_hand.Add(card);
             }
-            internal void PlayCard(AdventCard card, AdventurerStats stats)
+            internal void PlayCard(AdventCard card, IPlayer player)
             {
                 if (m_hand.Remove(card))
                 {
-                    card.CardEffect?.Invoke(stats);
+                    card.CardEffect?.Invoke(player);
                 }
 
             }
@@ -164,5 +181,6 @@ namespace Curry.Util
                 }
             }
         }
+        #endregion
     }
 }

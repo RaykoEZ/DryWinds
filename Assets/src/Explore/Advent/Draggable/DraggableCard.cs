@@ -35,6 +35,7 @@ namespace Curry.Explore
         public delegate void OnCardDragUpdate(DraggableCard card);
         public event OnCardDragUpdate OnDragFinish;
         public event OnCardDragUpdate OnDragBegin;
+        public event OnCardDragUpdate OnReturn;
 
         public override bool Droppable
         {
@@ -81,6 +82,12 @@ namespace Curry.Explore
         public virtual void OnCancel()
         {
             ReturnToBeforeDrag();
+        }
+
+        protected override void ReturnToBeforeDrag()
+        {
+            base.ReturnToBeforeDrag();
+            OnReturn?.Invoke(this);
         }
     }
 

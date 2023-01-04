@@ -7,7 +7,6 @@ namespace Curry.Explore
     [Serializable]
     public class PlayerAction : Phase
     {
-        [SerializeField] Adventurer m_player = default;
         [SerializeField] CurryGameEventTrigger m_onTurnStart = default;
         [SerializeField] EndTurnTrigger m_turnEnd = default;
         public override void Init()
@@ -25,13 +24,11 @@ namespace Curry.Explore
         }
         protected override void Evaluate()
         {
-            m_onTurnStart?.TriggerEvent(new TimeInfo(m_player.Stats.TimePerTurn));
-            Debug.Log("Player Action");
+            m_onTurnStart?.TriggerEvent(new EventInfo());
             m_turnEnd.SetInteractable(true);
         }
         protected override void TransitionTo()
         {
-            Debug.Log("Player Ends the day");
             m_turnEnd.SetInteractable(false);
             base.TransitionTo();
         }

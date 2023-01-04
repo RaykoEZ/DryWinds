@@ -8,7 +8,7 @@ namespace Curry.Explore
     // Handles AI actions and reactions
     public class Interaction : Phase
     {
-        [SerializeField] TacticalEnemyManager m_enemy = default;
+        [SerializeField] EnemyManager m_enemy = default;
         [SerializeField] PlayManager m_play = default;
         Stack<List<Action>> m_interruptBuffer = new Stack<List<Action>>();
         public override void Init()

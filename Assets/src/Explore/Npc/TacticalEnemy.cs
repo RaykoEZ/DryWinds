@@ -6,20 +6,23 @@ using TMPro;
 using UnityEngine;
 namespace Curry.Explore
 {
-    // countdown: can be negative
-    public delegate void OnEnemyCountdownUpdate(TacticalEnemy enemy);
-    public delegate void OnEnemyUpdate(TacticalEnemy enemy);
     // Base enemy class
-    public abstract class TacticalEnemy : MonoBehaviour, IEnemy, IPoolable
+    public abstract class TacticalEnemy : PoolableBehaviour, IEnemy, IPoolable
     {
         [SerializeField] protected TacticalStats m_initStats = default;
         [SerializeField] protected Animator m_anim = default;
-        [SerializeField] TextMeshPro m_countdownText = default;
-        [SerializeField] AdventurerDetector m_detect = default;
-        public event OnEnemyUpdate OnDefeat;
-        protected HashSet<Adventurer> m_targetsInSight = new HashSet<Adventurer>();
+        [SerializeField] protected TextMeshPro m_countdownText = default;
+        [SerializeField] protected PlayerDetector m_detect = default;
+        protected HashSet<IPlayer> m_targetsInSight = new HashSet<IPlayer>();
         public int Countdown { get; protected set; }
         protected TacticalStats m_current;
+
+        #region ICharacter & IEnemy interface 
+
+        public event OnEnemyUpdate OnDefeat;
+        public event OnEnemyUpdate OnReveal;
+        public event OnEnemyUpdate OnHide;
+
         public virtual EnemyId Id { get; protected set; }
         public TacticalStats InitStatus { get { return m_initStats; } }
         public TacticalStats CurrentStatus
@@ -27,9 +30,61 @@ namespace Curry.Explore
             get { return m_current; }
             protected set { m_current = value; }
         }
-        public IObjectPool Origin { get; set; }
 
-        public virtual void Prepare()
+        public Vector3 WorldPosition => transform.position;
+
+        public virtual void Reveal()
+        {
+            m_current.Visibility = TacticalVisibility.Visible;
+            m_anim.SetBool("hidden", false);
+            OnReveal?.Invoke(this);
+        }
+        public virtual void Hide()
+        {
+            m_current.Visibility = TacticalVisibility.Hidden;
+            m_anim.SetBool("hidden", true);
+            OnHide?.Invoke(this);
+        }
+        public void Move(Vector2Int direction)
+        {
+            throw new NotImplementedException();
+        }
+        public virtual void Affect(Func<TacticalStats, TacticalStats> effect)
+        {
+            if (effect == null) return;
+            CurrentStatus = effect.Invoke(CurrentStatus);
+        }
+        public void Recover(int val)
+        {
+            Debug.Log("Recover enemy");
+        }
+        public virtual void TakeHit(int hitVal)
+        {
+            Debug.Log("Ahh, me ded");
+            m_anim?.SetTrigger("takeHit");
+            Defeat();
+        }
+        public virtual void ExecuteAction()
+        {
+            ResetCountdown();
+            Reveal();
+            m_anim?.SetTrigger("strike");
+        }
+        public virtual void OnDefeated() 
+        {
+            ReturnToPool();
+        }
+        public virtual bool UpdateCountdown(int dt)
+        {
+            if (m_targetsInSight.Count == 0) { return false; }
+            StartCoroutine(CountdownTick(dt, Countdown));
+            Countdown -= dt;
+            bool countDownEnds = Countdown <= 0;
+            return countDownEnds;
+        }
+        #endregion
+        #region pooling implementation
+        public override void Prepare()
         {
             // Get new id for enemy
             Id = new EnemyId(gameObject.name);
@@ -39,72 +94,26 @@ namespace Curry.Explore
             m_detect.OnExitDetection += OnDetectExit;
         }
 
-        public virtual void ReturnToPool()
+        public override void ReturnToPool()
         {
             OnDefeat = null;
             m_detect.OnDetected -= OnDetectEnter;
             m_detect.OnExitDetection -= OnDetectExit;
             Origin?.Reclaim(this);
         }
-
-        protected virtual void Awake()
-        {
-            if (Origin == null)
-            {
-                Prepare();
-            }
-        }
-        public virtual void Reveal()
-        {
-            m_current.Visibility = TacticalVisibility.Visible;
-            m_anim.SetBool("hidden", false);
-        }
-        public virtual void Hide()
-        {
-            m_current.Visibility = TacticalVisibility.Hidden;
-            m_anim.SetBool("hidden", true);
-        }
-        public virtual void Affect(Func<TacticalStats, TacticalStats> effect)
-        {
-            if (effect == null) return;
-            CurrentStatus = effect.Invoke(CurrentStatus);
-        }
-        public virtual void TakeHit()
-        {
-            Debug.Log("Ahh, me ded");
-            m_anim?.SetTrigger("takeHit");
-            Defeat();
-        }
-        public virtual void OnDetect()
+        #endregion
+        #region base class implementation
+        protected virtual void OnDetect()
         {
             if (m_targetsInSight.Count > 0)
             {
-                OnDetectReaction();
                 OnCombat();
             }
-        }
-
-        public virtual bool UpdateCountdown(int dt)
-        {
-            if(m_targetsInSight.Count == 0) { return false; }
-            StartCoroutine(CountdownTick(dt, Countdown));
-            Countdown -= dt;
-            bool countDownEnds = Countdown <= 0;
-            return countDownEnds;
-        }
-
-        public virtual void ExecuteAction()
-        {
-            ResetCountdown();
-            m_anim?.SetTrigger("strike");
         }
         protected virtual void OnCombat()
         {
             ResetCountdown();
             m_anim?.SetBool("combat", true);
-        }
-        protected virtual void OnDetectReaction()
-        {
         }
         protected virtual void Standby()
         {
@@ -133,6 +142,7 @@ namespace Curry.Explore
                 yield return new WaitForSeconds(0.1f);
             }
         }
+            #region Handlers calls
         IEnumerator HandleDefeat() 
         {
             m_anim?.SetBool("defeat", true);
@@ -144,12 +154,12 @@ namespace Curry.Explore
                 });
             OnDefeat?.Invoke(this);
         }
-        void OnDetectEnter(Adventurer adv)
+        void OnDetectEnter(IPlayer adv)
         {
             m_targetsInSight.Add(adv);
             OnDetect();
         }
-        void OnDetectExit(Adventurer adv)
+        void OnDetectExit(IPlayer adv)
         {
             if (m_targetsInSight.Remove(adv))
             {
@@ -157,6 +167,8 @@ namespace Curry.Explore
                 Standby();
             }
         }
+            #endregion
+        #endregion
     }
 
 }

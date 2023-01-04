@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 namespace Curry.UI
 {
+
     public class ResourceBar : MonoBehaviour
     {
         [SerializeField] Slider m_slider = default;

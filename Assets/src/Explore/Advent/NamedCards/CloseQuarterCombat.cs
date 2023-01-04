@@ -19,14 +19,14 @@ namespace Curry.Explore
             Satisfied = true;
         }
 
-        protected override void ActivateEffect(AdventurerStats user)
+        protected override void ActivateEffect(IPlayer user)
         {
-            RaycastHit2D[] hits = Physics2D.RaycastAll(Target + Vector3.up, Vector3.down, m_targetLayer);
+            RaycastHit2D[] hits = Physics2D.RaycastAll(Target - 5f * Vector3.forward, Vector3.forward, m_targetLayer);
             foreach(RaycastHit2D hit in hits) 
             {
-                if (hit && hit.transform.TryGetComponent(out TacticalEnemy enemy))
+                if (hit && hit.transform.TryGetComponent(out IEnemy enemy))
                 {
-                    enemy.TakeHit();
+                    enemy.TakeHit(1);
                     break;
                 }
             }

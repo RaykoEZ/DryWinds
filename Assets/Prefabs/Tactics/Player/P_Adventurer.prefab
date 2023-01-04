@@ -119,10 +119,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81cb90a397beeaf4fa89373e4ad05c80, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_stats:
-    m_name: Adventurer
-    m_TimePerTurn: 10
-    m_scoutRange: 1
+  m_anim: {fileID: 2571672766922976632}
+  m_startingStats:
+    m_name: Player1
+    m_hp: 3
+    m_moveRange: 1
     m_adventurer: {fileID: 2571672766922976577}
   m_onMove:
     m_eventToListen: {fileID: 11400000, guid: b388116c0ace42949a308c2e07cc7524, type: 2}
@@ -207,6 +208,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2571672766922976577}
     m_Modifications:
+    - target: {fileID: 2114110401117769677, guid: 77d0a3c1bf5be1e459ad1a6b003c0ca6, type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     - target: {fileID: 8479235164050219458, guid: 77d0a3c1bf5be1e459ad1a6b003c0ca6, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5

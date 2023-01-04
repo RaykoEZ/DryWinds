@@ -9,7 +9,7 @@ namespace Curry.Explore
         [SerializeField] int m_detectionLevel = default;
         [SerializeField] CurryGameEventTrigger m_onSonar = default;
 
-        protected override void ActivateEffect(AdventurerStats user)
+        protected override void ActivateEffect(IPlayer user)
         {
             ScanInfo info = new ScanInfo(m_detectionLevel, 3f);
             m_onSonar?.TriggerEvent(info);

@@ -23,7 +23,7 @@ namespace Curry.Events
         {
             get 
             {
-                return Progress == Target;
+                return Progress >= Target;
             }
         }
 
