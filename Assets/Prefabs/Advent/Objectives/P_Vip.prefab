@@ -13,7 +13,8 @@ GameObject:
   - component: {fileID: 4499789418524853107}
   - component: {fileID: 6251463340504498966}
   - component: {fileID: 6804864750952041762}
-  m_Layer: 0
+  - component: {fileID: 9219982454908304233}
+  m_Layer: 10
   m_Name: P_Vip
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -102,25 +103,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3f66ae0fc6bcc04b8caa1fe4010945b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_onTalk:
-    m_eventToListen: {fileID: 11400000, guid: 1596805060775e145857debd47ba7226, type: 2}
-    m_responses:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 4499789418524853107}
-          m_TargetAssemblyTypeName: Curry.Explore.Vip, Assembly-CSharp
-          m_MethodName: OnTalk
-          m_Mode: 0
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-  m_onRescued:
-    m_eventToTrigger: {fileID: 11400000, guid: 6642b74b261015741a70e2f4e4853eb6, type: 2}
+  m_objective: {fileID: 9219982454908304233}
 --- !u!61 &6251463340504498966
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -168,3 +151,18 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &9219982454908304233
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4499789418524853005}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28f75453fa4b7514086173bded19a9b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_numberRescue:
+    m_contextDescription: Rescue this guy
+    m_target: 1

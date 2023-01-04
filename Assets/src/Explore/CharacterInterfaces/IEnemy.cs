@@ -14,7 +14,6 @@ namespace Curry.Explore
         event OnEnemyUpdate OnReveal;
         event OnEnemyUpdate OnHide;
         void ExecuteAction();
-        void OnDefeated();
         void Affect(Func<TacticalStats, TacticalStats> effect);
         bool UpdateCountdown(int dt);
     }

@@ -5,57 +5,99 @@ using Curry.Events;
 
 namespace Curry.Game
 {
+
+    public delegate void OnAllComplete();
     public class ObjectiveManager : MonoBehaviour
     {
-        [SerializeField] protected List<GameObjective> m_objectives = default;
-        protected List<IObjective> m_completedObjectives = new List<IObjective>();
-        protected List<IObjective> m_failedObjectives = new List<IObjective>();
+        /// Preloaded objectives
+        [SerializeField] protected List<GameObjective> m_criticalObjectives = default;
+        [SerializeField] protected List<GameObjective> m_optionalObjectives = default;
 
+        protected List<IObjective> m_critical = new List<IObjective>();
+        protected List<IObjective> m_optional = new List<IObjective>();
+        protected List<IObjective> m_completed = new List<IObjective>();
+        protected List<IObjective> m_failed = new List<IObjective>();
+
+        public event OnAllComplete AllCriticalComplete;
         public event OnObjectiveComplete ObjectiveCompleted;
-        public event OnObjectiveComplete ObjectiveFail;
+        public event OnObjectiveFail OnFailure;
+        public event OnObjectiveFail OnCriticalFailure;
+        public IReadOnlyList<IObjective> CriticalObjectives { get { return m_critical; } }
+        public IReadOnlyList<IObjective> OptionalObjectives { get { return m_optional; } }
+        public IReadOnlyList<IObjective> CompletedObjectives { get { return m_completed; } }
 
-        public IReadOnlyList<IObjective> ActiveObjectives { get { return m_objectives; } }
-        public IReadOnlyList<IObjective> CompletedObjectives { get { return m_completedObjectives; } }
-
-        protected void OnEnable()
+        protected void Start()
         {
             Init();
         }
 
-        protected void OnDisable()
+        protected void OnDestroy()
         {
             Shutdown();
         }
 
         protected virtual void Init() 
-        { 
-            foreach(GameObjective objective in m_objectives)
+        {
+            foreach (IObjective objective in m_criticalObjectives)
             {
+                m_critical.Add(objective);
+                PrepareObjective(objective);
+            }
+            foreach (IObjective objective in m_optionalObjectives)
+            {
+                m_optional.Add(objective);
                 PrepareObjective(objective);
             }
         }
 
         protected virtual void Shutdown()
         {
-            foreach (GameObjective objective in m_objectives)
+            foreach (IObjective objective in CriticalObjectives)
+            {
+                ShutdownObjective(objective);
+            }
+            foreach (IObjective objective in OptionalObjectives)
             {
                 ShutdownObjective(objective);
             }
         }
-
+        public void AddObjective(IObjective objective, bool isCritical = false)
+        {
+            PrepareObjective(objective);
+            if (isCritical) 
+            {
+                m_critical.Add(objective);
+            }
+            else 
+            {
+                m_optional.Add(objective);
+            }
+        }
         protected virtual void OnObjectiveComplete(IObjective completed) 
         {
             CleanupObjective(completed);
-            m_completedObjectives.Add(completed);
+            m_completed.Add(completed);
             ObjectiveCompleted?.Invoke(completed);
+            if(m_critical.Count == 0) 
+            {
+                AllCriticalComplete?.Invoke();
+            }
             // Do some animation/notification:
         }
 
         protected virtual void OnObjectiveFail(IObjective failed)
         {
+            if (m_critical.Contains(failed))
+            {
+                OnCriticalFailure?.Invoke(failed);
+            }
+            else 
+            {
+                OnFailure?.Invoke(failed);
+            }
             CleanupObjective(failed);
-            m_failedObjectives.Add(failed);
-            ObjectiveFail?.Invoke(failed);
+            m_failed.Add(failed);
+
             // Do some animation/notification:
         }
 
@@ -64,25 +106,21 @@ namespace Curry.Game
             completed.OnComplete -= OnObjectiveComplete;
             completed.OnFail -= OnObjectiveFail;
             completed?.Shutdown();
-            m_objectives.Remove(completed as GameObjective);
+            m_optional.Remove(completed);
+            m_critical.Remove(completed);
         }
 
-        protected void PrepareObjective(GameObjective objective)
+        protected void PrepareObjective(IObjective objective)
         {
             objective?.Init();
             objective.OnComplete += OnObjectiveComplete;
+            objective.OnFail += OnObjectiveFail;
         }
-        protected void ShutdownObjective(GameObjective objective)
+        protected void ShutdownObjective(IObjective objective)
         {
             objective?.Shutdown();
             objective.OnComplete -= OnObjectiveComplete;
-        }
-
-        public void AddObjective(IObjective objective) 
-        {
-            GameObjective obj = objective as GameObjective;
-            PrepareObjective(obj);
-            m_objectives.Add(obj);
+            objective.OnFail -= OnObjectiveFail;
         }
     }
 

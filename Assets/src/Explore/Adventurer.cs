@@ -1,30 +1,10 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 using Curry.Events;
 
 namespace Curry.Explore
 {
-    [Serializable]
-    public struct AdventurerStats
-    {
-        [SerializeField] string m_name;
-        [SerializeField] int m_hp;
-        [Range(1, 3)]
-        [SerializeField] int m_moveRange;
-        [SerializeField] Transform m_adventurer;
-        public string Name { get { return m_name; } }
-        public int HP { get { return m_hp; } set { m_hp = value; } }
-        public int MoveRange { get { return m_moveRange; } }
-        public Vector3 WorldPosition { get { return m_adventurer.position; } }
-        public AdventurerStats(AdventurerStats stats) 
-        {
-            m_name = stats.Name;
-            m_hp = stats.HP;
-            m_moveRange = stats.MoveRange;
-            m_adventurer = stats.m_adventurer;
-        }
-    }
+    #region some game event argument definitions
     public class ScanInfo : EventInfo 
     {
         public int DetectionLevel { get; protected set; }
@@ -43,9 +23,11 @@ namespace Curry.Explore
             PlayerStats = stats;
         }
     }
+    #endregion
     // A basic player character for adventure mode
     public class Adventurer : MonoBehaviour, IPlayer
     {
+        #region Serialize Fields
         [SerializeField] Animator m_anim = default;
         [SerializeField] AdventurerStats m_startingStats = default;
         [SerializeField] CurryGameEventListener m_onMove = default;
@@ -53,43 +35,62 @@ namespace Curry.Explore
         [SerializeField] CurryGameEventTrigger m_onPlayerPing = default;
         [SerializeField] CurryGameEventTrigger m_onScout = default;
         [SerializeField] CurryGameEventTrigger m_moveFinish = default;
-        public event OnTakeDamage TakeDamage;
-        protected AdventurerStats m_current;
+        #endregion
         IRescue m_rescuee;
+
         #region IPlayer interface impl
+        public event OnTakeDamage TakeDamage;
+        public event OnPlayerUpdate OnDefeat;
+        public event OnPlayerUpdate OnReveal;
+        public event OnPlayerUpdate OnHide;
+        protected AdventurerStats m_current;
         public AdventurerStats StartingStats { get { return new AdventurerStats(m_startingStats); } }
         public AdventurerStats CurrentStats { get { return new AdventurerStats(m_current); } }
 
-        public void Reveal()
+        public virtual void Reveal()
         {
+            OnReveal?.Invoke(this);
             Debug.Log("Reveal player"); 
         }
-        public void Hide()
+        public virtual void Hide()
         {
+            OnHide?.Invoke(this);
             Debug.Log("Hide player");
         }
-        public void Recover(int val)
+        public virtual void Recover(int val)
         {
             Debug.Log("Player recovers" + val + " HP.");
             val = Mathf.Clamp(val, 0, m_startingStats.HP - m_current.HP);
             m_current.HP += val;
             TakeDamage?.Invoke(val, m_current.HP);
         }
-        public void TakeHit(int hitVal)
+        public virtual void TakeHit(int hitVal)
         {
             Debug.Log("Player takes" + hitVal + " damage.");
             m_anim.ResetTrigger("TakeDamage");
             m_anim.SetTrigger("TakeDamage");
             m_current.HP -= hitVal;
             TakeDamage?.Invoke(hitVal, m_current.HP);
+
+            if (m_current.HP <= 0) 
+            {
+                OnDefeated();
+            }
         }
-        public void Move(Vector2Int direction)
+
+        public virtual void OnDefeated()
+        {
+            Debug.Log("Player defeated");
+            OnDefeat?.Invoke(this);
+        }
+        public virtual void Move(Vector2Int direction)
         {
             Vector3 target = transform.position + new Vector3(direction.x, direction.y, 0f);
             StartCoroutine(Move_Internal(target));
         }
         #endregion
 
+        #region Movement impl
         public void Move(EventInfo info) 
         {
             if (info == null) return;
@@ -133,6 +134,7 @@ namespace Curry.Explore
                 m_rescuee.Rescue();
             }
         }
+        #endregion
         void Awake()
         {
             m_current = new AdventurerStats(StartingStats);

@@ -8,6 +8,7 @@ namespace Curry.Explore
         void Hide();
         void Recover(int val);
         void TakeHit(int hitVal);
+        void OnDefeated();
         void Move(Vector2Int direction);
     }
 }

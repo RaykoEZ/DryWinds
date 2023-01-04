@@ -10,14 +10,17 @@ namespace Curry.Explore
     }
     public class Vip : MonoBehaviour, IRescue
     {
+        [SerializeField] RescueObjective m_objective = default;
         // Happens when player finds clue/comms locations
-        [SerializeField] CurryGameEventTrigger m_onRescued = default;
-
         public virtual void Rescue() 
         {
             Debug.Log("tyty");
-            EventInfo info = new EventInfo();
-            m_onRescued?.TriggerEvent(info);
+            m_objective.OnRescue();
+        }
+        public virtual void Capture() 
+        {
+            Debug.Log("oof");
+            m_objective.OnFailure();
         }
     }
 }
