@@ -25,7 +25,7 @@ namespace Curry.Explore
     }
     #endregion
     // A basic player character for adventure mode
-    public class Adventurer : MonoBehaviour, IPlayer
+    public class Adventurer : TacticalCharacter, IPlayer
     {
         #region Serialize Fields
         [SerializeField] Animator m_anim = default;
@@ -47,24 +47,24 @@ namespace Curry.Explore
         public AdventurerStats StartingStats { get { return new AdventurerStats(m_startingStats); } }
         public AdventurerStats CurrentStats { get { return new AdventurerStats(m_current); } }
 
-        public virtual void Reveal()
+        public override void Reveal()
         {
             OnReveal?.Invoke(this);
             Debug.Log("Reveal player"); 
         }
-        public virtual void Hide()
+        public override void Hide()
         {
             OnHide?.Invoke(this);
             Debug.Log("Hide player");
         }
-        public virtual void Recover(int val)
+        public override void Recover(int val)
         {
             Debug.Log("Player recovers" + val + " HP.");
             val = Mathf.Clamp(val, 0, m_startingStats.HP - m_current.HP);
             m_current.HP += val;
             TakeDamage?.Invoke(val, m_current.HP);
         }
-        public virtual void TakeHit(int hitVal)
+        public override void TakeHit(int hitVal)
         {
             Debug.Log("Player takes" + hitVal + " damage.");
             m_anim.ResetTrigger("TakeDamage");
@@ -78,15 +78,10 @@ namespace Curry.Explore
             }
         }
 
-        public virtual void OnDefeated()
+        public override void OnDefeated()
         {
             Debug.Log("Player defeated");
             OnDefeat?.Invoke(this);
-        }
-        public virtual void Move(Vector2Int direction)
-        {
-            Vector3 target = transform.position + new Vector3(direction.x, direction.y, 0f);
-            StartCoroutine(Move_Internal(target));
         }
         #endregion
 
@@ -104,26 +99,8 @@ namespace Curry.Explore
                 StartCoroutine(Move_Internal(target));
             }
         }
-        IEnumerator Move_Internal(Vector3 target)
+        protected override void OnMoveFinish()
         {
-            RaycastHit2D hit = Physics2D.Linecast(
-                    transform.position,
-                    target,
-                    LayerMask.GetMask("Obstacles"));
-            // Check for walls
-            if (hit)
-            {
-                yield break;
-            }
-
-            float duration = 1f;
-            float timeElapsed = 0f;
-            while (timeElapsed <= duration)
-            {
-                timeElapsed += Time.deltaTime;
-                transform.position = Vector3.Lerp(transform.position, target, timeElapsed / duration);
-                yield return null;
-            }
             PlayerInfo info = new PlayerInfo(new AdventurerStats(m_startingStats));
             m_moveFinish?.TriggerEvent(info);
             m_onPlayerPing?.TriggerEvent(info);
@@ -135,8 +112,9 @@ namespace Curry.Explore
             }
         }
         #endregion
-        void Awake()
+        protected override void Awake()
         {
+            base.Awake();
             m_current = new AdventurerStats(StartingStats);
             m_onMove?.Init();
         }
@@ -155,5 +133,8 @@ namespace Curry.Explore
             }
         }
 
+        public override void Prepare()
+        {
+        }
     }
 }

@@ -7,7 +7,7 @@ using UnityEngine;
 namespace Curry.Explore
 {
     // Base enemy class
-    public abstract class TacticalEnemy : PoolableBehaviour, IEnemy, IPoolable
+    public abstract class TacticalEnemy : TacticalCharacter, IEnemy, IPoolable
     {
         [SerializeField] protected TacticalStats m_initStats = default;
         [SerializeField] protected Animator m_anim = default;
@@ -33,32 +33,29 @@ namespace Curry.Explore
 
         public Vector3 WorldPosition => transform.position;
 
-        public virtual void Reveal()
+        public override void Reveal()
         {
             m_current.Visibility = TacticalVisibility.Visible;
             m_anim.SetBool("hidden", false);
             OnReveal?.Invoke(this);
         }
-        public virtual void Hide()
+        public override void Hide()
         {
             m_current.Visibility = TacticalVisibility.Hidden;
             m_anim.SetBool("hidden", true);
             OnHide?.Invoke(this);
         }
-        public void Move(Vector2Int direction)
-        {
-            throw new NotImplementedException();
-        }
+
         public virtual void Affect(Func<TacticalStats, TacticalStats> effect)
         {
             if (effect == null) return;
             CurrentStatus = effect.Invoke(CurrentStatus);
         }
-        public void Recover(int val)
+        public override void Recover(int val)
         {
             Debug.Log("Recover enemy");
         }
-        public virtual void TakeHit(int hitVal)
+        public override void TakeHit(int hitVal)
         {
             Debug.Log("Ahh, me ded");
             m_anim?.SetTrigger("takeHit");
@@ -70,10 +67,7 @@ namespace Curry.Explore
             Reveal();
             m_anim?.SetTrigger("strike");
         }
-        public virtual void OnDefeated() 
-        {
-            ReturnToPool();
-        }
+
         public virtual bool UpdateCountdown(int dt)
         {
             if (m_targetsInSight.Count == 0) { return false; }

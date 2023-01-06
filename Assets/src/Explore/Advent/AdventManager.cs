@@ -21,7 +21,7 @@ namespace Curry.Explore
         // Trigger this to move player
         [SerializeField] CurryGameEventTrigger m_onAdventureMove = default;
         // After player moved, we draw card from player position, trigger this
-        [SerializeField] CurryGameEventTrigger m_onCardDraw = default;
+        [SerializeField] CurryGameEventTrigger m_onCardDraw = default;      
 
         public event OnAdventureFinish OnFinish;
         void Awake()
