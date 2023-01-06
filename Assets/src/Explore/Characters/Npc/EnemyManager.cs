@@ -8,13 +8,13 @@ using Curry.Game;
 namespace Curry.Explore
 {
     [Serializable]
-    public class EnemyPoolCollection : PoolCollection<PoolableBehaviour>
+    public class BaseBehaviourPoolCollection : PoolCollection<PoolableBehaviour>
     {
     }
     [Serializable]
-    public class EnemyInstanceManager : InstanceManager<PoolableBehaviour>
+    public class BaseBehaviourInstanceManager : InstanceManager<PoolableBehaviour>
     {
-        [SerializeField] EnemyPoolCollection m_pool = default;
+        [SerializeField] BaseBehaviourPoolCollection m_pool = default;
         protected override PoolCollection<PoolableBehaviour> Pool { get { return m_pool; } }
     }
     // Monitors all spawned enemies, triggers enemy action phases
@@ -64,7 +64,7 @@ namespace Curry.Explore
         }
         #endregion
         #region Serialize Fields & Members
-        [SerializeField] EnemyInstanceManager m_instance = default;
+        [SerializeField] BaseBehaviourInstanceManager m_instance = default;
         [SerializeField] GameClock m_clock = default;
         [SerializeField] FogOfWar m_fog = default;
         [SerializeField] protected CurryGameEventListener m_onSpawn = default;

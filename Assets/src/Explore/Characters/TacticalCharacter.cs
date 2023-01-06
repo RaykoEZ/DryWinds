@@ -5,6 +5,7 @@ namespace Curry.Explore
 {
     public abstract class TacticalCharacter : PoolableBehaviour, ICharacter
     {
+        
         // A list of layer names to check when we intend to move towards a position 
         protected static readonly string[] c_occupanceCheckFilter = new string[] 
         {
@@ -12,6 +13,9 @@ namespace Curry.Explore
             "Enemies",
             "Player"
         };
+
+        public event OnMovementBlocked OnBlocked;
+
         public abstract void Hide();
 
         public virtual void Move(Vector2Int direction)

@@ -327,14 +327,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 4063988590427125918}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eccb24e81493d3f469be0632cdd926e4, type: 3}
+  m_Script: {fileID: 11500000, guid: 9f3c2b95a94559340a4b34b8b6b5b85f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_initStats:
-    ScoutRange: 1
-    Speed: 1
-    AttackCountdown: 1
-    Visibility: 1
+    ScoutRange: 0
+    Speed: 0
+    AttackCountdown: 0
+    Visibility: 0
   m_anim: {fileID: 3642215462890439483}
   m_countdownText: {fileID: 6612072387905013795}
   m_detect: {fileID: 9158939930621903418}
@@ -459,7 +459,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8671641298351939189}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fc52006ec18f36f4ebcf9fa3ead0cc78, type: 3}
+  m_Script: {fileID: 11500000, guid: d17600633a00b62438c21ce4f5cb34bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!58 &8011449079695596528
