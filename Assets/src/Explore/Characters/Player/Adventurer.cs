@@ -95,8 +95,9 @@ namespace Curry.Explore
             if (info is PositionInfo select) 
             {
                 target = select.WorldPosition;
-                target.z = transform.position.z;
-                StartCoroutine(Move_Internal(target));
+                Vector3 diff = target - transform.position;
+                Vector2Int dir = new Vector2Int((int)diff.x, (int)diff.y);
+                Move(dir);
             }
         }
         protected override void OnMoveFinish()
