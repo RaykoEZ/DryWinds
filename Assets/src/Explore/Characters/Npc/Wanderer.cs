@@ -39,10 +39,10 @@ namespace Curry.Explore
             }
             foreach(IPlayer player in m_targetsInSight) 
             {
-                player.TakeHit(1);
-                Vector3 diff = transform.position - player.CurrentStats.WorldPosition;
-                Vector2Int push = new Vector2Int((int)-diff.x, (int)-diff.y);
-                player.Move(push);
+                //player.TakeHit(1);
+                //Vector3 diff = player.CurrentStats.WorldPosition - transform.position;
+                //Vector2Int push = new Vector2Int((int)diff.x, (int)diff.y);
+                //player.Move(push);
             }
         }
         public void Activate()

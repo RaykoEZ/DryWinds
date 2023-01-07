@@ -57,7 +57,6 @@ namespace Curry.Explore
         }
         public override void TakeHit(int hitVal)
         {
-            Debug.Log("Ahh, me ded");
             m_anim?.SetTrigger("takeHit");
             Defeat();
         }
@@ -77,6 +76,7 @@ namespace Curry.Explore
             return countDownEnds;
         }
         #endregion
+
         #region pooling implementation
         public override void Prepare()
         {
@@ -87,7 +87,6 @@ namespace Curry.Explore
             m_detect.OnDetected += OnDetectEnter;
             m_detect.OnExitDetection += OnDetectExit;
         }
-
         public override void ReturnToPool()
         {
             OnDefeat = null;

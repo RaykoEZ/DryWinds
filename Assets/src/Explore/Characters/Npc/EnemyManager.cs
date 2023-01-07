@@ -103,9 +103,10 @@ namespace Curry.Explore
             spawn.OnDefeat += OnEnemyRemove;
             spawn.OnReveal += OnEnemyReveal;
             spawn.OnHide += OnEnemyHide;
+            spawn.OnBlocked += OnMovementBlocked;
             m_toAdd.Add(spawn);
             // Update spawned enemy activeness according to time of day
-            if(spawn is IOrganicLife life) 
+            if (spawn is IOrganicLife life) 
             {
                 UpdateActiveness(life);
             }
@@ -121,12 +122,18 @@ namespace Curry.Explore
         {
             m_fog.SetFogOfWar(hide.WorldPosition, clearFog: false);
         }
-        void OnEnemyRemove(IEnemy defeated)
+        void OnEnemyRemove(IEnemy remove)
         {
-            defeated.OnDefeat -= OnEnemyRemove;
-            defeated.OnReveal -= OnEnemyReveal;
-            defeated.OnHide -= OnEnemyHide;
-            m_toRemove.Add(defeated);
+            remove.OnDefeat -= OnEnemyRemove;
+            remove.OnReveal -= OnEnemyReveal;
+            remove.OnHide -= OnEnemyHide;
+            remove.OnBlocked -= OnMovementBlocked;
+            m_toRemove.Add(remove);
+            remove.OnDefeated();
+        }
+        void OnMovementBlocked(Vector2 pos) 
+        {
+            m_fog.SetFogOfWar(pos);
         }
         #endregion
         // Whenever player spends time, update all enemies with countdowns 
@@ -173,7 +180,6 @@ namespace Curry.Explore
             foreach (IEnemy e in m_toRemove) 
             {
                 m_activeEnemies.Remove(e);
-                e?.OnDefeated();
             }
             m_toAdd.Clear();
             m_toRemove.Clear();

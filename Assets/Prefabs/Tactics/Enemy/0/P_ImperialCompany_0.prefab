@@ -331,10 +331,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_initStats:
-    ScoutRange: 0
-    Speed: 0
-    AttackCountdown: 0
-    Visibility: 0
+    ScoutRange: 1
+    Speed: 1
+    AttackCountdown: 2
+    Visibility: 1
   m_anim: {fileID: 3642215462890439483}
   m_countdownText: {fileID: 6612072387905013795}
   m_detect: {fileID: 9158939930621903418}

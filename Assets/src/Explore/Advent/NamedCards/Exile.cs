@@ -11,8 +11,8 @@ namespace Curry.Explore
             {
                 if (hit && hit.transform.TryGetComponent(out IEnemy enemy))
                 {                
-                    Vector2 diff = userPos - hit.rigidbody.position;
-                    Vector2Int push = new Vector2Int((int)-diff.x, (int)-diff.y);
+                    Vector2 diff = hit.rigidbody.position - userPos;
+                    Vector2Int push = new Vector2Int((int)diff.x, (int)diff.y);
                     enemy.Move(push);
                     break;
                 }

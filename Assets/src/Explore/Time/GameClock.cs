@@ -47,6 +47,11 @@ namespace Curry.Explore
                 }
             }
         }
+        void Start()
+        {
+            UpdateClockDisplay();
+            HandleDayNightDisplay();
+        }
         public void Increment()
         {
             if(m_setting.Hour == 23) 
@@ -85,8 +90,8 @@ namespace Curry.Explore
         void UpdateClockDisplay()
         {
             // Add zero to display text if we only have one digit
-            string minute = m_setting.Hour > 9 ? m_setting.Hour.ToString() : $"0{m_setting.Hour}";
-            m_timeLabel.text = minute;
+            string time = m_setting.Hour > 9 ? m_setting.Hour.ToString() : $"0{m_setting.Hour}";
+            m_timeLabel.text = time;
         }
     }
 }

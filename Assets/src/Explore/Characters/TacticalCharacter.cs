@@ -1,40 +1,53 @@
 ﻿using Curry.Game;
 using System.Collections;
 using UnityEngine;
+using UnityEditor;
 namespace Curry.Explore
 {
     public abstract class TacticalCharacter : PoolableBehaviour, ICharacter
     {
-        
         // A list of layer names to check when we intend to move towards a position 
-        protected static readonly string[] c_occupanceCheckFilter = new string[] 
+        static readonly string[] c_occupanceCheckFilter = new string[]
         {
             "Obstacles",
             "Enemies",
             "Player"
         };
-
+        protected static LayerMask OccupanceContactFilter => LayerMask.GetMask(c_occupanceCheckFilter);
         public event OnMovementBlocked OnBlocked;
 
         public abstract void Hide();
-
         public virtual void Move(Vector2Int direction)
         {
             Vector3 target = transform.position + new Vector3(direction.x, direction.y, 0f);
-            RaycastHit2D hit = Physics2D.Linecast(
-                    transform.position,
+            RaycastHit2D hit = Physics2D.CircleCast(
                     target,
-                    LayerMask.GetMask(c_occupanceCheckFilter));
+                    0.1f,
+                    Vector2.zero,
+                    distance: 0f,
+                    OccupanceContactFilter);
             // Check for walls and occupying entities
             if (!hit)
             {
                 StartCoroutine(Move_Internal(target));
             }
             else 
-            { 
-                // TODO: reveal occupied tile, clear fog of war on that tile
-
+            {
+                OnMovementBlocked(hit);
             }
+        }
+        void OnMovementBlocked(RaycastHit2D hit) 
+        {
+            Rigidbody2D rb = hit.rigidbody;
+            if(rb == null)
+            {
+                OnBlocked?.Invoke(hit.point);
+            }
+            else if (rb.TryGetComponent(out ICharacter character)) 
+            {
+                character.Reveal();
+            }
+
         }
 
         public virtual void OnDefeated()
