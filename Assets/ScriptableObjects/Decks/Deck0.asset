@@ -15,4 +15,3 @@ MonoBehaviour:
   m_deckId: 0
   m_cardsInDeck:
   - {fileID: 5894462175879888250, guid: feeaa1f113a0d2140ae93496f42f993f, type: 3}
-  - {fileID: 5218861219846289650, guid: 2861c2f728e9f5b4b8c9b3f0aedddfad, type: 3}
