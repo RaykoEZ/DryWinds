@@ -1,6 +1,7 @@
 !*.png
 !*.asset
 !*/Assets/AddressableAssetsData/*
+*.vsidx
 *.psd
 *.psd.meta
 *.pdf

@@ -12,11 +12,37 @@ namespace Curry.UI
     {
         [SerializeField] Animator m_anim = default;
         [SerializeField] Image m_cardImage = default;
-        [SerializeField] Image m_cardBorder = default;
         protected bool m_selected = false;
         public event OnChoose OnChosen;
         public event OnChoose OnUnchoose;
         public object Value { get; protected set; }
+
+        // Instantiate a card choice object from a bespoke card
+        public static CardChoice Create(GameObject cardRef, out GameObject instance)
+        {
+            if (cardRef == null) 
+            {
+                instance = null;
+                return null;
+            }
+
+            // Make a clone of the card
+            instance = Instantiate(cardRef);
+            // Add a choice script and initialize it with the behaviour
+            CardChoice choice = instance.AddComponent<CardChoice>();
+            instance.GetComponent<DraggableCard>().enabled = false;
+            if (instance.TryGetComponent(out AdventCard card)) 
+            {
+                choice.InitValue(card);
+                //Disable drag events for the this card
+            }
+            else 
+            {
+                Debug.LogWarning("Card script not found, using root name for Value ref");
+                choice.InitValue(instance.name);
+            }
+            return choice;
+        }
 
         public override void Prepare()
         {
@@ -24,9 +50,9 @@ namespace Curry.UI
             OnChosen = null;
             OnUnchoose = null;
         }
-        public virtual void Init(AdventCard card) 
+        public virtual void InitValue(object val) 
         {
-            Value = card;
+            Value = val;
         }
         public void DisplayChoice(Transform parent)
         {

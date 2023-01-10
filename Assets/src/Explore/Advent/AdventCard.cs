@@ -16,7 +16,7 @@ namespace Curry.Explore
     }
     public delegate void OnCardEffectEnd();
     // Base class for all playable cards
-    public abstract class AdventCard : MonoBehaviour, IPoolable
+    public abstract class AdventCard : PoolableBehaviour, IPoolable
     {
         [SerializeField] CardAttribute m_attribute = default;
         bool m_activatable = true;
@@ -28,12 +28,11 @@ namespace Curry.Explore
         public virtual Action<IPlayer> CardEffect { get { return ActivateEffect; } }
         // Whether keep card upon moving to a new tile
         public virtual bool Activatable { get { return m_activatable; } protected set { m_activatable = value; } }
-        public IObjectPool Origin { get; set; }
-        public virtual void Prepare() 
+        public override void Prepare() 
         {
             Activatable = true;
         }
-        public virtual void ReturnToPool()
+        public override void ReturnToPool()
         {
             ObjectPool<AdventCard>.ReturnToPool(Origin, this);
         }

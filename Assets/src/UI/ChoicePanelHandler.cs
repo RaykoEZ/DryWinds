@@ -4,29 +4,41 @@ using UnityEngine;
 using UnityEngine.UI;
 using Curry.Explore;
 using TMPro;
+using Curry.Game;
 
 namespace Curry.UI
 {
-    // The fields to fill the choice panel
-    // (e.g: the pool of items to choose from, title, max/min to choose...etc)
     [Serializable]
-    public struct ChoiceContext 
+    public struct ChoiceConditions 
     {
         [SerializeField] bool m_canCancel;
         [Range(0, int.MaxValue)]
         [SerializeField] int m_maxChoice;
         [Range(0, int.MaxValue)]
         [SerializeField] int m_minChoice;
-        [SerializeField] List<IChoice> m_availableChoices;
         public bool CanCancel { get { return m_canCancel; } }
-        public int MaxChoiceCount { get { return Mathf.Clamp(m_maxChoice, 0, m_availableChoices.Count); } }
+        public int MaxChoiceCount { get { return Mathf.Max(m_maxChoice, 0); } }
         public int MinChoiceCount { get { return Mathf.Clamp(m_minChoice, 0, MaxChoiceCount); } }
-        public List<IChoice> ChooseFrom { get { return m_availableChoices; } }
-        public ChoiceContext(bool canCnacel, int max, int min, List<IChoice> availableChoices) 
+        public ChoiceConditions(bool canCnacel, int max, int min)
         {
             m_canCancel = canCnacel;
             m_maxChoice = max;
             m_minChoice = min;
+        }
+    }
+    // The fields to fill the choice panel
+    // (e.g: the pool of items to choose from, title, max/min to choose...etc)
+    public struct ChoiceContext
+    {
+        ChoiceConditions m_conditions;
+        List<IChoice> m_availableChoices;
+        public ChoiceConditions Conditons { get { return m_conditions; } }
+        public List<IChoice> ChooseFrom { 
+            get { return m_availableChoices; } 
+            set { m_availableChoices = value; } }
+        public ChoiceContext(ChoiceConditions conditions, List<IChoice> availableChoices) 
+        {
+            m_conditions = conditions;
             m_availableChoices = availableChoices;
         }      
     }
@@ -65,6 +77,14 @@ namespace Curry.UI
             {
                 m_inProgress = true;
                 m_currentContext = context;
+                PrepareChoices();
+            }
+        }
+        protected virtual void PrepareChoices() 
+        {
+            foreach (IChoice choice in m_currentContext.ChooseFrom) 
+            {
+                choice.DisplayChoice(m_content);
             }
         }
         public void ConfirmChoice() { }
