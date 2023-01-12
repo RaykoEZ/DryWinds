@@ -10,8 +10,9 @@ namespace Curry.Explore
         [SerializeField] int m_scoutRange = default;
         [SerializeField] CurryGameEventTrigger m_scan = default;
         RangeMap m_rangeMap;
-        private void Awake()
+        protected override void Awake()
         {
+            base.Awake();
             m_rangeMap = RangeMapping.GetNeighbourRangeMap(m_scoutRange);
         }
 

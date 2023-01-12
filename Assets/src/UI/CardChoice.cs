@@ -6,12 +6,10 @@ using UnityEngine.UI;
 
 namespace Curry.UI
 {
-    public class CardChoice : PoolableBehaviour, IChoice, 
+    public class CardChoice : MonoBehaviour, IChoice, 
         IPointerClickHandler, IPointerUpHandler, IPointerDownHandler, 
         IPointerEnterHandler, IPointerExitHandler
     {
-        [SerializeField] Animator m_anim = default;
-        [SerializeField] Image m_cardImage = default;
         protected bool m_selected = false;
         public event OnChoose OnChosen;
         public event OnChoose OnUnchoose;
@@ -25,7 +23,6 @@ namespace Curry.UI
                 instance = null;
                 return null;
             }
-
             // Make a clone of the card
             instance = Instantiate(cardRef);
             // Add a choice script and initialize it with the behaviour
@@ -43,28 +40,34 @@ namespace Curry.UI
             }
             return choice;
         }
-
-        public override void Prepare()
+        public static void DetachFromCard(CardChoice choiceRef) 
         {
-            Value = null;
-            OnChosen = null;
-            OnUnchoose = null;
+            if (choiceRef == null) 
+            {
+                return;
+            }
+            choiceRef.gameObject.GetComponent<DraggableCard>().enabled = true;
+            Destroy(choiceRef);
         }
-        public virtual void InitValue(object val) 
+        protected virtual void InitValue(object val)
         {
             Value = val;
         }
+
         public void DisplayChoice(Transform parent)
         {
             transform.SetParent(parent);
             transform.localPosition = Vector3.zero;
         }
+
         public void Choose()
         {
+            GetComponent<Animator>()?.SetBool("selected", true);
             OnChosen?.Invoke(this);
         }
         public void UnChoose()
         {
+            GetComponent<Animator>()?.SetBool("selected", false);
             OnUnchoose?.Invoke(this);
         }
         public void OnPointerClick(PointerEventData eventData)
@@ -86,11 +89,12 @@ namespace Curry.UI
         }
         public void OnPointerEnter(PointerEventData eventData)
         {
-            m_anim.SetBool("highlight", true);
+            GetComponent<Animator>()?.SetBool("highlight", true);
         }
         public void OnPointerExit(PointerEventData eventData)
         {
-            m_anim.SetBool("highlight", false);
+            GetComponent<Animator>()?.SetBool("highlight", false);
         }
+
     }
 }
