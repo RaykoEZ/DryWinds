@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Curry.Util;
 using Curry.Events;
+using static Curry.Explore.DraggableCard;
 
 namespace Curry.Explore
 {
@@ -48,7 +49,7 @@ namespace Curry.Explore
             Debug.Log("Out of Time");
         }
         // When card is trying to actvated after it is dropped...
-        void OnCardPlay(AdventCard card, Action onPlay = null, Action onCancel = null) 
+        void OnCardPlay(AdventCard card, Action onPlay, Action onCancel) 
         {
             if (!card.Activatable)
             {
@@ -62,12 +63,13 @@ namespace Curry.Explore
             {
                 onPlay?.Invoke();
                 // Make a container for the callstack and trigger it. 
-                List<Action> actions = new List<Action>();
-                actions.Add(
-                    () => {
+                List<Action> actions = new List<Action>
+                {
+                    () =>
+                    {
                         m_hand?.PlayCard(card, m_player.CurrentStats);
                     }
-                    );
+                };
                 OnActivate?.Invoke(card.TimeCost, actions);
             }
             else 

@@ -39,6 +39,7 @@ namespace Curry.Game
             T item = Object.Instantiate(objRef, parent);
             item.Origin = this;
             item.gameObject.SetActive(false);
+            m_pool.Enqueue(item);
             return item;
         }
 
@@ -47,12 +48,9 @@ namespace Curry.Game
             T newObj;
             if (m_pool.Count == 0) 
             {
-                newObj = MakePoolItem(m_poolObjectRef, m_parent);
+                MakePoolItem(m_poolObjectRef, m_parent);
             }
-            else 
-            {
-                newObj = m_pool.Dequeue();
-            }
+            newObj = m_pool.Dequeue();
             newObj.transform.SetParent(m_parent);
             newObj.gameObject.SetActive(true);
             newObj.transform.localPosition = Vector3.zero;
@@ -62,7 +60,7 @@ namespace Curry.Game
             return newObj;
         }
 
-        public virtual void Reclaim(T obj) 
+        public virtual void ReclaimInstance(T obj) 
         {
             obj.gameObject.SetActive(false);
             if (m_inUse.Remove(obj)) 
@@ -76,15 +74,18 @@ namespace Curry.Game
             // if instance is a poolable, return it to pool.
             if (instance is T)
             {
-                Reclaim(instance as T);
+                ReclaimInstance(instance as T);
             }
         }
         public static void ReturnToPool(IObjectPool origin, T obj)
         {
-            origin?.Reclaim(obj);
             if (origin == null)
             {
                 Object.Destroy(obj.gameObject);
+            }
+            else 
+            {
+                origin.Reclaim(obj);
             }
         }
     }

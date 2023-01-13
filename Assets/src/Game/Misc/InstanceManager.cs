@@ -55,9 +55,5 @@ namespace Curry.Game
             PrepareNewInstance(asset, parent);
             return m_currentPool?.GetItemFromPool();
         }
-        public virtual T GetInstanceFromCurrentPool()
-        {
-            return m_currentPool?.GetItemFromPool();
-        }
     }
 }

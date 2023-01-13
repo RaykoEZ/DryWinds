@@ -14,6 +14,11 @@ namespace Curry.Explore
         }
         public bool Satisfied { get; protected set; }
 
+        public override void Prepare()
+        {
+            Satisfied = false;
+        }
+
         public void SetTarget(Vector3 target)
         {
             Target = target;

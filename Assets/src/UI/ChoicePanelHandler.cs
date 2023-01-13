@@ -7,13 +7,14 @@ using static Curry.UI.ChoiceResult;
 
 namespace Curry.UI
 {
+    #region structs for making choices
     [Serializable]
     public struct ChoiceConditions
     {
         [SerializeField] bool m_canCancel;
-        [Range(0, int.MaxValue)]
+        [Range(0, 10)]
         [SerializeField] int m_maxChoice;
-        [Range(0, int.MaxValue)]
+        [Range(0, 10)]
         [SerializeField] int m_minChoice;
         [SerializeField] string m_description;
         public bool CanCancel { get { return m_canCancel; } }
@@ -60,17 +61,7 @@ namespace Curry.UI
             Cancelled
         }
     }
-    // Use this to prompt player to choose something
-    [Serializable]
-    public class ChoicePrompter
-    {
-        [SerializeField] ChoicePanelHandler m_choiceManagerRef = default;
-        public void MakeChoice<T>(ChoiceConditions conditions, List<T> choice, OnChoiceFinish onFinish) where T: IChoice
-        {
-            ChoiceContext context = new ChoiceContext(conditions, choice as List<IChoice>);
-            m_choiceManagerRef?.BeginChoicePanel(context, onFinish);
-        }
-    }
+    #endregion
 
     public delegate void OnChoiceFinish(ChoiceResult result);
     public class ChoicePanelHandler : MonoBehaviour
@@ -84,10 +75,18 @@ namespace Curry.UI
         protected bool m_inProgress = false;
         protected ChoiceContext m_currentContext;
         protected HashSet<IChoice> m_chosen = new HashSet<IChoice>();
+        bool CanConfirm => m_chosen?.Count >= m_currentContext.Conditons.MinChoiceCount;
+        bool CanChoose => m_chosen?.Count < m_currentContext.Conditons.MaxChoiceCount;
         public void BeginChoicePanel(ChoiceContext context, OnChoiceFinish onFinish) 
         {
             if (!m_inProgress) 
             {
+                // Clear all leftover choices
+                foreach(Transform t in m_content) 
+                {
+                    Destroy(t.gameObject);
+                }
+
                 m_inProgress = true;
                 OnChoiceComplete += onFinish;
                 m_currentContext = context;
@@ -133,19 +132,36 @@ namespace Curry.UI
             OnChoiceComplete?.Invoke(result);
             Clear();
         }
+
         void OnChoose(IChoice chosen) 
         {
-            if (m_chosen.Count < m_currentContext.Conditons.MaxChoiceCount)
+            if (CanChoose)
             {
                 m_chosen.Add(chosen);
+                // If we reach max choice count, disable all choice
+                if (!CanChoose)
+                {
+                    SetChoiceChoosability(false);
+                }
             }
             // Set confirm button if we chose 
-            m_confirm.interactable = m_chosen.Count >= m_currentContext.Conditons.MinChoiceCount;
+            m_confirm.interactable = CanConfirm;
         }
         void OnUnchoose(IChoice chosen) 
         {
-            m_chosen.Remove(chosen);
-            m_confirm.interactable = m_chosen.Count >= m_currentContext.Conditons.MinChoiceCount;
+            if (m_chosen.Remove(chosen)) 
+            {
+                SetChoiceChoosability(true);
+                m_confirm.interactable = CanConfirm;
+            }
+        }
+
+        void SetChoiceChoosability(bool value) 
+        {
+            foreach (IChoice choice in m_currentContext.ChooseFrom)
+            {
+                choice.Choosable = value;
+            }
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 namespace Curry.Explore
 {
-    public class Exile : Assault 
+    public class Exile : Assault, ITargetsPosition
     {
         protected override void ActivateEffect(IPlayer user)
         {

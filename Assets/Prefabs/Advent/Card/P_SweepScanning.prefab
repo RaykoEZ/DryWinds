@@ -1,26 +1,26 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &6340036389574794449
+--- !u!114 &1717730041097802572
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4681000882746855100}
+  m_GameObject: {fileID: 199838572023151952}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 55d062130af096c4da4113936794ebdb, type: 3}
+  m_Script: {fileID: 11500000, guid: a2b073dfb0e6a4c4d9d5c754158d9c90, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_attribute:
-    Name: Exile
-    Description: Drive away enemy at target position.
-    TimeCost: 3
+    Name: King's Sight
+    Description: Kingkingkingking
+    TimeCost: 5
     RetainCard: 1
-  m_targetLayer:
-    serializedVersion: 2
-    m_Bits: 512
---- !u!1001 &1066908550573521705
+  m_scoutRange: 2
+  m_scan:
+    m_eventToTrigger: {fileID: 11400000, guid: b6f5cd82da90f44418857008c95416af, type: 2}
+--- !u!1001 &5547821435368769733
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -28,24 +28,12 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 5636301304751964453, guid: ef1d3ab221ea8e440a5fa517863a4114, type: 3}
-      propertyPath: m_Color.a
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5636301304751964453, guid: ef1d3ab221ea8e440a5fa517863a4114, type: 3}
-      propertyPath: m_Color.b
-      value: 0.84492457
-      objectReference: {fileID: 0}
-    - target: {fileID: 5636301304751964453, guid: ef1d3ab221ea8e440a5fa517863a4114, type: 3}
-      propertyPath: m_Color.g
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5636301304751964453, guid: ef1d3ab221ea8e440a5fa517863a4114, type: 3}
-      propertyPath: m_Color.r
-      value: 0.4470588
-      objectReference: {fileID: 0}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 3a9961a111e6aa5438fee4250c5f5c47, type: 3}
     - target: {fileID: 5636301306242561429, guid: ef1d3ab221ea8e440a5fa517863a4114, type: 3}
       propertyPath: m_Name
-      value: P_Exile
+      value: P_SweepScanning
       objectReference: {fileID: 0}
     - target: {fileID: 5636301306242561430, guid: ef1d3ab221ea8e440a5fa517863a4114, type: 3}
       propertyPath: m_Pivot.x
@@ -134,24 +122,12 @@ PrefabInstance:
     - target: {fileID: 5636301306242561431, guid: ef1d3ab221ea8e440a5fa517863a4114, type: 3}
       propertyPath: m_card
       value: 
-      objectReference: {fileID: 6340036389574794449}
-    - target: {fileID: 5636301306242561433, guid: ef1d3ab221ea8e440a5fa517863a4114, type: 3}
-      propertyPath: m_attribute.Name
-      value: Exile
-      objectReference: {fileID: 0}
-    - target: {fileID: 5636301306242561433, guid: ef1d3ab221ea8e440a5fa517863a4114, type: 3}
-      propertyPath: m_attribute.TimeCost
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 5636301306242561433, guid: ef1d3ab221ea8e440a5fa517863a4114, type: 3}
-      propertyPath: m_attribute.Description
-      value: Drive away enemy at target position.
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1717730041097802572}
     m_RemovedComponents:
     - {fileID: 5636301306242561433, guid: ef1d3ab221ea8e440a5fa517863a4114, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: ef1d3ab221ea8e440a5fa517863a4114, type: 3}
---- !u!1 &4681000882746855100 stripped
+--- !u!1 &199838572023151952 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5636301306242561429, guid: ef1d3ab221ea8e440a5fa517863a4114, type: 3}
-  m_PrefabInstance: {fileID: 1066908550573521705}
+  m_PrefabInstance: {fileID: 5547821435368769733}
   m_PrefabAsset: {fileID: 0}

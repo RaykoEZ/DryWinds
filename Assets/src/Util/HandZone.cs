@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using Curry.Events;
 using Curry.Explore;
+using Pathfinding.Util;
+
 namespace Curry.Util
 {
     public delegate void OnEncounter(IReadOnlyList<Encounter> encounters);
@@ -15,7 +17,6 @@ namespace Curry.Util
         [SerializeField] Image m_playPanel = default;
         [SerializeField] SelectionManager m_selection = default;
         [SerializeField] CurryGameEventListener m_onDropTileSelected = default;
-        [SerializeField] EndTurnTrigger m_endTurn = default;
         IPlayer m_playerRef;
         Transform m_playerTransform;
         // The card we are dragging into a play zone
@@ -33,7 +34,6 @@ namespace Curry.Util
             m_onDropTileSelected?.Init();
             m_onCardDraw?.Init();
             m_onDiscardHand?.Init();
-            m_endTurn.OnTurnEnd += DiscardHand;
             // get starting hand
             DraggableCard[] cards = m_cardHolderRoot.GetComponentsInChildren<DraggableCard>();
             foreach (DraggableCard card in cards)
@@ -53,19 +53,36 @@ namespace Curry.Util
                 handler.SetTarget(pos.WorldPosition);
             }
             // do activation validation
-            OnCardTargetResolve?.Invoke(m_pendingCardRef.Card, onPlay: null, onCancel: m_pendingCardRef.OnCancel);
+            OnCardTargetResolve?.Invoke(m_pendingCardRef.Card, onDrop: null, onCancel: m_pendingCardRef.OnCancel);
+        }
+        public void AddCardsToHand(List<AdventCard> cards) 
+        {
+            List<Encounter> encounters = new List<Encounter>();
+            foreach (AdventCard card in cards)
+            {
+                if(card is Encounter encounter) 
+                {
+                    encounters.Add(encounter);
+                }
+                else 
+                {
+                    PrepareCard(card.GetComponent<DraggableCard>());
+                }
+            }
+
+            foreach(Encounter e in encounters) 
+            {
+                cards.Remove(e);
+            }
+            HandleEncounters(encounters);
+            m_cardsInHand.AddRange(cards);
         }
         internal void OnCardDrawn(EventInfo info)
         {
             if (info == null) return;
             if (info is CardDrawInfo draw)
             {
-                HandleEncounters(draw.Encounters);
-                m_cardsInHand.AddRange(draw.CardsDrawn);
-                foreach (AdventCard card in draw.CardsDrawn)
-                {
-                    PrepareCard(card.GetComponent<DraggableCard>());
-                }
+                AddCardsToHand(draw.CardsDrawn as List<AdventCard>);
             }
         }
         internal void PlayCard(AdventCard card, AdventurerStats stats)
@@ -104,14 +121,14 @@ namespace Curry.Util
             m_selection.CancelSelection();
             m_playPanel.enabled = false;
         }
-        protected virtual void HandleEncounters(IReadOnlyList<Encounter> draw) 
+        protected virtual void HandleEncounters(List<Encounter> draw) 
         {
             foreach (Encounter encounter in draw)
             {
                 encounter?.CardEffect?.Invoke(m_playerRef);
             }
         }
-        protected override void PrepareCard(DraggableCard draggable)
+        protected virtual void PrepareCard(DraggableCard draggable)
         {
             if (draggable == null)
             {
@@ -169,10 +186,7 @@ namespace Curry.Util
                 List<AdventCard> toDiscard = new List<AdventCard>();
                 foreach (AdventCard card in m_hand)
                 {
-                    if (!card.RetainCard)
-                    {
-                        toDiscard.Add(card);
-                    }
+                    toDiscard.Add(card);
                 }
                 foreach (AdventCard card in toDiscard)
                 {

@@ -167,25 +167,15 @@ namespace Curry.Explore
         void DrawCards(IReadOnlyList<AdventCard> cardsToDraw)
         {
             List<AdventCard> cardInstances = new List<AdventCard>();
-            List<Encounter> encounters = new List<Encounter>();
-
             foreach (AdventCard cardRef in cardsToDraw)
             {
                 // Instantiating cards to be drawn
                 AdventCard cardInstance = InstantiateCard(cardRef);
-                if (cardInstance is Encounter encounter)
-                {
-                    encounters.Add(encounter);
-                }
-                else
-                {
-                    cardInstances.Add(cardInstance);
-                }
+                cardInstances.Add(cardInstance);
             }
 
             CardDrawInfo info = new CardDrawInfo().
-                SetCardDraw(cardInstances).
-                SetEncounters(encounters);
+                SetCardDraw(cardInstances);
 
             m_onCardDraw?.TriggerEvent(info);
         }

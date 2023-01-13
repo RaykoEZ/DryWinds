@@ -14,6 +14,7 @@ namespace Curry.UI
         public event OnChoose OnChosen;
         public event OnChoose OnUnchoose;
         public object Value { get; protected set; }
+        public bool Choosable { get; set; } = true;
 
         // Instantiate a card choice object from a bespoke card
         public static CardChoice Create(GameObject cardRef, out GameObject instance)
@@ -57,16 +58,20 @@ namespace Curry.UI
         public void DisplayChoice(Transform parent)
         {
             transform.SetParent(parent);
+            GetComponent<Animator>()?.SetBool("selected", false);
             transform.localPosition = Vector3.zero;
+            transform.localScale = Vector3.one;
         }
 
         public void Choose()
         {
-            GetComponent<Animator>()?.SetBool("selected", true);
+            m_selected = true;
+            GetComponent<Animator>()?.SetBool("selected", Choosable);
             OnChosen?.Invoke(this);
         }
         public void UnChoose()
         {
+            m_selected = false;
             GetComponent<Animator>()?.SetBool("selected", false);
             OnUnchoose?.Invoke(this);
         }
@@ -76,7 +81,7 @@ namespace Curry.UI
             {
                 UnChoose();
             } 
-            else 
+            else if(!m_selected && Choosable)
             {
                 Choose();
             }
@@ -89,11 +94,11 @@ namespace Curry.UI
         }
         public void OnPointerEnter(PointerEventData eventData)
         {
-            GetComponent<Animator>()?.SetBool("highlight", true);
+            GetComponent<Animator>()?.SetBool("selected", Choosable);
         }
         public void OnPointerExit(PointerEventData eventData)
         {
-            GetComponent<Animator>()?.SetBool("highlight", false);
+            GetComponent<Animator>()?.SetBool("selected", m_selected);
         }
 
     }

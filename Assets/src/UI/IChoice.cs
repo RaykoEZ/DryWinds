@@ -6,6 +6,7 @@ namespace Curry.UI
     public interface IChoice 
     {
         object Value { get; }
+        bool Choosable { get; set; }
         event OnChoose OnChosen;
         event OnChoose OnUnchoose;
         void DisplayChoice(Transform parent);

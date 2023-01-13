@@ -16,7 +16,14 @@ namespace Curry.Game
 
         public virtual void ReturnToPool()
         {
-            Origin?.Reclaim(this);
+            if (Origin == null) 
+            {
+                Destroy(gameObject);
+            } 
+            else 
+            {
+                Origin.Reclaim(this);
+            }
         }
     }
 }
