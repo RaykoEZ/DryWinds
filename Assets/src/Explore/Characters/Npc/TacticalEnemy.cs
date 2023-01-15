@@ -11,7 +11,6 @@ namespace Curry.Explore
     {
         [SerializeField] protected TacticalStats m_initStats = default;
         [SerializeField] protected Animator m_anim = default;
-        [SerializeField] protected TextMeshPro m_countdownText = default;
         [SerializeField] protected PlayerDetector m_detect = default;
         protected HashSet<IPlayer> m_targetsInSight = new HashSet<IPlayer>();
         public int Countdown { get; protected set; }
@@ -30,7 +29,7 @@ namespace Curry.Explore
             get { return m_current; }
             protected set { m_current = value; }
         }
-
+         
         public Vector3 WorldPosition => transform.position;
 
         public override void Reveal()
@@ -113,7 +112,6 @@ namespace Curry.Explore
             //reset anim state and countdown
             m_anim?.SetBool("combat", false);
             Countdown = m_current.AttackCountdown;
-            m_countdownText.text = "";
         }
         protected virtual void Defeat()
         {
@@ -122,7 +120,6 @@ namespace Curry.Explore
         protected virtual void ResetCountdown()
         {
             Countdown = m_current.AttackCountdown;
-            m_countdownText.text = Countdown.ToString();
         }
 
         // countdown text & fx update
@@ -131,7 +128,6 @@ namespace Curry.Explore
             for (int i = 0; i < dt; ++i)
             {
                 startFrom--;
-                m_countdownText.text = Mathf.Max(startFrom, 0).ToString();
                 yield return new WaitForSeconds(0.1f);
             }
         }

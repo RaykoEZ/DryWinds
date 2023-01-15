@@ -1,5 +1,6 @@
 ﻿using Curry.UI;
 using Curry.Util;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 namespace Curry.Explore
@@ -15,11 +16,11 @@ namespace Curry.Explore
             NextState = typeof(PlayerAction);
         }
 
-        protected override void Evaluate()
+        protected override IEnumerator Evaluate_Internal()
         {
-            Debug.Log("Turn Start");
             List<IChoice> choices = ChoiceUtil.ChooseCards(m_cardsToChooseFrom, out List<GameObject> instances);
             m_prompter.MakeChoice(m_condition, choices, OnCardChosen);
+            yield return null;
         }
 
         void OnCardChosen(ChoiceResult result) 

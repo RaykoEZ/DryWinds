@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Curry.Game;
+using System.Collections;
+
 namespace Curry.Explore
 {
     // Handles player card/adventure plays
@@ -29,7 +31,8 @@ namespace Curry.Explore
             }
             Interrupt();
         }
-        protected override void Evaluate()
+
+        protected override IEnumerator Evaluate_Internal()
         {
             // If we need to resolve interrupts from activated enemies, do it first
             while (m_interruptBuffer.Count > 0)
@@ -37,8 +40,9 @@ namespace Curry.Explore
                 foreach (Action call in m_interruptBuffer.Pop())
                 {
                     call?.Invoke();
+                    yield return new WaitForSeconds(0.5f);
                 }
-            }       
+            }
             TransitionTo();
         }
     }

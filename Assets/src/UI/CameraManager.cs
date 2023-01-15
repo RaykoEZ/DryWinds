@@ -11,14 +11,16 @@ namespace Curry.UI
         [SerializeField] float m_zoomOrthographSize = 3.5f;
         [SerializeField] float m_defaultOrthographSize = 5.0f;
         [SerializeField] CoroutineManager m_coroutineManager = default;
-
+        Vector3 m_currentFocalPoint = Vector3.zero;
         public void FocusCamera(Vector3 dest)
         {
+            m_currentFocalPoint = dest;
             m_coroutineManager.ScheduleCoroutine(OnCameraFocus(dest, m_zoomOrthographSize), interruptNow: true);
         }
 
         public void MoveCamera(Vector3 dest)
         {
+            m_currentFocalPoint = dest;
             m_coroutineManager.ScheduleCoroutine(OnCameraFocus(dest, m_defaultOrthographSize), interruptNow: true);       
         }
 
@@ -26,7 +28,7 @@ namespace Curry.UI
         {
             if (!Mathf.Approximately(m_camera.orthographicSize, m_defaultOrthographSize))
             {
-                m_coroutineManager.ScheduleCoroutine(OnCameraFocus(Vector3.zero, m_defaultOrthographSize), interruptNow: true);
+                m_coroutineManager.ScheduleCoroutine(OnCameraFocus(m_currentFocalPoint, m_defaultOrthographSize), interruptNow: true);
             }
         }
 

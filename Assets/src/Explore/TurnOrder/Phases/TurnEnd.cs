@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 namespace Curry.Explore
 {
     public class TurnEnd : Phase
@@ -7,10 +8,12 @@ namespace Curry.Explore
         {
             NextState = typeof(TurnStart);
         }
-        protected override void Evaluate()
+
+        protected override IEnumerator Evaluate_Internal()
         {
             Debug.Log("Turn End");
             TransitionTo();
+            yield return null;
         }
     }
 

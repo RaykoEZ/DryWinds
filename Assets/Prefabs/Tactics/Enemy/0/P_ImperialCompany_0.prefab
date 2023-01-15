@@ -17,7 +17,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &7136402532124712402
 RectTransform:
   m_ObjectHideFlags: 0
@@ -336,7 +336,6 @@ MonoBehaviour:
     AttackCountdown: 2
     Visibility: 1
   m_anim: {fileID: 3642215462890439483}
-  m_countdownText: {fileID: 6612072387905013795}
   m_detect: {fileID: 9158939930621903418}
   m_stealthLevel: 1
   m_activeTime:
