@@ -671,7 +671,7 @@ RectTransform:
   m_LocalScale: {x: 50, y: 50, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -5451,7 +5451,7 @@ RectTransform:
   - {fileID: 767100532}
   - {fileID: 679600732}
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -5468,7 +5468,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1024562574}
   - component: {fileID: 1024562575}
-  - component: {fileID: 1024562576}
   m_Layer: 0
   m_Name: AdventManager
   m_TagString: Untagged
@@ -5560,25 +5559,6 @@ MonoBehaviour:
     m_eventToTrigger: {fileID: 11400000, guid: b388116c0ace42949a308c2e07cc7524, type: 2}
   m_onCardDraw:
     m_eventToTrigger: {fileID: 11400000, guid: cdd360b59762d3f48943143dadafba20, type: 2}
---- !u!114 &1024562576
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1024562573}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 16faa19e76a9b574ca233d3926bc6a4e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_adventureInput: {fileID: 1773398998}
-  m_selectInput: {fileID: 1334039897}
-  m_cardPlay: {fileID: 120921346}
-  m_interruptors:
-    m_preLoadInterrupt:
-    - {fileID: 2571672767850274779}
-    - {fileID: 1519800665}
 --- !u!1 &1078045342
 GameObject:
   m_ObjectHideFlags: 0
@@ -5723,7 +5703,7 @@ RectTransform:
   - {fileID: 262497677}
   - {fileID: 62530892}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -9012,6 +8992,56 @@ Grid:
   m_CellGap: {x: 0, y: 0, z: 0}
   m_CellLayout: 0
   m_CellSwizzle: 0
+--- !u!1 &1676059295
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1676059296}
+  - component: {fileID: 1676059297}
+  m_Layer: 0
+  m_Name: SceneInterrupt
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1676059296
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1676059295}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.4439894, y: -3.5205927, z: -382.34262}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1676059297
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1676059295}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 16faa19e76a9b574ca233d3926bc6a4e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_adventureInput: {fileID: 1773398998}
+  m_selectInput: {fileID: 1334039897}
+  m_cardPlay: {fileID: 120921346}
+  m_interruptors:
+    m_preLoadInterrupt:
+    - {fileID: 2571672767850274779}
+    - {fileID: 1519800665}
 --- !u!1 &1759132668
 GameObject:
   m_ObjectHideFlags: 0
@@ -9680,7 +9710,7 @@ RectTransform:
   - {fileID: 924381243}
   - {fileID: 1519800664}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
