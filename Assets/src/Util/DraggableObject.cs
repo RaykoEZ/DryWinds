@@ -17,10 +17,6 @@ namespace Curry.Util
         {
             GetComponent<CanvasGroup>().blocksRaycasts = true;
         }
-        void OnDisable()
-        {
-            GetComponent<CanvasGroup>().blocksRaycasts = false;
-        }
         protected virtual void SetDropPosition(Transform parent, int siblingIndex = 0) 
         {
             m_origin = parent;

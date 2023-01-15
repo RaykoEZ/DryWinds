@@ -4,9 +4,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using Curry.Events;
 using Curry.Game;
+using UnityEngine.Tilemaps;
 
 namespace Curry.Explore
 {
+    [Serializable]
+    public struct TacticalSpawnProperties 
+    {
+        [SerializeField] public LayerMask DoNotSpawnOn;
+        [SerializeField] public Tilemap SpawnMap;
+        [SerializeField] public CurryGameEventListener OnSpawn;
+        [SerializeField] public BaseBehaviourInstanceManager InstanceManager;
+    }
+
     // Monitors all spawned enemies, triggers enemy action phases
     public class EnemyManager : MonoBehaviour
     {
@@ -53,11 +63,11 @@ namespace Curry.Explore
             }
         }
         #endregion
+
         #region Serialize Fields & Members
-        [SerializeField] BaseBehaviourInstanceManager m_instance = default;
+        [SerializeField] TacticalSpawnProperties m_spawnProperties = default;
         [SerializeField] GameClock m_clock = default;
         [SerializeField] FogOfWar m_fog = default;
-        [SerializeField] protected CurryGameEventListener m_onSpawn = default;
         List<IEnemy> m_activeEnemies = new List<IEnemy>();
         HashSet<IEnemy> m_toRemove = new HashSet<IEnemy>();
         HashSet<IEnemy> m_toAdd = new HashSet<IEnemy>();
@@ -67,8 +77,19 @@ namespace Curry.Explore
         #region Class Body
         void Awake()
         {
-            m_onSpawn?.Init();
+            m_spawnProperties.OnSpawn?.Init();
             m_clock.OnTimeElapsed += OnTimeElapsedUpdate;
+        }
+        void Start()
+        {
+            // Add all intially spawned enemies into the manager
+            foreach(Transform t in m_spawnProperties.InstanceManager.PoolDefaultParent) 
+            { 
+                if (t.TryGetComponent(out IEnemy enemy)) 
+                {
+                    InitInstance(t.GetComponent<PoolableBehaviour>(), enemy.WorldPosition);
+                }
+            }    
         }
         #region Spawning
         // When a spawner requests an enemy spawn
@@ -81,14 +102,25 @@ namespace Curry.Explore
         }
         protected void SpawnEnemy_Internal(PoolableBehaviour behaviour, Vector3 position, Transform parent = null)
         {
-            if (!(behaviour is IEnemy))
+            Vector3Int coord = m_spawnProperties.SpawnMap.WorldToCell(position);
+            Vector3 cellCenter = m_spawnProperties.SpawnMap.GetCellCenterWorld(coord);
+            bool hit = Physics2D.CircleCast(cellCenter, 0.01f, Vector3.zero, m_spawnProperties.DoNotSpawnOn);
+            if (!hit || !(behaviour is IEnemy) || !m_spawnProperties.SpawnMap.HasTile(coord))
             {
                 return;
             }
             // Look for available pooled instances
-            PoolableBehaviour newBehaviour = m_instance.GetInstanceFromAsset(behaviour.gameObject, parent);
+            PoolableBehaviour newBehaviour = m_spawnProperties.InstanceManager.
+                GetInstanceFromAsset(behaviour.gameObject, parent);
             // setup new spawn instance
-            newBehaviour.gameObject.transform.position = position;
+            InitInstance(newBehaviour, cellCenter);
+        }
+
+        void InitInstance(PoolableBehaviour newBehaviour, Vector3 cellCenterWorld) 
+        {
+            // setup new spawn instance
+            cellCenterWorld.z = -1f;
+            newBehaviour.gameObject.transform.position = cellCenterWorld;
             newBehaviour.TryGetComponent(out IEnemy spawn);
             spawn.OnDefeat += OnEnemyRemove;
             spawn.OnReveal += OnEnemyReveal;
@@ -96,7 +128,7 @@ namespace Curry.Explore
             spawn.OnBlocked += OnMovementBlocked;
             m_toAdd.Add(spawn);
             // Update spawned enemy activeness according to time of day
-            if (spawn is IOrganicLife life) 
+            if (spawn is IOrganicLife life)
             {
                 UpdateActiveness(life);
             }

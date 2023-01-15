@@ -12,6 +12,7 @@ namespace Curry.Explore
     public class BaseBehaviourInstanceManager : InstanceManager<PoolableBehaviour>
     {
         [SerializeField] BaseBehaviourPoolCollection m_pool = default;
+        public Transform PoolDefaultParent => Pool.DefaultParent;
         protected override PoolCollection<PoolableBehaviour> Pool { get { return m_pool; } }
     }
 }
