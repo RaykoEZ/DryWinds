@@ -5,6 +5,7 @@ namespace Curry.Explore
     public delegate void OnMovementBlocked(Vector2 blockedWorldPos);
     public interface ICharacter 
     {
+        ObjectVisibility Visibility { get; }
         event OnMovementBlocked OnBlocked;
         void Reveal();
         void Hide();

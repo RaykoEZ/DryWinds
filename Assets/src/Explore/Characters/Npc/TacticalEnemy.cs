@@ -24,6 +24,9 @@ namespace Curry.Explore
 
         public virtual EnemyId Id { get; protected set; }
         public TacticalStats InitStatus { get { return m_initStats; } }
+        public override ObjectVisibility Visibility { get { return CurrentStatus.Visibility; }
+            protected set { m_current.Visibility = value; }
+        }
         public TacticalStats CurrentStatus
         {
             get { return m_current; }
@@ -34,13 +37,13 @@ namespace Curry.Explore
 
         public override void Reveal()
         {
-            m_current.Visibility = TacticalVisibility.Visible;
+            m_current.Visibility = ObjectVisibility.Visible;
             m_anim.SetBool("hidden", false);
             OnReveal?.Invoke(this);
         }
         public override void Hide()
         {
-            m_current.Visibility = TacticalVisibility.Hidden;
+            m_current.Visibility = ObjectVisibility.Hidden;
             m_anim.SetBool("hidden", true);
             OnHide?.Invoke(this);
         }

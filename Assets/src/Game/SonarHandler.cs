@@ -60,10 +60,17 @@ namespace Curry.Explore
             m_hitPool.ReturnAllToPool();
         }
 
-        protected virtual void HandleDetection(IEnemy enemy, Transform transform) 
+        protected virtual void HandleDetection(ICharacter hit, Transform transform) 
         {
-            // Append hits if enemy is not stealthy (or has lower stealth level then scan level)
-            if (enemy is IStealthy stealthy && stealthy.StealthLevel > m_currentDetectionLevel) 
+            // Append hits if detected character is not stealthy / stealth component is not stealthy enough
+            // (stealth level is lower than scan level)
+            if (hit is IStealthy stealthy && 
+                stealthy.StealthLevel > m_currentDetectionLevel) 
+            {
+                return;
+            }
+            else if (transform.TryGetComponent(out IStealthy stealthComponent) && 
+                stealthComponent.StealthLevel > m_currentDetectionLevel) 
             {
                 return;
             }
@@ -85,9 +92,9 @@ namespace Curry.Explore
             // Start updating results
             foreach (Collider2D c in results)
             {
-                if (c.attachedRigidbody.TryGetComponent(out IEnemy enemy))
+                if (c.attachedRigidbody.TryGetComponent(out ICharacter hit))
                 {
-                    HandleDetection(enemy, c.transform);
+                    HandleDetection(hit, c.transform);
                 }
             }
             DisplayHits();

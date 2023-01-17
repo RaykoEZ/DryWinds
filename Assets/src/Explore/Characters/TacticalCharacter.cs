@@ -14,6 +14,8 @@ namespace Curry.Explore
             "Player"
         };
         protected static LayerMask OccupanceContactFilter => LayerMask.GetMask(c_occupanceCheckFilter);
+
+        public abstract ObjectVisibility Visibility { get; protected set; }
         public event OnMovementBlocked OnBlocked;
 
         public abstract void Hide();

@@ -3,7 +3,7 @@
 namespace Curry.Explore
 {
     [Serializable]
-    public enum TacticalVisibility
+    public enum ObjectVisibility
     {
         Visible,
         Hidden
@@ -14,7 +14,7 @@ namespace Curry.Explore
         public int ScoutRange;
         public int Speed;
         public int AttackCountdown;
-        public TacticalVisibility Visibility;
+        public ObjectVisibility Visibility;
     }
 
 }
