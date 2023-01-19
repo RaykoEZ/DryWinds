@@ -85,9 +85,9 @@ namespace Curry.Explore
             // Add all intially spawned enemies into the manager
             foreach(Transform t in m_spawnProperties.InstanceManager.PoolDefaultParent) 
             { 
-                if (t.TryGetComponent(out IEnemy enemy)) 
+                if (t.TryGetComponent(out IEnemy enemy) && t.TryGetComponent(out PoolableBehaviour behaviour)) 
                 {
-                    InitInstance(t.GetComponent<PoolableBehaviour>(), enemy.WorldPosition);
+                    InitInstance(behaviour, enemy.WorldPosition);
                 }
             }    
         }
@@ -170,6 +170,7 @@ namespace Curry.Explore
 
         void OnTimeElapsedUpdate(int dayCount, int hour, GameClock.TimeOfDay timeOfDay)
         {
+            UpdateActivity();
             foreach (IEnemy e in m_activeEnemies)
             {
                 if (e is IOrganicLife life)

@@ -1,11 +1,16 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 namespace Curry.Util
 {
     public static class GameUtil
     { 
+        public static RaycastHit2D[] SearchTargetPosition(Vector3 targetPos, LayerMask m_searchFilter) 
+        { 
+            return Physics2D.CircleCastAll(targetPos, 0.01f, Vector2.zero, 0f, m_searchFilter);
+        }
         /// returns ratio of two velocities
         public static float ScaleFactior(float v1, float v2, float minFactor, float maxFactor) 
         {

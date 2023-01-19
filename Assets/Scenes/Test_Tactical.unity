@@ -12584,6 +12584,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2571672766922976638, guid: 7eb8b9e0778509a4d97901db87f5ce46, type: 3}
+      propertyPath: m_maxHp
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2571672766922976638, guid: 7eb8b9e0778509a4d97901db87f5ce46, type: 3}
       propertyPath: m_test.m_Bits
       value: 3584
       objectReference: {fileID: 0}

@@ -303,10 +303,11 @@ MonoBehaviour:
     Name: Assault
     Description: Deal heavy damage on target position.
     TimeCost: 5
-    RetainCard: 1
   m_targetLayer:
     serializedVersion: 2
     m_Bits: 512
+  m_dealDamage:
+    m_damage: 1
 --- !u!225 &5636301306242561432
 CanvasGroup:
   m_ObjectHideFlags: 0

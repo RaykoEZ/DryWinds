@@ -16,10 +16,10 @@ MonoBehaviour:
     Name: Threat Assessment
     Description: Scanning...
     TimeCost: 1
-    RetainCard: 0
-  m_detectionLevel: 1
-  m_onSonar:
-    m_eventToTrigger: {fileID: 11400000, guid: a674b44ebbb4330479457ac8b0404c40, type: 2}
+  m_scan:
+    m_detectionLevel: 1
+    m_onScan:
+      m_eventToTrigger: {fileID: 11400000, guid: a674b44ebbb4330479457ac8b0404c40, type: 2}
 --- !u!1001 &5651287287403814045
 PrefabInstance:
   m_ObjectHideFlags: 0

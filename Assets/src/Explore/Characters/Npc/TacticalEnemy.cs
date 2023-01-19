@@ -33,8 +33,6 @@ namespace Curry.Explore
             protected set { m_current = value; }
         }
          
-        public Vector3 WorldPosition => transform.position;
-
         public override void Reveal()
         {
             m_current.Visibility = ObjectVisibility.Visible;
@@ -94,7 +92,7 @@ namespace Curry.Explore
             OnDefeat = null;
             m_detect.OnDetected -= OnDetectEnter;
             m_detect.OnExitDetection -= OnDetectExit;
-            Origin?.Reclaim(this);
+            base.ReturnToPool();
         }
         #endregion
         #region base class implementation

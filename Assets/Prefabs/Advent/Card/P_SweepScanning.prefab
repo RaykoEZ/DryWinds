@@ -16,10 +16,10 @@ MonoBehaviour:
     Name: King's Sight
     Description: Kingkingkingking
     TimeCost: 5
-    RetainCard: 1
-  m_scoutRange: 2
-  m_scan:
-    m_eventToTrigger: {fileID: 11400000, guid: b6f5cd82da90f44418857008c95416af, type: 2}
+  m_defog:
+    m_scoutRange: 2
+    m_defog:
+      m_eventToTrigger: {fileID: 11400000, guid: b6f5cd82da90f44418857008c95416af, type: 2}
 --- !u!1001 &5547821435368769733
 PrefabInstance:
   m_ObjectHideFlags: 0

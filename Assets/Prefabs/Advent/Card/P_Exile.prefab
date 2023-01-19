@@ -16,10 +16,11 @@ MonoBehaviour:
     Name: Exile
     Description: Drive away enemy at target position.
     TimeCost: 3
-    RetainCard: 1
   m_targetLayer:
     serializedVersion: 2
     m_Bits: 512
+  m_push:
+    m_pushPower: 1
 --- !u!1001 &1066908550573521705
 PrefabInstance:
   m_ObjectHideFlags: 0

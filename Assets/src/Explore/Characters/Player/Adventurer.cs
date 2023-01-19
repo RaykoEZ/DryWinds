@@ -9,10 +9,13 @@ namespace Curry.Explore
     {
         public int DetectionLevel { get; protected set; }
         public float Diameter { get; protected set; }
-        public ScanInfo(int detectionLevel, float diameter)
+        public Vector3 OriginWorldPosition { get; protected set; }
+
+        public ScanInfo(int detectionLevel, float diameter, Vector3 origin)
         {
             DetectionLevel = detectionLevel;
             Diameter = diameter;
+            OriginWorldPosition = origin;
         }
     }
     public class PlayerInfo : EventInfo
@@ -61,20 +64,18 @@ namespace Curry.Explore
         }
         public override void Recover(int val)
         {
-            Debug.Log("Player recovers" + val + " HP.");
-            val = Mathf.Clamp(val, 0, m_startingStats.HP - m_current.HP);
-            m_current.HP += val;
-            TakeDamage?.Invoke(val, m_current.HP);
+            base.Recover(val);
+            TakeDamage?.Invoke(val, CurrentHp);
         }
         public override void TakeHit(int hitVal)
         {
             Debug.Log("Player takes" + hitVal + " damage.");
             m_anim.ResetTrigger("TakeDamage");
             m_anim.SetTrigger("TakeDamage");
-            m_current.HP -= hitVal;
-            TakeDamage?.Invoke(hitVal, m_current.HP);
+            CurrentHp -= hitVal;
+            TakeDamage?.Invoke(hitVal, CurrentHp);
 
-            if (m_current.HP <= 0) 
+            if (CurrentHp <= 0) 
             {
                 OnDefeated();
             }
@@ -134,10 +135,6 @@ namespace Curry.Explore
             {
                 m_rescuee = rescue;
             }
-        }
-
-        public override void Prepare()
-        {
         }
     }
 }

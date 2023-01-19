@@ -2,25 +2,30 @@
 using UnityEngine;
 using Curry.Events;
 using Curry.Util;
+using System;
 
 namespace Curry.Explore
 {
-    public class SweepScanner : AdventCard
+    [Serializable]
+    public class Defog : IEffectModule 
     {
         [SerializeField] int m_scoutRange = default;
-        [SerializeField] CurryGameEventTrigger m_scan = default;
-        RangeMap m_rangeMap;
-        protected override void Awake()
-        {
-            base.Awake();
-            m_rangeMap = RangeMapping.GetNeighbourRangeMap(m_scoutRange);
-        }
+        [SerializeField] CurryGameEventTrigger m_defog = default;
 
+        public void ApplyEffect(ICharacter target, ICharacter user)
+        {
+            List<Vector3> worldPositions = RangeMapping.GetRangePositions(m_scoutRange, target.WorldPosition);
+            RangeInfo info = new RangeInfo(worldPositions);
+            m_defog?.TriggerEvent(info);
+        }
+    }
+
+    public class SweepScanner : AdventCard
+    {
+        [SerializeField] Defog m_defog = default;
         protected override void ActivateEffect(IPlayer user)
         {
-            List<Vector3> worldPositions = m_rangeMap.ApplyRangeOffsets(user.CurrentStats.WorldPosition);
-            RangeInfo info = new RangeInfo(worldPositions);
-            m_scan?.TriggerEvent(info);
+            m_defog.ApplyEffect(user, user);
             OnExpend();
         }
     }
