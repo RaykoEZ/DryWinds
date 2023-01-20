@@ -161,7 +161,7 @@ namespace Curry.Explore
         // Whenever player spends time, update all enemies with countdowns 
         // returns: whether there are Responses from active enemies
         // out: enemy responses
-        public bool OnPlayerAction(int timeSpent, out List<Action> resp)
+        public bool OnPlayerAction(int timeSpent, out List<IEnumerator> resp)
         {
             // Update all enemy countdowns here and get all responses
             resp = UpdateActiveEnemies(timeSpent);
@@ -209,7 +209,7 @@ namespace Curry.Explore
         }
 
         // Call all active enemies to respond to player action
-        List<Action> UpdateActiveEnemies(int dt) 
+        List<IEnumerator> UpdateActiveEnemies(int dt) 
         {
             // make sure list is up to date before and after
             UpdateActivity();
@@ -224,7 +224,7 @@ namespace Curry.Explore
             }
             // sort execution order by ascending countdown value
             executeOrder.Sort(m_priorityComparer);
-            List<Action> calls = new List<Action>();
+            List<IEnumerator> calls = new List<IEnumerator>();
             foreach (IEnemy e in executeOrder)
             {
                 calls.Add(e.ExecuteAction);

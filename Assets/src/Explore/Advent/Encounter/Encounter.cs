@@ -5,9 +5,9 @@ namespace Curry.Explore
     // A card that activates itself upon player drawing the card
     public abstract class Encounter : AdventCard
     {
-        protected override void ActivateEffect(IPlayer user)
+        public override IEnumerator ActivateEffect(IPlayer user)
         {
-            Debug.Log("Encounter Activate!!!!!!!!!");
+            yield return null;
             OnExpend();
         }
     }

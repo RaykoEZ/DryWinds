@@ -32,7 +32,7 @@ namespace Curry.Explore
             get { return m_current; }
             protected set { m_current = value; }
         }
-         
+        public IEnumerator ExecuteAction => ExecuteAction_Internal();
         public override void Reveal()
         {
             m_current.Visibility = ObjectVisibility.Visible;
@@ -60,11 +60,12 @@ namespace Curry.Explore
             m_anim?.SetTrigger("takeHit");
             Defeat();
         }
-        public virtual void ExecuteAction()
+        protected virtual IEnumerator ExecuteAction_Internal()
         {
             ResetCountdown();
             Reveal();
             m_anim?.SetTrigger("strike");
+            yield return null;
         }
 
         public virtual bool UpdateCountdown(int dt)

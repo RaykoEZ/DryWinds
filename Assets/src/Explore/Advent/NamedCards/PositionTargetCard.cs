@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using Curry.Util;
+using System.Collections;
+
 namespace Curry.Explore
 {
     public abstract class PositionTargetCard : AdventCard, ITargetsPosition 
@@ -23,7 +25,7 @@ namespace Curry.Explore
             Satisfied = true;
         }
 
-        protected override void ActivateEffect(IPlayer user)
+        public override IEnumerator ActivateEffect(IPlayer user)
         {
             foreach(RaycastHit2D hit in ValidTargets) 
             {
@@ -33,6 +35,8 @@ namespace Curry.Explore
                     break;
                 }
             }
+            yield return null;
+            OnExpend();
         }
         protected abstract void Effect_Internal(ICharacter target, IPlayer user);
     }

@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -74,7 +74,7 @@ namespace Curry.Util
             {
                 cards.Remove(e);
             }
-            HandleEncounters(encounters);
+            StartCoroutine(HandleEncounters(encounters));
             m_cardsInHand.AddRange(cards);
         }
         internal void OnCardDrawn(EventInfo info)
@@ -85,13 +85,13 @@ namespace Curry.Util
                 AddCardsToHand(draw.CardsDrawn as List<AdventCard>);
             }
         }
-        internal void PlayCard(AdventCard card, AdventurerStats stats)
+        internal IEnumerator PlayCard(AdventCard card, AdventurerStats stats)
         {
             // Reset pending card
             m_pendingCardRef = null;
             OnCardLeavesHand(card.GetComponent<DraggableCard>());
             HidePlayZone();
-            m_cardsInHand.PlayCard(card, m_playerRef);
+            yield return StartCoroutine(m_cardsInHand.PlayCard(card, m_playerRef));
         }
         internal void DiscardHand()
         {
@@ -121,11 +121,11 @@ namespace Curry.Util
             m_selection.CancelSelection();
             m_playPanel.enabled = false;
         }
-        protected virtual void HandleEncounters(List<Encounter> draw) 
+        protected virtual IEnumerator HandleEncounters(List<Encounter> draw) 
         {
             foreach (Encounter encounter in draw)
             {
-                encounter?.CardEffect?.Invoke(m_playerRef);
+                yield return StartCoroutine(encounter?.ActivateEffect(m_playerRef));
             }
         }
         protected virtual void PrepareCard(DraggableCard draggable)
@@ -172,11 +172,11 @@ namespace Curry.Util
             {
                 m_hand.Add(card);
             }
-            internal void PlayCard(AdventCard card, IPlayer player)
+            internal IEnumerator PlayCard(AdventCard card, IPlayer player)
             {
                 if (m_hand.Remove(card))
                 {
-                    card.CardEffect?.Invoke(player);
+                     yield return card.StartCoroutine(card.ActivateEffect(player));
                 }
 
             }

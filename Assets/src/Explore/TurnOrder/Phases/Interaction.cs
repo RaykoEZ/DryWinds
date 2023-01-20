@@ -12,20 +12,20 @@ namespace Curry.Explore
     {
         [SerializeField] EnemyManager m_enemy = default;
         [SerializeField] PlayManager m_play = default;
-        Stack<List<Action>> m_interruptBuffer = new Stack<List<Action>>();
+        Stack<List<IEnumerator>> m_interruptBuffer = new Stack<List<IEnumerator>>();
         public override void Init()
         {
             NextState = typeof(PlayerAction);
             m_play.OnActivate += OnPlayerAction;
         }
-        void OnPlayerAction(int timeSpent, List<Action> actions = null) 
+        void OnPlayerAction(int timeSpent, List<IEnumerator> actions = null) 
         {
             if (actions != null)
             {
                 m_interruptBuffer.Push(actions);
             }
             // Check if there are enemy responses for this player action
-            if (m_enemy.OnPlayerAction(timeSpent, out List<Action> resp)) 
+            if (m_enemy.OnPlayerAction(timeSpent, out List<IEnumerator> resp)) 
             {
                 m_interruptBuffer.Push(resp);
             }
@@ -34,16 +34,19 @@ namespace Curry.Explore
 
         protected override IEnumerator Evaluate_Internal()
         {
+            StartInterrupt();
             // If we need to resolve interrupts from activated enemies, do it first
             while (m_interruptBuffer.Count > 0)
             {
-                foreach (Action call in m_interruptBuffer.Pop())
+                foreach (IEnumerator call in m_interruptBuffer.Pop())
                 {
-                    call?.Invoke();
-                    yield return new WaitForSeconds(0.5f);
+                    yield return StartCoroutine(call);
+                    yield return new WaitForSeconds(1f);
                 }
+                yield return new WaitForSeconds(1f);
             }
             TransitionTo();
+            EndInterrupt();
         }
     }
 }

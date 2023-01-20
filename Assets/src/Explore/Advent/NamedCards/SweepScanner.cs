@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using Curry.Events;
 using Curry.Util;
@@ -23,9 +24,10 @@ namespace Curry.Explore
     public class SweepScanner : AdventCard
     {
         [SerializeField] Defog m_defog = default;
-        protected override void ActivateEffect(IPlayer user)
+        public override IEnumerator ActivateEffect(IPlayer user)
         {
             m_defog.ApplyEffect(user, user);
+            yield return null;
             OnExpend();
         }
     }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
 
 namespace Curry.Explore
@@ -9,11 +10,11 @@ namespace Curry.Explore
         EnemyId Id { get; }
         TacticalStats InitStatus { get; }
         TacticalStats CurrentStatus { get; }
-        Vector3 WorldPosition { get; }
+        IEnumerator ExecuteAction { get; }
+
         event OnEnemyUpdate OnDefeat;
         event OnEnemyUpdate OnReveal;
         event OnEnemyUpdate OnHide;
-        void ExecuteAction();
         void Affect(Func<TacticalStats, TacticalStats> effect);
         bool UpdateCountdown(int dt);
     }

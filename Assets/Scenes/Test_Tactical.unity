@@ -5351,6 +5351,7 @@ MonoBehaviour:
   - {fileID: 5636301306242561433, guid: ef1d3ab221ea8e440a5fa517863a4114, type: 3}
   - {fileID: 6340036389574794449, guid: 5a2a7ebf41978774983f432c3005cb73, type: 3}
   - {fileID: 1458675905969362800, guid: 9c001e81f6b3943469e0d99d2d350573, type: 3}
+  - {fileID: 5400319584234665114, guid: 06703e5bca5015748b793e74e0f43e5a, type: 3}
   m_hand: {fileID: 615583783}
 --- !u!1 &1020797056
 GameObject:
@@ -9042,6 +9043,8 @@ MonoBehaviour:
     m_preLoadInterrupt:
     - {fileID: 2571672767850274779}
     - {fileID: 1519800665}
+    - {fileID: 1086930282}
+    - {fileID: 62530894}
 --- !u!1 &1759132668
 GameObject:
   m_ObjectHideFlags: 0

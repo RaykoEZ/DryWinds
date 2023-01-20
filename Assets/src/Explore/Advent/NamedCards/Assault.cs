@@ -9,7 +9,6 @@ namespace Curry.Explore
         protected override void Effect_Internal(ICharacter target, IPlayer user)
         {
             m_dealDamage.ApplyEffect(target, user);
-            OnExpend();
         }
     }
 }

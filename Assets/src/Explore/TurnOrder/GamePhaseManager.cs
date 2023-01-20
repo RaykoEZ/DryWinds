@@ -8,7 +8,7 @@ namespace Curry.Explore
 {
     public delegate void OnTurnPhaseTransition(Type nextState);
     // Responsible for handling turn phase changes triggered from moment-to-moment gameplay.
-    public class GamePhaseManager : MonoBehaviour
+    public class GamePhaseManager : SceneInterruptBehaviour
     {
         [SerializeField] GamePhaseChangePopup m_phasePopup = default;
         [SerializeField] Phase m_initPhase = default;
@@ -47,6 +47,7 @@ namespace Curry.Explore
         void HandleInterrupt(Phase interrupt) 
         {
             if (interrupt == null) return;
+            StartInterrupt();
             // interrupt current state, unlisten transition callbacks
             CurrentPhase.OnGameStateTransition -= OnStateTransition;
             m_previous = CurrentPhase;
@@ -72,6 +73,7 @@ namespace Curry.Explore
             CurrentPhase.OnGameStateTransition += OnStateTransition;
             // Resume previous phase operations
             CurrentPhase.Resume();
+            EndInterrupt();
         }
         void SetCurrentState(Type type)
         {
@@ -86,9 +88,11 @@ namespace Curry.Explore
         }
         IEnumerator ChangeState(string displayName, Action onChange) 
         {
+            StartInterrupt();
             // wait for phase to finish evaluating
             yield return new WaitWhile(() => m_phasePopup.AnimationInProgress);
             m_phasePopup.ShowPopup(displayName, onChange);
+            EndInterrupt();
         }
         void OnStateTransition(Type type)
         {

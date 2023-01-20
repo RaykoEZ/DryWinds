@@ -1,12 +1,15 @@
 ﻿using UnityEngine;
 using Curry.Events;
+using System.Collections;
+
 namespace Curry.Explore
 {
     public class FruitlessDetour : Encounter
     {
-        protected override void ActivateEffect(IPlayer user)
+        public override IEnumerator ActivateEffect(IPlayer user)
         {
-            OnExpend();
+            Debug.Log("Maidenless");
+            yield return base.ActivateEffect(user);
         }
     }
 }

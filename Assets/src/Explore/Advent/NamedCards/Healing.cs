@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 namespace Curry.Explore
 {
@@ -7,9 +8,10 @@ namespace Curry.Explore
     {
         [SerializeField] HealingModule m_healing = default;
         // Card Effect
-        protected override void ActivateEffect(IPlayer user)
+        public override IEnumerator ActivateEffect(IPlayer user)
         {
             m_healing.ApplyEffect(user, user);
+            yield return null;
             OnExpend();
         }
     }
