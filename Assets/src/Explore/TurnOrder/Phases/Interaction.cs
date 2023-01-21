@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Curry.Game;
 using System.Collections;
+using Curry.UI;
 
 namespace Curry.Explore
 {
@@ -41,9 +42,9 @@ namespace Curry.Explore
                 foreach (IEnumerator call in m_interruptBuffer.Pop())
                 {
                     yield return StartCoroutine(call);
-                    yield return new WaitForSeconds(1f);
+                    yield return new WaitForSeconds(0.5f);
                 }
-                yield return new WaitForSeconds(1f);
+                yield return new WaitForSeconds(0.5f);
             }
             TransitionTo();
             EndInterrupt();

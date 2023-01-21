@@ -85,7 +85,7 @@ namespace Curry.Util
                 AddCardsToHand(draw.CardsDrawn as List<AdventCard>);
             }
         }
-        internal IEnumerator PlayCard(AdventCard card, AdventurerStats stats)
+        internal IEnumerator PlayCard(AdventCard card)
         {
             // Reset pending card
             m_pendingCardRef = null;

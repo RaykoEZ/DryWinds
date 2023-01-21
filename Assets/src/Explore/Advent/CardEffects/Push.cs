@@ -11,6 +11,8 @@ namespace Curry.Explore
         public void ApplyEffect(ICharacter target, ICharacter user)
         {
             Vector2 diff = target.WorldPosition - user.WorldPosition;
+            diff.x = Mathf.Clamp(diff.x, -1f, 1f);
+            diff.y = Mathf.Clamp(diff.y, -1f, 1f);
             Vector2Int push = new Vector2Int((int)diff.x, (int)diff.y);
             target.Move(m_pushPower * push);
         }

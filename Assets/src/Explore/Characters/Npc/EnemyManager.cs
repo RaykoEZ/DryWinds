@@ -5,6 +5,7 @@ using UnityEngine;
 using Curry.Events;
 using Curry.Game;
 using UnityEngine.Tilemaps;
+using Curry.UI;
 
 namespace Curry.Explore
 {
@@ -18,7 +19,7 @@ namespace Curry.Explore
     }
 
     // Monitors all spawned enemies, triggers enemy action phases
-    public class EnemyManager : MonoBehaviour
+    public class EnemyManager : SceneInterruptBehaviour
     {
         #region Enemy Comparer class
         // Comparer<TacticalEnemy> for priority sorting 
@@ -66,6 +67,7 @@ namespace Curry.Explore
 
         #region Serialize Fields & Members
         [SerializeField] TacticalSpawnProperties m_spawnProperties = default;
+        [SerializeField] CameraManager m_camera = default;
         [SerializeField] GameClock m_clock = default;
         [SerializeField] FogOfWar m_fog = default;
         List<IEnemy> m_activeEnemies = new List<IEnemy>();
@@ -167,6 +169,10 @@ namespace Curry.Explore
             resp = UpdateActiveEnemies(timeSpent);
             return resp.Count > 0;
         }
+        public void OnEnemyAction(out List<IEnumerator> actions) 
+        {
+            actions = UpdateActiveEnemies(0);
+        }
 
         void OnTimeElapsedUpdate(int dayCount, int hour, GameClock.TimeOfDay timeOfDay)
         {
@@ -227,10 +233,20 @@ namespace Curry.Explore
             List<IEnumerator> calls = new List<IEnumerator>();
             foreach (IEnemy e in executeOrder)
             {
+                // Focus camera on currently acting enemy
+                calls.Add(PresentActingEnemy(e));
+                // Execute enemy action
                 calls.Add(e.ExecuteAction);
             }
             UpdateActivity();
             return calls;
+        }
+        IEnumerator PresentActingEnemy(IEnemy e) 
+        {
+            StartInterrupt();
+            m_camera.FocusCamera(e.WorldPosition);
+            yield return new WaitForSeconds(m_camera.AnimationTime);
+            EndInterrupt();
         }
         #endregion
     }

@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using static Curry.UI.ChoiceResult;
+using Curry.Explore;
 
 namespace Curry.UI
 {

@@ -83,6 +83,7 @@ namespace Curry.Explore
                 m_phaseStack.Push(nextPhase);
                 CurrentPhase.OnGameStateTransition += OnStateTransition;
                 CurrentPhase?.OnEnter(m_previous);
+                EndInterrupt();
             };
             StartCoroutine(ChangeState(nextPhase.Name, change));
         }
@@ -92,7 +93,6 @@ namespace Curry.Explore
             // wait for phase to finish evaluating
             yield return new WaitWhile(() => m_phasePopup.AnimationInProgress);
             m_phasePopup.ShowPopup(displayName, onChange);
-            EndInterrupt();
         }
         void OnStateTransition(Type type)
         {

@@ -2,6 +2,7 @@
 using UnityEngine;
 using Curry.Events;
 using System.Collections;
+using Curry.UI;
 
 namespace Curry.Explore
 {
@@ -13,7 +14,7 @@ namespace Curry.Explore
         [SerializeField] EndTurnTrigger m_turnEnd = default;
         public override void Init()
         {
-            NextState = typeof(TurnEnd);
+            NextState = typeof(EnemyAction);
             m_turnEnd.OnTurnEnd += TransitionTo;
         }
         public override void Pause()
@@ -27,8 +28,10 @@ namespace Curry.Explore
 
         protected override IEnumerator Evaluate_Internal()
         {
+            StartInterrupt();
             m_onTurnStart?.TriggerEvent(new EventInfo());
             m_turnEnd.SetInteractable(true);
+            EndInterrupt();
             yield return null;
         }
 
@@ -36,6 +39,24 @@ namespace Curry.Explore
         {
             m_turnEnd.SetInteractable(false);
             base.TransitionTo();
+        }
+    }
+
+    public class EnemyAction : Phase
+    {
+        [SerializeField] EnemyManager m_enemies = default;
+        public override void Init()
+        {
+            NextState = typeof(TurnEnd);
+        }
+
+        protected override IEnumerator Evaluate_Internal()
+        {
+            StartInterrupt();
+
+            yield return null;
+            TransitionTo();
+            EndInterrupt();
         }
     }
 }

@@ -12,6 +12,7 @@ namespace Curry.UI
         [SerializeField] float m_defaultOrthographSize = 5.0f;
         [SerializeField] CoroutineManager m_coroutineManager = default;
         Vector3 m_currentFocalPoint = Vector3.zero;
+        public float AnimationTime => m_animTime;
         public void FocusCamera(Vector3 dest)
         {
             m_currentFocalPoint = dest;
@@ -44,8 +45,7 @@ namespace Curry.UI
                 dt += Time.deltaTime;
                 yield return null;
             }
-
-            yield return new WaitForSeconds(1);
+            yield return new WaitForSeconds(1f);
         }
     }
 }

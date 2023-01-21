@@ -66,7 +66,7 @@ namespace Curry.Explore
                 // Make a container for the callstack and trigger it. 
                 List<IEnumerator> actions = new List<IEnumerator>
                 {
-                    m_hand.PlayCard(card, m_player.CurrentStats)
+                    m_hand.PlayCard(card)
                 };
                 OnActivate?.Invoke(card.TimeCost, actions);
             }
