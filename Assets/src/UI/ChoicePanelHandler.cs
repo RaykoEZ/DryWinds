@@ -119,6 +119,7 @@ namespace Curry.UI
             }
             m_currentContext = new ChoiceContext();
             OnChoiceComplete = null;
+            m_inProgress = false;
             m_chosen.Clear();
         }
         public void ConfirmChoice() 

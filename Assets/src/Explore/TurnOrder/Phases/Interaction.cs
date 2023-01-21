@@ -4,6 +4,7 @@ using UnityEngine;
 using Curry.Game;
 using System.Collections;
 using Curry.UI;
+using Curry.Util;
 
 namespace Curry.Explore
 {
@@ -14,22 +15,27 @@ namespace Curry.Explore
         [SerializeField] EnemyManager m_enemy = default;
         [SerializeField] PlayManager m_play = default;
         Stack<List<IEnumerator>> m_interruptBuffer = new Stack<List<IEnumerator>>();
+
+        protected override Type NextState => typeof(PlayerAction);
+
         public override void Init()
         {
-            NextState = typeof(PlayerAction);
             m_play.OnActivate += OnPlayerAction;
+            m_enemy.OnActionBegin += OnEnemyAction;
         }
         void OnPlayerAction(int timeSpent, List<IEnumerator> actions = null) 
         {
-            if (actions != null)
-            {
-                m_interruptBuffer.Push(actions);
-            }
+            m_interruptBuffer?.Push(actions);
             // Check if there are enemy responses for this player action
-            if (m_enemy.OnPlayerAction(timeSpent, out List<IEnumerator> resp)) 
+            if (m_enemy.OnEnemyInterrupt(timeSpent, out List<IEnumerator> resp)) 
             {
-                m_interruptBuffer.Push(resp);
+                m_interruptBuffer?.Push(resp);
             }
+            Interrupt();
+        }
+        void OnEnemyAction(List<IEnumerator> actions) 
+        {
+            m_interruptBuffer.Push(actions);
             Interrupt();
         }
 

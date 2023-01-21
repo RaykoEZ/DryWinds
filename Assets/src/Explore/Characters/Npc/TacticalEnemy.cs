@@ -13,7 +13,6 @@ namespace Curry.Explore
         [SerializeField] protected Animator m_anim = default;
         [SerializeField] protected PlayerDetector m_detect = default;
         protected HashSet<IPlayer> m_targetsInSight = new HashSet<IPlayer>();
-        public int Countdown { get; protected set; }
         protected TacticalStats m_current;
 
         #region ICharacter & IEnemy interface 
@@ -32,7 +31,10 @@ namespace Curry.Explore
             get { return m_current; }
             protected set { m_current = value; }
         }
-        public IEnumerator ExecuteAction => ExecuteAction_Internal();
+        public IEnumerator BasicAction => ExecuteAction_Internal();
+
+        public IEnumerator Reaction => Reaction_Internal();
+
         public override void Reveal()
         {
             m_current.Visibility = ObjectVisibility.Visible;
@@ -45,12 +47,6 @@ namespace Curry.Explore
             m_anim.SetBool("hidden", true);
             OnHide?.Invoke(this);
         }
-
-        public virtual void Affect(Func<TacticalStats, TacticalStats> effect)
-        {
-            if (effect == null) return;
-            CurrentStatus = effect.Invoke(CurrentStatus);
-        }
         public override void Recover(int val)
         {
             Debug.Log("Recover enemy");
@@ -62,19 +58,19 @@ namespace Curry.Explore
         }
         protected virtual IEnumerator ExecuteAction_Internal()
         {
-            ResetCountdown();
             Reveal();
-            m_anim?.SetTrigger("strike");
+            m_anim?.SetTrigger("strike"); 
             yield return null;
         }
-
-        public virtual bool UpdateCountdown(int dt)
+        protected virtual IEnumerator Reaction_Internal() 
         {
-            if (m_targetsInSight.Count == 0) { return false; }
-            StartCoroutine(CountdownTick(dt, Countdown));
-            Countdown -= dt;
-            bool countDownEnds = Countdown <= 0;
-            return countDownEnds;
+            Debug.Log("Standby");
+            yield return new WaitForSeconds(1F);
+        }
+
+        public virtual bool OnUpdate(int dt)
+        {
+            return m_targetsInSight.Count > 0;
         }
         #endregion
 
@@ -84,7 +80,6 @@ namespace Curry.Explore
             // Get new id for enemy
             Id = new EnemyId(gameObject.name);
             m_current = m_initStats;
-            Countdown = m_current.AttackCountdown;
             m_detect.OnDetected += OnDetectEnter;
             m_detect.OnExitDetection += OnDetectExit;
         }
@@ -106,34 +101,18 @@ namespace Curry.Explore
         }
         protected virtual void OnCombat()
         {
-            ResetCountdown();
             m_anim?.SetBool("combat", true);
         }
         protected virtual void Standby()
         {
             //reset anim state and countdown
             m_anim?.SetBool("combat", false);
-            Countdown = m_current.AttackCountdown;
         }
         protected virtual void Defeat()
         {
             StartCoroutine(HandleDefeat());
         }
-        protected virtual void ResetCountdown()
-        {
-            Countdown = m_current.AttackCountdown;
-        }
-
-        // countdown text & fx update
-        protected virtual IEnumerator CountdownTick(int dt, int startFrom)
-        {
-            for (int i = 0; i < dt; ++i)
-            {
-                startFrom--;
-                yield return new WaitForSeconds(0.1f);
-            }
-        }
-            #region Handlers calls
+        #region Handlers calls
         IEnumerator HandleDefeat() 
         {
             m_anim?.SetBool("defeat", true);

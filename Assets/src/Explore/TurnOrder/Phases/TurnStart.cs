@@ -1,5 +1,6 @@
 ﻿using Curry.UI;
 using Curry.Util;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,11 +12,7 @@ namespace Curry.Explore
         [SerializeField] ChoicePrompter m_prompter = default;
         [SerializeField] List<AdventCard> m_cardsToChooseFrom = default;
         [SerializeField] HandZone m_hand = default;
-        public override void Init()
-        {
-            NextState = typeof(PlayerAction);
-        }
-
+        protected override Type NextState => typeof(PlayerAction);
         protected override IEnumerator Evaluate_Internal()
         {
             List<IChoice> choices = ChoiceUtil.ChooseCards(m_cardsToChooseFrom, out List<GameObject> instances);

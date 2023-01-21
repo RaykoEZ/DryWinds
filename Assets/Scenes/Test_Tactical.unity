@@ -569,7 +569,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1086930281}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -5702,6 +5702,7 @@ RectTransform:
   - {fileID: 1009119722}
   - {fileID: 2127039955}
   - {fileID: 262497677}
+  - {fileID: 1962571923}
   - {fileID: 62530892}
   m_Father: {fileID: 0}
   m_RootOrder: 6
@@ -5728,6 +5729,7 @@ MonoBehaviour:
   m_allPhases:
   - {fileID: 1009119723}
   - {fileID: 262497678}
+  - {fileID: 1962571924}
   - {fileID: 62530894}
   - {fileID: 2127039956}
 --- !u!114 &1152918570 stripped
@@ -8715,6 +8717,7 @@ GameObject:
   - component: {fileID: 1519800664}
   - component: {fileID: 1519800666}
   - component: {fileID: 1519800665}
+  - component: {fileID: 1519800667}
   m_Layer: 5
   m_Name: P_PhasePopup
   m_TagString: Untagged
@@ -8757,6 +8760,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_anim: {fileID: 1519800666}
   m_popupLabel: {fileID: 1540659790}
+  m_popup: {fileID: 1519800667}
 --- !u!95 &1519800666
 Animator:
   serializedVersion: 3
@@ -8776,6 +8780,18 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &1519800667
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1519800663}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad36131539d4b024e91edf053905e5d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1523102253
 GameObject:
   m_ObjectHideFlags: 0
@@ -9044,6 +9060,10 @@ MonoBehaviour:
     - {fileID: 2571672767850274779}
     - {fileID: 1519800665}
     - {fileID: 1086930282}
+    - {fileID: 1009119723}
+    - {fileID: 2127039956}
+    - {fileID: 262497678}
+    - {fileID: 1962571924}
     - {fileID: 62530894}
 --- !u!1 &1759132668
 GameObject:
@@ -9633,6 +9653,56 @@ MonoBehaviour:
     m_currentHour: 7
     m_dayBreakAt: 4
     m_nightfallAt: 19
+--- !u!1 &1962571922
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1962571923}
+  - component: {fileID: 1962571924}
+  m_Layer: 0
+  m_Name: EnemyAction
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1962571923
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1962571922}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1086930281}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1962571924
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1962571922}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5058fbe9bbb6594bbd9c59113f71750, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_displayName: Enemy Action
+  m_enemies: {fileID: 2096668154}
 --- !u!1 &1968542684
 GameObject:
   m_ObjectHideFlags: 0
@@ -12430,7 +12500,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e33769f2746c70499d1b3e8ce45b18e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_displayName: 
+  m_displayName: Turn End
 --- !u!1001 &482587161079487272
 PrefabInstance:
   m_ObjectHideFlags: 0

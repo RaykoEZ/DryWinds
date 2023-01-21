@@ -4,19 +4,22 @@ using UnityEngine;
 
 namespace Curry.Explore
 {
+    public struct EnemyUpdateContext 
+    { 
+    
+    }
     public delegate void OnEnemyUpdate(IEnemy enemy);
     public interface IEnemy : ICharacter
     {
         EnemyId Id { get; }
         TacticalStats InitStatus { get; }
         TacticalStats CurrentStatus { get; }
-        IEnumerator ExecuteAction { get; }
-
+        IEnumerator BasicAction { get; }
+        IEnumerator Reaction { get; }
         event OnEnemyUpdate OnDefeat;
         event OnEnemyUpdate OnReveal;
         event OnEnemyUpdate OnHide;
-        void Affect(Func<TacticalStats, TacticalStats> effect);
-        bool UpdateCountdown(int dt);
+        bool OnUpdate(int dt);
     }
 
 }

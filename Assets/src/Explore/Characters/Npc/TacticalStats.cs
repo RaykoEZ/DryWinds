@@ -13,7 +13,6 @@ namespace Curry.Explore
     {
         public int ScoutRange;
         public int Speed;
-        public int AttackCountdown;
         public ObjectVisibility Visibility;
     }
 

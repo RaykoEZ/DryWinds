@@ -12,12 +12,13 @@ namespace Curry.Explore
         public event OnTurnPhaseTransition OnGameStateTransition;
         // Trigger interrupt for UI and others
         public event OnPhaseInterrupt OnInterrupt;
-        protected Type NextState = default;
+        protected abstract Type NextState { get;}
         public string Name => m_displayName;
-        public abstract void Init();
+        public virtual void Init() { }
 
         public virtual void OnEnter(Phase incomingState) 
         {
+            StartInterrupt();
             Evaluate();
         }
         public virtual void Pause() { }

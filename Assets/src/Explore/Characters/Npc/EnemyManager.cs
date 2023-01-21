@@ -6,6 +6,7 @@ using Curry.Events;
 using Curry.Game;
 using UnityEngine.Tilemaps;
 using Curry.UI;
+using Curry.Util;
 
 namespace Curry.Explore
 {
@@ -17,7 +18,8 @@ namespace Curry.Explore
         [SerializeField] public CurryGameEventListener OnSpawn;
         [SerializeField] public BaseBehaviourInstanceManager InstanceManager;
     }
-
+    public delegate void OnEnemyActionFinish();
+    public delegate void OnEnemyActionBegin(List<IEnumerator> actions);
     // Monitors all spawned enemies, triggers enemy action phases
     public class EnemyManager : SceneInterruptBehaviour
     {
@@ -58,7 +60,7 @@ namespace Curry.Explore
                     else
                     {
                         // ...and y is not null, return countdown difference
-                        return x.CurrentStatus.AttackCountdown - y.CurrentStatus.AttackCountdown;
+                        return x.CurrentStatus.Speed - y.CurrentStatus.Speed;
                     }
                 }
             }
@@ -75,6 +77,8 @@ namespace Curry.Explore
         HashSet<IEnemy> m_toAdd = new HashSet<IEnemy>();
         // Comparer for enemy priority
         EnemyPriorityComparer m_priorityComparer = new EnemyPriorityComparer();
+        public event OnEnemyActionFinish OnActionFinish;
+        public event OnEnemyActionBegin OnActionBegin;
         #endregion
         #region Class Body
         void Awake()
@@ -163,15 +167,22 @@ namespace Curry.Explore
         // Whenever player spends time, update all enemies with countdowns 
         // returns: whether there are Responses from active enemies
         // out: enemy responses
-        public bool OnPlayerAction(int timeSpent, out List<IEnumerator> resp)
+        public bool OnEnemyInterrupt(int timeSpent, out List<IEnumerator> resp)
         {
             // Update all enemy countdowns here and get all responses
-            resp = UpdateActiveEnemies(timeSpent);
+            resp = OnEnemiesAct(timeSpent, reaction: true);
             return resp.Count > 0;
         }
-        public void OnEnemyAction(out List<IEnumerator> actions) 
+        // Notifies call stack for enemy action calls
+        public bool OnEnemyAction() 
         {
-            actions = UpdateActiveEnemies(0);
+            List<IEnumerator> actions = OnEnemiesAct(0, reaction: false);
+            bool hasActions = actions.Count > 0;
+            if (hasActions) 
+            {
+                OnActionBegin?.Invoke(actions);
+            }
+            return actions.Count > 0;
         }
 
         void OnTimeElapsedUpdate(int dayCount, int hour, GameClock.TimeOfDay timeOfDay)
@@ -215,31 +226,47 @@ namespace Curry.Explore
         }
 
         // Call all active enemies to respond to player action
-        List<IEnumerator> UpdateActiveEnemies(int dt) 
+        List<IEnumerator> OnEnemiesAct(int dt, bool reaction) 
         {
             // make sure list is up to date before and after
             UpdateActivity();
+            List<IEnumerator> calls = new List<IEnumerator>();
+            // return empty if no enemies
+            if (m_activeEnemies.Count == 0) 
+            {
+                return calls;
+            }
             List<IEnemy> executeOrder = new List<IEnemy>();
             foreach (IEnemy enemy in m_activeEnemies)
             {
                 // returns true if countdown reached, add to execution list
-                if (enemy.UpdateCountdown(dt)) 
+                if (enemy.OnUpdate(dt)) 
                 {
                     executeOrder.Add(enemy);
                 }
             }
-            // sort execution order by ascending countdown value
-            executeOrder.Sort(m_priorityComparer);
-            List<IEnumerator> calls = new List<IEnumerator>();
-            foreach (IEnemy e in executeOrder)
+            // return empty if no enemies are acting
+            if (executeOrder.Count > 0)  
             {
-                // Focus camera on currently acting enemy
-                calls.Add(PresentActingEnemy(e));
-                // Execute enemy action
-                calls.Add(e.ExecuteAction);
+                // sort execution order by ascending countdown value
+                executeOrder.Sort(m_priorityComparer);
+                foreach (IEnemy e in executeOrder)
+                {
+                    // Focus camera on currently acting enemy
+                    calls.Add(PresentActingEnemy(e));
+                    IEnumerator action = reaction ? e.Reaction : e.BasicAction;
+                    // Execute enemy action
+                    calls.Add(action);
+                }
+                calls.Add(FinishActionPhase());
+                UpdateActivity();
             }
-            UpdateActivity();
             return calls;
+        }
+        IEnumerator FinishActionPhase() 
+        {
+            OnActionFinish?.Invoke();
+            yield return null;
         }
         IEnumerator PresentActingEnemy(IEnemy e) 
         {

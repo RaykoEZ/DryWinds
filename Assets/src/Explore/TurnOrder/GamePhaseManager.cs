@@ -20,7 +20,6 @@ namespace Curry.Explore
         // Add all game states into the dictionary
         Dictionary<Type, Phase> m_turnStateCollection = new Dictionary<Type, Phase>();
         protected Phase CurrentPhase { get { return m_phaseStack.Peek(); } }
-
         void Awake()
         {
             m_turnStateCollection = new Dictionary<Type, Phase> { };
@@ -61,7 +60,7 @@ namespace Curry.Explore
                 interrupt.OnEnter(m_previous);
             };
             // Make popup for interrupt state
-            m_phasePopup.ShowPopup(interrupt.Name, onInterrupt);
+            StartCoroutine(ChangeState(interrupt.Name, onInterrupt));
         }
         void InterruptResolved(Type _) 
         {
@@ -78,7 +77,6 @@ namespace Curry.Explore
         void SetCurrentState(Type type)
         {
             Phase nextPhase = m_turnStateCollection[type];
-
             Action change = () => {
                 m_phaseStack.Push(nextPhase);
                 CurrentPhase.OnGameStateTransition += OnStateTransition;
@@ -89,9 +87,9 @@ namespace Curry.Explore
         }
         IEnumerator ChangeState(string displayName, Action onChange) 
         {
+            yield return new WaitForSeconds(0.1f);
             StartInterrupt();
             // wait for phase to finish evaluating
-            yield return new WaitWhile(() => m_phasePopup.AnimationInProgress);
             m_phasePopup.ShowPopup(displayName, onChange);
         }
         void OnStateTransition(Type type)

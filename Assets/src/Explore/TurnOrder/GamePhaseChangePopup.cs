@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Curry.Util;
+using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
@@ -10,25 +11,21 @@ namespace Curry.Explore
     {
         [SerializeField] Animator m_anim = default;
         [SerializeField] TextMeshProUGUI m_popupLabel = default;
-        bool m_inProgress = false;
-        public bool AnimationInProgress => m_inProgress && 
-            m_anim.GetCurrentAnimatorStateInfo(0).normalizedTime < 1f;
-        
+        [SerializeField] CoroutineManager m_popup = default;
         public void ShowPopup(string phaseName, Action onFinish) 
         {
-            m_inProgress = true;
-            m_popupLabel.text = phaseName;
-            StartCoroutine(PhaseChange_Internal(onFinish));
+            m_popup.ScheduleCoroutine(PhaseChange_Internal(phaseName, onFinish), interruptNow: true);
+            m_popup.StartScheduledCoroutines();
         }
 
-        IEnumerator PhaseChange_Internal(Action onFinish) 
+        IEnumerator PhaseChange_Internal(string phaseName, Action onFinish) 
         {
             StartInterrupt();
+            m_popupLabel.text = phaseName;
             m_anim.SetTrigger("Show");
-            yield return new WaitWhile(() => AnimationInProgress);
-            yield return new WaitForSeconds(0.05f);
+            yield return new WaitForSeconds(m_anim.GetCurrentAnimatorStateInfo(0).length);
+            yield return new WaitForSeconds(0.1f);
             m_anim.ResetTrigger("Show");
-            m_inProgress = false;
             onFinish?.Invoke();
             EndInterrupt();
         }
