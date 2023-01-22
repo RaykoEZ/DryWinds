@@ -65,7 +65,7 @@ namespace Curry.Explore
         protected virtual IEnumerator Reaction_Internal() 
         {
             Debug.Log("Standby");
-            yield return new WaitForSeconds(1F);
+            yield return new WaitForSeconds(0.1f);
         }
 
         public virtual bool OnUpdate(int dt)

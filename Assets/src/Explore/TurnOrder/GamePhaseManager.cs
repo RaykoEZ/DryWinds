@@ -52,9 +52,8 @@ namespace Curry.Explore
             m_previous = CurrentPhase;
             // Pause current phase (e.g. UI)
             m_previous.Pause();
-
+            m_phaseStack.Push(interrupt);
             Action onInterrupt = () => {
-                m_phaseStack.Push(interrupt);
                 OnPhaseChange?.Invoke(interrupt.GetType());
                 interrupt.OnGameStateTransition += InterruptResolved;
                 interrupt.OnEnter(m_previous);
