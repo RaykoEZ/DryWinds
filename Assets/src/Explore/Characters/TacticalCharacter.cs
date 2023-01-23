@@ -51,6 +51,11 @@ namespace Curry.Explore
             {
                 StartCoroutine(Move_Internal(target));
             }
+            else if(hit.rigidbody.TryGetComponent(out IStepOnTrigger steppedOn))
+            {
+                StartCoroutine(Move_Internal(target));
+                steppedOn.Trigger(this);
+            }
             else 
             {
                 OnMovementBlocked(hit);

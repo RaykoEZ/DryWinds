@@ -4,7 +4,11 @@ using Curry.Game;
 
 namespace Curry.Explore
 {
-    public class ReinforcementSignal : PoolableBehaviour, IEnemy
+    public interface IStepOnTrigger
+    {
+        void Trigger(ICharacter overlapping);
+    }
+    public class ReinforcementSignal : PoolableBehaviour, IEnemy, IStepOnTrigger
     {
         [SerializeField] public LayerMask m_blocksSpawn = default;
         [SerializeField] protected int m_spawnCountdown = default;
@@ -84,6 +88,12 @@ namespace Curry.Explore
                 m_spawn.ApplyEffect(transform.position);
             }
         }
-
+        // When a character steps on this object before reinforcement arrives,
+        // destrpy this signal (canceling the reinforcement).
+        public void Trigger(ICharacter overlapping)
+        {
+            m_currentTimer = 0;
+            OnDefeat?.Invoke(this);
+        }
     }
 }
