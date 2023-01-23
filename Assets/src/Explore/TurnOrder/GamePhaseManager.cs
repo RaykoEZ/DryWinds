@@ -63,9 +63,11 @@ namespace Curry.Explore
         }
         void InterruptResolved(Type _) 
         {
+            Debug.Log("Interrupt state: " + CurrentPhase.GetType());
             // unlisten from finished interrupt state
             m_previous = m_phaseStack.Pop();
             m_previous.OnGameStateTransition -= InterruptResolved;
+            Debug.Log("Interrupt over, now in: "+CurrentPhase.GetType());
             OnPhaseChange?.Invoke(CurrentPhase.GetType());
             // Back from interrupt, listen to transition callbacks
             CurrentPhase.OnGameStateTransition += OnStateTransition;

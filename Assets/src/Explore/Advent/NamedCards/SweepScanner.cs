@@ -8,7 +8,7 @@ using System;
 namespace Curry.Explore
 {
     [Serializable]
-    public class Defog : IEffectModule 
+    public class Defog : ICharacterEffectModule 
     {
         [SerializeField] int m_scoutRange = default;
         [SerializeField] CurryGameEventTrigger m_defog = default;
@@ -27,8 +27,7 @@ namespace Curry.Explore
         public override IEnumerator ActivateEffect(IPlayer user)
         {
             m_defog.ApplyEffect(user, user);
-            yield return null;
-            OnExpend();
+            yield return new WaitForEndOfFrame();
         }
     }
 }

@@ -12,7 +12,6 @@ namespace Curry.Explore
         {
             m_healing.ApplyEffect(user, user);
             yield return null;
-            OnExpend();
         }
     }
 }

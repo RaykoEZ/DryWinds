@@ -3,7 +3,7 @@ using UnityEngine;
 namespace Curry.Explore
 {
     [Serializable]
-    public class DealDamage : IEffectModule
+    public class DealDamageTo : ICharacterEffectModule
     {
         [SerializeField] int m_damage = default;
         public void ApplyEffect(ICharacter target, ICharacter user)

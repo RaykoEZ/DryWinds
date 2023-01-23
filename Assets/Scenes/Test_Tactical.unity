@@ -589,6 +589,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_displayName: Interaction Phase
+  m_advent: {fileID: 1024562575}
   m_enemy: {fileID: 2096668154}
   m_play: {fileID: 120921346}
 --- !u!1 &75294243
@@ -1366,7 +1367,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4063988590427125917, guid: 613f89d64653ca341b7e26c82704d43c, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4063988590427125917, guid: 613f89d64653ca341b7e26c82704d43c, type: 3}
       propertyPath: m_AnchorMax.x
@@ -1442,7 +1443,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4063988590427125918, guid: 613f89d64653ca341b7e26c82704d43c, type: 3}
       propertyPath: m_Name
-      value: P_ImperialCompany_3
+      value: P_BorderPatrol
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 613f89d64653ca341b7e26c82704d43c, type: 3}
@@ -5862,7 +5863,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1422563867}
   - component: {fileID: 1422563869}
-  - component: {fileID: 1422563868}
   m_Layer: 0
   m_Name: Spawner
   m_TagString: Untagged
@@ -5889,20 +5889,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1422563868
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1422563866}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f75f61658f2ed6d4492d61fbfc4fafb4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_spawner: {fileID: 1422563869}
-  m_ref: {fileID: 4063988590427125915, guid: 613f89d64653ca341b7e26c82704d43c, type: 3}
 --- !u!114 &1422563869
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8651,7 +8637,6 @@ MonoBehaviour:
         m_numToPool: 1
         m_defaultParent: {fileID: 1968542685}
   m_camera: {fileID: 765189990}
-  m_clock: {fileID: 1956501438}
   m_fog: {fileID: 2017579930}
 --- !u!1 &2127039954
 GameObject:

@@ -19,7 +19,7 @@ namespace Curry.Explore
         [SerializeField] public BaseBehaviourInstanceManager InstanceManager;
     }
     public delegate void OnEnemyActionFinish();
-    public delegate void OnEnemyActionBegin(List<IEnumerator> actions);
+    public delegate void OnEnemyActionStart(List<IEnumerator> actions);
     // Monitors all spawned enemies, triggers enemy action phases
     public class EnemyManager : SceneInterruptBehaviour
     {
@@ -70,7 +70,6 @@ namespace Curry.Explore
         #region Serialize Fields & Members
         [SerializeField] TacticalSpawnProperties m_spawnProperties = default;
         [SerializeField] CameraManager m_camera = default;
-        [SerializeField] GameClock m_clock = default;
         [SerializeField] FogOfWar m_fog = default;
         List<IEnemy> m_activeEnemies = new List<IEnemy>();
         HashSet<IEnemy> m_toRemove = new HashSet<IEnemy>();
@@ -78,13 +77,12 @@ namespace Curry.Explore
         // Comparer for enemy priority
         EnemyPriorityComparer m_priorityComparer = new EnemyPriorityComparer();
         public event OnEnemyActionFinish OnActionFinish;
-        public event OnEnemyActionBegin OnActionBegin;
+        public event OnEnemyActionStart OnActionBegin;
         #endregion
         #region Class Body
         void Awake()
         {
             m_spawnProperties.OnSpawn?.Init();
-            m_clock.OnTimeElapsed += OnTimeElapsedUpdate;
         }
         void Start()
         {
@@ -110,8 +108,7 @@ namespace Curry.Explore
         {
             Vector3Int coord = m_spawnProperties.SpawnMap.WorldToCell(position);
             Vector3 cellCenter = m_spawnProperties.SpawnMap.GetCellCenterWorld(coord);
-            bool hit = Physics2D.CircleCast(cellCenter, 0.01f, Vector3.zero, m_spawnProperties.DoNotSpawnOn);
-            if (!hit || !(behaviour is IEnemy) || !m_spawnProperties.SpawnMap.HasTile(coord))
+            if (!(behaviour is IEnemy) || !m_spawnProperties.SpawnMap.HasTile(coord))
             {
                 return;
             }
@@ -133,11 +130,6 @@ namespace Curry.Explore
             spawn.OnHide += OnEnemyHide;
             spawn.OnBlocked += OnMovementBlocked;
             m_toAdd.Add(spawn);
-            // Update spawned enemy activeness according to time of day
-            if (spawn is IOrganicLife life)
-            {
-                UpdateActiveness(life);
-            }
         }
         #endregion
 
@@ -183,31 +175,6 @@ namespace Curry.Explore
                 OnActionBegin?.Invoke(actions);
             }
             return actions.Count > 0;
-        }
-
-        void OnTimeElapsedUpdate(int dayCount, int hour, GameClock.TimeOfDay timeOfDay)
-        {
-            UpdateActivity();
-            foreach (IEnemy e in m_activeEnemies)
-            {
-                if (e is IOrganicLife life)
-                {
-                    UpdateActiveness(life);
-                }
-            }
-        }
-        void UpdateActiveness(IOrganicLife life)
-        {
-            ActiveTimeFrame activeHours = life.ActiveHours;
-            bool withActiveHours = activeHours.ActiveAt == m_clock.CurrentTimeOfDay;
-            if (withActiveHours && !life.IsActive) 
-            {
-                life.Activate();
-            }
-            else if(!withActiveHours && life.IsActive) 
-            {
-                life.Hibernate();
-            }
         }
 
         // add and remove scheduled updates to the enemy list

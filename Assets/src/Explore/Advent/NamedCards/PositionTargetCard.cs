@@ -35,8 +35,7 @@ namespace Curry.Explore
                     break;
                 }
             }
-            yield return null;
-            OnExpend();
+            yield return new WaitForEndOfFrame();
         }
         protected abstract void Effect_Internal(ICharacter target, IPlayer user);
     }

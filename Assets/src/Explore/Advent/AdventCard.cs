@@ -29,17 +29,8 @@ namespace Curry.Explore
         {
             Activatable = true;
         }
-        public virtual void OnDiscard()
-        {
-            OnExpend();
-        }
         // Card Effect
         public abstract IEnumerator ActivateEffect(IPlayer user);
 
-        // After activating card, maybe expend the card
-        protected void OnExpend() 
-        {
-            ReturnToPool();
-        }
     }
 }

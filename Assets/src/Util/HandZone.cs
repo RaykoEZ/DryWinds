@@ -126,6 +126,7 @@ namespace Curry.Util
             foreach (Encounter encounter in draw)
             {
                 yield return StartCoroutine(encounter?.ActivateEffect(m_playerRef));
+                encounter.ReturnToPool();
             }
         }
         protected virtual void PrepareCard(DraggableCard draggable)
@@ -176,9 +177,9 @@ namespace Curry.Util
             {
                 if (m_hand.Remove(card))
                 {
-                     yield return card.StartCoroutine(card.ActivateEffect(player));
+                    yield return card.StartCoroutine(card.ActivateEffect(player));
+                    card.ReturnToPool();
                 }
-
             }
             // Remove all cards in hand that doesn't retain
             internal void DiscardCards()
@@ -191,7 +192,7 @@ namespace Curry.Util
                 foreach (AdventCard card in toDiscard)
                 {
                     m_hand.Remove(card);
-                    card.OnDiscard();
+                    card.ReturnToPool();
                 }
             }
         }

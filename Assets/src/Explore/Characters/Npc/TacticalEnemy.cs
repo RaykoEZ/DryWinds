@@ -12,7 +12,7 @@ namespace Curry.Explore
         [SerializeField] protected TacticalStats m_initStats = default;
         [SerializeField] protected Animator m_anim = default;
         [SerializeField] protected PlayerDetector m_detect = default;
-        protected HashSet<IPlayer> m_targetsInSight = new HashSet<IPlayer>();
+        protected List<IPlayer> m_targetsInSight = new List<IPlayer>();
         protected TacticalStats m_current;
 
         #region ICharacter & IEnemy interface 
@@ -65,7 +65,7 @@ namespace Curry.Explore
         protected virtual IEnumerator Reaction_Internal() 
         {
             Debug.Log("Standby");
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForSeconds(0.05f);
         }
 
         public virtual bool OnUpdate(int dt)
@@ -110,6 +110,7 @@ namespace Curry.Explore
         }
         protected virtual void Defeat()
         {
+            m_anim.SetBool("isInActive", false);
             StartCoroutine(HandleDefeat());
         }
         #region Handlers calls

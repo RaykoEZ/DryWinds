@@ -1,7 +1,9 @@
-﻿using Curry.Events;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using Curry.Events;
+
 namespace Curry.Explore
 {
     public delegate void OnAdventureFinish();
@@ -24,6 +26,7 @@ namespace Curry.Explore
         [SerializeField] CurryGameEventTrigger m_onCardDraw = default;      
 
         public event OnAdventureFinish OnFinish;
+        public event OnActionStart OnStart;
         void Awake()
         {
             m_adventDb.Init(OnAdventLoadFinish);
@@ -92,16 +95,23 @@ namespace Curry.Explore
             m_time.TrySpendTime(tile.Difficulty, out bool enough);
             if (enough) 
             {
+                List<IEnumerator> action = new List<IEnumerator> { StartAdventure(worldPos) };
                 // Trigger player to move to selected tile
-                Vector3Int cell = m_terrain.WorldToCell(worldPos);
-                PositionInfo e = new PositionInfo(
-                        m_terrain.GetCellCenterWorld(cell));
-                m_onAdventureMove?.TriggerEvent(e);
+                OnStart?.Invoke(tile.Difficulty, action);
             }
             else 
             {
                 Debug.Log("Not enough time to venture into target location");
             }
+        }
+        IEnumerator StartAdventure(Vector3 targetPos) 
+        {
+            // Trigger player to move to selected tile
+            Vector3Int cell = m_terrain.WorldToCell(targetPos);
+            PositionInfo e = new PositionInfo(
+                    m_terrain.GetCellCenterWorld(cell));
+            m_onAdventureMove?.TriggerEvent(e);
+            yield return null;
         }
 
         // When player reached selected tile, draw cards and trigger events

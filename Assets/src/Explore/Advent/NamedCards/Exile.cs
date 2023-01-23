@@ -7,7 +7,6 @@ namespace Curry.Explore
         protected override void Effect_Internal(ICharacter target, IPlayer user)
         {
             m_push.ApplyEffect(target, user);
-            OnExpend();
         }
     }
 }

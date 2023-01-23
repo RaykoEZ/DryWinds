@@ -12,6 +12,7 @@ namespace Curry.Explore
     // Handles AI actions and reactions
     public class Interaction : Phase
     {
+        [SerializeField] AdventManager m_advent = default;
         [SerializeField] EnemyManager m_enemy = default;
         [SerializeField] PlayManager m_play = default;
         Stack<List<IEnumerator>> m_interruptBuffer = new Stack<List<IEnumerator>>();
@@ -21,9 +22,10 @@ namespace Curry.Explore
         public override void Init()
         {
             m_play.OnActivate += OnPlayerAction;
+            m_advent.OnStart += OnPlayerAction;
             m_enemy.OnActionBegin += OnEnemyAction;
         }
-        void OnPlayerAction(int timeSpent, List<IEnumerator> actions = null) 
+        void OnPlayerAction(int timeSpent, List<IEnumerator> actions = null)
         {
             m_interruptBuffer?.Push(actions);
             // Check if there are enemy responses for this player action

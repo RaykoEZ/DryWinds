@@ -7,8 +7,7 @@ namespace Curry.Explore
     {
         public override IEnumerator ActivateEffect(IPlayer user)
         {
-            yield return null;
-            OnExpend();
+            yield return new WaitForEndOfFrame();
         }
     }
 }

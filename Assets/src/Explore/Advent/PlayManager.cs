@@ -4,12 +4,11 @@ using UnityEngine;
 using UnityEngine.UI;
 using Curry.Util;
 using Curry.Events;
-using static Curry.Explore.DraggableCard;
 using System.Collections;
 
 namespace Curry.Explore
 {
-    public delegate void OnEffectActivate(int timeSpent, List<IEnumerator> onActivate = null);
+    public delegate void OnActionStart(int timeSpent, List<IEnumerator> onActivate = null);
     // Intermediary between cards-in-hand and main play zone
     // Handles card activation validation
     public class PlayManager : MonoBehaviour
@@ -18,7 +17,7 @@ namespace Curry.Explore
         [SerializeField] CardDropZone m_playZone = default;
         [SerializeField] HandZone m_hand = default;
         [SerializeField] Adventurer m_player = default;
-        public event OnEffectActivate OnActivate;
+        public event OnActionStart OnActivate;
         protected void Start()
         {
             m_hand.Init(m_player, m_player.transform);
