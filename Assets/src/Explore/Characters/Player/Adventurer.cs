@@ -49,9 +49,6 @@ namespace Curry.Explore
         protected AdventurerStats m_current;
         public AdventurerStats StartingStats { get { return new AdventurerStats(m_startingStats); } }
         public AdventurerStats CurrentStats { get { return new AdventurerStats(m_current); } }
-
-        public override ObjectVisibility Visibility { get => throw new System.NotImplementedException(); protected set => throw new System.NotImplementedException(); }
-
         public override void Reveal()
         {
             OnReveal?.Invoke(this);

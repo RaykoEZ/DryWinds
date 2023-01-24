@@ -71,7 +71,6 @@ namespace Curry.Explore
             CurrentPhase.OnGameStateTransition += OnStateTransition;
             // Resume previous phase operations
             CurrentPhase.Resume();
-            EndInterrupt();
         }
         void SetCurrentState(Type type)
         {
@@ -80,7 +79,6 @@ namespace Curry.Explore
                 m_phaseStack.Push(nextPhase);
                 CurrentPhase.OnGameStateTransition += OnStateTransition;
                 CurrentPhase?.OnEnter(m_previous);
-                EndInterrupt();
             };
             StartCoroutine(ChangeState(nextPhase.Name, change));
         }

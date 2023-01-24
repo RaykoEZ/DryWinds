@@ -18,7 +18,7 @@ namespace Curry.Explore
             "Player"
         };
         protected static LayerMask OccupanceContactFilter => LayerMask.GetMask(c_occupanceCheckFilter);
-        public abstract ObjectVisibility Visibility { get; protected set; }
+        public virtual ObjectVisibility Visibility { get; protected set; } = ObjectVisibility.Visible;
         public Vector3 WorldPosition => transform.position;
         public string Name => m_name;
         public int MaxHp
@@ -72,7 +72,6 @@ namespace Curry.Explore
             {
                 character.Reveal();
             }
-
         }
 
         public virtual void OnDefeated()

@@ -11,7 +11,7 @@ namespace Curry.Explore
         [SerializeField] ChoiceConditions m_condition = default;
         [SerializeField] ChoicePrompter m_prompter = default;
         [SerializeField] List<AdventCard> m_cardsToChooseFrom = default;
-        [SerializeField] HandZone m_hand = default;
+        [SerializeField] HandManager m_hand = default;
         protected override Type NextState => typeof(PlayerAction);
         protected override IEnumerator Evaluate_Internal()
         {

@@ -9,7 +9,7 @@ namespace Curry.Explore
         // Scripts to disable/enable upon interrupting the scene
         [SerializeField] AdventButton m_adventureInput = default;
         [SerializeField] SelectionManager m_selectInput = default;
-        [SerializeField] PlayManager m_cardPlay = default;
+        [SerializeField] HandManager m_cardPlay = default;
 
         // Collection of interruptors
         [SerializeField] SceneInterruptCollection m_interruptors = default;

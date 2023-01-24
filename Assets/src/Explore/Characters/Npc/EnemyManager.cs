@@ -99,12 +99,12 @@ namespace Curry.Explore
         // When a spawner requests an enemy spawn
         public void SpawnEnemy(EventInfo info)
         {
-            if (info is EnemySpawnInfo spawn)
+            if (info is SpawnInfo spawn)
             {
-                SpawnEnemy_Internal(spawn.Behaviour, spawn.SpawnWorldPosition, spawn.Parent);
+                SpawnEnemy_Internal(spawn.Behaviour, spawn.SpawnWorldPosition,spawn.OnInstantiate, spawn.Parent);
             }
         }
-        protected void SpawnEnemy_Internal(PoolableBehaviour behaviour, Vector3 position, Transform parent = null)
+        protected void SpawnEnemy_Internal(PoolableBehaviour behaviour, Vector3 position, Action<PoolableBehaviour> setup = null, Transform parent = null)
         {
             Vector3Int coord = m_spawnProperties.SpawnMap.WorldToCell(position);
             Vector3 cellCenter = m_spawnProperties.SpawnMap.GetCellCenterWorld(coord);
@@ -116,6 +116,7 @@ namespace Curry.Explore
             PoolableBehaviour newBehaviour = m_spawnProperties.InstanceManager.
                 GetInstanceFromAsset(behaviour.gameObject, parent);
             // setup new spawn instance
+            setup?.Invoke(newBehaviour);
             InitInstance(newBehaviour, cellCenter);
         }
 

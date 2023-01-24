@@ -38,10 +38,8 @@ namespace Curry.Explore
 
         protected override IEnumerator Evaluate_Internal()
         {
-            StartInterrupt();
             m_onTurnStart?.TriggerEvent(new EventInfo());
             m_turnEnd.SetInteractable(true);
-            EndInterrupt();
             yield return null;
         }
 

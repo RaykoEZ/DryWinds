@@ -14,14 +14,14 @@ namespace Curry.Explore
     {
         [SerializeField] AdventManager m_advent = default;
         [SerializeField] EnemyManager m_enemy = default;
-        [SerializeField] PlayManager m_play = default;
+        [SerializeField] HandManager m_cardPlay = default;
         Stack<List<IEnumerator>> m_interruptBuffer = new Stack<List<IEnumerator>>();
 
         protected override Type NextState => typeof(PlayerAction);
 
         public override void Init()
         {
-            m_play.OnActivate += OnPlayerAction;
+            m_cardPlay.OnActivate += OnPlayerAction;
             m_advent.OnStart += OnPlayerAction;
             m_enemy.OnActionBegin += OnEnemyAction;
         }
@@ -43,7 +43,6 @@ namespace Curry.Explore
 
         protected override IEnumerator Evaluate_Internal()
         {
-            StartInterrupt();
             // If we need to resolve interrupts from activated enemies, do it first
             while (m_interruptBuffer.Count > 0)
             {
@@ -55,7 +54,6 @@ namespace Curry.Explore
                 yield return new WaitForSeconds(0.1f);
             }
             TransitionTo();
-            EndInterrupt();
         }
     }
 }

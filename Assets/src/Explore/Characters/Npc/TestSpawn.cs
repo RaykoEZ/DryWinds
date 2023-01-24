@@ -7,7 +7,7 @@ namespace Curry.Explore
 {
     public class TestSpawn : MonoBehaviour
     {
-        [SerializeField] EnemySpawnHandler m_spawner = default;
+        [SerializeField] SpawnHandler m_spawner = default;
         [SerializeField] TacticalEnemy m_ref = default;
         private void Start()
         {

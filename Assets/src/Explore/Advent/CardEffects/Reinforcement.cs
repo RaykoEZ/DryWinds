@@ -1,19 +1,21 @@
 ﻿using UnityEngine;
 using Curry.Game;
 using System;
+using System.Collections.Generic;
 
 namespace Curry.Explore
 {
     [Serializable]
-    public class Reinforcement : ITileEffectModule
+    public class Reinforcement : ISummonModule
     {
         [SerializeField] LayerMask m_doNotSpawnOn = default;
-        [SerializeField] EnemySpawnHandler m_spawner = default;
-        [SerializeField] PoolableBehaviour m_spawnRef = default;
+        [SerializeField] SpawnHandler m_spawner = default;
         public LayerMask DoNotSpawnOn => m_doNotSpawnOn;
-        public void ApplyEffect(Vector3 targetWorldPos)
+        public void ApplyEffect(Vector3 targetWorldPos, PoolableBehaviour spawnRef, Action<PoolableBehaviour> onInstance = null)
         {
-            m_spawner.Spawn(targetWorldPos, m_spawnRef);
+            if (spawnRef == null) return;
+
+            m_spawner.Spawn(targetWorldPos, spawnRef, onInstance);
         }
     }
 }
