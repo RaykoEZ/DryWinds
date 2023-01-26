@@ -8,13 +8,14 @@ namespace Curry.Explore
     {
         [SerializeField] DealDamageTo m_basicAttack = default;
         [SerializeField] SwapPosition m_relief = default;
-        public override bool ChooseAction(int dt)
+        protected override bool ChooseAction_Internal(int dt, out IEnumerator action)
         {
             bool reliefNeeded = false;
+            action = null;
             // if we see target, do basic action
             if (SpotsTarget) 
             {
-                BasicAction = ExecuteAction_Internal();
+                action = ExecuteAction_Internal();
             }
             else 
             {
@@ -31,8 +32,8 @@ namespace Curry.Explore
                 // swap position with one of them
                 if (activeEnemies.Count > 0)
                 {
-                    int rand = UnityEngine.Random.Range(0, activeEnemies.Count);
-                    BasicAction = ReliefAlly(activeEnemies[rand]);
+                    int rand = Random.Range(0, activeEnemies.Count);
+                    action = ReliefAlly(activeEnemies[rand]);
                     reliefNeeded = true;
                 }
             }

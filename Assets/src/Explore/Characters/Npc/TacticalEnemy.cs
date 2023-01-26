@@ -1,5 +1,4 @@
 ﻿using Curry.Game;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -31,10 +30,6 @@ namespace Curry.Explore
             get { return m_current; }
             protected set { m_current = value; }
         }
-        // Actions & Reactions for the unit, initialized in Prepare() on spawn.
-        public virtual IEnumerator BasicAction { get; protected set; }
-
-        public virtual IEnumerator Reaction { get; protected set; }
         public override void Reveal()
         {
             m_current.Visibility = ObjectVisibility.Visible;
@@ -56,26 +51,42 @@ namespace Curry.Explore
             m_anim?.SetTrigger("takeHit");
             Defeat();
         }
+        // returns true if we decide to act,
+        // BasicAction & Reaction fields need to not be null before returning
+        public bool OnAction(int dt, bool reaction, out IEnumerator action)
+        {
+            bool ret;
+            if (reaction) 
+            {
+                ret = ChooseReaction_Internal(dt, out IEnumerator result);
+                action = result;
+            } 
+            else 
+            {
+                ret = ChooseAction_Internal(dt, out IEnumerator result);
+                action = result;
+            }
+            return ret;
+        }
+        protected virtual bool ChooseAction_Internal(int dt, out IEnumerator action) 
+        {
+            action = ExecuteAction_Internal();
+            return SpotsTarget;
+        }
+        protected virtual bool ChooseReaction_Internal(int dt, out IEnumerator reaction) 
+        {
+            reaction = Reaction_Internal();
+            return false;
+        }
         protected virtual IEnumerator ExecuteAction_Internal()
         {
             Reveal();
             m_anim?.SetTrigger("strike");
             yield return null;
         }
-        protected virtual IEnumerator Reaction_Internal() 
+        protected virtual IEnumerator Reaction_Internal()
         {
-            Debug.Log("reaction blockout");
             yield return new WaitForEndOfFrame();
-        }
-
-        // returns true if we decide to act,
-        // BasicAction & Reaction fields need to not be null before returning
-        public virtual bool ChooseAction(int dt)
-        {
-            // Setting default action and reaction methods
-            BasicAction = ExecuteAction_Internal();
-            Reaction = Reaction_Internal();
-            return SpotsTarget;
         }
         #endregion
 

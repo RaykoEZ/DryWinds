@@ -80,14 +80,28 @@ namespace Curry.Explore
                 CurrentPhase.OnGameStateTransition += OnStateTransition;
                 CurrentPhase?.OnEnter(m_previous);
             };
-            StartCoroutine(ChangeState(nextPhase.Name, change));
+            if (string.IsNullOrWhiteSpace(nextPhase.Name)) 
+            {
+                change?.Invoke();
+            }
+            else 
+            {
+                StartCoroutine(ChangeState(nextPhase.Name, change));
+            }
         }
         IEnumerator ChangeState(string displayName, Action onChange) 
         {
-            yield return new WaitForSeconds(0.1f);
             StartInterrupt();
-            // wait for phase to finish evaluating
-            m_phasePopup.ShowPopup(displayName, onChange);
+            yield return new WaitForSeconds(0.1f);
+            if (string.IsNullOrWhiteSpace(displayName))
+            {
+                onChange?.Invoke();
+            }
+            else 
+            {
+                // wait for phase to finish evaluating
+                m_phasePopup.ShowPopup(displayName, onChange);
+            }
         }
         void OnStateTransition(Type type)
         {

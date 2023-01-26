@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using TMPro;
 using Curry.Game;
+using Curry.Events;
+
 namespace Curry.Explore
 {
     public class GameStateController : MonoBehaviour
@@ -13,9 +15,15 @@ namespace Curry.Explore
         {
             m_gameResult.gameObject.SetActive(false);
             m_player.OnDefeat += OnPlayerDefeat;
+            m_objectives.OnCriticalFailure += OnCriticalFail;
             m_objectives.AllCriticalComplete += OnGameCleared;
         }
         void OnPlayerDefeat(IPlayer player) 
+        {
+            m_resultText.text = "Game Over";
+            UpdateResultPanel();
+        }
+        void OnCriticalFail(IObjective objective) 
         {
             m_resultText.text = "Game Over";
             UpdateResultPanel();

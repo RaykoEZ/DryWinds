@@ -15,13 +15,10 @@ namespace Curry.Explore
         EnemyId Id { get; }
         TacticalStats InitStatus { get; }
         TacticalStats CurrentStatus { get; }
-        IEnumerator BasicAction { get; }
-        IEnumerator Reaction { get; }
         event OnEnemyUpdate OnDefeat;
         event OnEnemyUpdate OnReveal;
         event OnEnemyUpdate OnHide;
-        bool ChooseAction(int dt);
-
+        bool OnAction(int dt, bool reaction, out IEnumerator action);
     }
 
 }

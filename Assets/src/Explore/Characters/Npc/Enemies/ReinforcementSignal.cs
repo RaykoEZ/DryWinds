@@ -28,6 +28,10 @@ namespace Curry.Explore
         int m_countdownTimer = 0;
         int m_countdown = 0;
         PoolableBehaviour m_spawnRef;
+        public event OnEnemyUpdate OnDefeat;
+        public event OnEnemyUpdate OnReveal;
+        public event OnEnemyUpdate OnHide;
+        public event OnMovementBlocked OnBlocked;
         public bool SpotsTarget => false;
         public EnemyId Id { get; protected set; }
         public TacticalStats InitStatus => new TacticalStats();
@@ -43,20 +47,10 @@ namespace Curry.Explore
         public int Countdown { get { return m_countdown; } protected set { m_countdown = value; } }
         public PoolableBehaviour SpawnRef { get { return m_spawnRef; } protected set { m_spawnRef = value; } }
 
-
-        public event OnEnemyUpdate OnDefeat;
-        public event OnEnemyUpdate OnReveal;
-        public event OnEnemyUpdate OnHide;
-        public event OnMovementBlocked OnBlocked;
         public void Setup(ReinforcementTarget spawnTarget)
         {
             Countdown = spawnTarget.Countdown;
             SpawnRef = spawnTarget.ReinforcementUnit;
-        }
-        public bool ChooseAction(int dt)
-        {
-            m_countdownTimer += dt;
-            return CanSpawn;
         }
         public override void Prepare()
         {
@@ -90,6 +84,13 @@ namespace Curry.Explore
             return false;
         }
         #endregion
+
+        public virtual bool OnAction(int dt, bool reaction, out IEnumerator action)
+        {
+            m_countdownTimer += dt;
+            action = CanSpawn ? OnSpawnReinforcement() : null;
+            return CanSpawn;
+        }
         protected virtual IEnumerator OnSpawnReinforcement()
         {
             Spawn();

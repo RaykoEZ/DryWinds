@@ -588,7 +588,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e464886484ce570439a2688f1e51eeec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_displayName: Interaction Phase
+  m_displayName: 
   m_advent: {fileID: 1024562575}
   m_enemy: {fileID: 2096668154}
   m_cardPlay: {fileID: 615583783}
@@ -8734,7 +8734,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 880947670, guid: 7eb8b9e0778509a4d97901db87f5ce46, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2571672766922976576, guid: 7eb8b9e0778509a4d97901db87f5ce46, type: 3}
       propertyPath: m_Name

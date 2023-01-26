@@ -163,13 +163,13 @@ namespace Curry.Explore
         public bool OnEnemyInterrupt(int timeSpent, out List<IEnumerator> resp)
         {
             // Update all enemy countdowns here and get all responses
-            resp = OnEnemiesAct(timeSpent, reaction: true);
+            resp = HandleAction(timeSpent, reaction: true);
             return resp.Count > 0;
         }
         // Notifies call stack for enemy action calls
         public bool OnEnemyAction() 
         {
-            List<IEnumerator> actions = OnEnemiesAct(0, reaction: false);
+            List<IEnumerator> actions = HandleAction(0, reaction: false);
             bool hasActions = actions.Count > 0;
             if (hasActions) 
             {
@@ -194,44 +194,24 @@ namespace Curry.Explore
         }
 
         // Call all active enemies to respond to player action
-        List<IEnumerator> OnEnemiesAct(int dt, bool reaction) 
+        List<IEnumerator> HandleAction(int dt, bool reaction) 
         {
             // make sure list is up to date before and after
             UpdateActivity();
             List<IEnumerator> calls = new List<IEnumerator>();
-            // return empty if no enemies
-            if (m_activeEnemies.Count == 0) 
-            {
-                return calls;
-            }
-            List<IEnemy> executeOrder = new List<IEnemy>();
+            // sort execution order by ascending countdown value
+            m_activeEnemies.Sort(m_priorityComparer);
             foreach (IEnemy enemy in m_activeEnemies)
             {
                 // returns true if countdown reached, add to execution list
-                if (enemy.ChooseAction(dt)) 
+                if (enemy.OnAction(dt, reaction, out IEnumerator chosenAction) && chosenAction != null)
                 {
-                    executeOrder.Add(enemy);
+                    calls.Add(PresentActingEnemy(enemy));
+                    calls.Add(chosenAction);
                 }
             }
-            // return empty if no enemies are acting
-            if (executeOrder.Count > 0)  
-            {
-                // sort execution order by ascending countdown value
-                executeOrder.Sort(m_priorityComparer);
-                foreach (IEnemy e in executeOrder)
-                {
-                    IEnumerator action = reaction ? e.Reaction : e.BasicAction;
-                    if (action != null) 
-                    {
-                        // Focus camera on currently acting enemy
-                        calls.Add(PresentActingEnemy(e));
-                        // Execute enemy action
-                        calls.Add(action);
-                    }
-                }
-                calls.Add(FinishActionPhase());
-                UpdateActivity();
-            }
+            calls.Add(FinishActionPhase());
+            UpdateActivity();
             return calls;
         }
         IEnumerator FinishActionPhase() 
