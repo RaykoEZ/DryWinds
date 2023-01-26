@@ -1,7 +1,8 @@
 ﻿using Curry.Game;
 using System.Collections;
 using UnityEngine;
-using UnityEditor;
+using static UnityEngine.GraphicsBuffer;
+
 namespace Curry.Explore
 {
     public abstract class TacticalCharacter : PoolableBehaviour, ICharacter
@@ -98,6 +99,22 @@ namespace Curry.Explore
             OnMoveFinish();
         }
         protected virtual void OnMoveFinish() { }
+
+        public bool Warp(Vector3 to)
+        {
+            RaycastHit2D[] hit = Physics2D.CircleCastAll(
+                to,
+                0.1f,
+                Vector2.zero,
+                distance: 0f,
+                LayerMask.NameToLayer("Environment"));
+            // only warp to positions with terrain tiles (inside our level's bounds)
+            if (hit.Length > 0) 
+            {
+                transform.position = to;
+            }
+            return hit.Length > 0;
+        }
     }
 
 }

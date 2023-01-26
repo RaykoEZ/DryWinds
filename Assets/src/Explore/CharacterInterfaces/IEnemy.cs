@@ -11,6 +11,7 @@ namespace Curry.Explore
     public delegate void OnEnemyUpdate(IEnemy enemy);
     public interface IEnemy : ICharacter
     {
+        bool SpotsTarget { get; }
         EnemyId Id { get; }
         TacticalStats InitStatus { get; }
         TacticalStats CurrentStatus { get; }
@@ -19,7 +20,8 @@ namespace Curry.Explore
         event OnEnemyUpdate OnDefeat;
         event OnEnemyUpdate OnReveal;
         event OnEnemyUpdate OnHide;
-        bool OnUpdate(int dt);
+        bool ChooseAction(int dt);
+
     }
 
 }

@@ -11,16 +11,16 @@ namespace Curry.Explore
     {
         [SerializeField] protected TacticalStats m_initStats = default;
         [SerializeField] protected Animator m_anim = default;
-        [SerializeField] protected PlayerDetector m_detect = default;
-        protected List<IPlayer> m_targetsInSight = new List<IPlayer>();
+        [SerializeField] protected CharacterDetector m_detect = default;
         protected TacticalStats m_current;
+        protected IReadOnlyList<IPlayer> TargetsInSight => m_detect.TargetsInSight;
+        protected IReadOnlyList<IEnemy> EnemiesInSight => m_detect.Enemies;
 
         #region ICharacter & IEnemy interface 
-
         public event OnEnemyUpdate OnDefeat;
         public event OnEnemyUpdate OnReveal;
         public event OnEnemyUpdate OnHide;
-
+        public bool SpotsTarget => TargetsInSight.Count > 0;
         public virtual EnemyId Id { get; protected set; }
         public TacticalStats InitStatus { get { return m_initStats; } }
         public override ObjectVisibility Visibility { get { return CurrentStatus.Visibility; }
@@ -31,10 +31,10 @@ namespace Curry.Explore
             get { return m_current; }
             protected set { m_current = value; }
         }
-        public IEnumerator BasicAction => ExecuteAction_Internal();
+        // Actions & Reactions for the unit, initialized in Prepare() on spawn.
+        public virtual IEnumerator BasicAction { get; protected set; }
 
-        public IEnumerator Reaction => Reaction_Internal();
-
+        public virtual IEnumerator Reaction { get; protected set; }
         public override void Reveal()
         {
             m_current.Visibility = ObjectVisibility.Visible;
@@ -59,42 +59,55 @@ namespace Curry.Explore
         protected virtual IEnumerator ExecuteAction_Internal()
         {
             Reveal();
-            m_anim?.SetTrigger("strike"); 
+            m_anim?.SetTrigger("strike");
             yield return null;
         }
         protected virtual IEnumerator Reaction_Internal() 
         {
-            Debug.Log("Standby");
-            yield return new WaitForSeconds(0.05f);
+            Debug.Log("reaction blockout");
+            yield return new WaitForEndOfFrame();
         }
 
-        public virtual bool OnUpdate(int dt)
+        // returns true if we decide to act,
+        // BasicAction & Reaction fields need to not be null before returning
+        public virtual bool ChooseAction(int dt)
         {
-            return m_targetsInSight.Count > 0;
+            // Setting default action and reaction methods
+            BasicAction = ExecuteAction_Internal();
+            Reaction = Reaction_Internal();
+            return SpotsTarget;
         }
         #endregion
 
         #region pooling implementation
         public override void Prepare()
         {
+            // Setting default action and reaction methods
+            BasicAction = ExecuteAction_Internal();
+            Reaction = Reaction_Internal();
             // Get new id for enemy
             Id = new EnemyId(gameObject.name);
             m_current = m_initStats;
-            m_detect.OnDetected += OnDetectEnter;
-            m_detect.OnExitDetection += OnDetectExit;
+            m_detect.OnPlayerEnterDetection += OnDetectEnter;
+            m_detect.OnPlayerExitDetection += OnDetectExit;
+            m_detect.OnEnemyEnterDetection += OnOtherEnemyEnter;
+            m_detect.OnEnemyExitDetection += OnOtherEnemyExit;
         }
         public override void ReturnToPool()
         {
             OnDefeat = null;
-            m_detect.OnDetected -= OnDetectEnter;
-            m_detect.OnExitDetection -= OnDetectExit;
+            m_detect.OnPlayerEnterDetection -= OnDetectEnter;
+            m_detect.OnPlayerExitDetection -= OnDetectExit;
+            m_detect.OnEnemyEnterDetection -= OnOtherEnemyEnter;
+            m_detect.OnEnemyExitDetection -= OnOtherEnemyExit;
             base.ReturnToPool();
         }
         #endregion
+
         #region base class implementation
         protected virtual void OnDetect()
         {
-            if (m_targetsInSight.Count > 0)
+            if (TargetsInSight.Count > 0)
             {
                 OnCombat();
             }
@@ -113,6 +126,8 @@ namespace Curry.Explore
             m_anim.SetBool("isInActive", false);
             StartCoroutine(HandleDefeat());
         }
+        #endregion
+
         #region Handlers calls
         IEnumerator HandleDefeat() 
         {
@@ -127,18 +142,16 @@ namespace Curry.Explore
         }
         void OnDetectEnter(IPlayer adv)
         {
-            m_targetsInSight.Add(adv);
             OnDetect();
         }
         void OnDetectExit(IPlayer adv)
         {
-            if (m_targetsInSight.Remove(adv))
-            {
-                // Do some animation here
-                Standby();
-            }
+            // Do some animation here
+            Standby();
         }
-            #endregion
+        protected virtual void OnOtherEnemyEnter(IEnemy other) { }
+        protected virtual void OnOtherEnemyExit(IEnemy other) { }
+
         #endregion
     }
 

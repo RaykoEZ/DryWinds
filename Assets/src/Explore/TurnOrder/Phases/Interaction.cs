@@ -49,7 +49,7 @@ namespace Curry.Explore
                 foreach (IEnumerator call in m_interruptBuffer.Pop())
                 {
                     yield return StartCoroutine(call);
-                    yield return new WaitForSeconds(0.1f);
+                    yield return new WaitForEndOfFrame();
                 }
                 yield return new WaitForSeconds(0.1f);
             }

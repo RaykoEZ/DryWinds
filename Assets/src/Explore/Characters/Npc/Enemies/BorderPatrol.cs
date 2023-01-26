@@ -23,14 +23,13 @@ namespace Curry.Explore
         }
         protected override IEnumerator ExecuteAction_Internal()
         {
-            yield return base.ExecuteAction_Internal();
-            Reveal();
-            foreach (IPlayer player in m_targetsInSight) 
+            foreach (IPlayer player in TargetsInSight) 
             {
+                Reveal();
+                m_anim?.SetTrigger("strike");
                 m_basicAttack.ApplyEffect(player, this);
-                break;
+                yield break;
             }
-            yield return null;
         }
     }
 }

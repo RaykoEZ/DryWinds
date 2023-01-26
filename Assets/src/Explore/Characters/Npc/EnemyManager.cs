@@ -208,7 +208,7 @@ namespace Curry.Explore
             foreach (IEnemy enemy in m_activeEnemies)
             {
                 // returns true if countdown reached, add to execution list
-                if (enemy.OnUpdate(dt)) 
+                if (enemy.ChooseAction(dt)) 
                 {
                     executeOrder.Add(enemy);
                 }
@@ -220,11 +220,14 @@ namespace Curry.Explore
                 executeOrder.Sort(m_priorityComparer);
                 foreach (IEnemy e in executeOrder)
                 {
-                    // Focus camera on currently acting enemy
-                    calls.Add(PresentActingEnemy(e));
                     IEnumerator action = reaction ? e.Reaction : e.BasicAction;
-                    // Execute enemy action
-                    calls.Add(action);
+                    if (action != null) 
+                    {
+                        // Focus camera on currently acting enemy
+                        calls.Add(PresentActingEnemy(e));
+                        // Execute enemy action
+                        calls.Add(action);
+                    }
                 }
                 calls.Add(FinishActionPhase());
                 UpdateActivity();
@@ -241,7 +244,6 @@ namespace Curry.Explore
             StartInterrupt();
             m_camera.FocusCamera(e.WorldPosition);
             yield return new WaitForSeconds(m_camera.AnimationTime);
-            EndInterrupt();
         }
         #endregion
     }

@@ -17,5 +17,7 @@ namespace Curry.Explore
         void TakeHit(int hitVal);
         void OnDefeated();
         void Move(Vector2Int direction);
+        // returns if warp was successful
+        bool Warp(Vector3 to);
     }
 }

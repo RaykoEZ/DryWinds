@@ -11,7 +11,6 @@ namespace Curry.Explore
     [Serializable]
     public struct TacticalStats 
     {
-        public int ScoutRange;
         public int Speed;
         public ObjectVisibility Visibility;
     }
