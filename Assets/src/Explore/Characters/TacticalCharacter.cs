@@ -1,7 +1,6 @@
 ﻿using Curry.Game;
 using System.Collections;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 
 namespace Curry.Explore
 {
@@ -99,15 +98,12 @@ namespace Curry.Explore
             OnMoveFinish();
         }
         protected virtual void OnMoveFinish() { }
-
         public bool Warp(Vector3 to)
         {
-            RaycastHit2D[] hit = Physics2D.CircleCastAll(
+            int boundFilter = 1 << LayerMask.NameToLayer("Environment");
+            Collider2D[] hit = Physics2D.OverlapCircleAll(
                 to,
-                0.1f,
-                Vector2.zero,
-                distance: 0f,
-                LayerMask.NameToLayer("Environment"));
+                0.1f, layerMask: boundFilter);
             // only warp to positions with terrain tiles (inside our level's bounds)
             if (hit.Length > 0) 
             {
@@ -115,6 +111,7 @@ namespace Curry.Explore
             }
             return hit.Length > 0;
         }
+
     }
 
 }

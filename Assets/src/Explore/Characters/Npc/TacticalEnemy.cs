@@ -13,8 +13,8 @@ namespace Curry.Explore
         [SerializeField] protected Animator m_anim = default;
         [SerializeField] protected CharacterDetector m_detect = default;
         protected TacticalStats m_current;
-        protected IReadOnlyList<IPlayer> TargetsInSight => m_detect.TargetsInSight;
-        protected IReadOnlyList<IEnemy> EnemiesInSight => m_detect.Enemies;
+        protected IReadOnlyCollection<IPlayer> TargetsInSight => m_detect.TargetsInSight;
+        protected IReadOnlyCollection<IEnemy> EnemiesInSight => m_detect.Enemies;
 
         #region ICharacter & IEnemy interface 
         public event OnEnemyUpdate OnDefeat;
@@ -82,9 +82,6 @@ namespace Curry.Explore
         #region pooling implementation
         public override void Prepare()
         {
-            // Setting default action and reaction methods
-            BasicAction = ExecuteAction_Internal();
-            Reaction = Reaction_Internal();
             // Get new id for enemy
             Id = new EnemyId(gameObject.name);
             m_current = m_initStats;
@@ -95,6 +92,7 @@ namespace Curry.Explore
         }
         public override void ReturnToPool()
         {
+            m_detect.Shutdown();
             OnDefeat = null;
             m_detect.OnPlayerEnterDetection -= OnDetectEnter;
             m_detect.OnPlayerExitDetection -= OnDetectExit;

@@ -8,7 +8,6 @@ namespace Curry.Explore
     {
         [SerializeField] DealDamageTo m_basicAttack = default;
         [SerializeField] SwapPosition m_relief = default;
-
         public override bool ChooseAction(int dt)
         {
             bool reliefNeeded = false;

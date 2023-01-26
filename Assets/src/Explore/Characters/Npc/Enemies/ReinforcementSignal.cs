@@ -32,8 +32,8 @@ namespace Curry.Explore
         public EnemyId Id { get; protected set; }
         public TacticalStats InitStatus => new TacticalStats();
         public TacticalStats CurrentStatus => new TacticalStats();
-        public IEnumerator BasicAction => OnSpawn();
-        public IEnumerator Reaction => OnSpawn();
+        public IEnumerator BasicAction => OnSpawnReinforcement();
+        public IEnumerator Reaction => OnSpawnReinforcement();
         public string Name => "Reinforcement";
         public int MaxHp => 1;
         public int CurrentHp => 1;
@@ -90,7 +90,7 @@ namespace Curry.Explore
             return false;
         }
         #endregion
-        protected virtual IEnumerator OnSpawn()
+        protected virtual IEnumerator OnSpawnReinforcement()
         {
             Spawn();
             yield return new WaitForSeconds(0.1f);
@@ -119,6 +119,5 @@ namespace Curry.Explore
             m_countdownTimer = 0;
             OnDefeat?.Invoke(this);
         }
-
     }
 }
