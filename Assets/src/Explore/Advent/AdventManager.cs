@@ -75,8 +75,6 @@ namespace Curry.Explore
             {
                 return;
             }
-
-
             // Set destination world position
             Vector3 worldPos;
             if (info is PositionInfo move)
