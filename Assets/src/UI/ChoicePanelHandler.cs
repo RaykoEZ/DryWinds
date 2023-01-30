@@ -78,7 +78,7 @@ namespace Curry.UI
         protected HashSet<IChoice> m_chosen = new HashSet<IChoice>();
         bool CanConfirm => m_chosen?.Count >= m_currentContext.Conditons.MinChoiceCount;
         bool CanChoose => m_chosen?.Count < m_currentContext.Conditons.MaxChoiceCount;
-        public void BeginChoicePanel(ChoiceContext context, OnChoiceFinish onFinish) 
+        public virtual void BeginChoicePanel(ChoiceContext context, OnChoiceFinish onFinish) 
         {
             if (!m_inProgress) 
             {
@@ -122,20 +122,20 @@ namespace Curry.UI
             m_inProgress = false;
             m_chosen.Clear();
         }
-        public void ConfirmChoice() 
+        public virtual void ConfirmChoice() 
         {
             ChoiceResult result = new ChoiceResult(ChoiceStatus.Confirmed, new List<IChoice>(m_chosen));
             OnChoiceComplete?.Invoke(result);
             Clear();
         }
-        public void CancelChoice() 
+        public virtual void CancelChoice() 
         {
             ChoiceResult result = new ChoiceResult(ChoiceStatus.Cancelled, new List<IChoice>());
             OnChoiceComplete?.Invoke(result);
             Clear();
         }
 
-        void OnChoose(IChoice chosen) 
+        protected virtual void OnChoose(IChoice chosen) 
         {
             if (CanChoose)
             {
@@ -149,7 +149,7 @@ namespace Curry.UI
             // Set confirm button if we chose 
             m_confirm.interactable = CanConfirm;
         }
-        void OnUnchoose(IChoice chosen) 
+        protected virtual void OnUnchoose(IChoice chosen) 
         {
             if (m_chosen.Remove(chosen)) 
             {
@@ -158,7 +158,7 @@ namespace Curry.UI
             }
         }
 
-        void SetChoiceChoosability(bool value) 
+        protected virtual void SetChoiceChoosability(bool value) 
         {
             foreach (IChoice choice in m_currentContext.ChooseFrom)
             {
