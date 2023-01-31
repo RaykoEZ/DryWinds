@@ -8,12 +8,12 @@ namespace Curry.Util
     public class GameConditionDatabase : ScriptableObject
     {
         [Header("Existing Game Condition Flags")]
-        [SerializeField] string[] m_definedConditions = new string[32];
+        [SerializeField] string[] m_definedConditions = new string[10];
         public IReadOnlyList<string> ExistingFlags => m_definedConditions;
         public int NameToFieldIndex(string name)
         {
             List<string> temp = new List<string>(ExistingFlags);
-            if (string.IsNullOrEmpty(name) || 
+            if (string.IsNullOrWhiteSpace(name) || 
                 temp == null || temp.Count == 0 || !temp.Contains(name))
             {
                 return -1;
@@ -45,7 +45,7 @@ namespace Curry.Util
         {
             if (flag == -1) return -1;
             int field = 0;
-            int index = 0;
+            int index;
             for (int i = 0; i < ExistingFlags.Count; ++i)
             {
                 index = NameToFieldIndex(ExistingFlags[i]);

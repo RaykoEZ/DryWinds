@@ -10,38 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c678913564a55d24a9fe0eeda943a1b4, type: 3}
-  m_Name: GameConditionDatabase
+  m_Name: Milestones_Lv0
   m_EditorClassIdentifier: 
   m_definedConditions:
-  - test
-  - RescueVip
-  - VipCaptured
-  - 3
-  - 4
-  - 5
-  - 6
-  - 7
-  - 8
-  - 9
-  - 10
-  - 11
-  - 12
-  - 13
-  - 14
-  - 15
-  - 16
-  - 17
-  - 18
-  - 19
-  - 20
-  - 21
-  - 22
-  - 23
-  - 24
-  - 25
-  - 26
-  - 27
-  - 28
-  - 29
-  - 30
-  - 31
+  - FightEmpire
+  - VIPRescued
+  - VIPCaptured

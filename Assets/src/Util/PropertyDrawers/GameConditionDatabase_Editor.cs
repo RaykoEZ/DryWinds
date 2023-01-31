@@ -1,9 +1,7 @@
-﻿using Curry.Events;
-using System;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEditor;
 using UnityEditorInternal;
+using System.Reflection;
 
 namespace Curry.Util
 {
@@ -13,13 +11,26 @@ namespace Curry.Util
     {
         SerializedProperty conditions;
         ReorderableList condList;
+        bool ConditionsAtMaximumSize => conditions.arraySize == 32;
         void OnEnable()
         {
             conditions = serializedObject.FindProperty("m_definedConditions");
-            condList = new ReorderableList(serializedObject, conditions,false, true, false, false);
+            condList = new ReorderableList(serializedObject, conditions,false, true, !ConditionsAtMaximumSize, true);
+            condList.onAddCallback = OnAdd;
             condList.drawElementCallback = OnDrawConditionElement;
             condList.drawHeaderCallback = DrawHeader;
         }
+        void OnAdd(ReorderableList list)
+        {
+            if (!ConditionsAtMaximumSize)
+            {
+                ++conditions.arraySize;
+                int newIndex = conditions.arraySize - 1;
+                var newElement = conditions.GetArrayElementAtIndex(newIndex);
+                newElement.stringValue = $"NewCondition{newIndex}";
+            }
+        }
+
         public override void OnInspectorGUI()
         {
             serializedObject.UpdateIfRequiredOrScript();
@@ -77,7 +88,6 @@ namespace Curry.Util
             }
             EditorGUILayout.EndHorizontal();
         }
-
     }
 #endif
 }

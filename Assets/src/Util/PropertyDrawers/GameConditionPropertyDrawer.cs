@@ -1,4 +1,5 @@
-﻿using UnityEditor;
+﻿using System.Linq;
+using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -22,9 +23,7 @@ namespace Curry.Util
             //divide all field heights by the field amount..then minus the padding
             rect.height /= fieldAmount; 
             rect.height -= padding;
-
             var flag = property.FindPropertyRelative("m_flag");
-            Debug.Log(flag.intValue);
             var condition = property.FindPropertyRelative("m_conditionRef");
             var conditionRect = new Rect(
                 rect.x,
@@ -38,7 +37,8 @@ namespace Curry.Util
                 rect.height);
 
                 EditorGUI.ObjectField(conditionRect, condition);
-                if (condition.objectReferenceValue != null && condition.objectReferenceValue is GameConditionDatabase dataSet)
+                if ( condition.objectReferenceValue != null && 
+                condition.objectReferenceValue is GameConditionDatabase dataSet)
                 {
                     flag.intValue = LayerMaskField(dataSet, flagRect, label.text, flag.intValue);
                 }
@@ -47,7 +47,7 @@ namespace Curry.Util
         int LayerMaskField(GameConditionDatabase attribute, Rect position, string label, int layermask)
         {
             return attribute.FieldToMask(EditorGUI.MaskField(position, label, attribute.MaskToField(layermask),
-                attribute.ExistingFlags as string[]));
+                attribute.ExistingFlags.ToArray()));
         }
     }
 #endif
