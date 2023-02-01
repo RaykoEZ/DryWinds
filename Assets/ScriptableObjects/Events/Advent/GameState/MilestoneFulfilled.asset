@@ -9,10 +9,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c678913564a55d24a9fe0eeda943a1b4, type: 3}
-  m_Name: Milestones_Lv0
+  m_Script: {fileID: 11500000, guid: ca40755bb94719b44af0e32e62475ff7, type: 3}
+  m_Name: MilestoneFulfilled
   m_EditorClassIdentifier: 
-  m_definedConditions:
-  - FightEmpire
-  - VIPRescued
-  - VIPCaptured

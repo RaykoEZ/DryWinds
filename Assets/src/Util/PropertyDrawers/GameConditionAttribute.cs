@@ -8,7 +8,7 @@ namespace Curry.Util
     {
         [SerializeField] int m_flag = default;
         [SerializeField] GameConditionDatabase m_conditionRef = default;
-        public int Flag => m_flag;
+        public int Flag { get { return m_flag; } set { m_flag = value; } }
         public GameConditionDatabase ConditionSet => m_conditionRef;
     }
 }

@@ -3,11 +3,8 @@ using UnityEngine;
 namespace Curry.Explore
 {
     // A card that activates itself upon player drawing the card
-    public abstract class Encounter : AdventCard
+    public abstract class Encounter
     {
-        public override IEnumerator ActivateEffect(IPlayer user)
-        {
-            yield return new WaitForEndOfFrame();
-        }
+
     }
 }

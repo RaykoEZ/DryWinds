@@ -45,23 +45,14 @@ namespace Curry.Explore
         #region Adding cards to hand
         public void AddCardsToHand(List<AdventCard> cards) 
         {
-            List<Encounter> encounters = new List<Encounter>();
             List<DraggableCard> cardsToAdd = new List<DraggableCard>();
             DraggableCard drag;
             foreach (AdventCard card in cards)
             {
-                if(card is Encounter encounter) 
-                {
-                    encounters.Add(encounter);
-                }
-                else 
-                {
-                    drag = card.GetComponent<DraggableCard>();
-                    cardsToAdd.Add(drag);
-                    PrepareCard(drag);
-                }
+                drag = card.GetComponent<DraggableCard>();
+                cardsToAdd.Add(drag);
+                PrepareCard(drag);
             }
-            StartCoroutine(HandleEncounters(encounters));
             m_cardsInHand.AddRange(cardsToAdd);
         }
         protected virtual void PrepareCard(DraggableCard draggable)
@@ -114,16 +105,7 @@ namespace Curry.Explore
             }
         }
         #endregion
-        #region Encounters
-        protected virtual IEnumerator HandleEncounters(List<Encounter> draw)
-        {
-            foreach (Encounter encounter in draw)
-            {
-                yield return StartCoroutine(encounter?.ActivateEffect(m_player));
-                encounter.ReturnToPool();
-            }
-        }
-        #endregion
+
         #region for displaying/disabling UI for playing cards
         public void EnablePlay()
         {

@@ -7,11 +7,33 @@ using System.Collections.Generic;
 
 namespace Curry.Explore
 {
-    public struct GameConditionContext 
+    // A snapshot of the current game state
+    public struct GameStateContext
     {
-        public int TimeLeft;
-        public GameClock.TimeOfDay TimeOfDay;
-        public IPlayer Player;
+        public int TimeLeft { get; private set; }
+        public GameClock.TimeOfDay TimeOfDay { get; private set; }
+        public IPlayer Player { get; private set; }
+        public GameConditionAttribute Milestones { get; private set; }
+        public GameStateContext(
+            int timeLeft, 
+            GameClock.TimeOfDay timeOfDay, 
+            IPlayer player,
+            GameConditionAttribute milestones) 
+        {
+            TimeLeft = timeLeft;
+            TimeOfDay = timeOfDay;
+            Player = player;
+            Milestones = milestones;
+        }
+    }
+    public class GameConditionEvent : EventInfo 
+    { 
+        public GameConditionAttribute ConditionsFulfilled { get; protected set; }
+
+        public GameConditionEvent(GameConditionAttribute conditions) 
+        {
+            ConditionsFulfilled = conditions;
+        }
     }
 
     public class GameStateController : MonoBehaviour
@@ -19,15 +41,39 @@ namespace Curry.Explore
         [SerializeField] Adventurer m_player = default;
         [SerializeField] Animator m_gameResult = default;
         [SerializeField] ObjectiveManager m_objectives = default;
+        [SerializeField] TimeManager m_time = default;
         [SerializeField] TextMeshProUGUI m_resultText = default;
-        [SerializeField] GameConditionAttribute m_conditions = default;
+        [SerializeField] GameConditionAttribute m_mileStones = default;
+        [SerializeField] CurryGameEventListener m_onConditionAchieved = default;
+
+        public GameStateContext GetCurrent() 
+        {
+            int timeLeft = m_time.TimeLeftToClear;
+            GameClock.TimeOfDay timeOfDay = m_time.Clock.CurrentTimeOfDay;
+            GameStateContext ret = new GameStateContext(timeLeft, timeOfDay, m_player, m_mileStones);
+            return ret;
+        }
         void Start() 
         {
+            m_onConditionAchieved?.Init();
             m_gameResult.gameObject.SetActive(false);
             m_player.OnDefeat += OnPlayerDefeat;
             m_objectives.OnCriticalFailure += OnCriticalFail;
             m_objectives.AllCriticalComplete += OnGameCleared;
         }
+        public void OnGameConditionFulfilled(EventInfo info) 
+        {
+            if (info == null) 
+            { 
+                return; 
+            }
+            else if (info is GameConditionEvent conditions && 
+                conditions.ConditionsFulfilled.ConditionSet == m_mileStones.ConditionSet)
+            {
+                m_mileStones.Flag |= conditions.ConditionsFulfilled.Flag;
+            }
+        }
+
         void OnPlayerDefeat(IPlayer player) 
         {
             m_resultText.text = "Game Over";
@@ -40,7 +86,7 @@ namespace Curry.Explore
         }
         void OnGameCleared()
         {
-            m_resultText.text = "Commission Completed";
+            m_resultText.text = "Main Objectives Complete";
             UpdateResultPanel();
         }
 

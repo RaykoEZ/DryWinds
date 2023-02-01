@@ -59,12 +59,6 @@ MonoBehaviour:
     m_SerializedLabels: []
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
-  - m_GUID: 2861c2f728e9f5b4b8c9b3f0aedddfad
-    m_Address: Advent/P/FruitlessDetour
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    m_MainAsset: {fileID: 0}
-    m_TargetAsset: {fileID: 0}
   - m_GUID: 5a2a7ebf41978774983f432c3005cb73
     m_Address: Assets/Prefabs/Advent/Card/P_Exile.prefab
     m_ReadOnly: 0

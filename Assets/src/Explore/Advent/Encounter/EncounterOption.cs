@@ -29,7 +29,7 @@ namespace Curry.Explore
         {
             throw new NotImplementedException();
         }
-        public virtual bool IsAvailable(GameConditionContext conditions)
+        public virtual bool IsAvailable(GameStateContext conditions)
         {
             return true;
         }
