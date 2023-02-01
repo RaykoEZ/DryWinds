@@ -9,23 +9,15 @@ namespace Curry.UI
 {
     public class DialogueManager : MonoBehaviour
     {
-        [SerializeField] CurryGameEventListener m_listener = default;
         [SerializeField] TextMeshProUGUI m_nameDisplay = default;
         [SerializeField] TextMeshProUGUI m_dialogueDisplay = default;
-        [SerializeField] Animator m_boxAnim = default;
+        [SerializeField] Animator m_anim = default;
         [SerializeField] InputActionReference m_continueAction = default;
         Queue<string> m_dialogue;
         string m_currentLine;
         Coroutine m_displayingText;
-
-        void OnEnable()
-        {
-            m_listener.Init();
-        }
-        void OnDisable()
-        {
-            m_listener.Shutdown();
-        }
+        public delegate void OnDialogueEnd();
+        public bool InProgress { get; protected set; }
         void Update()
         {
             if(m_continueAction.action.triggered) 
@@ -34,30 +26,18 @@ namespace Curry.UI
                 NextPage();
             }
         }
-        public void OnDialogueTrigger(EventInfo info)
-        {
-            bool diaplayName = info.Payload["displayName"] != null ||
-                (bool)info.Payload["displayName"];
-            Debug.Log("dialogue open: " + diaplayName);
-            // Only accept a new dialogue when the current dialogue finishes.
-            if (m_dialogue.Count == 0 && info.Payload["dialogue"] is Dialogue dialogue)
-            {
-                OpenDialogue(dialogue, diaplayName);
-            }
-        }
 
-        public void OpenDialogue(Dialogue dialogue, bool diaplayName = true) 
+        public void OpenDialogue(List<string> dialogue, string title) 
         {
+            InProgress = true;
             m_dialogue?.Clear();
             m_currentLine = "";
-            m_nameDisplay.text = diaplayName ? dialogue.Name : "";
+            m_nameDisplay.text = title;
             m_dialogueDisplay.text = "";
-            m_dialogue = new Queue<string>(dialogue.DialogueLines);
-            m_boxAnim.SetBool("BoxOn", true);
+            m_dialogue = new Queue<string>(dialogue);
+            m_anim.SetBool("BoxOn", true);
             NextPage();
         }
-
-
 
         public void NextPage() 
         {
@@ -98,7 +78,8 @@ namespace Curry.UI
         {
             // end
             Debug.Log("End of talk.");
-            m_boxAnim.SetBool("BoxOn", false);
+            m_anim.SetBool("BoxOn", false);
+            InProgress = false;
         }
     }
 }

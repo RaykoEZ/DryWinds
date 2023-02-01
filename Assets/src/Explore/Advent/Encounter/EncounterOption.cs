@@ -9,41 +9,52 @@ namespace Curry.Explore
     public class EncounterOption : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IPointerDownHandler
     {
         [SerializeField] string m_description = default;
+        [SerializeField] Animator m_anim = default;
         [SerializeField] Encounter m_encounter = default;
-        public event OnChoose OnChosen;
-        public event OnChoose OnUnchoose;
-        public object Value => m_encounter;
+        public delegate void OnEncounterChosen(Dialogue dialogue);
+        public event OnEncounterChosen OnChosen;
         public string Description => m_description;
-
-        public void OnPointerClick(PointerEventData eventData)
+        protected bool m_detail = false;
+        protected GameStateContext m_context;
+        public virtual bool IsOptionAvailable { get; protected set; } = true;
+        public virtual void Init(GameStateContext context) 
         {
-            throw new NotImplementedException();
+            m_context = context;
+        }
+        public virtual void OnPointerClick(PointerEventData eventData)
+        {
+            if (!m_detail) 
+            {
+                ShowDetail();
+            } 
+            else 
+            {
+                Dialogue result = Choose(m_context);
+                OnChosen?.Invoke(result);
+            }
+        }
+        public virtual void OnPointerUp(PointerEventData eventData)
+        {
         }
 
-        public void OnPointerUp(PointerEventData eventData)
+        public virtual void OnPointerDown(PointerEventData eventData)
         {
-            throw new NotImplementedException();
-        }
-
-        public void OnPointerDown(PointerEventData eventData)
-        {
-            throw new NotImplementedException();
         }
         public virtual bool IsAvailable(GameStateContext conditions)
         {
             return true;
         }
-        protected virtual void Preview()
+        protected virtual void ShowDetail()
         {
-            throw new NotImplementedException();
+            m_detail = true;
         }
-        protected virtual void Choose()
+        protected virtual void HideDetail()
         {
-            throw new NotImplementedException();
+            m_detail = false;
         }
-        protected virtual void UnChoose()
+        protected virtual Dialogue Choose(GameStateContext context)
         {
-            throw new NotImplementedException();
+            return m_encounter.OnChoose(context);
         }
     }
 }

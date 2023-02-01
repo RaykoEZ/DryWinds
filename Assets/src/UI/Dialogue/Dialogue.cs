@@ -1,12 +1,18 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 namespace Curry.UI
 {
     [Serializable]
-    public struct Dialogue 
+    public class Dialogue
     {
-        public string Name;
-        [TextArea(3, 5)]
-        public string[] DialogueLines;
+        public IEnumerator OnDialogueFinish { get; protected set; }
+        public List<string> Text { get; protected set; }
+        public Dialogue(IEnumerator OnDialogueEnd, List<string> text)
+        {
+            OnDialogueFinish = OnDialogueEnd;
+            Text = text;
+        }
     }
 }
