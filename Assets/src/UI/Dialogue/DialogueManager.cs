@@ -17,16 +17,22 @@ namespace Curry.UI
         string m_currentLine;
         Coroutine m_displayingText;
         public delegate void OnDialogueEnd();
-        public bool InProgress { get; protected set; }
+        public bool InProgress { get; protected set; } = false;
         void Update()
         {
-            if(m_continueAction.action.triggered) 
+            if(InProgress && m_continueAction.action.triggered) 
             {
                 Debug.Log("space");
                 NextPage();
             }
         }
-
+        public void DisplaySingle(string text) 
+        {
+            m_dialogue?.Clear();
+            m_currentLine = "";
+            m_dialogueDisplay.text = text;
+            m_anim.SetBool("BoxOn", true);
+        }
         public void OpenDialogue(List<string> dialogue, string title) 
         {
             InProgress = true;
