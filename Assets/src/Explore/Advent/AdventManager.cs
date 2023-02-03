@@ -16,6 +16,8 @@ namespace Curry.Explore
         [SerializeField] protected Tilemap m_terrain = default;
         [SerializeField] protected Tilemap m_locations = default;
         [SerializeField] AdventInstanceManager m_instance = default;
+        [SerializeField] EncounterHandler m_encounter = default;
+        [SerializeField] GameStateController m_gameState = default;
         // When adventure starts and player needs to move to a tile
         [SerializeField] CurryGameEventListener m_onAdventure = default;
         // When player finishes moving during an adventure

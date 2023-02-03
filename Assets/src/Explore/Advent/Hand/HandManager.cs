@@ -9,7 +9,6 @@ using Curry.Util;
 namespace Curry.Explore
 {
     public delegate void OnActionStart(int timeSpent, List<IEnumerator> onActivate = null);
-    public delegate void OnEncounter(IReadOnlyList<Encounter> encounters);
     // Intermediary between cards-in-hand and main play zone
     // Handles card activations
     public partial class HandManager : CardDropZone
