@@ -36,7 +36,7 @@ namespace Curry.Explore
         }
     }
 
-    public class GameStateController : MonoBehaviour
+    public class GameStateManager : MonoBehaviour
     {
         [SerializeField] Adventurer m_player = default;
         [SerializeField] Animator m_gameResult = default;
