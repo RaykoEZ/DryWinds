@@ -8,6 +8,7 @@ namespace Curry.Explore
     public struct EncounterDetail 
     {
         [SerializeField] string m_title;
+        [TextArea]
         [SerializeField] string m_description;
         [SerializeField] Sprite m_coverImage;
         [SerializeField] List<EncounterOption> m_options;
@@ -16,4 +17,6 @@ namespace Curry.Explore
         public Sprite CoverImage => m_coverImage;
         public IReadOnlyList<EncounterOption> Options => m_options;
     }
+
+
 }

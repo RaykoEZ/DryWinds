@@ -6,7 +6,7 @@ namespace Curry.Explore
 {
     [Serializable]
     [CreateAssetMenu(fileName = "Deck_", menuName = "Curry/AdventDeck", order = 1)]
-    public class AdventDeck : ScriptableObject
+    public class Deck : ScriptableObject
     {
         [SerializeField] protected string m_deckId = default;
         [SerializeField] protected List<AdventCard> m_cardsInDeck = default;

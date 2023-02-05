@@ -8,7 +8,7 @@ using System.Collections.Generic;
 namespace Curry.Explore
 {
     public delegate void OnEncounterUpdate();
-    public class EncounterHandler : MonoBehaviour
+    public class EncounterUIHandler : MonoBehaviour
     {
         [SerializeField] Animator m_anim = default;
         [SerializeField] TextMeshProUGUI m_title = default;
@@ -34,6 +34,7 @@ namespace Curry.Explore
                 instance.OnChosen += OnOptionChosen; 
                 m_currentOptions.Add(instance);
             }
+            m_anim.SetBool("active", true);
         }
 
         void OnOptionChosen(Dialogue chosen) 
@@ -57,6 +58,7 @@ namespace Curry.Explore
 
         void OnFinish()
         {
+            m_anim.SetBool("active", false);
             OnEncounterFinished?.Invoke();
             foreach (EncounterOption option in m_currentOptions)
             {

@@ -185,7 +185,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 249f395abd8e267469d9bb9e1e475b9c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_description: '"This is too danagerous."'
+  m_description: '"This is too danagerous, we should leave."'
   m_detail: 
   m_anim: {fileID: 424993758733749110}
   m_encounter:

@@ -101,8 +101,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7df6b1868c355ac4e886ecf4d7618d02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_eventCards:
-  - {fileID: 1717730041097802572, guid: 0afe34ab51c25e64ba9c21a89feafe34, type: 3}
+  m_eventCards: []
 --- !u!222 &7520501727156600293
 CanvasRenderer:
   m_ObjectHideFlags: 0

@@ -6,25 +6,26 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 using Curry.Util;
 namespace Curry.Explore
 {
+
     // A collection of all cards to be loaded
     // Also contains all decks  
     [Serializable]
-    [CreateAssetMenu(fileName = "AdventDatabase", menuName = "Curry/AdventDatatbase", order = 1)]
-    public class AdventDatabase : ScriptableObject 
+    [CreateAssetMenu(fileName = "CardDatabase", menuName = "Curry/Card/Database", order = 1)]
+    public class CardDatabase : ScriptableObject 
     {
         // Contains all card prefab refs for loading
         [SerializeField] protected List<AssetReference> m_cardAssets = default;
         // include all decks to load
-        [SerializeField] List<AdventDeck> m_decks = default;
+        [SerializeField] List<Deck> m_decks = default;
         // includes all advent cards to load (listed from each advent collection)
         // These are for advent card prefab instantiations, 
         Dictionary<int, AdventCard> m_advents = new Dictionary<int, AdventCard>();
-        Dictionary<string, AdventDeck> m_deckDictionary = new Dictionary<string, AdventDeck>();
+        Dictionary<string, Deck> m_deckDictionary = new Dictionary<string, Deck>();
         CardLoader m_cardLoader;
         Action onLoadFinish;
         public IReadOnlyDictionary<int, AdventCard> AdventList 
         { get { return m_advents; } }
-        public IReadOnlyDictionary<string, AdventDeck> AdventDecks 
+        public IReadOnlyDictionary<string, Deck> AdventDecks 
         { get { return m_deckDictionary; } }
         public void Init(Action onFinishLoading = null)
         {
@@ -33,14 +34,14 @@ namespace Curry.Explore
             m_cardLoader = new CardLoader(m_cardAssets, OnLoaded);
             m_cardLoader.LoadAssets();
             // Put all decks into a dictionary
-            foreach(AdventDeck deck in m_decks) 
+            foreach(Deck deck in m_decks) 
             {
                 m_deckDictionary.Add(deck.DeckId, deck);
             }
         }
 
         // Randomly draw card from a deck
-        public static List<AdventCard> DrawCards(AdventDeck deck, int numToDraw = 1) 
+        public static List<AdventCard> DrawCards(Deck deck, int numToDraw = 1) 
         {
             return deck.GetRandom(numToDraw);
         }
@@ -69,7 +70,7 @@ namespace Curry.Explore
         // Initialize all advent collections' assets
         protected void InitCollections() 
         {
-            foreach (AdventDeck c in m_decks)
+            foreach (Deck c in m_decks)
             {
                 c.Init(AdventList);
             }

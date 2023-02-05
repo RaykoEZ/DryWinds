@@ -1,12 +1,12 @@
 ﻿using System.Linq;
-using UnityEditor;
-using UnityEditorInternal;
 using UnityEngine;
-using UnityEngine.UIElements;
+#if UNITY_EDITOR
+using UnityEditor;
 
 namespace Curry.Util
 {
-#if UNITY_EDITOR
+    // Property drawer for our game condition flags so we can edit the field
+    // like enum flags in inspector
     [CustomPropertyDrawer(typeof(GameConditionAttribute))]
     public class GameConditionDefinition_PropertyDrawer : PropertyDrawer
     {
