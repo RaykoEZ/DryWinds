@@ -23,7 +23,6 @@ namespace Curry.Explore
             // Set Title & Description text
             m_background.sprite = detail.CoverImage;
             m_title.text = detail.Title;
-            m_dialogue.DisplaySingle(detail.Description);
             // Instantiate all options, initialize them
             // Listen to on chosen to handle
             // dialogues and events when player chooses an option
@@ -34,7 +33,13 @@ namespace Curry.Explore
                 instance.OnChosen += OnOptionChosen; 
                 m_currentOptions.Add(instance);
             }
+            StartCoroutine(BeginAnimation(detail));
+        }
+        IEnumerator BeginAnimation(EncounterDetail detail) 
+        {
             m_anim.SetBool("active", true);
+            yield return new WaitUntil(() => m_anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.5f);
+            m_dialogue.DisplaySingle(detail.Description);
         }
 
         void OnOptionChosen(Dialogue chosen) 
@@ -54,16 +59,17 @@ namespace Curry.Explore
             yield return new WaitForEndOfFrame();
             // finish after we yield from encounter effect
             OnFinish();
+            yield return new WaitForEndOfFrame();
+            m_anim.SetBool("active", false);
         }
 
         void OnFinish()
         {
-            m_anim.SetBool("active", false);
             OnEncounterFinished?.Invoke();
             foreach (EncounterOption option in m_currentOptions)
             {
                 option.OnChosen -= OnOptionChosen;
-                Destroy(option);
+                Destroy(option.gameObject);
             }
             m_currentOptions.Clear();
         }

@@ -64,6 +64,14 @@ PrefabInstance:
       propertyPath: m_text
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 68592569271512639, guid: b8fe9dec80247fc4480fd9a1e166f2ce, type: 3}
+      propertyPath: m_fontSize
+      value: 36
+      objectReference: {fileID: 0}
+    - target: {fileID: 68592569271512639, guid: b8fe9dec80247fc4480fd9a1e166f2ce, type: 3}
+      propertyPath: m_enableAutoSizing
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 68592570734334128, guid: b8fe9dec80247fc4480fd9a1e166f2ce, type: 3}
       propertyPath: m_Name
       value: P_DialogueBox
@@ -162,7 +170,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 68592570752180866, guid: b8fe9dec80247fc4480fd9a1e166f2ce, type: 3}
       propertyPath: m_fontSize
-      value: 32
+      value: 36
+      objectReference: {fileID: 0}
+    - target: {fileID: 68592570752180866, guid: b8fe9dec80247fc4480fd9a1e166f2ce, type: 3}
+      propertyPath: m_enableAutoSizing
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 68592570752180866, guid: b8fe9dec80247fc4480fd9a1e166f2ce, type: 3}
+      propertyPath: m_VerticalAlignment
+      value: 2048
       objectReference: {fileID: 0}
     - target: {fileID: 6118638417973891129, guid: b8fe9dec80247fc4480fd9a1e166f2ce, type: 3}
       propertyPath: m_AnchorMax.x

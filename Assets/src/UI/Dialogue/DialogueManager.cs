@@ -12,20 +12,11 @@ namespace Curry.UI
         [SerializeField] TextMeshProUGUI m_nameDisplay = default;
         [SerializeField] TextMeshProUGUI m_dialogueDisplay = default;
         [SerializeField] Animator m_anim = default;
-        [SerializeField] InputActionReference m_continueAction = default;
         Queue<string> m_dialogue;
         string m_currentLine;
         Coroutine m_displayingText;
         public delegate void OnDialogueEnd();
         public bool InProgress { get; protected set; } = false;
-        void Update()
-        {
-            if(InProgress && m_continueAction.action.triggered) 
-            {
-                Debug.Log("space");
-                NextPage();
-            }
-        }
         public void DisplaySingle(string text) 
         {
             m_dialogue?.Clear();
@@ -47,6 +38,8 @@ namespace Curry.UI
 
         public void NextPage() 
         {
+            if(m_dialogue == null) { return; }
+
             m_dialogueDisplay.text = "";
             if(m_dialogue.Count == 0) 
             {
