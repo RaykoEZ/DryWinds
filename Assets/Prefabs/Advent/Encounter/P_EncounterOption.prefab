@@ -188,6 +188,7 @@ MonoBehaviour:
   m_description: '"This is too danagerous, we should leave."'
   m_detail: 
   m_anim: {fileID: 424993758733749110}
+  m_button: {fileID: 1549198400133106480}
   m_encounter:
     m_dialogues:
     - Fearing a deadly conflict, you back off from the scene.
@@ -254,7 +255,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 424993759155532414}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 424993758733749111}
+        m_TargetAssemblyTypeName: Curry.Explore.EncounterOption, Assembly-CSharp
+        m_MethodName: OnPointerClick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &424993759155532384
 GameObject:
   m_ObjectHideFlags: 0

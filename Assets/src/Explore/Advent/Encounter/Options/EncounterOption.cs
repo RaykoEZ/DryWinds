@@ -9,14 +9,12 @@ namespace Curry.Explore
     [Serializable]
     public class EncounterOption : MonoBehaviour,
         IPointerEnterHandler,
-        IPointerExitHandler, 
-        IPointerClickHandler, 
-        IPointerUpHandler, 
-        IPointerDownHandler
+        IPointerExitHandler
     {
         [SerializeField] string m_description = default;
         [SerializeField] string m_detail = default;
         [SerializeField] Animator m_anim = default;
+        [SerializeField] Button m_button = default;
         [SerializeField] Encounter m_encounter = default;
         [SerializeField] TextMeshProUGUI m_descriptionText = default;
         public delegate void OnEncounterChosen(Dialogue dialogue);
@@ -24,25 +22,18 @@ namespace Curry.Explore
         public string Description => m_description;
         protected GameStateContext m_context;
         public virtual bool IsOptionAvailable { get; protected set; } = true;
-        void Start() 
-        {
-            ShowDescription();
-        }
+
         public virtual void Init(GameStateContext context) 
         {
             m_context = context;
             ShowDescription();
+            m_button.interactable = true;
         }
-        public virtual void OnPointerClick(PointerEventData eventData)
+        public virtual void OnPointerClick()
         {
+            m_button.interactable = false;
             Dialogue result = Choose(m_context);
             OnChosen?.Invoke(result);
-        }
-        public virtual void OnPointerUp(PointerEventData eventData)
-        {
-        }
-        public virtual void OnPointerDown(PointerEventData eventData)
-        {
         }
         public virtual bool IsAvailable(GameStateContext conditions)
         {

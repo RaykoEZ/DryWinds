@@ -79,6 +79,7 @@ namespace Curry.UI
             Debug.Log("End of talk.");
             m_anim.SetBool("BoxOn", false);
             InProgress = false;
+            m_dialogue = null;
         }
     }
 }

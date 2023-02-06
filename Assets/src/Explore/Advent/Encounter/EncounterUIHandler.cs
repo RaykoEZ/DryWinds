@@ -38,12 +38,18 @@ namespace Curry.Explore
         IEnumerator BeginAnimation(EncounterDetail detail) 
         {
             m_anim.SetBool("active", true);
-            yield return new WaitUntil(() => m_anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.5f);
+            yield return new WaitForSeconds(0.5f);
             m_dialogue.DisplaySingle(detail.Description);
         }
 
         void OnOptionChosen(Dialogue chosen) 
         {
+            foreach (EncounterOption option in m_currentOptions)
+            {
+                option.OnChosen -= OnOptionChosen;
+                Destroy(option.gameObject);
+            }
+            m_currentOptions.Clear();
             // Options give text to display in dialogues
             // When dialogues finishes, trigger encounter effect
             StartCoroutine(OnChosen_Internal(chosen));
@@ -62,16 +68,9 @@ namespace Curry.Explore
             yield return new WaitForEndOfFrame();
             m_anim.SetBool("active", false);
         }
-
         void OnFinish()
         {
             OnEncounterFinished?.Invoke();
-            foreach (EncounterOption option in m_currentOptions)
-            {
-                option.OnChosen -= OnOptionChosen;
-                Destroy(option.gameObject);
-            }
-            m_currentOptions.Clear();
         }
     }
 }
