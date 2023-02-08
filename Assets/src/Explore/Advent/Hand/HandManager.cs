@@ -93,7 +93,7 @@ namespace Curry.Explore
                 onCancel?.Invoke();
             }else
             {
-                m_time.TrySpendTime(card.TimeCost, out bool _);
+                m_time.TrySpendTime(card.TimeCost);
                 onPlay?.Invoke();
                 // Make a container for the callstack and trigger it. 
                 List<IEnumerator> actions = new List<IEnumerator>

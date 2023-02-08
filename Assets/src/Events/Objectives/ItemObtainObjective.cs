@@ -10,7 +10,7 @@ namespace Curry.Events
         [SerializeField] protected ItemObtained m_condition = default;
         [SerializeField] protected DialogueTrigger m_dialogueTrigger = default;
         [SerializeField] protected CurryGameEventListener m_onItemObtain = default;
-        [SerializeField] protected Dialogue m_dialogue = default;
+        [SerializeField] protected EncounterResult m_dialogue = default;
 
         public override string Title { get { return "Get Title."; } }
 

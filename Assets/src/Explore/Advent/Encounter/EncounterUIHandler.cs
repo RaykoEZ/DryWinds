@@ -15,6 +15,7 @@ namespace Curry.Explore
         [SerializeField] Image m_background = default;
         [SerializeField] Transform m_optionParent = default;
         [SerializeField] DialogueManager m_dialogue = default;
+        [SerializeField] EncounterOption m_optionRef = default;
         public event OnEncounterUpdate OnEncounterFinished;
         protected List<EncounterOption> m_currentOptions = new List<EncounterOption>();
         public void BeginEncounter(EncounterDetail detail, GameStateContext context) 
@@ -26,10 +27,10 @@ namespace Curry.Explore
             // Instantiate all options, initialize them
             // Listen to on chosen to handle
             // dialogues and events when player chooses an option
-            foreach(EncounterOption option in detail.Options) 
+            foreach(OptionDetail option in detail.Options) 
             {
-                EncounterOption instance = Instantiate(option, m_optionParent);
-                instance.Init(context);
+                EncounterOption instance = Instantiate(m_optionRef, m_optionParent);
+                instance.Init(option, context);
                 instance.OnChosen += OnOptionChosen; 
                 m_currentOptions.Add(instance);
             }
@@ -42,7 +43,7 @@ namespace Curry.Explore
             m_dialogue.DisplaySingle(detail.Description);
         }
 
-        void OnOptionChosen(Dialogue chosen) 
+        void OnOptionChosen(EncounterResult chosen) 
         {
             foreach (EncounterOption option in m_currentOptions)
             {
@@ -55,13 +56,12 @@ namespace Curry.Explore
             StartCoroutine(OnChosen_Internal(chosen));
         }
         // Do dialogues
-        IEnumerator OnChosen_Internal(Dialogue chosen) 
+        IEnumerator OnChosen_Internal(EncounterResult chosen) 
         {
-            m_dialogue.OpenDialogue(chosen.Text, "");
+            m_dialogue.OpenDialogue(chosen.Dialogue, "");
             yield return new WaitForEndOfFrame();
             // call option effect when we finish dialogue
             yield return new WaitUntil(() => !m_dialogue.InProgress);
-            yield return StartCoroutine(chosen.OnDialogueFinish);
             yield return new WaitForEndOfFrame();
             // finish after we yield from encounter effect
             OnFinish();

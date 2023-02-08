@@ -61,7 +61,7 @@ namespace Curry.Explore
         {
             if (time is TimeInfo spend)
             {
-                TrySpendTime(spend.Time, out _);
+                TrySpendTime(spend.Time);
             }
         }
 
@@ -71,17 +71,14 @@ namespace Curry.Explore
         }
 
         // spend time and check if we run out of time
-        public void TrySpendTime(int timeToSpend, out bool enoughTime) 
+        public bool TrySpendTime(int timeToSpend) 
         {
-            enoughTime = m_timeLeftToClear >= timeToSpend;
-            if (timeToSpend <= 0)
-            {
-                return;
-            }
+            bool enoughTime = m_timeLeftToClear >= timeToSpend;
             if (enoughTime) 
             {
                 StartCoroutine(OnSpendTime(timeToSpend));
             }
+            return enoughTime;
         }
 
         void UpdateTurnTimer()

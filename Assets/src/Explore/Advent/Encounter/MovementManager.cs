@@ -44,8 +44,7 @@ namespace Curry.Explore
                 return;
             }
             WorldTile tile = WorldTile.GetTile<WorldTile>(m_terrain, worldPos);
-            m_time.TrySpendTime(tile.Difficulty, out bool enough);
-            if (enough)
+            if (tile != null && m_time.TrySpendTime(tile.Difficulty))
             {
                 List<IEnumerator> action = new List<IEnumerator> { StartAdventure(worldPos) };
                 // Trigger player to move to selected tile
@@ -53,7 +52,7 @@ namespace Curry.Explore
             }
             else
             {
-                Debug.Log("Not enough time to venture into target location");
+                Debug.Log("Unable to move there.");
             }
         }
         // When player reached selected tile, draw cards and trigger events

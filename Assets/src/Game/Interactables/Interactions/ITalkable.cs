@@ -4,7 +4,7 @@ namespace Curry.Game
 {
     public interface ITalkable 
     {
-        Dialogue Dialogues { get; }
+        EncounterResult Dialogues { get; }
         DialogueTrigger Trigger { get; }
     }
 }

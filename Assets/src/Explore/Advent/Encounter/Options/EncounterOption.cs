@@ -11,28 +11,26 @@ namespace Curry.Explore
         IPointerEnterHandler,
         IPointerExitHandler
     {
-        [SerializeField] string m_description = default;
-        [SerializeField] string m_detail = default;
         [SerializeField] Animator m_anim = default;
         [SerializeField] Button m_button = default;
-        [SerializeField] Encounter m_encounter = default;
         [SerializeField] TextMeshProUGUI m_descriptionText = default;
-        public delegate void OnEncounterChosen(Dialogue dialogue);
+        protected OptionDetail m_details;
+        public delegate void OnEncounterChosen(EncounterResult dialogue);
         public event OnEncounterChosen OnChosen;
-        public string Description => m_description;
         protected GameStateContext m_context;
         public virtual bool IsOptionAvailable { get; protected set; } = true;
 
-        public virtual void Init(GameStateContext context) 
+        public virtual void Init(OptionDetail details, GameStateContext context) 
         {
             m_context = context;
+            m_details = details;
             ShowDescription();
             m_button.interactable = true;
         }
         public virtual void OnPointerClick()
         {
             m_button.interactable = false;
-            Dialogue result = Choose(m_context);
+            EncounterResult result = Choose();
             OnChosen?.Invoke(result);
         }
         public virtual bool IsAvailable(GameStateContext conditions)
@@ -41,22 +39,22 @@ namespace Curry.Explore
         }
         protected virtual void ShowDetail()
         {
-            if (!string.IsNullOrWhiteSpace(m_detail)) 
+            if (!string.IsNullOrWhiteSpace(m_details.Summary)) 
             {
-                m_descriptionText.text = m_detail;
+                m_descriptionText.text = m_details.Summary;
             }
         }
         protected virtual void ShowDescription() 
         {
-            m_descriptionText.text = m_description;
+            m_descriptionText.text = m_details.Description;
         }
         protected virtual void HideDetail()
         {
             ShowDescription();
         }
-        protected virtual Dialogue Choose(GameStateContext context)
+        protected virtual EncounterResult Choose()
         {
-            return m_encounter.OnChoose(context);
+            return m_details.Result;
         }
 
         public void OnPointerEnter(PointerEventData eventData)

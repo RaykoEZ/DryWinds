@@ -1622,6 +1622,7 @@ MonoBehaviour:
   m_background: {fileID: 1516783639}
   m_optionParent: {fileID: 209824743}
   m_dialogue: {fileID: 474288480}
+  m_optionRef: {fileID: 424993758733749111, guid: 8ef1c2afa51f98340a0f075a16e0ccb0, type: 3}
 --- !u!222 &452360002
 CanvasRenderer:
   m_ObjectHideFlags: 0
