@@ -11,23 +11,19 @@ namespace Curry.UI
     {
         [TextArea]
         [SerializeField] List<string> m_dialogue;
-        [SerializeField] List<AdventCard> m_cardGain;
-        [SerializeField] List<AdventCard> m_cardLoss;
+        [SerializeField] List<EncounterEffect> m_effects;
         [SerializeField] GameConditionAttribute m_milestoneAchieved;
 
-        public List<AdventCard> CardGain => m_cardGain;
-        public List<AdventCard> CardLoss => m_cardLoss;
+        public List<EncounterEffect> Effects => m_effects;
         public GameConditionAttribute MilestoneAchieved => m_milestoneAchieved;
         public List<string> Dialogue => m_dialogue;
         public EncounterResult(
             List<string> text,
-            List<AdventCard> cardGain,
-            List<AdventCard> cardLoss,
+            List<EncounterEffect> effects,
             GameConditionAttribute milestoneAchieved)
         {
             m_dialogue = text;
-            m_cardGain = cardGain;
-            m_cardLoss = cardLoss;
+            m_effects = effects;
             m_milestoneAchieved = milestoneAchieved;
         }
     }

@@ -35,8 +35,6 @@ namespace Curry.Explore
             m_summary = detail;
             m_encounterResults = result;
         }
-
-
     }
 
 }
