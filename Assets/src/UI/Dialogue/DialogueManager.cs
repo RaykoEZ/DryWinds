@@ -52,6 +52,7 @@ namespace Curry.UI
                 StopCoroutine(m_displayingText);
                 // Display entire page immediately
                 m_dialogueDisplay.text = m_currentLine;
+                m_displayingText = null;
             }
             else 
             {

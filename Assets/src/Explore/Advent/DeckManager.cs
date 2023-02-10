@@ -12,8 +12,7 @@ namespace Curry.Explore
     {
         [SerializeField] protected CardDatabase m_adventDb = default;
         [SerializeField] AdventInstanceManager m_instance = default;
-        // After player moved, we draw card from player position, trigger this
-        [SerializeField] CurryGameEventTrigger m_onCardDraw = default;      
+        [SerializeField] HandManager m_hand = default;      
 
         void Awake()
         {
@@ -21,7 +20,7 @@ namespace Curry.Explore
         }
 
         // Instantiate cards and trigger game events OnCardDraw
-        public void DrawCards(IReadOnlyList<AdventCard> cardsToDraw)
+        public void AddToHand(IReadOnlyList<AdventCard> cardsToDraw)
         {
             List<AdventCard> cardInstances = new List<AdventCard>();
             foreach (AdventCard cardRef in cardsToDraw)
@@ -30,11 +29,7 @@ namespace Curry.Explore
                 AdventCard cardInstance = InstantiateCard(cardRef);
                 cardInstances.Add(cardInstance);
             }
-
-            CardDrawInfo info = new CardDrawInfo().
-                SetCardDraw(cardInstances);
-
-            m_onCardDraw?.TriggerEvent(info);
+            m_hand.AddCardsToHand(cardInstances);
         }
 
         AdventCard InstantiateCard(AdventCard cardRef)

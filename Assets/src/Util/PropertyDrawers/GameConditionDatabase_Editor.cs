@@ -1,11 +1,12 @@
-﻿using UnityEngine;
+﻿#if UNITY_EDITOR
+using UnityEngine;
 using UnityEditor;
 using UnityEditorInternal;
-using System.Reflection;
+using Curry.Events;
+using UnityEditor.UIElements;
 
 namespace Curry.Util
 {
-#if UNITY_EDITOR
     [CustomEditor(typeof(GameConditionDatabase))]
     public class GameConditionDatabase_Editor : Editor 
     {
@@ -89,5 +90,5 @@ namespace Curry.Util
             EditorGUILayout.EndHorizontal();
         }
     }
-#endif
 }
+#endif

@@ -7,23 +7,23 @@ using UnityEngine;
 namespace Curry.UI
 {
     [Serializable]
-    public struct EncounterResult
+    public class EncounterResultAttribute : PropertyAttribute
     {
+        [SerializeField] GameConditionAttribute m_milestoneAchieved;
         [TextArea]
         [SerializeField] List<string> m_dialogue;
-        [SerializeField] List<EncounterEffect> m_effects;
-        [SerializeField] GameConditionAttribute m_milestoneAchieved;
+        [SerializeReference] EncounterEffect m_effect;
 
-        public List<EncounterEffect> Effects => m_effects;
+        public EncounterEffect Effect => m_effect;
         public GameConditionAttribute MilestoneAchieved => m_milestoneAchieved;
         public List<string> Dialogue => m_dialogue;
-        public EncounterResult(
+        public EncounterResultAttribute(
             List<string> text,
-            List<EncounterEffect> effects,
+            EncounterEffect effect,
             GameConditionAttribute milestoneAchieved)
         {
             m_dialogue = text;
-            m_effects = effects;
+            m_effect = effect;
             m_milestoneAchieved = milestoneAchieved;
         }
     }

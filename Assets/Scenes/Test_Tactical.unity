@@ -4568,8 +4568,7 @@ MonoBehaviour:
     m_pool:
       m_numToPool: 1
       m_defaultParent: {fileID: 615583777}
-  m_onCardDraw:
-    m_eventToTrigger: {fileID: 11400000, guid: cdd360b59762d3f48943143dadafba20, type: 2}
+  m_hand: {fileID: 615583783}
 --- !u!1 &1078045342
 GameObject:
   m_ObjectHideFlags: 0
@@ -6340,7 +6339,7 @@ GameObject:
   - component: {fileID: 1463269529}
   - component: {fileID: 1463269530}
   m_Layer: 0
-  m_Name: GameStateController
+  m_Name: GameStateManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6376,6 +6375,7 @@ MonoBehaviour:
   m_gameResult: {fileID: 924381246}
   m_objectives: {fileID: 880926260}
   m_time: {fileID: 81830746}
+  m_deck: {fileID: 1024562575}
   m_resultText: {fileID: 1152918570}
   m_mileStones:
     m_flag: 0

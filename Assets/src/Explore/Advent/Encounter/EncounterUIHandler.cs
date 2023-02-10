@@ -18,8 +18,10 @@ namespace Curry.Explore
         [SerializeField] EncounterOption m_optionRef = default;
         public event OnEncounterUpdate OnEncounterFinished;
         protected List<EncounterOption> m_currentOptions = new List<EncounterOption>();
+        GameStateContext m_contextRef;
         public void BeginEncounter(EncounterDetail detail, GameStateContext context) 
         {
+            m_contextRef = context;
             // Set backgound image
             // Set Title & Description text
             m_background.sprite = detail.CoverImage;
@@ -27,7 +29,7 @@ namespace Curry.Explore
             // Instantiate all options, initialize them
             // Listen to on chosen to handle
             // dialogues and events when player chooses an option
-            foreach(OptionDetail option in detail.Options) 
+            foreach(EncounterOptionAttribute option in detail.Options) 
             {
                 EncounterOption instance = Instantiate(m_optionRef, m_optionParent);
                 instance.Init(option, context);
@@ -43,7 +45,7 @@ namespace Curry.Explore
             m_dialogue.DisplaySingle(detail.Description);
         }
 
-        void OnOptionChosen(EncounterResult chosen) 
+        void OnOptionChosen(EncounterResultAttribute chosen) 
         {
             foreach (EncounterOption option in m_currentOptions)
             {
@@ -56,12 +58,13 @@ namespace Curry.Explore
             StartCoroutine(OnChosen_Internal(chosen));
         }
         // Do dialogues
-        IEnumerator OnChosen_Internal(EncounterResult chosen) 
+        IEnumerator OnChosen_Internal(EncounterResultAttribute chosen) 
         {
             m_dialogue.OpenDialogue(chosen.Dialogue, "");
             yield return new WaitForEndOfFrame();
             // call option effect when we finish dialogue
             yield return new WaitUntil(() => !m_dialogue.InProgress);
+            yield return StartCoroutine(chosen.Effect.Activate(m_contextRef));
             yield return new WaitForEndOfFrame();
             // finish after we yield from encounter effect
             OnFinish();

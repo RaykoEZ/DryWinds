@@ -14,13 +14,13 @@ namespace Curry.Explore
         [SerializeField] Animator m_anim = default;
         [SerializeField] Button m_button = default;
         [SerializeField] TextMeshProUGUI m_descriptionText = default;
-        protected OptionDetail m_details;
-        public delegate void OnEncounterChosen(EncounterResult dialogue);
+        protected EncounterOptionAttribute m_details;
+        public delegate void OnEncounterChosen(EncounterResultAttribute result);
         public event OnEncounterChosen OnChosen;
         protected GameStateContext m_context;
         public virtual bool IsOptionAvailable { get; protected set; } = true;
 
-        public virtual void Init(OptionDetail details, GameStateContext context) 
+        public virtual void Init(EncounterOptionAttribute details, GameStateContext context) 
         {
             m_context = context;
             m_details = details;
@@ -30,7 +30,7 @@ namespace Curry.Explore
         public virtual void OnPointerClick()
         {
             m_button.interactable = false;
-            EncounterResult result = Choose();
+            EncounterResultAttribute result = Choose();
             OnChosen?.Invoke(result);
         }
         public virtual bool IsAvailable(GameStateContext conditions)
@@ -52,7 +52,7 @@ namespace Curry.Explore
         {
             ShowDescription();
         }
-        protected virtual EncounterResult Choose()
+        protected virtual EncounterResultAttribute Choose()
         {
             return m_details.Result;
         }

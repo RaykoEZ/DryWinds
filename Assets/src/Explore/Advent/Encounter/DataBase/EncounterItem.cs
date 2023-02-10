@@ -9,4 +9,6 @@ namespace Curry.Explore
         [SerializeField] EncounterDetail m_detail = default;
         public EncounterDetail Detail => m_detail;
     }
+
+
 }
