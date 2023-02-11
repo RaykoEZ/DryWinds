@@ -12,18 +12,13 @@ namespace Curry.UI
         [SerializeField] GameConditionAttribute m_milestoneAchieved;
         [TextArea]
         [SerializeField] List<string> m_dialogue;
-        [SerializeReference] EncounterEffect m_effect;
-
-        public EncounterEffect Effect => m_effect;
         public GameConditionAttribute MilestoneAchieved => m_milestoneAchieved;
         public List<string> Dialogue => m_dialogue;
         public EncounterResultAttribute(
             List<string> text,
-            EncounterEffect effect,
             GameConditionAttribute milestoneAchieved)
         {
             m_dialogue = text;
-            m_effect = effect;
             m_milestoneAchieved = milestoneAchieved;
         }
     }

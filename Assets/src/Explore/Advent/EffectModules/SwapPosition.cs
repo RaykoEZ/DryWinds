@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Curry.Explore
 {
     [Serializable]
-    public class SwapPosition : ICharacterEffectModule
+    public class SwapPosition : PropertyAttribute, ICharacterEffectModule
     {    
         public void ApplyEffect(ICharacter target, ICharacter user)
         {

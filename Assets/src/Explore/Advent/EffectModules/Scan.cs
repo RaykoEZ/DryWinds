@@ -5,7 +5,7 @@ using System;
 namespace Curry.Explore
 {
     [Serializable]
-    public class Scan : ICharacterEffectModule
+    public class Scan : PropertyAttribute, ICharacterEffectModule
     {
         [Range(0, 3)]
         [SerializeField] int m_detectionLevel = default;

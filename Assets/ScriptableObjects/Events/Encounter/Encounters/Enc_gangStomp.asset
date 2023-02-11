@@ -27,7 +27,7 @@ MonoBehaviour:
         m_dialogue:
         - You left immediately.
         - Maybe you could have helped?
-        m_effect: {fileID: 11400000, guid: 60a1c46c1bc68e248be0333caf2f1635, type: 2}
+      m_effect: {fileID: 11400000, guid: 60a1c46c1bc68e248be0333caf2f1635, type: 2}
     - m_description: '"Maybe they need some help."'
       m_summary: Bonk the victim.
       m_encounterResult:
@@ -39,4 +39,4 @@ MonoBehaviour:
         - You approached the gang and proceed to join the punting of the poor man's
           buttocks.
         - Was that really necessary?
-        m_effect: {fileID: 11400000, guid: 176c068c17157fa4385e1911f1257b69, type: 2}
+      m_effect: {fileID: 11400000, guid: 074af7c7bfe89874d9e598da033e115b, type: 2}

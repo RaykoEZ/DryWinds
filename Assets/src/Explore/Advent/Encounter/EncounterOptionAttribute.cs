@@ -10,18 +10,21 @@ namespace Curry.Explore
     public class EncounterOptionAttribute : PropertyAttribute
     {
         [TextArea]
-        [SerializeField] string m_description;
+        [SerializeField] string m_description = default;
         [TextArea]
-        [SerializeField] string m_summary;
-        [SerializeField] EncounterResultAttribute m_encounterResult;
+        [SerializeField] string m_summary = default;
+        [SerializeField] EncounterResultAttribute m_encounterResult = default;
+        [SerializeField] EncounterEffect m_effect = default;
         public string Description => m_description;
         public string Summary => m_summary;
         public EncounterResultAttribute Result => m_encounterResult;
-        public EncounterOptionAttribute(string description, string detail, EncounterResultAttribute result) 
+        public EncounterEffect Effect => m_effect;
+        public EncounterOptionAttribute(string description, string detail, EncounterResultAttribute result, EncounterEffect effect) 
         {
             m_description = description;
             m_summary = detail;
             m_encounterResult = result;
+            m_effect = effect;
         }
     }
 }

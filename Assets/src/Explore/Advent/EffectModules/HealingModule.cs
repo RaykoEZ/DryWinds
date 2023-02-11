@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Curry.Explore
 {
     [Serializable]
-    public class HealingModule : ICharacterEffectModule
+    public class HealingModule : PropertyAttribute, ICharacterEffectModule
     {
         [SerializeField] int m_healAmount = default;
         public void ApplyEffect(ICharacter target, ICharacter user)

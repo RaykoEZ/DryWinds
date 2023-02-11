@@ -6,7 +6,7 @@ using System.Collections.Generic;
 namespace Curry.Explore
 {
     [Serializable]
-    public class Reinforcement : ISummonModule
+    public class Reinforcement : PropertyAttribute, ISummonModule
     {
         [SerializeField] LayerMask m_doNotSpawnOn = default;
         [SerializeField] SpawnHandler m_spawner = default;
