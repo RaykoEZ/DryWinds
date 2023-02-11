@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ab513552eca44a4f8bf82b19da9faaa, type: 3}
   m_Name: HurtPlayer_0
   m_EditorClassIdentifier: 
-  m_hurt:
-    m_damage: 2
+  m_damageToPlayer:
+    m_damage: 3

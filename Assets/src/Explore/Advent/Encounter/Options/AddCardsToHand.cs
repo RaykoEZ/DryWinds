@@ -7,11 +7,11 @@ namespace Curry.Explore
 {
     [Serializable]
     [CreateAssetMenu(fileName = "AddToHand_", menuName = "Curry/Encounter/Effects/Add Card(s)/To Hand", order = 3)]
-    public class AddCardsToHand : EncounterEffect, IAddToHandModule
+    public class AddCardsToHand : EncounterEffect, IEncounterModule
     {
         [SerializeField] List<AdventCard> m_cardsToAdd = default;
 
-        public string ModuleName => nameof(m_cardsToAdd);
+        public override string[] SerializePropertyNames => new string[] { nameof(m_cardsToAdd) };
 
         public override IEnumerator Activate(GameStateContext context)
         {

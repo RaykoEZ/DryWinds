@@ -6,18 +6,18 @@ namespace Curry.Explore
 {
     [Serializable]
     [CreateAssetMenu(fileName = "HurtPlayer_", menuName = "Curry/Encounter/Effects/HurtPlayer", order = 2)]
-    public class HurtPlayer : EncounterEffect, IHurtModule
+    public class HurtPlayer : EncounterEffect, IEncounterModule
     {
-        [SerializeField] DealDamageTo m_hurt = default;
+        [SerializeField] DealDamageTo m_damageToPlayer = default;
 
-        public string ModuleName => nameof(m_hurt);
+        public override string[] SerializePropertyNames => new string[] { nameof(m_damageToPlayer) };
 
-        public DealDamageTo DamageProperty => m_hurt;
+        public DealDamageTo DamageProperty => m_damageToPlayer;
 
         public override IEnumerator Activate(GameStateContext context)
         {
             yield return new WaitForEndOfFrame();
-            m_hurt.ApplyEffect(context.Player, context.Player);
+            m_damageToPlayer.ApplyEffect(context.Player, context.Player);
         }
     }
 }
