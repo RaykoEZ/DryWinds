@@ -7,15 +7,14 @@ namespace Curry.Explore
 {
     [Serializable]
     [CreateAssetMenu(fileName = "AddToHand_", menuName = "Curry/Encounter/Effects/Add Card(s)/To Hand", order = 3)]
-    public class AddCardsToHand : EncounterEffect, IEncounterModule
+    public class AddCardsToHandEncounter : EncounterEffect, IEncounterModule
     {
-        [SerializeField] List<AdventCard> m_cardsToAdd = default;
-
+        [SerializeField] AddCardToHand m_cardsToAdd = default;
         public override string[] SerializePropertyNames => new string[] { nameof(m_cardsToAdd) };
 
         public override IEnumerator Activate(GameStateContext context)
         {
-            context.Deck.AddToHand(m_cardsToAdd);
+            m_cardsToAdd.ApplyEffect(context.Deck);
             yield return new WaitForEndOfFrame();
         }
     }

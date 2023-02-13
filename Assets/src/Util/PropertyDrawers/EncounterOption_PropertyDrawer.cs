@@ -148,7 +148,7 @@ namespace Curry.Explore
                 EditorGUI.indentLevel = 2;
                 EditorGUI.BeginProperty(nestedRect, label, nested);
                 {
-                    EditorGUI.PropertyField(EditorGUI.IndentedRect(nestedRect), nested);
+                    EditorGUI.PropertyField(nestedRect, nested);
                 }
                 EditorGUI.EndProperty();
             }

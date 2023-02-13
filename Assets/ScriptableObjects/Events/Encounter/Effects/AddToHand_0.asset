@@ -13,4 +13,7 @@ MonoBehaviour:
   m_Name: AddToHand_0
   m_EditorClassIdentifier: 
   m_cardsToAdd:
-  - {fileID: 5636301306242561433, guid: ef1d3ab221ea8e440a5fa517863a4114, type: 3}
+    m_cardsToAdd:
+    - {fileID: 5636301306242561433, guid: ef1d3ab221ea8e440a5fa517863a4114, type: 3}
+    - {fileID: 1458675905969362800, guid: 9c001e81f6b3943469e0d99d2d350573, type: 3}
+    - {fileID: 1458675905969362800, guid: 9c001e81f6b3943469e0d99d2d350573, type: 3}
