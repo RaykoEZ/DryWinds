@@ -119,10 +119,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81cb90a397beeaf4fa89373e4ad05c80, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_name: Player
+  m_maxHp: 3
   m_anim: {fileID: 2571672766922976632}
   m_startingStats:
-    m_name: Player1
-    m_hp: 3
     m_moveRange: 1
     m_adventurer: {fileID: 2571672766922976577}
   m_onMove:

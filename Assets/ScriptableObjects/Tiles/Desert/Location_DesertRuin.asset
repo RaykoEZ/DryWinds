@@ -34,7 +34,5 @@ MonoBehaviour:
   m_InstancedGameObject: {fileID: 2845103375547118802, guid: e4a3134e2db9b36409d792a0d1880004, type: 3}
   m_Flags: 1
   m_ColliderType: 1
-  m_collectionId: 1
   m_diffculty: 3
-  m_events:
-  - {fileID: 5218861219846289650, guid: 2861c2f728e9f5b4b8c9b3f0aedddfad, type: 3}
+  m_events: []

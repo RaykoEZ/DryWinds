@@ -2,43 +2,57 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Curry.Game;
+using System.Collections;
+using Curry.UI;
+using Curry.Util;
+
 namespace Curry.Explore
 {
     // Handles player card/adventure plays
     // Handles AI actions and reactions
     public class Interaction : Phase
     {
+        [SerializeField] MovementManager m_playerMovement = default;
         [SerializeField] EnemyManager m_enemy = default;
-        [SerializeField] PlayManager m_play = default;
-        Stack<List<Action>> m_interruptBuffer = new Stack<List<Action>>();
+        [SerializeField] HandManager m_cardPlay = default;
+        Stack<List<IEnumerator>> m_interruptBuffer = new Stack<List<IEnumerator>>();
+
+        protected override Type NextState => typeof(PlayerAction);
+
         public override void Init()
         {
-            NextState = typeof(PlayerAction);
-            m_play.OnActivate += OnPlayerAction;
+            m_cardPlay.OnActivate += OnPlayerAction;
+            m_playerMovement.OnStart += OnPlayerAction;
+            m_enemy.OnActionBegin += OnEnemyAction;
         }
-        void OnPlayerAction(int timeSpent, List<Action> actions = null) 
+        void OnPlayerAction(int timeSpent, List<IEnumerator> actions = null)
         {
-            if (actions != null)
-            {
-                m_interruptBuffer.Push(actions);
-            }
+            m_interruptBuffer?.Push(actions);
             // Check if there are enemy responses for this player action
-            if (m_enemy.OnPlayerAction(timeSpent, out List<Action> resp)) 
+            if (m_enemy.OnEnemyInterrupt(timeSpent, out List<IEnumerator> resp)) 
             {
-                m_interruptBuffer.Push(resp);
+                m_interruptBuffer?.Push(resp);
             }
             Interrupt();
         }
-        protected override void Evaluate()
+        void OnEnemyAction(List<IEnumerator> actions) 
+        {
+            m_interruptBuffer.Push(actions);
+            Interrupt();
+        }
+
+        protected override IEnumerator Evaluate_Internal()
         {
             // If we need to resolve interrupts from activated enemies, do it first
             while (m_interruptBuffer.Count > 0)
             {
-                foreach (Action call in m_interruptBuffer.Pop())
+                foreach (IEnumerator call in m_interruptBuffer.Pop())
                 {
-                    call?.Invoke();
+                    yield return StartCoroutine(call);
+                    yield return new WaitForEndOfFrame();
                 }
-            }       
+                yield return new WaitForSeconds(0.1f);
+            }
             TransitionTo();
         }
     }

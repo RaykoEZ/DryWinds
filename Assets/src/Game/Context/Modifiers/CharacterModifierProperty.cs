@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Curry.Game
 {
     public interface IModifierProperty
-    {    
+    {
     }
 
     [Serializable]

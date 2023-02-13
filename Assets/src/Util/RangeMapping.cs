@@ -65,7 +65,15 @@ namespace Curry.Util
             RangeMap map = new RangeMap(neighbours);
             return map;
         }
-
+        public static List<Vector3> GetRangePositions(int range, Vector3 origin) 
+        {
+            RangeMap rangeMap = GetNeighbourRangeMap(range);
+            return rangeMap.ApplyRangeOffsets(origin);
+        }
+        public static List<Vector3> GetRangePositions(RangeMap range, Vector3 origin)
+        {
+            return range.ApplyRangeOffsets(origin);
+        }
         static RangeMap GetImmediateNeighbourhood()
         {
             List<Vector3Int> neighbours = new List<Vector3Int>();

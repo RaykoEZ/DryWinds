@@ -9,8 +9,8 @@ namespace Curry.UI
         void Start()
         {
             m_player.TakeDamage += UpdateHp;
-            m_bar?.SetMaxValue(m_player.StartingStats.HP);
-            m_bar?.SetBarValue(m_player.StartingStats.HP, forceInstantChange: true);
+            m_bar?.SetMaxValue(m_player.CurrentHp);
+            m_bar?.SetBarValue(m_player.MaxHp, forceInstantChange: true);
         }
         void UpdateHp(int damageVal, int newHP) 
         {

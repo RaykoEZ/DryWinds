@@ -8,7 +8,7 @@ namespace Curry.Explore
         // When player interacts with vip, do this
         void Rescue();
     }
-    public class Vip : MonoBehaviour, IRescue
+    public class Vip : MonoBehaviour, IRescue, IStepOnTrigger
     {
         [SerializeField] RescueObjective m_objective = default;
         // Happens when player finds clue/comms locations
@@ -21,6 +21,18 @@ namespace Curry.Explore
         {
             Debug.Log("oof");
             m_objective.OnFailure();
+        }
+
+        public void Trigger(ICharacter overlapping)
+        {
+            if(overlapping is IPlayer) 
+            {
+                Rescue();
+            }
+            else if (overlapping is IEnemy) 
+            {
+                Capture();
+            }
         }
     }
 }

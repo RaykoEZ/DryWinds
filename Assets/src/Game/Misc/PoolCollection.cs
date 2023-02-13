@@ -9,7 +9,6 @@ namespace Curry.Game
         [SerializeField] int m_numToPool = default;
         [SerializeField] Transform m_defaultParent = default;
         Dictionary<string, ObjectPool<Interactable>> m_pools = new Dictionary<string, ObjectPool<Interactable>>();
-
         public ObjectPool<Interactable> AddPool(string poolId, Interactable objRef, Transform parent = null)
         {
             Transform transform = parent == null ? m_defaultParent : parent;
@@ -33,6 +32,7 @@ namespace Curry.Game
         [SerializeField] int m_numToPool = default;
         [SerializeField] Transform m_defaultParent = default;
         Dictionary<string, ObjectPool<T>> m_pools = new Dictionary<string, ObjectPool<T>>();
+        public Transform DefaultParent => m_defaultParent;
 
         public ObjectPool<T> AddPool(string poolId, T objRef, Transform parent = null)
         {

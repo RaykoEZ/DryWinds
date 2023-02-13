@@ -14,6 +14,6 @@ namespace Curry.Game
 
     public interface IObjectPool<T> : IObjectPool where T : IPoolable
     {
-        void Reclaim(T obj);
+        void ReclaimInstance(T obj);
     }
 }

@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_deckId: 1
   m_cardsInDeck:
-  - {fileID: 9203526775296008998, guid: 0ecd928d489bcba4abe4b21cb061381a, type: 3}
+  - {fileID: 1717730041097802572, guid: 0afe34ab51c25e64ba9c21a89feafe34, type: 3}

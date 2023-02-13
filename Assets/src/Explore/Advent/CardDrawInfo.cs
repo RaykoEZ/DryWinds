@@ -7,22 +7,11 @@ namespace Curry.Explore
         // All basic cards drawn (excludes all subclass AdventCard instances
         // e.g. Encounters 
         public IReadOnlyList<AdventCard> CardsDrawn { get; protected set; }
-        public IReadOnlyList<Encounter> Encounters { get; protected set; }
-
         public CardDrawInfo SetCardDraw(List<AdventCard> draw) 
         {
             if (draw != null) 
             {
                 CardsDrawn = draw;
-            }
-            return this;
-        }
-
-        public CardDrawInfo SetEncounters(List<Encounter> encounters) 
-        {
-            if (encounters != null) 
-            {
-                Encounters = encounters;
             }
             return this;
         }

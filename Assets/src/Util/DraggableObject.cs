@@ -10,11 +10,13 @@ namespace Curry.Util
         Vector2 m_anchorOffset;
         Transform m_origin;
         int m_originIndex;
-
-
         public virtual bool Droppable { get { return true; } }
         // Move one above original parent when dragging the object 
         protected virtual Transform OnDragParent => transform.parent.parent;
+        void OnEnable() 
+        {
+            GetComponent<CanvasGroup>().blocksRaycasts = true;
+        }
         protected virtual void SetDropPosition(Transform parent, int siblingIndex = 0) 
         {
             m_origin = parent;

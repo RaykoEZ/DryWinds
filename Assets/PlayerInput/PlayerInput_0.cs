@@ -197,10 +197,10 @@ namespace Curry.Input
                 {
                     ""name"": """",
                     ""id"": ""f71ace56-53ba-4c58-a6a1-7d28dbf4d05a"",
-                    ""path"": ""<Keyboard>/space"",
-                    ""interactions"": """",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": ""Press"",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""NextDialogue"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false

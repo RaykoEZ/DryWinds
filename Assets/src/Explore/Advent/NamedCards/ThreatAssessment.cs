@@ -1,19 +1,15 @@
-﻿using UnityEngine;
-using Curry.Events;
+﻿using System.Collections;
+using UnityEngine;
 
 namespace Curry.Explore
 {
     public class ThreatAssessment : AdventCard
     {
-        [Range(0, 3)]
-        [SerializeField] int m_detectionLevel = default;
-        [SerializeField] CurryGameEventTrigger m_onSonar = default;
-
-        protected override void ActivateEffect(IPlayer user)
+        [SerializeField] Scan m_scan = default;
+        public override IEnumerator ActivateEffect(IPlayer user)
         {
-            ScanInfo info = new ScanInfo(m_detectionLevel, 3f);
-            m_onSonar?.TriggerEvent(info);
-            OnExpend();
+            m_scan.ApplyEffect(user, user);
+            yield return new WaitForEndOfFrame();
         }
     }
 }
