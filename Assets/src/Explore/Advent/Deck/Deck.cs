@@ -41,4 +41,11 @@ namespace Curry.Explore
         }
     }
 
+    public class Inventory : MonoBehaviour 
+    {
+        protected List<AdventCard> m_cardsInStock = new List<AdventCard>();
+        public IReadOnlyList<AdventCard> CardsInStock => m_cardsInStock;
+
+    }
+
 }

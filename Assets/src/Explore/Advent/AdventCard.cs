@@ -3,9 +3,16 @@ using UnityEngine;
 using Curry.Game;
 using Curry.Events;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace Curry.Explore
 {
+    public enum CardType 
+    { 
+        Skill = 0,
+        Equipment = 1,
+        Item = 2
+    }
     [Serializable]
     public struct CardAttribute 
     {
@@ -13,16 +20,18 @@ namespace Curry.Explore
         [SerializeField] public string Description;
         [Range(0, 1000)]
         [SerializeField] public int TimeCost;
+        [SerializeField] public CardType Type;
     }
     // Base class for all playable cards
     public abstract class AdventCard : PoolableBehaviour, IPoolable
     {
         [SerializeField] CardAttribute m_attribute = default;
         bool m_activatable = true;
-        public int Id { get { return $"{m_attribute.Name}/{gameObject.name}".GetHashCode(); } }
-        public string Name { get { return m_attribute.Name; } }
-        public string Description { get { return m_attribute.Description; } }
-        public int TimeCost { get { return m_attribute.TimeCost; } }
+        public int Id => $"{m_attribute.Name}/{gameObject.name}".GetHashCode();
+        public string Name => m_attribute.Name;
+        public string Description => m_attribute.Description;
+        public int TimeCost => m_attribute.TimeCost;
+        public CardType Type => m_attribute.Type;
         // Whether keep card upon moving to a new tile
         public virtual bool Activatable { get { return m_activatable; } private set { m_activatable = value; } }
         public override void Prepare() 
@@ -31,6 +40,20 @@ namespace Curry.Explore
         }
         // Card Effect
         public abstract IEnumerator ActivateEffect(IPlayer user);
+    }
 
+    public class CompareCardByName : IComparer<AdventCard>
+    {
+        public int Compare(AdventCard x, AdventCard y)
+        {
+            return string.Compare(x.Name, y.Name);
+        }
+    }
+    public class CompareCardByType : IComparer<AdventCard> 
+    {
+        public int Compare(AdventCard x, AdventCard y)
+        {
+            return x.Type.CompareTo(y.Type);
+        }
     }
 }
