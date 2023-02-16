@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using Curry.Events;
+using System;
 
 namespace Curry.Explore
 {
@@ -12,26 +13,42 @@ namespace Curry.Explore
     {
         [SerializeField] protected CardDatabase m_adventDb = default;
         [SerializeField] AdventInstanceManager m_instance = default;
-        [SerializeField] HandManager m_hand = default;      
-
+        [SerializeField] HandManager m_hand = default;
+        [SerializeField] List<AdventCard> m_startingInventory = default;
+        protected Inventory m_inventory;
         void Awake()
         {
+            m_inventory = new Inventory();
+            AddToInventory(m_startingInventory);
             m_adventDb.Init(OnAdventLoadFinish);
         }
-
-        // Instantiate cards and trigger game events OnCardDraw
-        public void AddToHand(IReadOnlyList<AdventCard> cardsToDraw)
+        // randomly add cards from inventory to hand, filter method for limiting which type of cards to get/ignore 
+        public void AddRandomFromInventory(int numToGet, Predicate<AdventCard> filter = null)
         {
-            List<AdventCard> cardInstances = new List<AdventCard>();
-            foreach (AdventCard cardRef in cardsToDraw)
+        
+        }
+        public void AddToInventory(List<AdventCard> add)
+        {
+            List<AdventCard> cardInstances = InstantiateCards(add);
+            m_inventory.AddRange(cardInstances);
+        }
+        // Instantiate cards and trigger game events OnCardDraw
+        public void AddToHand(List<AdventCard> cardsToDraw)
+        {
+            List<AdventCard> cardInstances = InstantiateCards(cardsToDraw);
+            m_hand.AddCardsToHand(cardInstances);
+        }
+        List<AdventCard> InstantiateCards(List<AdventCard> refs) 
+        {
+            List<AdventCard> ret = new List<AdventCard>();
+            foreach (AdventCard cardRef in refs)
             {
                 // Instantiating cards to be drawn
                 AdventCard cardInstance = InstantiateCard(cardRef);
-                cardInstances.Add(cardInstance);
+                ret.Add(cardInstance);
             }
-            m_hand.AddCardsToHand(cardInstances);
+            return ret;
         }
-
         AdventCard InstantiateCard(AdventCard cardRef)
         {
             AdventCard ret;

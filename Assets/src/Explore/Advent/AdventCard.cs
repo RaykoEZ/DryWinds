@@ -41,19 +41,4 @@ namespace Curry.Explore
         // Card Effect
         public abstract IEnumerator ActivateEffect(IPlayer user);
     }
-
-    public class CompareCardByName : IComparer<AdventCard>
-    {
-        public int Compare(AdventCard x, AdventCard y)
-        {
-            return string.Compare(x.Name, y.Name);
-        }
-    }
-    public class CompareCardByType : IComparer<AdventCard> 
-    {
-        public int Compare(AdventCard x, AdventCard y)
-        {
-            return x.Type.CompareTo(y.Type);
-        }
-    }
 }
