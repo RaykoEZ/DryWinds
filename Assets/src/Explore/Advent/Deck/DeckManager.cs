@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Tilemaps;
 using Curry.Events;
 using System;
 
@@ -25,7 +24,23 @@ namespace Curry.Explore
         // randomly add cards from inventory to hand, filter method for limiting which type of cards to get/ignore 
         public void AddRandomFromInventory(int numToGet, Predicate<AdventCard> filter = null)
         {
-        
+            IReadOnlyList<AdventCard> cardPool = m_inventory.FilterInventory(filter);
+            List<int> randomIndex = new List<int>();
+            int index;
+            while (randomIndex.Count < numToGet)
+            {
+                index = UnityEngine.Random.Range(0, cardPool.Count);
+                if (!randomIndex.Contains(index)) 
+                {
+                    randomIndex.Add(index);
+                }
+            }
+            List<AdventCard> cardsToAdd = new List<AdventCard>();
+            foreach (int i in randomIndex) 
+            {
+                cardsToAdd.Add(cardPool[i]);
+            }
+            m_hand.AddCardsToHand(cardsToAdd);
         }
         public void AddToInventory(List<AdventCard> add)
         {
@@ -34,7 +49,7 @@ namespace Curry.Explore
         }
         // Instantiate cards and trigger game events OnCardDraw
         public void AddToHand(List<AdventCard> cardsToDraw)
-        {
+        { 
             List<AdventCard> cardInstances = InstantiateCards(cardsToDraw);
             m_hand.AddCardsToHand(cardInstances);
         }
@@ -55,7 +70,6 @@ namespace Curry.Explore
             ret = m_instance.GetInstanceFromAsset(cardRef.gameObject);
             return ret;
         }
-
         void OnAdventLoadFinish()
         {
             foreach (KeyValuePair<int, AdventCard> advent in m_adventDb.AdventList)

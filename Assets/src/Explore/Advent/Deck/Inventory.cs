@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using UnityEditor;
 
 namespace Curry.Explore
 {
@@ -28,28 +30,11 @@ namespace Curry.Explore
             m_sortByCardName = new CompareCardByName();
             m_sortByCardType = new CompareCardByType();
         }
-        public AdventCard TakeCard(AdventCard take) 
+
+        public IReadOnlyList<AdventCard> FilterInventory(Predicate<AdventCard> filter) 
         {
-            if (m_cardsInStock.Remove(take)) 
-            {
-                return take;
-            }
-            else 
-            {
-                return null;
-            }
-        }
-        public List<AdventCard> TakeCards(List<AdventCard> take) 
-        {
-            List<AdventCard> ret = new List<AdventCard>();
-            foreach(AdventCard toTake in take) 
-            {
-                AdventCard taken = TakeCard(toTake);
-                if (taken != null) 
-                {
-                    ret.Add(taken);
-                }
-            }
+            if (filter == null) return CardsInStock;
+            List<AdventCard> ret = m_cardsInStock.FindAll(filter);
             return ret;
         }
         public void AddRange(List<AdventCard> add) 
