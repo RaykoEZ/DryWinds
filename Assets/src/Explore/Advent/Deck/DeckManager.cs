@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using Curry.Events;
 using System;
+using Curry.Util;
+using Curry.UI;
 
 namespace Curry.Explore
 {
@@ -14,31 +16,59 @@ namespace Curry.Explore
         [SerializeField] AdventInstanceManager m_instance = default;
         [SerializeField] HandManager m_hand = default;
         [SerializeField] List<AdventCard> m_startingInventory = default;
+        [SerializeField] ChoicePrompter m_prompter = default;
+
         protected Inventory m_inventory;
         void Awake()
         {
             m_inventory = new Inventory();
-            AddToInventory(m_startingInventory);
             m_adventDb.Init(OnAdventLoadFinish);
+            AddToInventory(m_startingInventory);
         }
+
+        public void ChooseToAddFromInventory(ChoiceConditions conditions, Predicate<AdventCard> cardPoolFilter = null, Action onChosen = null) 
+        {
+            IReadOnlyList<AdventCard> cardPool = m_inventory.FilterInventory(cardPoolFilter);
+            List<IChoice> choices = ChoiceUtil.ChooseCards_FromInstance(cardPool);
+            OnChoiceFinish onChosenCallback = (result) => 
+            {
+                OnCardChosen(result);
+                onChosen?.Invoke();
+            };
+            m_prompter.MakeChoice(conditions, choices, onChosenCallback);
+        }
+        void OnCardChosen(ChoiceResult result) 
+        {
+            if (result.Status == ChoiceResult.ChoiceStatus.Cancelled)
+            {
+                return;
+            }
+            List<AdventCard> cards = new List<AdventCard>();
+            foreach (IChoice choice in result.Choices)
+            {
+                if (choice is CardChoice cardChoice && 
+                    cardChoice.Value is AdventCard toTake)
+                {
+                    cardChoice.DisplayChoice(m_hand.transform);
+                    CardChoice.DetachFromCard(cardChoice);
+                    cards.Add(toTake);
+                }
+            }
+            cards = m_inventory.TakeCards(cards);
+            m_hand.AddCardsToHand(cards);
+        }
+
         // randomly add cards from inventory to hand, filter method for limiting which type of cards to get/ignore 
         public void AddRandomFromInventory(int numToGet, Predicate<AdventCard> filter = null)
         {
             IReadOnlyList<AdventCard> cardPool = m_inventory.FilterInventory(filter);
-            List<int> randomIndex = new List<int>();
-            int index;
-            while (randomIndex.Count < numToGet)
-            {
-                index = UnityEngine.Random.Range(0, cardPool.Count);
-                if (!randomIndex.Contains(index)) 
-                {
-                    randomIndex.Add(index);
-                }
-            }
+            List<int> randomIndex = GameUtil.RandomRangeUnique(0, cardPool.Count, numToGet);
             List<AdventCard> cardsToAdd = new List<AdventCard>();
+            AdventCard toTake;
             foreach (int i in randomIndex) 
             {
-                cardsToAdd.Add(cardPool[i]);
+                toTake = m_inventory.TakeCard(cardPool[i]);
+                cardsToAdd.Add(toTake);
             }
             m_hand.AddCardsToHand(cardsToAdd);
         }

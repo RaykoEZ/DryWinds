@@ -16,31 +16,36 @@ namespace Curry.UI
         public object Value { get; protected set; }
         public bool Choosable { get; set; } = true;
 
-        // Instantiate a card choice object from a bespoke card
-        public static CardChoice Create(GameObject cardRef, out GameObject instance)
+        // Instantiate a card choice object from a bespoke card reference,
+        // this instantiates a new card gameobject
+        public static CardChoice Create(AdventCard cardRef, out GameObject instance)
         {
-            if (cardRef == null) 
+            if (cardRef == null)
             {
                 instance = null;
                 return null;
             }
             // Make a clone of the card
-            instance = Instantiate(cardRef);
+            AdventCard newCard = Instantiate(cardRef);
+            instance = newCard.gameObject;
             // Add a choice script and initialize it with the behaviour
-            CardChoice choice = instance.AddComponent<CardChoice>();
-            instance.GetComponent<DraggableCard>().enabled = false;
-            if (instance.TryGetComponent(out AdventCard card)) 
-            {
-                choice.InitValue(card);
-                //Disable drag events for the this card
-            }
-            else 
-            {
-                Debug.LogWarning("Card script not found, using root name for Value ref");
-                choice.InitValue(instance.name);
-            }
+            CardChoice choice = AttachToCard(newCard);
             return choice;
         }
+        // Add an instantiated CardChoice to a instance of card,
+        // this does not instantiate a new card gameobject
+        public static CardChoice AttachToCard(AdventCard cardInstance) 
+        {
+            if (cardInstance == null)
+            {
+                return null;
+            }
+            cardInstance.GetComponent<DraggableCard>().enabled = false;
+            CardChoice choice = cardInstance.gameObject.AddComponent<CardChoice>();
+            choice.InitValue(cardInstance);
+            return choice;
+        }
+
         public static void DetachFromCard(CardChoice choiceRef) 
         {
             if (choiceRef == null) 

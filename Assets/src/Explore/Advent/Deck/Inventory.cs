@@ -30,7 +30,30 @@ namespace Curry.Explore
             m_sortByCardName = new CompareCardByName();
             m_sortByCardType = new CompareCardByType();
         }
-
+        public AdventCard TakeCard(AdventCard take)
+        {
+            if (m_cardsInStock.Remove(take))
+            {
+                return take;
+            }
+            else
+            {
+                return null;
+            }
+        }
+        public List<AdventCard> TakeCards(List<AdventCard> take)
+        {
+            List<AdventCard> ret = new List<AdventCard>();
+            foreach (AdventCard toTake in take)
+            {
+                AdventCard taken = TakeCard(toTake);
+                if (taken != null)
+                {
+                    ret.Add(taken);
+                }
+            }
+            return ret;
+        }
         public IReadOnlyList<AdventCard> FilterInventory(Predicate<AdventCard> filter) 
         {
             if (filter == null) return CardsInStock;
