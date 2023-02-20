@@ -45,7 +45,6 @@ namespace Curry.UI
             choice.InitValue(cardInstance);
             return choice;
         }
-
         public static void DetachFromCard(CardChoice choiceRef) 
         {
             if (choiceRef == null) 

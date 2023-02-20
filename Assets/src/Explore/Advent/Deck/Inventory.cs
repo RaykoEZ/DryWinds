@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEditor;
+using UnityEngine;
 
 namespace Curry.Explore
 {
@@ -18,13 +19,13 @@ namespace Curry.Explore
             return x.Type.CompareTo(y.Type);
         }
     }
-    public class Inventory 
+    public class Inventory : MonoBehaviour
     {
         protected List<AdventCard> m_cardsInStock;
         public IReadOnlyList<AdventCard> CardsInStock => m_cardsInStock;
         CompareCardByName m_sortByCardName;
         CompareCardByType m_sortByCardType;
-        public Inventory() 
+        void Awake() 
         {
             m_cardsInStock = new List<AdventCard>();
             m_sortByCardName = new CompareCardByName();

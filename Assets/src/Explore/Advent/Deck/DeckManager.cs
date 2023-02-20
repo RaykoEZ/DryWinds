@@ -12,18 +12,16 @@ namespace Curry.Explore
     // Quiries Tile info for a tile in its tilemap coordinate
     public class DeckManager : MonoBehaviour
     {
+        [SerializeField] protected Inventory m_inventory = default;
         [SerializeField] protected CardDatabase m_adventDb = default;
         [SerializeField] AdventInstanceManager m_instance = default;
         [SerializeField] HandManager m_hand = default;
         [SerializeField] List<AdventCard> m_startingInventory = default;
         [SerializeField] ChoicePrompter m_prompter = default;
 
-        protected Inventory m_inventory;
-        void Awake()
+        void Start()
         {
-            m_inventory = new Inventory();
             m_adventDb.Init(OnAdventLoadFinish);
-            AddToInventory(m_startingInventory);
         }
 
         public void ChooseToAddFromInventory(ChoiceConditions conditions, Predicate<AdventCard> cardPoolFilter = null, Action onChosen = null) 
@@ -39,18 +37,28 @@ namespace Curry.Explore
         }
         void OnCardChosen(ChoiceResult result) 
         {
+            // Get back all cards that were displayed in the choice panel
+            // and remove attached choice component
+            foreach(IChoice choice in result.ChoseFrom)
+            {
+                if (choice is CardChoice cardChoice)
+                {
+                    cardChoice.transform.SetParent(m_inventory.transform, false);
+                    CardChoice.DetachFromCard(cardChoice);
+                }
+            }
             if (result.Status == ChoiceResult.ChoiceStatus.Cancelled)
             {
                 return;
             }
+            // Process all chosen cards before the choice components are destroyed 
             List<AdventCard> cards = new List<AdventCard>();
-            foreach (IChoice choice in result.Choices)
+            foreach (IChoice choice in result.Chosen)
             {
                 if (choice is CardChoice cardChoice && 
                     cardChoice.Value is AdventCard toTake)
                 {
                     cardChoice.DisplayChoice(m_hand.transform);
-                    CardChoice.DetachFromCard(cardChoice);
                     cards.Add(toTake);
                 }
             }
@@ -106,6 +114,7 @@ namespace Curry.Explore
             {
                 m_instance.PrepareNewInstance(advent.Value.gameObject);
             }
+            AddToInventory(m_startingInventory);
         }
     }
 

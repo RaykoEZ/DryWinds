@@ -49,6 +49,7 @@ namespace Curry.Explore
             foreach (AdventCard card in cards)
             {
                 drag = card.GetComponent<DraggableCard>();
+                drag.transform.SetParent(transform, false);
                 cardsToAdd.Add(drag);
                 PrepareCard(drag);
             }
