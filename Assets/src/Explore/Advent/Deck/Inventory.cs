@@ -1,7 +1,9 @@
-﻿using System;
+﻿using Curry.UI;
+using System;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace Curry.Explore
 {
@@ -21,6 +23,7 @@ namespace Curry.Explore
     }
     public class Inventory : MonoBehaviour
     {
+        [SerializeField] PanelUIHandler m_anim = default;
         protected List<AdventCard> m_cardsInStock;
         public IReadOnlyList<AdventCard> CardsInStock => m_cardsInStock;
         CompareCardByName m_sortByCardName;
@@ -30,6 +33,14 @@ namespace Curry.Explore
             m_cardsInStock = new List<AdventCard>();
             m_sortByCardName = new CompareCardByName();
             m_sortByCardType = new CompareCardByType();
+        }
+        public void Show() 
+        {
+            m_anim.Show();
+        }
+        public void Hide() 
+        {
+            m_anim.Hide();
         }
         public AdventCard TakeCard(AdventCard take)
         {

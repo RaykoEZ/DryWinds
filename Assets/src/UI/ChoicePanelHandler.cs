@@ -63,12 +63,12 @@ namespace Curry.UI
             Cancelled
         }
     }
-    #endregion
+#endregion
 
     public delegate void OnChoiceFinish(ChoiceResult result);
     public class ChoicePanelHandler : MonoBehaviour
     {
-        [SerializeField] Animator m_panelAnim = default;
+        [SerializeField] PanelUIHandler m_panelAnim = default;
         [SerializeField] TextMeshProUGUI m_title = default;
         [SerializeField] Transform m_content = default;
         [SerializeField] Button m_confirm = default;
@@ -95,7 +95,7 @@ namespace Curry.UI
                 m_confirm.interactable = false;
                 m_cancel.interactable = context.Conditons.CanCancel;
                 PrepareChoices();
-                m_panelAnim.SetBool("show", true);
+                m_panelAnim.Show();
             }
         }
         protected virtual void PrepareChoices() 
@@ -111,7 +111,7 @@ namespace Curry.UI
         {
             m_confirm.interactable = false;
             m_cancel.interactable = false;
-            m_panelAnim.SetBool("show", false);
+            m_panelAnim.Hide();
             foreach (IChoice choice in m_currentContext.ChooseFrom)
             {
                 choice.OnChosen -= OnChoose;

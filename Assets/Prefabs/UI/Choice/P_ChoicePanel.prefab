@@ -827,7 +827,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91bbe877be23a60459796faf0809c370, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_panelAnim: {fileID: 5590046846604145034}
+  m_panelAnim:
+    m_anim: {fileID: 5590046846604145034}
   m_title: {fileID: 5590046846580962522}
   m_content: {fileID: 6662185750280654868}
   m_confirm: {fileID: 5590046845751240951}
