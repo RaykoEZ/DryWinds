@@ -41,10 +41,10 @@ namespace Curry.Explore
             // and remove attached choice component
             foreach(IChoice choice in result.ChoseFrom)
             {
-                if (choice is CardChoice cardChoice)
+                if (choice is CardInteractionController cardChoice)
                 {
                     cardChoice.transform.SetParent(m_inventory.transform, false);
-                    CardChoice.DetachFromCard(cardChoice);
+                    cardChoice.SetInteractionMode(CardInteractMode.Inspect);
                 }
             }
             if (result.Status == ChoiceResult.ChoiceStatus.Cancelled)
@@ -55,9 +55,12 @@ namespace Curry.Explore
             List<AdventCard> cards = new List<AdventCard>();
             foreach (IChoice choice in result.Chosen)
             {
-                if (choice is CardChoice cardChoice && 
+                if (choice is CardInteractionController cardChoice && 
                     cardChoice.Value is AdventCard toTake)
                 {
+                    cardChoice.SetInteractionMode(
+                        CardInteractMode.Inspect |
+                        CardInteractMode.Play);
                     cardChoice.DisplayChoice(m_hand.transform);
                     cards.Add(toTake);
                 }

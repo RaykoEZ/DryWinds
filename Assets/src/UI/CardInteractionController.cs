@@ -1,64 +1,65 @@
 ﻿using Curry.Explore;
 using Curry.Game;
+using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace Curry.UI
 {
-    public class CardChoice : MonoBehaviour, IChoice, 
+    [Flags]
+    [Serializable]
+    public enum CardInteractMode 
+    {
+        Play = 1 << 0,
+        Inspect = 1 << 1,
+    }
+    // Allows a card to be dragged/pointer hover/selected/inspected
+    public class CardInteractionController : MonoBehaviour, IChoice,
         IPointerClickHandler, IPointerUpHandler, IPointerDownHandler, 
         IPointerEnterHandler, IPointerExitHandler
     {
+        public delegate void OnCardInspect();
+        AdventCard m_card = default;
         protected bool m_selected = false;
         public event OnChoose OnChosen;
         public event OnChoose OnUnchoose;
-        public object Value { get; protected set; }
+        public event OnCardInspect OnInspect;
+        public CardInteractMode InteractMode { get; protected set; } = 0;
+        public object Value { get => m_card; protected set => m_card = value as AdventCard; }
         public bool Choosable { get; set; } = true;
 
-        // Instantiate a card choice object from a bespoke card reference,
-        // this instantiates a new card gameobject
-        public static CardChoice Create(AdventCard cardRef, out GameObject instance)
+        protected virtual void Start()
         {
-            if (cardRef == null)
+            if(TryGetComponent(out AdventCard card)) 
             {
-                instance = null;
-                return null;
+                Init(card);
             }
-            // Make a clone of the card
-            AdventCard newCard = Instantiate(cardRef);
-            instance = newCard.gameObject;
-            // Add a choice script and initialize it with the behaviour
-            CardChoice choice = AttachToCard(newCard);
-            return choice;
         }
         // Add an instantiated CardChoice to a instance of card,
         // this does not instantiate a new card gameobject
-        public static CardChoice AttachToCard(AdventCard cardInstance) 
+        public static CardInteractionController AttachToCard(AdventCard cardInstance) 
         {
             if (cardInstance == null)
             {
                 return null;
             }
             cardInstance.GetComponent<DraggableCard>().enabled = false;
-            CardChoice choice = cardInstance.gameObject.AddComponent<CardChoice>();
-            choice.InitValue(cardInstance);
+            CardInteractionController choice = cardInstance.gameObject.AddComponent<CardInteractionController>();
+            choice.Init(cardInstance);           
             return choice;
         }
-        public static void DetachFromCard(CardChoice choiceRef) 
+        public virtual void SetInteractionMode(CardInteractMode mode) 
         {
-            if (choiceRef == null) 
-            {
-                return;
-            }
-            choiceRef.gameObject.GetComponent<DraggableCard>().enabled = true;
-            Destroy(choiceRef);
+            InteractMode = mode;
+            gameObject.GetComponent<DraggableCard>().enabled =
+                (InteractMode & CardInteractMode.Play) != 0;
         }
-        protected virtual void InitValue(object val)
+        protected virtual void Init(AdventCard card, CardInteractMode mode = CardInteractMode.Inspect) 
         {
-            Value = val;
+            m_card = card;
+            SetInteractionMode(mode);
         }
-
         public void DisplayChoice(Transform parent)
         {
             transform.SetParent(parent);
@@ -66,7 +67,6 @@ namespace Curry.UI
             transform.localPosition = Vector3.zero;
             transform.localScale = Vector3.one;
         }
-
         public void Choose()
         {
             m_selected = true;
@@ -99,10 +99,16 @@ namespace Curry.UI
         public void OnPointerEnter(PointerEventData eventData)
         {
             GetComponent<Animator>()?.SetBool("selected", Choosable);
+            if ((InteractMode & CardInteractMode.Inspect) != 0) 
+            {
+                GetComponent<Animator>()?.SetBool("inspecting", true);
+
+            }
         }
         public void OnPointerExit(PointerEventData eventData)
         {
             GetComponent<Animator>()?.SetBool("selected", m_selected);
+            GetComponent<Animator>()?.SetBool("inspecting", false);
         }
 
     }

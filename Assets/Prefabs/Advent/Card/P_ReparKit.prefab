@@ -16,6 +16,7 @@ MonoBehaviour:
     Name: Repair Kit
     Description: Recover 2 HP
     TimeCost: 1
+    Type: 0
   m_healing:
     m_healAmount: 2
 --- !u!1001 &8988240515545042952
@@ -39,7 +40,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5636301306242561430, guid: ef1d3ab221ea8e440a5fa517863a4114, type: 3}
       propertyPath: m_Pivot.y
-      value: 0.9
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 5636301306242561430, guid: ef1d3ab221ea8e440a5fa517863a4114, type: 3}
       propertyPath: m_RootOrder

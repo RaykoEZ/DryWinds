@@ -4,6 +4,7 @@ using Curry.Game;
 using Curry.Events;
 using System.Collections;
 using System.Collections.Generic;
+using Curry.UI;
 
 namespace Curry.Explore
 {
@@ -37,6 +38,7 @@ namespace Curry.Explore
         public override void Prepare() 
         {
             Activatable = true;
+            GetComponent<CardTextHandler>()?.SetCardText(Description);
         }
         // Card Effect
         public abstract IEnumerator ActivateEffect(IPlayer user);

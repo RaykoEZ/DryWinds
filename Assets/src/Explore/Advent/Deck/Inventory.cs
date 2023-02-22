@@ -34,6 +34,17 @@ namespace Curry.Explore
             m_sortByCardName = new CompareCardByName();
             m_sortByCardType = new CompareCardByType();
         }
+        public void ToggleDisplay(bool isOn) 
+        {
+            if (isOn) 
+            { 
+                Show(); 
+            } 
+            else 
+            { 
+                Hide(); 
+            }
+        }
         public void Show() 
         {
             m_anim.Show();
