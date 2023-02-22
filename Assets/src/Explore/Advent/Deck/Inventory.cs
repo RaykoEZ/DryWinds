@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.UIElements;
 
 namespace Curry.Explore
@@ -85,6 +86,10 @@ namespace Curry.Explore
         }
         public void AddRange(List<AdventCard> add) 
         {
+            foreach(AdventCard card in add) 
+            {
+                card.transform.SetParent(transform, false);
+            }
             m_cardsInStock?.AddRange(add);
             SortCardByType();
 

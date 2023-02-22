@@ -2,7 +2,6 @@
 using Curry.Util;
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 namespace Curry.Explore
 {
@@ -19,27 +18,5 @@ namespace Curry.Explore
                 onChosen: TransitionTo);
             yield return null;
         }     
-    }
-
-    public static class ChoiceUtil 
-    { 
-        // create a list of choices from a list of cards instances
-        public static List<IChoice> ChooseCards_FromInstance(IReadOnlyList<AdventCard> cardRefs)
-        {
-            List<IChoice> choices = new List<IChoice>();
-            foreach (AdventCard card in cardRefs)
-            {
-                if(card.TryGetComponent(out CardInteractionController choice)) 
-                {
-                    choices.Add(choice);
-                }
-                else 
-                {
-                    choices.Add(CardInteractionController.AttachToCard(card));
-                }
-            }
-
-            return choices;
-        }
     }
 }

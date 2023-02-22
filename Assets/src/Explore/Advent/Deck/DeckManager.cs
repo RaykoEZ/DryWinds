@@ -27,7 +27,7 @@ namespace Curry.Explore
         public void ChooseToAddFromInventory(ChoiceConditions conditions, Predicate<AdventCard> cardPoolFilter = null, Action onChosen = null) 
         {
             IReadOnlyList<AdventCard> cardPool = m_inventory.FilterInventory(cardPoolFilter);
-            List<IChoice> choices = ChoiceUtil.ChooseCards_FromInstance(cardPool);
+            List<IChoice> choices = CloneCardChoice(cardPool as List<AdventCard>);
             OnChoiceFinish onChosenCallback = (result) => 
             {
                 OnCardChosen(result);
@@ -35,38 +35,53 @@ namespace Curry.Explore
             };
             m_prompter.MakeChoice(conditions, choices, onChosenCallback);
         }
+        List<IChoice> CloneCardChoice(List<AdventCard> cardSource) 
+        {
+            List<AdventCard> copies = new List<AdventCard>();
+            // Instantiate copies
+            // and assgn their Value property to the real card in inventory for later process
+            foreach(AdventCard card in cardSource) 
+            {
+                AdventCard copy = InstantiateCard(card);
+                copy.GetComponent<CardInteractionController>()?.
+                    Init(card, CardInteractMode.Inspect | CardInteractMode.Select);
+                copies.Add(copy);
+            }
+            List<IChoice> ret = ChoiceUtil.ChooseCards(copies);
+            return ret;
+        }
         void OnCardChosen(ChoiceResult result) 
         {
-            // Get back all cards that were displayed in the choice panel
-            // and remove attached choice component
-            foreach(IChoice choice in result.ChoseFrom)
+            if (result.Status == ChoiceResult.ChoiceStatus.Confirmed)
+            {
+                // Process all chosen cards before the choice components are destroyed 
+                List<AdventCard> cards = new List<AdventCard>();
+                foreach (IChoice choice in result.Chosen)
+                {
+                    if (choice.Value is AdventCard toTake)
+                    {
+                        CardInteractionController sourceCardController = 
+                            toTake.GetComponent<CardInteractionController>();
+                        // Let card to be played/dragged and inspected
+                        sourceCardController?.SetInteractionMode(
+                            CardInteractMode.Inspect |
+                            CardInteractMode.Play);
+                        sourceCardController?.DisplayChoice(m_hand.transform);
+                        cards.Add(toTake);
+                    }
+                }
+                cards = m_inventory.TakeCards(cards);
+                m_hand.AddCardsToHand(cards);
+            }      
+            // Remove copies
+            foreach (IChoice choice in result.ChoseFrom)
             {
                 if (choice is CardInteractionController cardChoice)
                 {
-                    cardChoice.transform.SetParent(m_inventory.transform, false);
-                    cardChoice.SetInteractionMode(CardInteractMode.Inspect);
+                    cardChoice.transform.SetParent(m_instance.DefaultParent);
+                    cardChoice.GetComponent<AdventCard>()?.ReturnToPool();
                 }
             }
-            if (result.Status == ChoiceResult.ChoiceStatus.Cancelled)
-            {
-                return;
-            }
-            // Process all chosen cards before the choice components are destroyed 
-            List<AdventCard> cards = new List<AdventCard>();
-            foreach (IChoice choice in result.Chosen)
-            {
-                if (choice is CardInteractionController cardChoice && 
-                    cardChoice.Value is AdventCard toTake)
-                {
-                    cardChoice.SetInteractionMode(
-                        CardInteractMode.Inspect |
-                        CardInteractMode.Play);
-                    cardChoice.DisplayChoice(m_hand.transform);
-                    cards.Add(toTake);
-                }
-            }
-            cards = m_inventory.TakeCards(cards);
-            m_hand.AddCardsToHand(cards);
         }
 
         // randomly add cards from inventory to hand, filter method for limiting which type of cards to get/ignore 
@@ -91,24 +106,27 @@ namespace Curry.Explore
         // Instantiate cards and trigger game events OnCardDraw
         public void AddToHand(List<AdventCard> cardsToDraw)
         { 
-            List<AdventCard> cardInstances = InstantiateCards(cardsToDraw);
+            List<AdventCard> cardInstances = InstantiateCards(
+                cardsToDraw,
+                CardInteractMode.Play | CardInteractMode.Inspect);
             m_hand.AddCardsToHand(cardInstances);
         }
-        List<AdventCard> InstantiateCards(List<AdventCard> refs) 
+        List<AdventCard> InstantiateCards(List<AdventCard> refs, CardInteractMode interactMode = CardInteractMode.Inspect) 
         {
             List<AdventCard> ret = new List<AdventCard>();
             foreach (AdventCard cardRef in refs)
             {
                 // Instantiating cards to be drawn
-                AdventCard cardInstance = InstantiateCard(cardRef);
+                AdventCard cardInstance = InstantiateCard(cardRef, interactMode);
                 ret.Add(cardInstance);
             }
             return ret;
         }
-        AdventCard InstantiateCard(AdventCard cardRef)
+        AdventCard InstantiateCard(AdventCard cardRef, CardInteractMode interactMode = CardInteractMode.Inspect)
         {
             AdventCard ret;
             ret = m_instance.GetInstanceFromAsset(cardRef.gameObject);
+            ret.GetComponent<CardInteractionController>()?.Init(ret, interactMode);
             return ret;
         }
         void OnAdventLoadFinish()

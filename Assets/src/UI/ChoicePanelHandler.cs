@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 using static Curry.UI.ChoiceResult;
 using Curry.Explore;
+using Curry.Game;
 
 namespace Curry.UI
 {
@@ -83,10 +84,17 @@ namespace Curry.UI
         {
             if (!m_inProgress) 
             {
-                // Clear all leftover choices
-                foreach(Transform t in m_content) 
+                // Clear all leftover items
+                foreach (Transform t in m_content)
                 {
-                    Destroy(t.gameObject);
+                    if (t.TryGetComponent(out PoolableBehaviour poolable)) 
+                    {
+                        poolable.ReturnToPool();
+                    }
+                    else 
+                    {
+                        Destroy(t.gameObject);
+                    }
                 }
                 m_inProgress = true;
                 OnChoiceComplete += onFinish;

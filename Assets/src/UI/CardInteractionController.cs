@@ -13,25 +13,26 @@ namespace Curry.UI
     {
         Play = 1 << 0,
         Inspect = 1 << 1,
+        Select = 1 << 2
     }
     // Allows a card to be dragged/pointer hover/selected/inspected
     public class CardInteractionController : MonoBehaviour, IChoice,
         IPointerClickHandler, IPointerUpHandler, IPointerDownHandler, 
         IPointerEnterHandler, IPointerExitHandler
     {
-        public delegate void OnCardInspect();
+        public delegate void OnCardInspect(RectTransform cardTranform);
         AdventCard m_card = default;
         protected bool m_selected = false;
         public event OnChoose OnChosen;
         public event OnChoose OnUnchoose;
         public event OnCardInspect OnInspect;
-        public CardInteractMode InteractMode { get; protected set; } = 0;
+        public CardInteractMode InteractMode { get; protected set; }
         public object Value { get => m_card; protected set => m_card = value as AdventCard; }
         public bool Choosable { get; set; } = true;
 
         protected virtual void Start()
         {
-            if(TryGetComponent(out AdventCard card)) 
+            if (m_card == null && TryGetComponent(out AdventCard card)) 
             {
                 Init(card);
             }
@@ -55,8 +56,10 @@ namespace Curry.UI
             gameObject.GetComponent<DraggableCard>().enabled =
                 (InteractMode & CardInteractMode.Play) != 0;
         }
-        protected virtual void Init(AdventCard card, CardInteractMode mode = CardInteractMode.Inspect) 
+        public virtual void Init(AdventCard card, CardInteractMode mode = CardInteractMode.Inspect) 
         {
+            m_selected = false;
+            Choosable = true;
             m_card = card;
             SetInteractionMode(mode);
         }
@@ -81,6 +84,12 @@ namespace Curry.UI
         }
         public void OnPointerClick(PointerEventData eventData)
         {
+            bool notSelectable = (InteractMode & CardInteractMode.Select) == 0;
+            if (notSelectable) 
+            { 
+                return;
+            }
+
             if (m_selected) 
             {
                 UnChoose();
@@ -102,7 +111,7 @@ namespace Curry.UI
             if ((InteractMode & CardInteractMode.Inspect) != 0) 
             {
                 GetComponent<Animator>()?.SetBool("inspecting", true);
-
+                OnInspect?.Invoke(GetComponent<RectTransform>());
             }
         }
         public void OnPointerExit(PointerEventData eventData)
