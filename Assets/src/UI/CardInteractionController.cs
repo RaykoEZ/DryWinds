@@ -65,10 +65,9 @@ namespace Curry.UI
         }
         public void DisplayChoice(Transform parent)
         {
-            transform.SetParent(parent);
+            transform.SetParent(parent, false);
             GetComponent<Animator>()?.SetBool("selected", false);
             transform.localPosition = Vector3.zero;
-            transform.localScale = Vector3.one;
         }
         public void Choose()
         {
