@@ -12,7 +12,7 @@ namespace Curry.Util
         int m_originIndex;
         public virtual bool Droppable { get { return true; } }
         // Move one above original parent when dragging the object 
-        protected virtual Transform OnDragParent => transform.parent.parent;
+        protected virtual Transform OnDragParent => transform.parent;
         void OnEnable() 
         {
             GetComponent<CanvasGroup>().blocksRaycasts = true;
@@ -59,7 +59,7 @@ namespace Curry.Util
         void SetDragPosition(PointerEventData e)
         {
             Vector2 worldPos = e.pressEventCamera.ScreenToWorldPoint(e.position + m_anchorOffset);
-            transform.position = worldPos;
+            GetComponent<RectTransform>().position = worldPos;
         }
     }
 

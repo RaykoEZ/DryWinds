@@ -41,3 +41,9 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: CardPlay
+    uniqueID: 2978448753
+    locked: 0
+  - name: GeneralUI
+    uniqueID: 579837007
+    locked: 0
