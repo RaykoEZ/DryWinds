@@ -5,16 +5,18 @@ using UnityEngine;
 namespace Curry.Explore
 {
     [Serializable]
-    public class CooldownModule : ICooldown
+    public class CooldownModule : CardResourceModule, ICooldown
     {
         [SerializeField] protected int m_cooldownTime = default;
+        [SerializeField] protected bool m_isInitiallyOnCooldown = default;
         protected int m_current = 0;
         public bool IsOnCooldown { get; protected set; }
         public int CooldownTime { get => m_cooldownTime; set => m_cooldownTime = value; }
         public int Current { get => m_current; set => m_current = value; }
-        public virtual void Init(bool onCoolDown = false)
+        public override void Init()
         {
-            IsOnCooldown = onCoolDown;
+            IsOnCooldown = m_isInitiallyOnCooldown;
+            m_current = 0;
         }
         public void TrggerCooldown()
         {

@@ -1,36 +1,30 @@
 ﻿using Curry.Game;
 using System;
+using System.Collections;
 using UnityEngine;
 
 namespace Curry.Explore
 {
     [Serializable]
-    public class ConsumableModule : IConsumable
+    public class ConsumableModule : CardResourceModule, IConsumable
     {
         [SerializeField] protected int m_maxUses = default;
-        protected PoolableBehaviour m_consumedObject;
         protected int m_usesLeft = 0;
         public int MaxUses => m_maxUses;
         public int UsesLeft => m_usesLeft;
 
-        public void Init(PoolableBehaviour consume) 
+        public override void Init() 
         {
-            m_consumedObject = consume;
             m_usesLeft = m_maxUses;
         }
-
-        public void OnExpend()
+        public virtual IEnumerator OnExpend()
         {
-            m_consumedObject?.ReturnToPool();
+            yield return null;
         }
 
-        public void OnUse()
+        public virtual void OnUse()
         {
             m_usesLeft--;
-            if (UsesLeft <= 0) 
-            {
-                OnExpend();
-            }
         }
 
         public void SetMaxUses(int newMax)

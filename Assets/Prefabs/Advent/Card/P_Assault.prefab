@@ -321,6 +321,7 @@ GameObject:
   - component: {fileID: 4663118178239010786}
   - component: {fileID: 2704646758632120893}
   - component: {fileID: 8413242486741973287}
+  - component: {fileID: 5258714694495575149}
   m_Layer: 12
   m_Name: P_Assault
   m_TagString: Untagged
@@ -384,8 +385,11 @@ MonoBehaviour:
     Description: Deal heavy damage on target position.
     TimeCost: 5
     Type: 0
+  m_resourceModules:
+  - {fileID: 5258714694495575149}
   m_dealDamage:
     m_damage: 1
+  m_cooldown: {fileID: 5258714694495575149}
   m_targeting:
     m_targetLayer:
       serializedVersion: 2
@@ -481,6 +485,20 @@ MonoBehaviour:
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
+--- !u!114 &5258714694495575149
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5636301306242561429}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 919f5f6ba28c0324aa2adae32af97f54, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_cooldownTime: 3
+  m_isInitiallyOnCooldown: 0
 --- !u!1 &8599478079574622404
 GameObject:
   m_ObjectHideFlags: 0

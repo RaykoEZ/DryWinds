@@ -27,6 +27,7 @@ namespace Curry.Explore
     public abstract class AdventCard : PoolableBehaviour, IPoolable
     {
         [SerializeField] CardAttribute m_attribute = default;
+        [SerializeField] protected List<CardResourceModule> m_resourceModules = default;
         bool m_activatable = true;
         public int Id => $"{m_attribute.Name}/{gameObject.name}".GetHashCode();
         public string Name => m_attribute.Name;
@@ -39,6 +40,10 @@ namespace Curry.Explore
         {
             Activatable = true;
             GetComponent<CardTextHandler>()?.SetCardText(Description);
+            foreach(CardResourceModule resource in m_resourceModules) 
+            {
+                resource?.Init();
+            }
         }
         // Card Effect
         public abstract IEnumerator ActivateEffect(IPlayer user);

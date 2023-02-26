@@ -3167,6 +3167,7 @@ GameObject:
   - component: {fileID: 615583782}
   - component: {fileID: 615583781}
   - component: {fileID: 615583778}
+  - component: {fileID: 615583784}
   m_Layer: 5
   m_Name: AdventHandPanel
   m_TagString: Untagged
@@ -3428,6 +3429,19 @@ MonoBehaviour:
           m_CallState: 2
   m_playPanel: {fileID: 120921342}
   m_selection: {fileID: 1334039897}
+  m_postActivation: {fileID: 615583784}
+--- !u!114 &615583784
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 615583776}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2271663a07a50874eb0b81294f6068b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &652480100
 GameObject:
   m_ObjectHideFlags: 0

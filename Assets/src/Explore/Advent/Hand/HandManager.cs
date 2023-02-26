@@ -6,18 +6,10 @@ using UnityEngine.UI;
 using Curry.Events;
 using Curry.Util;
 using Curry.UI;
+using static UnityEngine.UIElements.UxmlAttributeDescription;
 
 namespace Curry.Explore
 {
-    public class CardExpendHandler : MonoBehaviour 
-    {
-        [SerializeField] DeckManager m_deck = default;
-        public void OnCardExpend(AdventCard card) 
-        { 
-        
-        }
-    }
-
     public delegate void OnActionStart(int timeSpent, List<IEnumerator> onActivate = null);
     // Intermediary between cards-in-hand and main play zone
     // Handles card activations
@@ -32,6 +24,7 @@ namespace Curry.Explore
         [SerializeField] CurryGameEventListener m_onDropTileSelected = default;
         [SerializeField] Image m_playPanel = default;
         [SerializeField] SelectionManager m_selection = default;
+        [SerializeField] PostCardActivationHandler m_postActivation = default;
         // The card we are dragging into a play zone
         DraggableCard m_pendingCardRef;
         protected Hand m_cardsInHand = new Hand();
@@ -93,6 +86,8 @@ namespace Curry.Explore
             OnCardLeavesHand(draggable);
             HidePlayZone();
             yield return StartCoroutine(m_cardsInHand.PlayCard(draggable, m_player));
+            // after effect activation, we spend the card
+            yield return StartCoroutine(m_postActivation.OnCardUse(card));
         }
         // When card is trying to actvated after it is dropped...
         void OnCardPlay(AdventCard card, Action onPlay, Action onCancel)

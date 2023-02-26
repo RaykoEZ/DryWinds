@@ -15,12 +15,15 @@ MonoBehaviour:
   m_attribute:
     Name: Threat Assessment
     Description: Scanning...
-    TimeCost: 1
+    TimeCost: 5
     Type: 0
+  m_resourceModules:
+  - {fileID: 475080280616173808}
   m_scan:
     m_detectionLevel: 1
     m_onScan:
       m_eventToTrigger: {fileID: 11400000, guid: a674b44ebbb4330479457ac8b0404c40, type: 2}
+  m_cooldown: {fileID: 475080280616173808}
 --- !u!1001 &5651287287403814045
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -28,6 +31,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 5258714694495575149, guid: ef1d3ab221ea8e440a5fa517863a4114, type: 3}
+      propertyPath: m_cooldownTime
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 5636301304751964453, guid: ef1d3ab221ea8e440a5fa517863a4114, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -132,3 +139,14 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 5636301306242561429, guid: ef1d3ab221ea8e440a5fa517863a4114, type: 3}
   m_PrefabInstance: {fileID: 5651287287403814045}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &475080280616173808 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5258714694495575149, guid: ef1d3ab221ea8e440a5fa517863a4114, type: 3}
+  m_PrefabInstance: {fileID: 5651287287403814045}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 24011085213001992}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 919f5f6ba28c0324aa2adae32af97f54, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
