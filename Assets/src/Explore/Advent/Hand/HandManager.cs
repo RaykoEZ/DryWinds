@@ -5,9 +5,19 @@ using UnityEngine;
 using UnityEngine.UI;
 using Curry.Events;
 using Curry.Util;
+using Curry.UI;
 
 namespace Curry.Explore
 {
+    public class CardExpendHandler : MonoBehaviour 
+    {
+        [SerializeField] DeckManager m_deck = default;
+        public void OnCardExpend(AdventCard card) 
+        { 
+        
+        }
+    }
+
     public delegate void OnActionStart(int timeSpent, List<IEnumerator> onActivate = null);
     // Intermediary between cards-in-hand and main play zone
     // Handles card activations
@@ -49,6 +59,8 @@ namespace Curry.Explore
             foreach (AdventCard card in cards)
             {
                 drag = card.GetComponent<DraggableCard>();
+                card.GetComponent<CardInteractionController>()?.
+                    SetInteractionMode(CardInteractMode.Play | CardInteractMode.Inspect);
                 cardsToAdd.Add(drag);
                 PrepareCard(drag);
             }

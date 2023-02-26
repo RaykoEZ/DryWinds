@@ -384,11 +384,13 @@ MonoBehaviour:
     Description: Deal heavy damage on target position.
     TimeCost: 5
     Type: 0
-  m_targetLayer:
-    serializedVersion: 2
-    m_Bits: 512
   m_dealDamage:
     m_damage: 1
+  m_targeting:
+    m_targetLayer:
+      serializedVersion: 2
+      m_Bits: 512
+    m_range: 1
 --- !u!225 &5636301306242561432
 CanvasGroup:
   m_ObjectHideFlags: 0

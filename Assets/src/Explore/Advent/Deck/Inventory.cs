@@ -89,10 +89,17 @@ namespace Curry.Explore
             foreach(AdventCard card in add) 
             {
                 card.transform.SetParent(transform, false);
+                card.GetComponent<CardInteractionController>()?.SetInteractionMode(CardInteractMode.Inspect);
             }
             m_cardsInStock?.AddRange(add);
             SortCardByType();
-
+        }
+        public void Add(AdventCard add) 
+        {
+            add.transform.SetParent(transform, false);
+            add.GetComponent<CardInteractionController>()?.SetInteractionMode(CardInteractMode.Inspect);
+            m_cardsInStock?.Add(add);
+            SortCardByType();
         }
         public void SortCardsByName() 
         {

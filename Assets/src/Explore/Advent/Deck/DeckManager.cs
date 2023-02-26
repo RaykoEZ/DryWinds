@@ -23,7 +23,7 @@ namespace Curry.Explore
         {
             m_adventDb.Init(OnAdventLoadFinish);
         }
-
+        // Choosing cards to add to hand, from inventory.
         public void ChooseToAddFromInventory(ChoiceConditions conditions, Predicate<AdventCard> cardPoolFilter = null, Action onChosen = null) 
         {
             IReadOnlyList<AdventCard> cardPool = m_inventory.FilterInventory(cardPoolFilter);
@@ -35,6 +35,7 @@ namespace Curry.Explore
             };
             m_prompter.MakeChoice(conditions, choices, onChosenCallback);
         }
+        // Instantiate a clone of cards for selection and inspection
         List<IChoice> CloneCardChoice(List<AdventCard> cardSource) 
         {
             List<AdventCard> copies = new List<AdventCard>();
@@ -50,6 +51,7 @@ namespace Curry.Explore
             List<IChoice> ret = ChoiceUtil.ChooseCards(copies);
             return ret;
         }
+        // When player chose cards to add...
         void OnCardChosen(ChoiceResult result) 
         {
             if (result.Status == ChoiceResult.ChoiceStatus.Confirmed)
@@ -62,10 +64,6 @@ namespace Curry.Explore
                     {
                         CardInteractionController sourceCardController = 
                             toTake.GetComponent<CardInteractionController>();
-                        // Let card to be played/dragged and inspected
-                        sourceCardController?.SetInteractionMode(
-                            CardInteractMode.Inspect |
-                            CardInteractMode.Play);
                         sourceCardController?.DisplayChoice(m_hand.transform);
                         cards.Add(toTake);
                     }
@@ -83,7 +81,6 @@ namespace Curry.Explore
                 }
             }
         }
-
         // randomly add cards from inventory to hand, filter method for limiting which type of cards to get/ignore 
         public void AddRandomFromInventory(int numToGet, Predicate<AdventCard> filter = null)
         {
@@ -103,12 +100,14 @@ namespace Curry.Explore
             List<AdventCard> cardInstances = InstantiateCards(add);
             m_inventory.AddRange(cardInstances);
         }
+        public void MoveToInventory(AdventCard move) 
+        {
+            m_inventory.Add(move);
+        }
         // Instantiate cards and trigger game events OnCardDraw
         public void AddToHand(List<AdventCard> cardsToDraw)
         { 
-            List<AdventCard> cardInstances = InstantiateCards(
-                cardsToDraw,
-                CardInteractMode.Play | CardInteractMode.Inspect);
+            List<AdventCard> cardInstances = InstantiateCards(cardsToDraw);
             m_hand.AddCardsToHand(cardInstances);
         }
         List<AdventCard> InstantiateCards(List<AdventCard> refs, CardInteractMode interactMode = CardInteractMode.Inspect) 
