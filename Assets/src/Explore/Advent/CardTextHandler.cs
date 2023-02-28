@@ -6,9 +6,10 @@ namespace Curry.Explore
     public class CardTextHandler : MonoBehaviour 
     {
         [SerializeField] TextMeshProUGUI m_nameField = default;
+        [SerializeField] TextMeshProUGUI m_descriptionField = default;
         public void SetCardText(string description) 
         {
-            m_nameField.text = description;
+            m_descriptionField.text = description;
         } 
         public void SetCardName(string name) 
         {

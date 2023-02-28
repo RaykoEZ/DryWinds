@@ -29,7 +29,6 @@ namespace Curry.UI
         public CardInteractMode InteractMode { get; protected set; }
         public object Value { get => m_card; protected set => m_card = value as AdventCard; }
         public bool Choosable { get; set; } = true;
-
         protected virtual void Start()
         {
             if (m_card == null && TryGetComponent(out AdventCard card)) 
@@ -72,13 +71,16 @@ namespace Curry.UI
         public void Choose()
         {
             m_selected = true;
-            GetComponent<Animator>()?.SetBool("selected", Choosable);
+            Animator anim = GetComponent<Animator>();
+            anim?.SetBool("selected", Choosable);
+
             OnChosen?.Invoke(this);
         }
         public void UnChoose()
         {
             m_selected = false;
-            GetComponent<Animator>()?.SetBool("selected", false);
+            Animator anim = GetComponent<Animator>();
+            anim?.SetBool("selected", false);
             OnUnchoose?.Invoke(this);
         }
         public void OnPointerClick(PointerEventData eventData)
@@ -88,7 +90,6 @@ namespace Curry.UI
             { 
                 return;
             }
-
             if (m_selected) 
             {
                 UnChoose();
@@ -106,17 +107,21 @@ namespace Curry.UI
         }
         public void OnPointerEnter(PointerEventData eventData)
         {
-            GetComponent<Animator>()?.SetBool("selected", Choosable);
+            Animator anim = GetComponent<Animator>();
+            anim?.SetBool("selected", Choosable);
             if ((InteractMode & CardInteractMode.Inspect) != 0) 
             {
-                GetComponent<Animator>()?.SetBool("inspecting", true);
+                anim?.SetBool("inspecting", true);
+                anim?.SetBool("detail", true);
                 OnInspect?.Invoke(GetComponent<RectTransform>());
             }
         }
         public void OnPointerExit(PointerEventData eventData)
         {
-            GetComponent<Animator>()?.SetBool("selected", m_selected);
-            GetComponent<Animator>()?.SetBool("inspecting", false);
+            Animator anim = GetComponent<Animator>();
+            anim?.SetBool("selected", m_selected);
+            anim?.SetBool("inspecting", false);
+            anim?.SetBool("detail", false);
         }
 
     }
