@@ -35,7 +35,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_maxUses: 1
-  m_consumedObject: {fileID: 5400319584234665114}
 --- !u!1001 &8988240515545042952
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -139,18 +138,6 @@ PrefabInstance:
       propertyPath: m_card
       value: 
       objectReference: {fileID: 5400319584234665114}
-    - target: {fileID: 6599436218162960579, guid: ef1d3ab221ea8e440a5fa517863a4114, type: 3}
-      propertyPath: m_Color.b
-      value: 0.5331023
-      objectReference: {fileID: 0}
-    - target: {fileID: 6599436218162960579, guid: ef1d3ab221ea8e440a5fa517863a4114, type: 3}
-      propertyPath: m_Color.g
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6599436218162960579, guid: ef1d3ab221ea8e440a5fa517863a4114, type: 3}
-      propertyPath: m_Color.r
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 5636301306242561433, guid: ef1d3ab221ea8e440a5fa517863a4114, type: 3}
     - {fileID: 5258714694495575149, guid: ef1d3ab221ea8e440a5fa517863a4114, type: 3}

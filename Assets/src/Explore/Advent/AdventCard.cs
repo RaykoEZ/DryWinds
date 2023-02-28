@@ -39,7 +39,7 @@ namespace Curry.Explore
         public override void Prepare() 
         {
             Activatable = true;
-            GetComponent<CardTextHandler>()?.SetCardText(Description);
+            GetComponent<CardTextHandler>()?.SetCardName(Name);
             foreach(CardResourceModule resource in m_resourceModules) 
             {
                 resource?.Init();
