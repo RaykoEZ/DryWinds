@@ -16,25 +16,11 @@ MonoBehaviour:
     Name: Repair Kit
     Description: Recover 2 HP
     TimeCost: 1
-    Type: 0
+    Type: 2
   m_resourceModules:
-  - {fileID: 6930551307139954645}
+  - {fileID: 0}
   m_healing:
     m_healAmount: 2
-  m_consume: {fileID: 6930551307139954645}
---- !u!114 &6930551307139954645
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3640191682562909597}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4c28e9c4c85aa794393baf6bf1b5a8e9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_maxUses: 1
 --- !u!1001 &8988240515545042952
 PrefabInstance:
   m_ObjectHideFlags: 0

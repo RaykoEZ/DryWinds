@@ -39,9 +39,21 @@ namespace Curry.Explore
         public override void Prepare() 
         {
             Activatable = true;
-            var text = GetComponent<CardTextHandler>();
-            text?.SetCardName(Name);
-            text?.SetCardText(Description);
+            var content = GetComponent<CardContentSetter>();
+            content?.SetCardName(Name);
+            content?.SetCardText(Description);
+            content?.SetCost(TimeCost.ToString());
+            content?.SetCardType(Type);
+            if (this is ICooldown cd) 
+            {
+                content?.SetCooldown(cd.CooldownTime.ToString());
+            }
+            else 
+            {
+                content?.SetCooldown("-");
+            }
+            bool isConsume = this is IConsumable;
+            content?.SetConsumableIcon(isConsume);
             foreach (CardResourceModule resource in m_resourceModules) 
             {
                 resource?.Init();

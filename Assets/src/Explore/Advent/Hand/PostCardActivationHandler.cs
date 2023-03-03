@@ -26,13 +26,9 @@ namespace Curry.Explore
         }
         protected virtual IEnumerator HandleConsumable(AdventCard used, IConsumable consume)
         {
-            consume?.OnUse();
-            bool isExpended = consume.UsesLeft <= 0;
-            if (isExpended)
-            {
-                yield return StartCoroutine(consume.OnExpend());
-                used?.ReturnToPool();
-            }
+            yield return consume?.OnExpend();
+            yield return new WaitForEndOfFrame();
+            used?.ReturnToPool();
         }
     }
 }
