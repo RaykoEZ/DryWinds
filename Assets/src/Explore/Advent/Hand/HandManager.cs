@@ -6,7 +6,6 @@ using UnityEngine.UI;
 using Curry.Events;
 using Curry.Util;
 using Curry.UI;
-using static UnityEngine.UIElements.UxmlAttributeDescription;
 
 namespace Curry.Explore
 {
