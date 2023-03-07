@@ -78,7 +78,7 @@ namespace Curry.Explore
         public override void OnDrag(PointerEventData eventData)
         {
             // Do not move when drag is held, if the card needs to use a target guide
-            if (!DoesCardNeedTarget) 
+            if (!DoesCardNeedTarget && Draggable) 
             {
                 base.OnDrag(eventData);
             }
@@ -88,7 +88,7 @@ namespace Curry.Explore
             ReturnToBeforeDrag();
         }
 
-        protected override void ReturnToBeforeDrag()
+        public override void ReturnToBeforeDrag()
         {
             base.ReturnToBeforeDrag();
             OnReturn?.Invoke(this);

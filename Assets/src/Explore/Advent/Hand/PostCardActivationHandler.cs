@@ -27,6 +27,10 @@ namespace Curry.Explore
             {
                 yield return StartCoroutine(HandleConsumable(used, consume));
             }
+            else 
+            {
+                used.GetComponent<DraggableCard>()?.ReturnToBeforeDrag();
+            }
             yield return new WaitForEndOfFrame();
         }
         protected void OnCooldownTick(int spent, int timeLeft) 

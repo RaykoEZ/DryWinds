@@ -52,7 +52,7 @@ namespace Curry.Util
             transform.SetParent(parent, false);
             transform.SetSiblingIndex(siblingIndex);
         }
-        protected virtual void ReturnToBeforeDrag() 
+        public virtual void ReturnToBeforeDrag() 
         {
             DropObject(m_origin, m_originIndex);
         }
