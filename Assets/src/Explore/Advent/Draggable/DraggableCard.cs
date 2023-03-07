@@ -45,19 +45,23 @@ namespace Curry.Explore
             }
         }
         public bool DoesCardNeedTarget { get { return Card is ITargetsPosition; } }
+        public bool Draggable { get; set; } = true;
         protected override Transform OnDragParent
         {
             get { return DoesCardNeedTarget ? transform.parent : base.OnDragParent; }
         }
         public AdventCard Card { get { return m_card; } }
-
+        
         public override void OnBeginDrag(PointerEventData eventData)
         {
-            base.OnBeginDrag(eventData);
-            EventInfo info = new EventInfo();
-            m_ui.DragTrigger?.TriggerEvent(info);
-            m_fx.DragTrigger?.Invoke();
-            OnDragBegin?.Invoke(this);
+            if (Draggable) 
+            {
+                base.OnBeginDrag(eventData);
+                EventInfo info = new EventInfo();
+                m_ui.DragTrigger?.TriggerEvent(info);
+                m_fx.DragTrigger?.Invoke();
+                OnDragBegin?.Invoke(this);
+            }
         }
 
         public override void OnEndDrag(PointerEventData eventData)

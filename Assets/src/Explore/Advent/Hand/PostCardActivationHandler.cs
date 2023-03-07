@@ -4,20 +4,23 @@ using UnityEngine;
 
 namespace Curry.Explore
 {
+    public delegate void OnCardReturn(List<AdventCard> toReturn);
     // Triggers card behaviours when they are used (cooldown, consumable etc)
     public class PostCardActivationHandler : MonoBehaviour 
     {
-        [SerializeField] TimeManager m_time = default;
-        List<ICooldown> m_cooldowns = new List<ICooldown>();
-        void Start()
+        protected TimeManager m_time;
+        protected List<AdventCard> m_cooldowns = new List<AdventCard>();
+        public event OnCardReturn OnCardReturn;
+        public void Init(TimeManager time)
         {
+            m_time = time;
             m_time.OnTimeSpent += OnCooldownTick;
         }
         public IEnumerator OnCardUse(AdventCard used) 
         {
             if (used is ICooldown cd) 
             {
-                yield return StartCoroutine(HandleCooldown(cd));
+                yield return StartCoroutine(HandleCooldown(cd, used));
             }
             // Consumable may deallocate card when it runs out of uses
             if (used is IConsumable consume) 
@@ -28,14 +31,27 @@ namespace Curry.Explore
         }
         protected void OnCooldownTick(int spent, int timeLeft) 
         {
-            foreach (ICooldown cd in m_cooldowns) 
+            List<AdventCard> cardsToReturn = new List<AdventCard>();
+            bool isStillOnCooldown;
+            ICooldown cd;
+            foreach (AdventCard card in m_cooldowns) 
             {
-                cd.Tick(spent, out _);
+                cd = card as ICooldown;
+                cd.Tick(spent, out isStillOnCooldown);
+                if (!isStillOnCooldown) 
+                {
+                    cardsToReturn.Add(card);
+                }
             }
+            foreach(AdventCard card in cardsToReturn) 
+            {
+                m_cooldowns.Remove(card);
+            }
+            OnCardReturn?.Invoke(cardsToReturn);
         }
-        protected virtual IEnumerator HandleCooldown(ICooldown cd) 
+        protected virtual IEnumerator HandleCooldown(ICooldown cd, AdventCard card) 
         {
-            m_cooldowns.Add(cd);
+            m_cooldowns.Add(card);
             cd?.TrggerCooldown();
             yield return null;
         }
@@ -43,9 +59,9 @@ namespace Curry.Explore
         {
             yield return consume?.OnExpend();
             yield return new WaitForEndOfFrame();
-            if (consume is ICooldown cd) 
+            if (consume is ICooldown) 
             { 
-                m_cooldowns.Remove(cd); 
+                m_cooldowns.Remove(used); 
             }
             used?.ReturnToPool();
         }

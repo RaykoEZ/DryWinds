@@ -37,7 +37,6 @@ namespace Curry.Explore
         {
             OnGameStateTransition?.Invoke(NextState);
         }
-
     }
 
 }

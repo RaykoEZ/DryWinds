@@ -1,6 +1,7 @@
 ﻿using Curry.Game;
 using Curry.UI;
 using System;
+using TMPro;
 using UnityEngine;
 
 namespace Curry.Explore
@@ -29,14 +30,15 @@ namespace Curry.Explore
             m_current = m_cooldownTime;
             IsOnCooldown = true;
             CardInteractMode disablePlay = Interaction.InteractMode;
-            disablePlay &= ~CardInteractMode.Play;
+            disablePlay &= ~CardInteractMode.Play & CardInteractMode.Inspect;
             Interaction.SetInteractionMode(disablePlay);
             AnimateCooldown();
         }
         public void Tick(int dt, out bool isOnCoolDown)
         {
             m_current -= dt;
-            isOnCoolDown = m_current <= 0;
+            isOnCoolDown = m_current > 0;
+            IsOnCooldown = isOnCoolDown;
             AnimateCooldown();
             // Enable play when off cooldown
             if (!isOnCoolDown) 
@@ -48,7 +50,7 @@ namespace Curry.Explore
         }
         protected virtual void AnimateCooldown() 
         {
-            CooldownAnim?.OnCooldown(IsOnCooldown);
+            CooldownAnim?.OnCooldown(Current, IsOnCooldown);
         }
     }
 }

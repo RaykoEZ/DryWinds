@@ -52,7 +52,9 @@ namespace Curry.UI
         public virtual void SetInteractionMode(CardInteractMode mode) 
         {
             InteractMode = mode;
-            gameObject.GetComponent<DraggableCard>().enabled =
+            DraggableCard drag = GetComponent<DraggableCard>();
+            drag.enabled = (InteractMode & CardInteractMode.Play | CardInteractMode.Inspect) != 0;
+            drag.Draggable =
                 (InteractMode & CardInteractMode.Play) != 0;
         }
         public virtual void Init(AdventCard card, CardInteractMode mode = CardInteractMode.Inspect) 

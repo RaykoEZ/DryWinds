@@ -35,6 +35,8 @@ namespace Curry.Explore
             m_onDropTileSelected?.Init();
             m_onCardDraw?.Init();
             m_onDiscardHand?.Init();
+            m_postActivation.Init(m_time);
+            m_postActivation.OnCardReturn += AddCardsToHand;
             // get starting hand
             DraggableCard[] cards = m_cardHolderRoot.GetComponentsInChildren<DraggableCard>();
             foreach (DraggableCard card in cards)
