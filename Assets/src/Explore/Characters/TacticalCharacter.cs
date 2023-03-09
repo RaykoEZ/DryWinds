@@ -6,10 +6,13 @@ namespace Curry.Explore
 {
     public abstract class TacticalCharacter : PoolableBehaviour, ICharacter
     {
-        [SerializeField] string m_name = default;
+        [SerializeField] protected string m_name = default;
         [Range(1, 100)]
-        [SerializeField] int m_maxHp = default;
+        [SerializeField] protected int m_maxHp = default;
+        [Range(0, 3)]
+        [SerializeField] protected int m_moveRange = default;
         protected int m_currentHp = 1;
+        protected int m_currentmoveRange = 1;
         // A list of layer names to check when we intend to move towards a position 
         static readonly string[] c_occupanceCheckFilter = new string[]
         {
@@ -31,10 +34,13 @@ namespace Curry.Explore
             protected set { m_currentHp = Mathf.Clamp(value, 0, MaxHp); } 
         }
 
+        public int MoveRange { get { return m_currentmoveRange; } protected set { m_currentmoveRange = Mathf.Clamp(value, 0, 3); } }
+
         public event OnMovementBlocked OnBlocked;
         public override void Prepare()
         {
             CurrentHp = MaxHp;
+            MoveRange = m_moveRange;
         }
         public abstract void Hide();
         public virtual void Move(Vector2Int direction)

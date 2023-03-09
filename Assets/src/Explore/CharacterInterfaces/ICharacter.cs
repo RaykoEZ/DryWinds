@@ -8,6 +8,7 @@ namespace Curry.Explore
         string Name { get; }
         int MaxHp { get; }
         int CurrentHp { get; }
+        int MoveRange { get; }
         Vector3 WorldPosition { get; }
         ObjectVisibility Visibility { get; }
         event OnMovementBlocked OnBlocked;

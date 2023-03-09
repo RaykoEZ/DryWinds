@@ -41,6 +41,7 @@ namespace Curry.Explore
         public string Name => "Reinforcement";
         public int MaxHp => 1;
         public int CurrentHp => 1;
+        public int MoveRange => 0;
         public Vector3 WorldPosition => transform.position;
         public ObjectVisibility Visibility => ObjectVisibility.Visible;
         protected virtual bool CanSpawn => m_countdownTimer >= Countdown;

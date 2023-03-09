@@ -18,4 +18,12 @@ namespace Curry.Explore
             target.Move(m_pushPower * push);
         }
     }
+    [Serializable]
+    public class MoveTarget : PropertyAttribute, ICharacterEffectModule
+    {
+        public void ApplyEffect(ICharacter target, ICharacter user)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }
