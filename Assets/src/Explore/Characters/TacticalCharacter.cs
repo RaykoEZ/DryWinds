@@ -1,6 +1,7 @@
 ﻿using Curry.Game;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.AI;
 
 namespace Curry.Explore
 {
@@ -11,16 +12,10 @@ namespace Curry.Explore
         [SerializeField] protected int m_maxHp = default;
         [Range(0, 3)]
         [SerializeField] protected int m_moveRange = default;
+        [SerializeField] protected CharacterNavigator m_navigator = default;
         protected int m_currentHp = 1;
         protected int m_currentmoveRange = 1;
-        // A list of layer names to check when we intend to move towards a position 
-        static readonly string[] c_occupanceCheckFilter = new string[]
-        {
-            "Obstacles",
-            "Enemies",
-            "Player"
-        };
-        protected static LayerMask OccupanceContactFilter => LayerMask.GetMask(c_occupanceCheckFilter);
+
         public virtual ObjectVisibility Visibility { get; protected set; } = ObjectVisibility.Visible;
         public Vector3 WorldPosition => transform.position;
         public string Name => m_name;
@@ -43,41 +38,16 @@ namespace Curry.Explore
             MoveRange = m_moveRange;
         }
         public abstract void Hide();
-        public virtual void Move(Vector2Int direction)
+        public virtual void Move(Vector3 target)
         {
-            Vector3 target = transform.position + new Vector3(direction.x, direction.y, 0f);
-            RaycastHit2D hit = Physics2D.CircleCast(
-                    target,
-                    0.1f,
-                    Vector2.zero,
-                    distance: 0f,
-                    OccupanceContactFilter);
-            // Check for walls and occupying entities
-            if (!hit)
-            {
-                StartCoroutine(Move_Internal(target));
-            }
-            else if(hit.rigidbody.TryGetComponent(out IStepOnTrigger steppedOn))
-            {
-                StartCoroutine(Move_Internal(target));
-                steppedOn.Trigger(this);
-            }
-            else 
-            {
-                OnMovementBlocked(hit);
-            }
+            target.z = 0f;
+            StartCoroutine(Move_Internal(target));
         }
-        void OnMovementBlocked(RaycastHit2D hit) 
+        public void OnMovementBlocked(ICharacter blocking) 
         {
-            Rigidbody2D rb = hit.rigidbody;
-            if(rb == null)
-            {
-                OnBlocked?.Invoke(hit.point);
-            }
-            else if (rb.TryGetComponent(out ICharacter character)) 
-            {
-                character.Reveal();
-            }
+            m_navigator.ToggleMovement(isStopped: true);
+            Reveal();
+            blocking.Reveal();          
         }
 
         public virtual void OnDefeated()
@@ -92,13 +62,14 @@ namespace Curry.Explore
         public abstract void Reveal();
         public abstract void TakeHit(int hitVal);
         protected virtual IEnumerator Move_Internal(Vector3 target)
-        {          
+        {
+            yield return StartCoroutine(m_navigator.MoveTo(target));
             float duration = 1f;
             float timeElapsed = 0f;
             while (timeElapsed <= duration)
             {
                 timeElapsed += Time.deltaTime;
-                transform.position = Vector3.Lerp(transform.position, target, timeElapsed / duration);
+                transform.position = Vector3.Lerp(transform.position, m_navigator.AgentPosition, timeElapsed / duration);
                 yield return null;
             }
             OnMoveFinish();

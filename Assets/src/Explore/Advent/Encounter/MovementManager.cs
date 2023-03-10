@@ -60,9 +60,9 @@ namespace Curry.Explore
         {
             if (info == null) return;
 
-            if (info is PlayerInfo player)
+            if (info is CharacterInfo player)
             {
-                SpecialEvents(player.PlayerStats.WorldPosition);
+                SpecialEvents(player.Character.WorldPosition);
                 OnFinish?.Invoke();
             }
         }

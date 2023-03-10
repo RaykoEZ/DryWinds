@@ -30,6 +30,14 @@ namespace Curry.Explore
             get { return m_current; }
             protected set { m_current = value; }
         }
+
+        protected void OnTriggerEnter2D(Collider2D collision)
+        {
+            if (collision.gameObject.TryGetComponent(out ICharacter block)) 
+            {
+                block?.OnMovementBlocked(this);
+            }
+        }
         public override void Reveal()
         {
             m_current.Visibility = ObjectVisibility.Visible;

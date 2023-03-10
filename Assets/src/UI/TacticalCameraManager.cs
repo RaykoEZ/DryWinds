@@ -18,9 +18,9 @@ namespace Curry.UI
             {
                 FocusCamera(pos.WorldPosition);
             }
-            else if(info is PlayerInfo player)
+            else if(info is Explore.CharacterInfo player)
             {
-                FocusCamera(player.PlayerStats.WorldPosition);
+                FocusCamera(player.Character.WorldPosition);
             }
         }
     }

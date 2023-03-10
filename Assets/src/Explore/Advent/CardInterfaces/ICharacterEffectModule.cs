@@ -9,6 +9,10 @@ namespace Curry.Explore
     {
         void ApplyEffect(ICharacter target, ICharacter user);
     }
+    public interface IUserEffectModule 
+    {
+        void ApplyEffect(ICharacter user);
+    }
     public interface ITileEffectModule
     {
         void ApplyEffect(Vector3 targetTileWorldPos);

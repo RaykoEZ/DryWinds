@@ -18,21 +18,12 @@ namespace Curry.Explore
             OriginWorldPosition = origin;
         }
     }
-    public class PlayerInfo : EventInfo
-    {
-        public AdventurerStats PlayerStats { get; protected set; }
-        public PlayerInfo(AdventurerStats stats) 
-        {
-            PlayerStats = stats;
-        }
-    }
     #endregion
     // A basic player character for adventure mode
     public class Adventurer : TacticalCharacter, IPlayer
     {
         #region Serialize Fields
         [SerializeField] Animator m_anim = default;
-        [SerializeField] AdventurerStats m_startingStats = default;
         [SerializeField] CurryGameEventListener m_onMove = default;
         // Pings player status to trigger card draw events etc
         [SerializeField] CurryGameEventTrigger m_onPlayerPing = default;
@@ -40,15 +31,11 @@ namespace Curry.Explore
         [SerializeField] CurryGameEventTrigger m_moveFinish = default;
         #endregion
         IRescue m_rescuee;
-
         #region IPlayer interface impl
         public event OnTakeDamage TakeDamage;
         public event OnPlayerUpdate OnDefeat;
         public event OnPlayerUpdate OnReveal;
         public event OnPlayerUpdate OnHide;
-        protected AdventurerStats m_current;
-        public AdventurerStats StartingStats { get { return new AdventurerStats(m_startingStats); } }
-        public AdventurerStats CurrentStats { get { return new AdventurerStats(m_current); } }
         public override void Reveal()
         {
             OnReveal?.Invoke(this);
@@ -95,14 +82,12 @@ namespace Curry.Explore
             if (info is PositionInfo select) 
             {
                 target = select.WorldPosition;
-                Vector3 diff = target - transform.position;
-                Vector2Int dir = new Vector2Int((int)diff.x, (int)diff.y);
-                Move(dir);
+                Move(target);
             }
         }
         protected override void OnMoveFinish()
         {
-            PlayerInfo info = new PlayerInfo(new AdventurerStats(m_startingStats));
+            CharacterInfo info = new CharacterInfo(this);
             m_moveFinish?.TriggerEvent(info);
             m_onPlayerPing?.TriggerEvent(info);
             m_onScout?.TriggerEvent(info);
@@ -116,13 +101,12 @@ namespace Curry.Explore
         protected override void Awake()
         {
             base.Awake();
-            m_current = new AdventurerStats(StartingStats);
             m_onMove?.Init();
         }
         void Start()
         {
             // Ping once at start
-            PlayerInfo info = new PlayerInfo(new AdventurerStats(CurrentStats));
+            CharacterInfo info = new CharacterInfo(this);
             m_onScout?.TriggerEvent(info);
         }
 

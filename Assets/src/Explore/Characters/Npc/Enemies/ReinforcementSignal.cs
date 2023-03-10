@@ -62,11 +62,14 @@ namespace Curry.Explore
         {
             ReturnToPool();
         }
+        public void OnMovementBlocked(ICharacter blocking)
+        {
+        }
         public void Hide()
         {
             OnHide?.Invoke(this);
         }
-        public void Move(Vector2Int direction)
+        public void Move(Vector3 target)
         {
             OnBlocked?.Invoke(transform.position);
         }
@@ -105,14 +108,11 @@ namespace Curry.Explore
                 Debug.LogWarning("reinforcement failed, spawn reference object is null.");
                 return;
             }
-            // check if any characters are on top of spawner, do not spawn if true
-            Collider2D hit = Physics2D.OverlapCircle(transform.position, 0.1f, m_spawn.DoNotSpawnOn);
-            if (hit.TryGetComponent(out IStepOnTrigger _)) 
-            {
-                Debug.Log("Spawn reinforcement");
-                m_countdownTimer = 0;
-                m_spawn.ApplyEffect(transform.position, SpawnRef);
-            }
+
+            Debug.Log("Spawn reinforcement");
+            m_countdownTimer = 0;
+            m_spawn.ApplyEffect(transform.position, SpawnRef);
+            
         }
         // When a character steps on this object before reinforcement arrives,
         // destrpy this signal (canceling the reinforcement).
@@ -120,6 +120,13 @@ namespace Curry.Explore
         {
             m_countdownTimer = 0;
             OnDefeat?.Invoke(this);
+        }
+        protected void OnTriggerEnter2D(Collider2D collision)
+        {
+            if (collision.TryGetComponent(out ICharacter character)) 
+            {
+                Trigger(character);
+            }
         }
     }
 }

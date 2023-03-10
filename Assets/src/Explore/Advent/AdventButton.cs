@@ -16,7 +16,6 @@ namespace Curry.Explore
         public void PromptAdventurePosition() 
         {
             if (!Interactable) { return; }
-
             TileSelectionInfo info = new TileSelectionInfo(
                 TileSelectionMode.Adventure,
                 m_player,

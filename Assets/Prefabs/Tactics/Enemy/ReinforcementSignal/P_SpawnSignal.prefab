@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7926508612109389500}
   - component: {fileID: 4584662210577559458}
   - component: {fileID: 6254313582630558541}
-  m_Layer: 9
+  m_Layer: 15
   m_Name: P_Countdown
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -183,7 +183,7 @@ GameObject:
   - component: {fileID: 914813974101084262}
   - component: {fileID: 7365727130124127263}
   - component: {fileID: 6307581243402107613}
-  m_Layer: 9
+  m_Layer: 15
   m_Name: P_SpawnSignal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
