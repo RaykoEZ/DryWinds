@@ -7,7 +7,7 @@ using System.Collections.Generic;
 namespace Curry.Explore
 {
     public delegate void OnAdventureFinish();
-    public class MovementManager: MonoBehaviour 
+    public class MovementManager: SceneInterruptBehaviour 
     {
         [SerializeField] protected TimeManager m_time = default;
         [SerializeField] protected Tilemap m_terrain = default;
@@ -43,6 +43,7 @@ namespace Curry.Explore
             {
                 return;
             }
+            StartInterrupt();
             WorldTile tile = WorldTile.GetTile<WorldTile>(m_terrain, worldPos);
             if (tile != null && m_time.TrySpendTime(tile.Difficulty))
             {
@@ -52,6 +53,7 @@ namespace Curry.Explore
             }
             else
             {
+                EndInterrupt();
                 Debug.Log("Unable to move there.");
             }
         }

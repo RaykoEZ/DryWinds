@@ -22,22 +22,21 @@ namespace Curry.Explore
         }
         public override void OnEnter(Phase incomingState)
         {
-            EndInterrupt();
             Evaluate();
         }
         public override void Pause()
         {
-            StartInterrupt();
             m_turnEnd.SetInteractable(false);
         }
         public override void Resume()
         {
-            EndInterrupt();
+            Debug.Log("asd");
             m_turnEnd.SetInteractable(true);
         }
 
         protected override IEnumerator Evaluate_Internal()
         {
+            Debug.Log("asd");
             m_onTurnStart?.TriggerEvent(new EventInfo());
             m_turnEnd.SetInteractable(true);
             yield return null;
