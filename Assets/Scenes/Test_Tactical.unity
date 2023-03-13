@@ -590,6 +590,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_displayName: 
   m_playerMovement: {fileID: 1190344612}
+  m_encounter: {fileID: 0}
   m_enemy: {fileID: 2096668154}
   m_cardPlay: {fileID: 615583783}
 --- !u!1 &75294243
@@ -1343,23 +1344,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_db: {fileID: 11400000, guid: b3db6354a7bc2cd42aaa93ddfa672509, type: 2}
-  m_onEncounter:
-    m_eventToListen: {fileID: 11400000, guid: 724cd6c8a1f12224e95d2100fcc18eb5, type: 2}
-    m_responses:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 247824187}
-          m_TargetAssemblyTypeName: Curry.Explore.EncounterManager, Assembly-CSharp
-          m_MethodName: OnEncounter
-          m_Mode: 0
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
   m_ui: {fileID: 452360001}
   m_gameState: {fileID: 1463269530}
 --- !u!1 &262497676
@@ -5086,6 +5070,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38cbe3e11ee59ab41a143877af947714, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_player: {fileID: 1488958116}
+  m_encounter: {fileID: 247824187}
   m_time: {fileID: 81830746}
   m_terrain: {fileID: 1252504617}
   m_locations: {fileID: 1285027077}
@@ -6687,7 +6673,6 @@ MonoBehaviour:
     m_preLoadInterrupt:
     - {fileID: 2571672767850274779}
     - {fileID: 1086930282}
-    - {fileID: 247824187}
     - {fileID: 1190344612}
 --- !u!1 &1759132668
 GameObject:

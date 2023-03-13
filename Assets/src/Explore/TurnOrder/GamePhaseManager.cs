@@ -79,6 +79,11 @@ namespace Curry.Explore
                 m_phaseStack.Push(nextPhase);
                 CurrentPhase.OnGameStateTransition += OnStateTransition;
                 CurrentPhase?.OnEnter(m_previous);
+                // Enable player interaction, if we are back to action phase
+                if (CurrentPhase.GetType() == typeof(PlayerAction))
+                {
+                    EndInterrupt();
+                }
             };
             if (string.IsNullOrWhiteSpace(nextPhase.Name)) 
             {

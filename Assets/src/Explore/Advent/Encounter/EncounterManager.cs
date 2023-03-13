@@ -15,22 +15,25 @@ namespace Curry.Explore
             EncounterId = id;
         }
     }
-    public class EncounterManager : SceneInterruptBehaviour
+    public delegate void OnEncounterFinish();
+    public class EncounterManager : MonoBehaviour
     {
         [SerializeField] protected EncounterDataBase m_db = default;
-        [SerializeField] protected CurryGameEventListener m_onEncounter = default;
         [SerializeField] protected EncounterUIHandler m_ui = default;
         [SerializeField] protected GameStateManager m_gameState = default;
-        void Awake()
+        public event OnEncounterFinish OnEncounterFinished;
+        void Start()
         {
-            m_onEncounter?.Init();
-            m_ui.OnEncounterFinished += EndInterrupt;
+            m_ui.OnEncounterFinished += OnFinish;
         }
-        public void OnEncounter(EventInfo info)
+        void OnFinish() 
         {
-            if (info is EncounterInfo e && m_db.TryGetDetail(e.EncounterId, out EncounterDetail detail))
+            OnEncounterFinished?.Invoke();
+        }
+        public void OnEncounter(int encounterId)
+        {
+            if (m_db.TryGetDetail(encounterId, out EncounterDetail detail))
             {
-                StartInterrupt();
                 m_ui.BeginEncounter(detail, m_gameState.GetCurrent());
             }
         }

@@ -30,13 +30,11 @@ namespace Curry.Explore
         }
         public override void Resume()
         {
-            Debug.Log("asd");
             m_turnEnd.SetInteractable(true);
         }
 
         protected override IEnumerator Evaluate_Internal()
         {
-            Debug.Log("asd");
             m_onTurnStart?.TriggerEvent(new EventInfo());
             m_turnEnd.SetInteractable(true);
             yield return null;

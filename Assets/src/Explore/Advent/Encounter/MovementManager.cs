@@ -3,12 +3,16 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 using Curry.Events;
 using System.Collections.Generic;
+using Curry.Game;
+using System;
 
 namespace Curry.Explore
 {
     public delegate void OnAdventureFinish();
     public class MovementManager: SceneInterruptBehaviour 
     {
+        [SerializeField] protected Adventurer m_player = default;
+        [SerializeField] protected EncounterManager m_encounter = default;
         [SerializeField] protected TimeManager m_time = default;
         [SerializeField] protected Tilemap m_terrain = default;
         [SerializeField] protected Tilemap m_locations = default;
@@ -18,10 +22,17 @@ namespace Curry.Explore
         [SerializeField] protected CurryGameEventTrigger m_onAdventureMove = default;
         public event OnActionStart OnStart;
         public event OnAdventureFinish OnFinish;
-        void Awake()
+        bool m_movementInProgress = false;
+        void Start()
         {
             m_onAdventure?.Init();
             m_onPlayerMoved?.Init();
+            m_player.OnMoveFinished += OnPlayerMovementFinish;
+        }
+
+        void OnPlayerMovementFinish(IPlayer player) 
+        {
+            m_movementInProgress = false;
         }
         public void Adventure(EventInfo info)
         {
@@ -47,7 +58,10 @@ namespace Curry.Explore
             WorldTile tile = WorldTile.GetTile<WorldTile>(m_terrain, worldPos);
             if (tile != null && m_time.TrySpendTime(tile.Difficulty))
             {
-                List<IEnumerator> action = new List<IEnumerator> { StartAdventure(worldPos) };
+                List<IEnumerator> action = new List<IEnumerator>
+                {
+                    StartAdventure(worldPos)
+                };
                 // Trigger player to move to selected tile
                 OnStart?.Invoke(tile.Difficulty, action);
             }
@@ -70,23 +84,41 @@ namespace Curry.Explore
         }
         IEnumerator StartAdventure(Vector3 targetPos)
         {
+            StartInterrupt();
+            m_movementInProgress = true;
             // Trigger player to move to selected tile
             Vector3Int cell = m_terrain.WorldToCell(targetPos);
             PositionInfo e = new PositionInfo(
                     m_terrain.GetCellCenterWorld(cell));
             m_onAdventureMove?.TriggerEvent(e);
-            yield return null;
+            m_player.Move(m_terrain.GetCellCenterWorld(cell));
+            yield return new WaitUntil(()=>!m_movementInProgress);
+            bool trigger = false;
+            OnEncounterFinish encounterFinishTrigger = () => trigger = true;
+            m_encounter.OnEncounterFinished += encounterFinishTrigger;
+            if (SpecialEvents(m_player.WorldPosition)) 
+            {
+                yield return new WaitUntil(() => trigger);
+                m_encounter.OnEncounterFinished -= encounterFinishTrigger;
+            }
+            EndInterrupt();
         }
 
 
         // one time events in locations
-        void SpecialEvents(Vector3 worldPosition)
+        bool SpecialEvents(Vector3 worldPosition)
         {
             // If there are special events in this location, trigger them
             if (WorldTile.TryGetTileComponent(m_locations, worldPosition, out SpecialEventHandler e))
             {
                 // Remove events after drawing those special event cards
-                e.TriggerEvent();
+                int encounterId = e.EncounterId;
+                m_encounter.OnEncounter(encounterId);
+                return true;
+            }
+            else 
+            {
+                return false;
             }
         }
     }

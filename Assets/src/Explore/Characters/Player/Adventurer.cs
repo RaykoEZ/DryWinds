@@ -25,11 +25,9 @@ namespace Curry.Explore
     {
         #region Serialize Fields
         [SerializeField] Animator m_anim = default;
-        [SerializeField] CurryGameEventListener m_onMove = default;
         // Pings player status to trigger card draw events etc
         [SerializeField] CurryGameEventTrigger m_onPlayerPing = default;
         [SerializeField] CurryGameEventTrigger m_onScout = default;
-        [SerializeField] CurryGameEventTrigger m_moveFinish = default;
         #endregion
         IRescue m_rescuee;
         #region IPlayer interface impl
@@ -37,6 +35,7 @@ namespace Curry.Explore
         public event OnPlayerUpdate OnDefeat;
         public event OnPlayerUpdate OnReveal;
         public event OnPlayerUpdate OnHide;
+        public event OnPlayerUpdate OnMoveFinished;
         public override void Reveal()
         {
             OnReveal?.Invoke(this);
@@ -74,36 +73,18 @@ namespace Curry.Explore
         #endregion
 
         #region Movement impl
-        public void Move(EventInfo info) 
-        {
-            if (info == null) return;
-
-            Vector3 target;
-            // Depending on event param type, set target target position 
-            if (info is PositionInfo select) 
-            {
-                target = select.WorldPosition;
-                Move(target);
-            }
-        }
         protected override void OnMoveFinish()
         {
             CharacterInfo info = new CharacterInfo(this);
-            m_moveFinish?.TriggerEvent(info);
             m_onPlayerPing?.TriggerEvent(info);
             m_onScout?.TriggerEvent(info);
-
             if (m_rescuee != null)
             {
                 m_rescuee.Rescue();
             }
+            OnMoveFinished?.Invoke(this);
         }
         #endregion
-        protected override void Awake()
-        {
-            base.Awake();
-            m_onMove?.Init();
-        }
         void Start()
         {
             // Ping once at start

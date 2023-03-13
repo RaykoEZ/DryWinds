@@ -13,6 +13,7 @@ namespace Curry.Explore
     public class Interaction : Phase
     {
         [SerializeField] MovementManager m_playerMovement = default;
+        [SerializeField] EncounterManager m_encounter = default;
         [SerializeField] EnemyManager m_enemy = default;
         [SerializeField] HandManager m_cardPlay = default;
         Stack<List<IEnumerator>> m_interruptBuffer = new Stack<List<IEnumerator>>();
@@ -25,7 +26,7 @@ namespace Curry.Explore
             m_playerMovement.OnStart += OnPlayerAction;
             m_enemy.OnActionBegin += OnEnemyAction;
         }
-        void OnPlayerAction(int timeSpent, List<IEnumerator> actions = null)
+        void OnPlayerAction(int timeSpent = 0, List<IEnumerator> actions = null)
         {
             m_interruptBuffer?.Push(actions);
             // Check if there are enemy responses for this player action
