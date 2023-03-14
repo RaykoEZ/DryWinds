@@ -68,22 +68,26 @@ namespace Curry.Explore
             m_previous.OnGameStateTransition -= InterruptResolved;
             OnPhaseChange?.Invoke(CurrentPhase.GetType());
             // Back from interrupt, listen to transition callbacks
-            CurrentPhase.OnGameStateTransition += OnStateTransition;
             // Resume previous phase operations
             CurrentPhase.Resume();
+            SetupCurrentState();
+        }
+        void SetupCurrentState() 
+        {
+            CurrentPhase.OnGameStateTransition += OnStateTransition;
+            // Enable player interaction, if we are back to action phase
+            if (CurrentPhase != null && CurrentPhase.GetType() == typeof(PlayerAction))
+            {
+                EndInterrupt();
+            }
         }
         void SetCurrentState(Type type)
         {
             Phase nextPhase = m_turnStateCollection[type];
             Action change = () => {
                 m_phaseStack.Push(nextPhase);
-                CurrentPhase.OnGameStateTransition += OnStateTransition;
                 CurrentPhase?.OnEnter(m_previous);
-                // Enable player interaction, if we are back to action phase
-                if (CurrentPhase.GetType() == typeof(PlayerAction))
-                {
-                    EndInterrupt();
-                }
+                SetupCurrentState();
             };
             if (string.IsNullOrWhiteSpace(nextPhase.Name)) 
             {

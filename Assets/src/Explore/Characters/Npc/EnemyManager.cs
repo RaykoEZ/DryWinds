@@ -152,7 +152,7 @@ namespace Curry.Explore
             m_toRemove.Add(remove);
             remove.OnDefeated();
         }
-        void OnMovementBlocked(Vector2 pos) 
+        void OnMovementBlocked(Vector3 pos) 
         {
             m_fog.SetFogOfWar(pos);
         }

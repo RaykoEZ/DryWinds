@@ -28,8 +28,14 @@ namespace Curry.Explore
             m_onAdventure?.Init();
             m_onPlayerMoved?.Init();
             m_player.OnMoveFinished += OnPlayerMovementFinish;
+            m_player.OnBlocked += OnPlayerBlocked;
         }
-
+        void OnPlayerBlocked(Vector3 blocked) 
+        {
+            Vector3Int cell = m_terrain.WorldToCell(blocked);
+            Vector3 cellPos = m_terrain.GetCellCenterWorld(cell);
+            m_player.transform.position = new Vector3(cellPos.x, cellPos.y, transform.position.z);
+        }
         void OnPlayerMovementFinish(IPlayer player) 
         {
             m_movementInProgress = false;

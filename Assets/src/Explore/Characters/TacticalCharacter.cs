@@ -15,7 +15,7 @@ namespace Curry.Explore
         [SerializeField] protected CharacterNavigator m_navigator = default;
         protected int m_currentHp = 1;
         protected int m_currentmoveRange = 1;
-
+        protected bool m_blocked = false;
         public virtual ObjectVisibility Visibility { get; protected set; } = ObjectVisibility.Visible;
         public Vector3 WorldPosition => transform.position;
         public string Name => m_name;
@@ -30,8 +30,8 @@ namespace Curry.Explore
         }
 
         public int MoveRange { get { return m_currentmoveRange; } protected set { m_currentmoveRange = Mathf.Clamp(value, 0, 3); } }
-
         public event OnMovementBlocked OnBlocked;
+
         public override void Prepare()
         {
             CurrentHp = MaxHp;
@@ -40,12 +40,12 @@ namespace Curry.Explore
         public abstract void Hide();
         public virtual void Move(Vector3 target)
         {
-            target.z = 0f;
             StartCoroutine(Move_Internal(target));
         }
         public void OnMovementBlocked(ICharacter blocking) 
         {
-            m_navigator.ToggleMovement(isStopped: true);
+            m_blocked = true;
+            m_navigator.StopMovement();
             Reveal();
             blocking.Reveal();          
         }
@@ -63,13 +63,19 @@ namespace Curry.Explore
         public abstract void TakeHit(int hitVal);
         protected virtual IEnumerator Move_Internal(Vector3 target)
         {
+            m_blocked = false;
             yield return StartCoroutine(m_navigator.MoveTo(target));
             float duration = 1f;
             float timeElapsed = 0f;
             while (timeElapsed <= duration)
             {
+                if (m_blocked) 
+                {
+                    OnBlocked?.Invoke(WorldPosition);
+                    break;
+                }
                 timeElapsed += Time.deltaTime;
-                transform.position = Vector3.Lerp(transform.position, m_navigator.AgentPosition, timeElapsed / duration);
+                transform.position = Vector2.Lerp(transform.position, m_navigator.AgentPosition, timeElapsed / duration);
                 yield return null;
             }
             OnMoveFinish();

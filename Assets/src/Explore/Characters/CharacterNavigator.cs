@@ -14,14 +14,16 @@ namespace Curry.Explore
         {
             if (cancelCurrent) 
             {
-                ToggleMovement();
-                m_movementAgent.ResetPath();
+                StopMovement();
             }
+            m_movementAgent.isStopped = false;
             yield return StartCoroutine(Movement(target));
         }
-        public void ToggleMovement(bool isStopped = true)
+        public void StopMovement()
         {
-            m_movementAgent.isStopped = isStopped;
+            m_movementAgent.isStopped = true;
+            m_movementAgent.velocity = Vector3.zero;
+            m_movementAgent.ResetPath();
         }
         IEnumerator Movement(Vector3 target) 
         {
