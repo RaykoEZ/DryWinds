@@ -1,5 +1,6 @@
 ﻿using Curry.Game;
 using System.Collections;
+using System.Runtime.InteropServices.ComTypes;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -42,7 +43,7 @@ namespace Curry.Explore
         {
             StartCoroutine(Move_Internal(target));
         }
-        public void OnMovementBlocked(ICharacter blocking) 
+        public virtual void OnMovementBlocked(ICharacter blocking) 
         {
             m_blocked = true;
             m_navigator.StopMovement();
@@ -56,7 +57,7 @@ namespace Curry.Explore
         }
         public virtual void Recover(int val)
         {
-            Debug.Log("Player recovers" + val + " HP.");
+            Debug.Log("Player recovers " + val + " HP.");
             CurrentHp += val;
         }
         public abstract void Reveal();
@@ -69,9 +70,10 @@ namespace Curry.Explore
             float timeElapsed = 0f;
             while (timeElapsed <= duration)
             {
-                if (m_blocked) 
+                if (m_blocked)
                 {
                     OnBlocked?.Invoke(WorldPosition);
+                    m_navigator.StopMovement();
                     break;
                 }
                 timeElapsed += Time.deltaTime;

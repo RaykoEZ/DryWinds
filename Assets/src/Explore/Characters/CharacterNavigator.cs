@@ -29,8 +29,9 @@ namespace Curry.Explore
         {
             if (m_movementAgent.SetDestination(target)) 
             {
-                yield return new WaitUntil(() => m_movementAgent.isStopped || 
-                m_movementAgent.velocity.sqrMagnitude == 0f);
+                yield return new WaitUntil(() => m_movementAgent.hasPath &&
+                (m_movementAgent.isStopped || 
+                m_movementAgent.velocity.sqrMagnitude == 0f));
             }
         }
     }

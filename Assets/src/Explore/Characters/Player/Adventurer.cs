@@ -39,12 +39,10 @@ namespace Curry.Explore
         public override void Reveal()
         {
             OnReveal?.Invoke(this);
-            Debug.Log("Reveal player"); 
         }
         public override void Hide()
         {
             OnHide?.Invoke(this);
-            Debug.Log("Hide player");
         }
         public override void Recover(int val)
         {

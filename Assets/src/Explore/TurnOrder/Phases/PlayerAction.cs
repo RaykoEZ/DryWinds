@@ -14,7 +14,7 @@ namespace Curry.Explore
         [SerializeField] CurryGameEventTrigger m_onTurnStart = default;
         [SerializeField] EndTurnTrigger m_turnEnd = default;
 
-        protected override Type NextState => typeof(EnemyAction);
+        protected override Type NextState { get; set; } = typeof(EnemyAction);
 
         public override void Init()
         {

@@ -210,7 +210,11 @@ namespace Curry.Explore
                     calls.Add(chosenAction);
                 }
             }
-            calls.Add(FinishActionPhase());
+            
+            if(calls.Count > 0) 
+            {
+                calls.Add(FinishActionPhase());
+            }
             UpdateActivity();
             return calls;
         }

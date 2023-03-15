@@ -69,8 +69,8 @@ namespace Curry.Explore
             OnPhaseChange?.Invoke(CurrentPhase.GetType());
             // Back from interrupt, listen to transition callbacks
             // Resume previous phase operations
-            CurrentPhase.Resume();
             SetupCurrentState();
+            CurrentPhase.Resume();
         }
         void SetupCurrentState() 
         {
@@ -86,8 +86,8 @@ namespace Curry.Explore
             Phase nextPhase = m_turnStateCollection[type];
             Action change = () => {
                 m_phaseStack.Push(nextPhase);
-                CurrentPhase?.OnEnter(m_previous);
                 SetupCurrentState();
+                CurrentPhase?.OnEnter(m_previous);
             };
             if (string.IsNullOrWhiteSpace(nextPhase.Name)) 
             {

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,7 +12,6 @@ namespace Curry.Explore
         protected override bool ChooseAction_Internal(int dt, out IEnumerator action)
         {
             bool reliefNeeded = false;
-            action = null;
             // if we see target, do basic action
             if (SpotsTarget) 
             {
@@ -20,24 +20,36 @@ namespace Curry.Explore
             else 
             {
                 // find all enemies who can see a target
-                List<IEnemy> activeEnemies = new List<IEnemy>();
-                foreach (IEnemy e in EnemiesInSight)
-                {
-                    if (e.SpotsTarget)
-                    {
-                        activeEnemies.Add(e);
-                    }
-                }
-                // set basic action, if we have nearby enemies who sees enemies,
-                // swap position with one of them
-                if (activeEnemies.Count > 0)
-                {
-                    int rand = Random.Range(0, activeEnemies.Count);
-                    action = ReliefAlly(activeEnemies[rand]);
-                    reliefNeeded = true;
-                }
+                reliefNeeded = ReliefCheck(out action);                
             }
             return SpotsTarget || reliefNeeded;
+        }
+        protected bool ReliefCheck(out IEnumerator action) 
+        {
+            bool reliefNeeded = false;
+            action = null;
+            // find all enemies who can see a target
+            List<IEnemy> activeEnemies = new List<IEnemy>();
+            foreach (IEnemy e in EnemiesInSight)
+            {
+                if (e.SpotsTarget)
+                {
+                    activeEnemies.Add(e);
+                }
+            }
+            // set basic action, if we have nearby enemies who sees enemies,
+            // swap position with one of them
+            if (activeEnemies.Count > 0)
+            {
+                int rand = UnityEngine.Random.Range(0, activeEnemies.Count);
+                action = ReliefAlly(activeEnemies[rand]);
+                reliefNeeded = true;
+            }
+            return reliefNeeded && action != null;
+        }
+        protected override bool ChooseReaction_Internal(int dt, out IEnumerator reaction)
+        {
+            return ReliefCheck(out reaction);
         }
 
         protected override IEnumerator ExecuteAction_Internal()

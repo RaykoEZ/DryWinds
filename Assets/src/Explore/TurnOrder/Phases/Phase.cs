@@ -12,7 +12,7 @@ namespace Curry.Explore
         public event OnTurnPhaseTransition OnGameStateTransition;
         // Trigger interrupt for UI and others
         public event OnPhaseInterrupt OnInterrupt;
-        protected abstract Type NextState { get;}
+        protected abstract Type NextState { get; set; }
         public string Name => m_displayName;
         public virtual void Init() { }
 
@@ -37,5 +37,4 @@ namespace Curry.Explore
             OnGameStateTransition?.Invoke(NextState);
         }
     }
-
 }

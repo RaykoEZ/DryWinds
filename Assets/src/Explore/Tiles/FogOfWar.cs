@@ -2,6 +2,8 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using Curry.Events;
+using System.Runtime.InteropServices.ComTypes;
+
 namespace Curry.Explore
 {
     public class FogOfWar : MonoBehaviour
@@ -27,6 +29,12 @@ namespace Curry.Explore
                 return;
             }
             m_map.SetTile(mapCoord, tileToSet);
+        }
+        public bool IsCellClear(Vector3Int cell) 
+        {
+            TileBase tile = m_map.GetTile(cell);
+            bool ret = tile == null || tile == m_clearTile;
+            return ret;
         }
 
         public void FogTile(EventInfo info) 

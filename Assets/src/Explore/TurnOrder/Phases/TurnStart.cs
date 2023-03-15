@@ -7,23 +7,11 @@ namespace Curry.Explore
 {
     public class TurnStart : Phase
     {
-        [SerializeField] ChoiceConditions m_condition = default;
-        [SerializeField] DeckManager m_deck = default;
-        [SerializeField] AdventButton m_adventureButton = default;
-        protected override Type NextState => typeof(PlayerAction);
+        protected override Type NextState { get; set; } = typeof(PlayerAction);
         protected override IEnumerator Evaluate_Internal()
         {
-            m_deck.ChooseToAddFromInventory(
-                m_condition, 
-                cardPoolFilter: null, 
-                onChosen: TransitionTo);
+            TransitionTo();
             yield return null;
-        }
-
-        protected override void TransitionTo()
-        {
-            base.TransitionTo();
-            m_adventureButton.CanMove = true;
         }
     }
 }

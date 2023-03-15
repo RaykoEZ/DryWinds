@@ -224,8 +224,8 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: -334000983
   m_Radius: 0.25
-  m_Speed: 2
-  m_Acceleration: 8
+  m_Speed: 1
+  m_Acceleration: 5
   avoidancePriority: 50
   m_AngularSpeed: 0
   m_StoppingDistance: 0
@@ -235,7 +235,7 @@ NavMeshAgent:
   m_Height: 0.5
   m_BaseOffset: 0.25
   m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 4
+  m_ObstacleAvoidanceType: 0
 --- !u!114 &5850406576160734580
 MonoBehaviour:
   m_ObjectHideFlags: 0

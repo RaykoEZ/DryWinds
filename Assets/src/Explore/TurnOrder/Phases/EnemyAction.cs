@@ -7,7 +7,7 @@ namespace Curry.Explore
     public class EnemyAction : Phase
     {
         [SerializeField] EnemyManager m_enemies = default;      
-        protected override Type NextState => typeof(TurnEnd);
+        protected override Type NextState { get; set; } = typeof(TurnEnd);
         bool m_actionFinished = false;
         public override void Init()
         {

@@ -590,7 +590,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_displayName: 
   m_playerMovement: {fileID: 1190344612}
-  m_encounter: {fileID: 0}
   m_enemy: {fileID: 2096668154}
   m_cardPlay: {fileID: 615583783}
 --- !u!1 &75294243
@@ -1088,7 +1087,7 @@ MonoBehaviour:
   m_Center: {x: 0, y: 2, z: 0}
   m_LayerMask:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 2112
   m_UseGeometry: 1
   m_OverrideByGrid: 0
   m_UseMeshPrefab: {fileID: 0}
@@ -2305,7 +2304,7 @@ GameObject:
   - component: {fileID: 611112522}
   - component: {fileID: 611112521}
   - component: {fileID: 611112524}
-  m_Layer: 6
+  m_Layer: 11
   m_Name: Tilemap_Walls
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4397,14 +4396,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 642120aec074ee24896d93beeea1afcc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_displayName: Provision Phase
-  m_condition:
-    m_canCancel: 1
-    m_maxChoice: 3
-    m_minChoice: 0
-    m_description: You can choose  0~2 cards from below
-  m_deck: {fileID: 1024562575}
-  m_adventureButton: {fileID: 1773398998}
+  m_displayName: Turn Start
 --- !u!1 &1015169475
 GameObject:
   m_ObjectHideFlags: 0
@@ -4822,6 +4814,7 @@ Transform:
   - {fileID: 262497677}
   - {fileID: 1962571923}
   - {fileID: 62530892}
+  - {fileID: 1356589893}
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -4838,8 +4831,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_phasePopup: {fileID: 1519800665}
-  m_initPhase: {fileID: 1009119723}
+  m_initPhase: {fileID: 1356589894}
   m_allPhases:
+  - {fileID: 1356589894}
   - {fileID: 1009119723}
   - {fileID: 262497678}
   - {fileID: 1962571924}
@@ -5039,6 +5033,7 @@ MonoBehaviour:
   m_time: {fileID: 81830746}
   m_terrain: {fileID: 1252504617}
   m_locations: {fileID: 1285027077}
+  m_fog: {fileID: 2017579930}
   m_onAdventure:
     m_eventToListen: {fileID: 11400000, guid: 736b70e15b9efe8408d6fe321c5396e4, type: 2}
     m_responses:
@@ -5073,8 +5068,6 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-  m_onAdventureMove:
-    m_eventToTrigger: {fileID: 11400000, guid: b388116c0ace42949a308c2e07cc7524, type: 2}
 --- !u!1 &1252504614
 GameObject:
   m_ObjectHideFlags: 0
@@ -6084,6 +6077,56 @@ MonoBehaviour:
   m_rangeTileManager: {fileID: 1334039898}
   m_map: {fileID: 1252504617}
   m_rangeDb: {fileID: 11400000, guid: 72c959da387b00442b82e0424d224c39, type: 2}
+--- !u!1 &1356589892
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1356589893}
+  - component: {fileID: 1356589894}
+  m_Layer: 0
+  m_Name: Provision
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1356589893
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1356589892}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1086930281}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1356589894
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1356589892}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7dd63086f791ae5459f447e0c87580d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_displayName: Provision
+  m_condition:
+    m_canCancel: 1
+    m_maxChoice: 3
+    m_minChoice: 0
+    m_description: Choose 0 to 3 cards to add from deck to hand
+  m_deck: {fileID: 1024562575}
 --- !u!1 &1463269528
 GameObject:
   m_ObjectHideFlags: 0

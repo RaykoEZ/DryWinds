@@ -12,16 +12,14 @@ namespace Curry.Explore
         [SerializeField] GameObject m_player = default;
         [SerializeField] CurryGameEventTrigger m_selectAdventureTile = default;
         public bool Interactable { get; set; } = true;
-        public bool CanMove { get; set; } = true;
         public void PromptAdventurePosition() 
         {
-            if (!Interactable || !CanMove) { return; }
+            if (!Interactable) { return; }
             TileSelectionInfo info = new TileSelectionInfo(
                 TileSelectionMode.Adventure,
                 m_player,
                 Camera.main.WorldToScreenPoint(m_player.transform.position));
             m_selectAdventureTile?.TriggerEvent(info);
-            //CanMove = false;
         }
     }
 }
