@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using Curry.Game;
 using System;
 using System.Runtime.InteropServices.ComTypes;
+using UnityEngine.WSA;
+using static UnityEngine.GraphicsBuffer;
 
 namespace Curry.Explore
 {
@@ -63,11 +65,15 @@ namespace Curry.Explore
             }
             StartInterrupt();
             WorldTile tile = WorldTile.GetTile<WorldTile>(m_terrain, worldPos);
-            if (tile != null && m_time.TrySpendTime(tile.Difficulty))
+            // Trigger player to move to selected tile
+            Vector3Int cell = m_terrain.WorldToCell(worldPos);
+            Vector3 cellCenter = m_terrain.GetCellCenterWorld(cell);
+
+            if (tile != null && !IsPathObstructed(cellCenter) && m_time.TrySpendTime(tile.Difficulty))
             {
                 List<IEnumerator> action = new List<IEnumerator>
                 {
-                    StartAdventure(worldPos)
+                    StartAdventure(cellCenter, tile)
                 };
                 // Trigger player to move to selected tile
                 OnStart?.Invoke(tile.Difficulty, action);
@@ -89,21 +95,19 @@ namespace Curry.Explore
                 OnFinish?.Invoke();
             }
         }
-        IEnumerator StartAdventure(Vector3 targetPos)
+        // Do a collision check for direct path ahead, if there are hidden obstaclesm we allow the move
+        bool IsPathObstructed(Vector3 targetCellCenter) 
         {
-            StartInterrupt();
-            m_movementInProgress = true;
             // Trigger player to move to selected tile
-            Vector3Int cell = m_terrain.WorldToCell(targetPos);
-            Vector3 target = m_terrain.GetCellCenterWorld(cell);
-            var hit = Physics2D.LinecastAll(m_player.WorldPosition, target, LayerMask.GetMask(s_collisionFilters));
+            Vector3 diff = targetCellCenter - m_player.WorldPosition;
+            var hit = Physics2D.CircleCastAll(m_player.WorldPosition, 0.5f, diff.normalized, Vector2.Distance(m_player.WorldPosition, targetCellCenter), LayerMask.GetMask(s_collisionFilters));
             bool allObstaclesAreUnKnown = true;
             Vector3 pos;
             Vector3Int coord;
-            foreach(var obstacle in hit) 
+            foreach (var obstacle in hit)
             {
-                // If one obstacle is visible, we prevent collision
-                if (obstacle.transform.TryGetComponent( out IPlayer _)) 
+                // If even one obstacle is visible, we prevent movement
+                if (obstacle.transform.TryGetComponent(out IPlayer _))
                 {
                     continue;
                 }
@@ -112,32 +116,31 @@ namespace Curry.Explore
                     pos = obstacle.point;
                     coord = m_terrain.WorldToCell(pos);
                     bool isClear = m_fog.IsCellClear(coord);
-                    if (isClear) 
+                    if (isClear)
                     {
                         allObstaclesAreUnKnown = false;
                         break;
                     }
                 }
-
             }
 
-            if(hit.Length > 1 && !allObstaclesAreUnKnown) 
+            return hit.Length > 1 && !allObstaclesAreUnKnown;
+        }
+
+        IEnumerator StartAdventure(Vector3 targetPos, WorldTile tile)
+        {
+            StartInterrupt();
+            m_movementInProgress = true;          
+            m_player.Move(targetPos);
+            yield return new WaitUntil(() => !m_movementInProgress);
+            bool trigger = false;
+            OnEncounterFinish encounterFinishTrigger = () => trigger = true;
+            m_encounter.OnEncounterFinished += encounterFinishTrigger;
+            if (SpecialEvents(m_player.WorldPosition))
             {
-                Debug.Log("Blocked by obstacles");
-            }
-            else 
-            {
-                m_player.Move(target);
-                yield return new WaitUntil(() => !m_movementInProgress);
-                bool trigger = false;
-                OnEncounterFinish encounterFinishTrigger = () => trigger = true;
-                m_encounter.OnEncounterFinished += encounterFinishTrigger;
-                if (SpecialEvents(m_player.WorldPosition))
-                {
-                    yield return new WaitUntil(() => trigger);
-                    m_encounter.OnEncounterFinished -= encounterFinishTrigger;
-                }
-            }
+                yield return new WaitUntil(() => trigger);
+                m_encounter.OnEncounterFinished -= encounterFinishTrigger;
+            }           
             EndInterrupt();
         }
 
