@@ -1,14 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Curry.Util
 {
+    [Serializable]
     public class RangeMap
     {
         public static RangeMap Adjacent => new RangeMap(
             new List<Vector3Int> { Vector3Int.up, Vector3Int.down, Vector3Int.left, Vector3Int.right});
         //List for common operations
-        List<Vector3Int> m_offsetList;
+        [SerializeField] List<Vector3Int> m_offsetList;
         public IReadOnlyList<Vector3Int> OffsetsFromOrigin { get { return m_offsetList; } }
         public RangeMap(IEnumerable<Vector3Int> rangeTiles)
         {

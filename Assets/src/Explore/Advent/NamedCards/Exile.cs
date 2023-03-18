@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Curry.Util;
+using System.Collections;
 using UnityEngine;
 namespace Curry.Explore
 {
@@ -7,7 +8,7 @@ namespace Curry.Explore
         [SerializeField] Push m_push = default;
         [SerializeField] CooldownModule m_cooldown = default;
         [SerializeField] PositionTargetingModule m_targeting = default;
-        public int Range => ((ITargetsPosition)m_targeting).Range;
+        public RangeMap Range => ((ITargetsPosition)m_targeting).Range;
 
         public bool Satisfied => ((IActivationCondition<Vector3>)m_targeting).Satisfied;
 

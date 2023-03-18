@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Curry.Util;
+using System.Collections;
 using UnityEngine;
 
 namespace Curry.Explore
@@ -9,7 +10,7 @@ namespace Curry.Explore
         [SerializeField] DealDamageTo m_dealDamage = default;
         [SerializeField] CooldownModule m_cooldown = default;
         [SerializeField] PositionTargetingModule m_targeting = default;
-        public int Range => m_targeting.Range;
+        public RangeMap Range => m_targeting.Range;
         public bool Satisfied => m_targeting.Satisfied;
         public Vector3 Target => m_targeting.Target;
 

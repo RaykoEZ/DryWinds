@@ -13,7 +13,6 @@ namespace Curry.Explore
         [SerializeField] protected int m_maxHp = default;
         [Range(0, 3)]
         [SerializeField] protected int m_moveRange = default;
-        [SerializeField] protected CharacterNavigator m_navigator = default;
         protected int m_currentHp = 1;
         protected int m_currentmoveRange = 1;
         protected bool m_blocked = false;
@@ -46,7 +45,6 @@ namespace Curry.Explore
         public virtual void OnMovementBlocked(ICharacter blocking) 
         {
             m_blocked = true;
-            m_navigator.StopMovement();
             Reveal();
             blocking.Reveal();          
         }
@@ -65,7 +63,7 @@ namespace Curry.Explore
         protected virtual IEnumerator Move_Internal(Vector3 target)
         {
             m_blocked = false;
-            yield return StartCoroutine(m_navigator.MoveTo(target));
+            yield return new WaitForEndOfFrame();
             float duration = 1f;
             float timeElapsed = 0f;
             while (timeElapsed <= duration)
@@ -73,11 +71,10 @@ namespace Curry.Explore
                 if (m_blocked)
                 {
                     OnBlocked?.Invoke(WorldPosition);
-                    m_navigator.StopMovement();
                     break;
                 }
                 timeElapsed += Time.deltaTime;
-                transform.position = Vector2.Lerp(transform.position, m_navigator.AgentPosition, timeElapsed / duration);
+                transform.position = Vector2.Lerp(transform.position, target, timeElapsed / duration);
                 yield return null;
             }
             OnMoveFinish();

@@ -8,8 +8,8 @@ namespace Curry.Explore
     public class PositionTargetingModule : ITargetsPosition
     {
         [SerializeField] protected LayerMask m_targetLayer = default;
-        [SerializeField] protected int m_range = default;
-        public int Range => m_range;
+        [SerializeField] protected RangeMap m_range = default;
+        public RangeMap Range => m_range;
         public bool Satisfied { get; protected set; }
         public Vector3 Target { get; protected set; }
         protected RaycastHit2D[] ValidTargets => GameUtil.SearchTargetPosition(Target, m_targetLayer);

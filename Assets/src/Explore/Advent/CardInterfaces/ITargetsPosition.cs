@@ -1,9 +1,10 @@
-﻿using UnityEngine;
+﻿using Curry.Util;
+using UnityEngine;
 namespace Curry.Explore
 {
     public interface ITargetsPosition : IActivationCondition<Vector3>
     { 
-        public int Range { get; }
+        public RangeMap Range { get; }
     }
 
     public interface IActivationCondition<T>

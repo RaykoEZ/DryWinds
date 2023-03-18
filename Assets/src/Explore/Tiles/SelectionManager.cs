@@ -1,5 +1,6 @@
 ﻿using Curry.Events;
 using Curry.UI;
+using Curry.Util;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -51,7 +52,7 @@ namespace Curry.Explore
             m_rangeDisplay?.HidePrompt();
         }
 
-        public void SelectDropZoneTile(int range, Transform parent)
+        public void SelectDropZoneTile(RangeMap range, Transform parent)
         {
             CancelSelection();
             m_rangeDisplay.ShowRange(m_tileDropRef, range, parent);

@@ -70,6 +70,28 @@ namespace Curry.Explore
             }
         }
 
+        public void ShowRange(
+            GameObject tileToSpawn,
+            RangeMap range,
+            Transform parent,
+            bool toggle = false)
+        {
+            if (toggle)
+            {
+                Toggle_Internal(
+                    range,
+                    tileToSpawn,
+                    parent);
+            }
+            else
+            {
+                Show_Internal(
+                    range,
+                    tileToSpawn,
+                    parent);
+            }
+        }
+
         #endregion
 
         #region Utility for Show/ToggleRangeMap
