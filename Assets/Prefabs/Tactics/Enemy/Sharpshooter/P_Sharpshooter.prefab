@@ -191,7 +191,7 @@ Animator:
   m_GameObject: {fileID: 6716249637858086047}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 6c8f2a403a3a782448381619a03a1e4b, type: 2}
+  m_Controller: {fileID: 22100000, guid: 569b3a73a2e4b2c41bc25409d1b586cd, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -236,7 +236,6 @@ MonoBehaviour:
   m_name: Enforcer
   m_maxHp: 7
   m_moveRange: 1
-  m_navigator: {fileID: 3178670994596153865}
   m_initStats:
     Speed: 2
     Visibility: 0
@@ -284,8 +283,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 5
-  m_Sprite: {fileID: 21300000, guid: 50f1200e5ddbdd14fb6f731d28baa477, type: 3}
-  m_Color: {r: 0, g: 0.75066185, b: 1, a: 1}
+  m_Sprite: {fileID: 21300000, guid: fe6e3d0d5cfd05545976f204b6ab6e00, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
