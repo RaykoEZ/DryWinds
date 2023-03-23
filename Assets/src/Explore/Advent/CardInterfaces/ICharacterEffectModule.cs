@@ -9,9 +9,9 @@ namespace Curry.Explore
     {
         void ApplyEffect(ICharacter target, ICharacter user);
     }
-    public interface IUserEffectModule 
+    public interface ITargetEffectModule 
     {
-        void ApplyEffect(ICharacter user);
+        void ApplyEffect(ICharacter target);
     }
     public interface ITileEffectModule
     {

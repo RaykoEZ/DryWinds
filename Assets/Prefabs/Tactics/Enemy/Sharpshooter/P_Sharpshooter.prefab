@@ -64,7 +64,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 1
+  m_Radius: 2
 --- !u!1 &5850886529137693423
 GameObject:
   m_ObjectHideFlags: 0
@@ -147,8 +147,8 @@ GameObject:
   m_Component:
   - component: {fileID: 6175265371599182551}
   - component: {fileID: 5293342025262486339}
+  - component: {fileID: 5633357285924559840}
   - component: {fileID: 1189805475367096099}
-  - component: {fileID: 4888429578762261311}
   - component: {fileID: 5721523385255238380}
   - component: {fileID: 149072329227652584}
   m_Layer: 9
@@ -200,6 +200,26 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &5633357285924559840
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6716249637858086047}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5cbeae99102b7fa4cb54b56151e4406b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_name: Imperial Sharpshooter
+  m_maxHp: 10
+  m_moveRange: 1
+  m_initStats:
+    Speed: 1
+    Visibility: 0
+  m_anim: {fileID: 5293342025262486339}
+  m_detect: {fileID: 5032173810866119701}
 --- !u!50 &1189805475367096099
 Rigidbody2D:
   serializedVersion: 4
@@ -221,28 +241,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &4888429578762261311
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6716249637858086047}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d2933fe44dfed3444823c2458daf1c89, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_name: Enforcer
-  m_maxHp: 7
-  m_moveRange: 1
-  m_initStats:
-    Speed: 2
-    Visibility: 0
-  m_anim: {fileID: 5293342025262486339}
-  m_detect: {fileID: 5032173810866119701}
-  m_basicAttack:
-    m_damage: 2
 --- !u!212 &5721523385255238380
 SpriteRenderer:
   m_ObjectHideFlags: 0
