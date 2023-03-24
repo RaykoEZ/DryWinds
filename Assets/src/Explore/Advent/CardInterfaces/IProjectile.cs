@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Curry.Explore
@@ -6,7 +7,7 @@ namespace Curry.Explore
     public interface IProjectile  
     { 
         List<ITargetEffectModule> OnHitEffect { get; }
-        void Fire(Vector3 targetPos);
+        IEnumerator FireAt(Vector3 targetPos);
         void Stop();
         void Deflect(Vector3 deflectDirection);
     }

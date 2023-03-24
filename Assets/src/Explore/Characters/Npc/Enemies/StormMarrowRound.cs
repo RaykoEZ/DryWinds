@@ -8,6 +8,8 @@ namespace Curry.Explore
     public class StormMarrowRound : MonoBehaviour, IProjectile
     {
         [SerializeField] protected DealDamageTo m_damage = default;
+        [SerializeField] protected Animation m_anim = default;
+        [SerializeField] AnimationClip m_onHit = default;
         public List<ITargetEffectModule> OnHitEffect => new List<ITargetEffectModule> { m_damage };
 
         public void Deflect(Vector3 deflectDirection)
@@ -15,11 +17,7 @@ namespace Curry.Explore
             Stop();
         }
 
-        public void Fire(Vector3 targetPos)
-        {
-            StartCoroutine(Fire_Internal(targetPos));
-        }
-        protected virtual IEnumerator Fire_Internal(Vector3 targetPos) 
+        public virtual IEnumerator FireAt(Vector3 targetPos)
         {
             yield return null;
         }
