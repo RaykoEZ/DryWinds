@@ -25,7 +25,7 @@ namespace Curry.Explore
         public event OnActionStart OnStart;
         public event OnAdventureFinish OnFinish;
         bool m_movementInProgress = false;
-        protected static readonly string[] s_collisionFilters = new string[] { "Player", "Enemies", "Obstacles" };
+        public static readonly string[] s_gameplayCollisionFilters = new string[] { "Player", "Enemies", "Obstacles" };
         void Start()
         {
             m_onAdventure?.Init();
@@ -100,7 +100,13 @@ namespace Curry.Explore
         {
             // Trigger player to move to selected tile
             Vector3 diff = targetCellCenter - m_player.WorldPosition;
-            var hit = Physics2D.CircleCastAll(m_player.WorldPosition, 0.5f, diff.normalized, Vector2.Distance(m_player.WorldPosition, targetCellCenter), LayerMask.GetMask(s_collisionFilters));
+            var hit = Physics2D.CircleCastAll
+                (m_player.WorldPosition, 
+                0.5f, 
+                diff.normalized, 
+                Vector2.Distance(m_player.WorldPosition, 
+                targetCellCenter), 
+                LayerMask.GetMask(s_gameplayCollisionFilters));
             bool allObstaclesAreUnKnown = true;
             Vector3 pos;
             Vector3Int coord;
