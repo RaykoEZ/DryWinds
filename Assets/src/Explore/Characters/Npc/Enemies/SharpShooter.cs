@@ -7,7 +7,7 @@ namespace Curry.Explore
     public class SharpShooter : TacticalEnemy 
     {
         [SerializeField] protected StormMarrowRound m_stormAmmo = default;
-        public event FireWeapon Fire;
+        protected event FireWeapon Fire;
         public void FiringWeapon() 
         {
             Fire?.Invoke();
@@ -36,6 +36,7 @@ namespace Curry.Explore
             // Listen to fore trigger in animation
             Fire += OnFireWeapon;
             yield return base.ExecuteAction_Internal();
+            yield return new WaitUntil(() => Fire == null);
         }
         internal void OnFireWeapon() 
         {

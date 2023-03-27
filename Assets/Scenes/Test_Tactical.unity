@@ -2824,8 +2824,8 @@ LineRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -1316518543
+  m_SortingLayer: 2
   m_SortingOrder: 0
   m_Positions: []
   m_Parameters:
@@ -7465,10 +7465,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1938576582}
+  - component: {fileID: 1938576585}
   - component: {fileID: 1938576581}
   - component: {fileID: 1938576580}
   - component: {fileID: 1938576583}
   - component: {fileID: 1938576584}
+  - component: {fileID: 1938576586}
+  - component: {fileID: 1938576587}
   m_Layer: 0
   m_Name: Canvas_CardPlay
   m_TagString: Untagged
@@ -7570,6 +7573,52 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 1
+--- !u!95 &1938576585
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1938576579}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: f1d5aeea8f4ddbb45b229cc03c2dccea, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &1938576586
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1938576579}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8297e434cb2db7a4ebc70f0c5528700e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1938576587
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1938576579}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8b858b3371532d47bcfbb60bcf67c60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_hidingUI:
+    m_uiToHide:
+    - {fileID: 1938576586}
 --- !u!1 &1956501436
 GameObject:
   m_ObjectHideFlags: 0

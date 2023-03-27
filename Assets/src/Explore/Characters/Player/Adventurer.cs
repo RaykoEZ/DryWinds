@@ -51,7 +51,7 @@ namespace Curry.Explore
         }
         public override void TakeHit(int hitVal)
         {
-            Debug.Log("Player takes" + hitVal + " damage.");
+            Debug.Log("Player takes " + hitVal + " damage.");
             m_anim.ResetTrigger("TakeDamage");
             m_anim.SetTrigger("TakeDamage");
             CurrentHp -= hitVal;
