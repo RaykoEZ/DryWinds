@@ -16,7 +16,7 @@ namespace Curry.Game
     public delegate void OnModifierTrigger();
 
     [Serializable]
-    public abstract class CharacterModifier
+    public abstract class CharacterModifier : IStatModifier<CharacterModifierProperty>
     {
         // Name of the modifier, e.g. a skill/item name
         [SerializeField] protected string m_name;
