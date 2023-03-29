@@ -6,15 +6,13 @@ namespace Curry.Game
     public class CharacterModifierContainer 
     {
         protected List<CharacterModifier> m_modifiers;
-        protected List<CharacterModifier> m_toRemove = new List<CharacterModifier>();
+        protected List<IStatModifier<CharacterModifierProperty>> m_toRemove = 
+            new List<IStatModifier<CharacterModifierProperty>>();
         protected List<CharacterModifier> m_toAdd = new List<CharacterModifier>();
 
-        public event OnModifierExpire OnModExpire;
-        public event OnModifierChain OnModChain;
-        public event OnModifierTrigger OnEffectTrigger;
-
+        public event OnModifierExpire<CharacterModifierProperty> OnModExpire;
+        public event OnModifierTrigger<CharacterModifierProperty> OnEffectTrigger;
         CharacterModifierProperty m_overallValue;
-
         public CharacterModifierProperty OverallValue { get { return m_overallValue; } }
 
         public CharacterModifierContainer(float initVal)
@@ -58,7 +56,6 @@ namespace Curry.Game
             }
             mod.OnModifierExpire += OnModifierExpire;
             mod.OnTrigger += OnModifierEffectTrigger;
-            mod.OnModifierChain += OnModChain;
             m_modifiers.Add(mod);
             m_overallValue = mod.Apply(m_overallValue);
         }
@@ -71,14 +68,13 @@ namespace Curry.Game
             }
             mod.OnModifierExpire -= OnModifierExpire;
             mod.OnTrigger -= OnModifierEffectTrigger;
-            mod.OnModifierChain -= OnModChain;
 
             m_modifiers.Remove(mod);
             m_overallValue = mod.Revert(m_overallValue);           
             OnModExpire?.Invoke(mod);
         }
 
-        protected virtual void OnModifierExpire(CharacterModifier mod) 
+        protected virtual void OnModifierExpire(IStatModifier<CharacterModifierProperty> mod) 
         {
             m_toRemove.Add(mod);
         }
@@ -108,11 +104,6 @@ namespace Curry.Game
                     m_overallValue = m_modifiers[i].Apply(m_overallValue);
                 }
             }
-        }
-
-        protected virtual void OnModifierChain(CharacterModifier newModifier) 
-        {
-            OnModChain?.Invoke(newModifier);
         }
     }
 }

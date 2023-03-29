@@ -3,11 +3,9 @@
     public interface IStatModifier<T>
     { 
         string Name { get; }
-        event OnModifierExpire OnModifierExpire;
-        // Used to apply additional modifiers from a modifier's effect
-        event OnModifierChain OnModifierChain;
+        event OnModifierExpire<T> OnModifierExpire;
         // Used to notify when modifier applied
-        event OnModifierTrigger OnTrigger;
+        event OnModifierTrigger<T> OnTrigger;
         T Apply(T baseVal);
         T Revert(T baseVal);
     }
