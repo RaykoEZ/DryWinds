@@ -3,7 +3,8 @@ using UnityEngine;
 
 namespace Curry.Game
 {
-    public class CharacterModifierContainer 
+    public class CharacterModifierContainer : 
+        IModifierContainer<CharacterModifierProperty>
     {
         protected List<CharacterModifier> m_modifiers;
         protected List<IStatModifier<CharacterModifierProperty>> m_toRemove = 
@@ -11,10 +12,10 @@ namespace Curry.Game
         protected List<CharacterModifier> m_toAdd = new List<CharacterModifier>();
 
         public event OnModifierExpire<CharacterModifierProperty> OnModExpire;
-        public event OnModifierTrigger<CharacterModifierProperty> OnEffectTrigger;
+        public event OnModifierTrigger<CharacterModifierProperty> OnModTrigger;
         CharacterModifierProperty m_overallValue;
-        public CharacterModifierProperty OverallValue { get { return m_overallValue; } }
-
+        public CharacterModifierProperty Result { get { return m_overallValue; } }
+        public IReadOnlyList<IStatModifier<CharacterModifierProperty>> Modifiers => m_modifiers;
         public CharacterModifierContainer(float initVal)
         {
             m_modifiers = new List<CharacterModifier>();
@@ -38,17 +39,17 @@ namespace Curry.Game
             //Add all new modifiers
             foreach (CharacterModifier newMod in m_toAdd)
             {
-                AddModifier(newMod);
+                AddModifier_Internal(newMod);
             }
             m_toAdd.Clear();
         }
 
-        public virtual void Add(CharacterModifier mod) 
+        public virtual void AddModifier(IStatModifier<CharacterModifierProperty> mod) 
         {
-            m_toAdd.Add(mod);
+            m_toAdd.Add(mod as CharacterModifier);
         }
 
-        protected virtual void AddModifier(CharacterModifier mod) 
+        protected virtual void AddModifier_Internal(CharacterModifier mod) 
         {
             if (mod == null)
             {
@@ -82,7 +83,7 @@ namespace Curry.Game
         protected virtual void OnModifierEffectTrigger() 
         {
             UpdateModifierValue();
-            OnEffectTrigger?.Invoke();
+            OnModTrigger?.Invoke();
         }
 
         protected virtual void UpdateModifierValue() 

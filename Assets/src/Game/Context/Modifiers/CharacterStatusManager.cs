@@ -34,13 +34,13 @@ namespace Curry.Game
 
         protected virtual void Start() 
         {
-            m_multipliers.OnEffectTrigger += UpdateStats;
+            m_multipliers.OnModTrigger += UpdateStats;
             m_multipliers.OnModExpire += OnModifierExpire;
 
-            m_adders.OnEffectTrigger += UpdateStats;
+            m_adders.OnModTrigger += UpdateStats;
             m_adders.OnModExpire += OnModifierExpire;
 
-            m_specialMods.OnEffectTrigger += UpdateStats;
+            m_specialMods.OnModTrigger += UpdateStats;
             m_specialMods.OnModExpire += OnModifierExpire;
         }
 
@@ -80,13 +80,13 @@ namespace Curry.Game
 
         public virtual void Shutdown() 
         {
-            m_multipliers.OnEffectTrigger -= UpdateStats;
+            m_multipliers.OnModTrigger -= UpdateStats;
             m_multipliers.OnModExpire -= OnModifierExpire;
 
-            m_adders.OnEffectTrigger -= UpdateStats;
+            m_adders.OnModTrigger -= UpdateStats;
             m_adders.OnModExpire -= OnModifierExpire;
 
-            m_specialMods.OnEffectTrigger -= UpdateStats;
+            m_specialMods.OnModTrigger -= UpdateStats;
             m_specialMods.OnModExpire -= OnModifierExpire;
         }
         
@@ -109,8 +109,8 @@ namespace Curry.Game
 
         protected virtual CharacterContext CalculateModifiedStats()
         {
-            CharacterModifierProperty mult = m_multipliers.OverallValue;
-            CharacterModifierProperty add = m_adders.OverallValue;
+            CharacterModifierProperty mult = m_multipliers.Result;
+            CharacterModifierProperty add = m_adders.Result;
             return (m_current * mult) + add;
         }
 
@@ -139,7 +139,7 @@ namespace Curry.Game
                     default:
                         return;
                 }
-                modifierContainer?.Add(modifier);
+                modifierContainer?.AddModifier(modifier);
             }
 
             UpdateStats();

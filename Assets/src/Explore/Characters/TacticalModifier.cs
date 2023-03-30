@@ -1,24 +1,8 @@
 ﻿using Curry.Game;
-using System;
 using UnityEngine;
 
 namespace Curry.Explore
 {
-    [Serializable]
-    public enum ObjectVisibility
-    {
-        Visible,
-        Hidden
-    }
-    [Serializable]
-    public struct TacticalStats 
-    {
-        public int MaxHp;
-        public int Hp;
-        public int MoveRange;
-        public int Speed;
-        public ObjectVisibility Visibility;
-    }
     public abstract class TacticalModifier : IStatModifier<TacticalStats>
     {
         // Name of the modifier, e.g. a skill/item name
