@@ -339,11 +339,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_name: Enforcer
-  m_maxHp: 7
-  m_moveRange: 1
-  m_navigator: {fileID: 4170915499308263808}
   m_initStats:
-    Speed: 2
+    MaxHp: 7
+    Hp: 7
+    MoveRange: 0
+    Speed: 3
     Visibility: 0
   m_anim: {fileID: 4140017887156134203}
   m_detect: {fileID: 8423108616808915002}

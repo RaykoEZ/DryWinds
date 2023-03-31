@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEngine;
 
 namespace Curry.Explore
 {
@@ -13,6 +14,7 @@ namespace Curry.Explore
     {
         public int MaxHp;
         public int Hp;
+        [Range(0, 3)]
         public int MoveRange;
         public int Speed;
         public ObjectVisibility Visibility;
@@ -20,5 +22,10 @@ namespace Curry.Explore
     public interface ITimedElement<T_Arg>
     {
         void OnTimeElapsed(T_Arg dt);
+    }
+
+    public interface IDamageModifier 
+    {
+        int Apply(int hitVal);
     }
 }

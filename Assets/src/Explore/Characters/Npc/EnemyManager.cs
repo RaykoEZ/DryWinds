@@ -60,7 +60,7 @@ namespace Curry.Explore
                     else
                     {
                         // ...and y is not null, return countdown difference
-                        return x.CurrentStatus.Speed - y.CurrentStatus.Speed;
+                        return x.Speed - y.Speed;
                     }
                 }
             }

@@ -18,7 +18,7 @@ namespace Curry.Game
         {
             return baseVal + m_value;
         }
-        public override CharacterModifierProperty Revert(CharacterModifierProperty baseVal)
+        public override CharacterModifierProperty Expire(CharacterModifierProperty baseVal)
         {
             return baseVal - m_value;
         }
@@ -40,7 +40,7 @@ namespace Curry.Game
             return baseVal * m_value;
         }
 
-        public override CharacterModifierProperty Revert(CharacterModifierProperty baseVal)
+        public override CharacterModifierProperty Expire(CharacterModifierProperty baseVal)
         {
             return baseVal / m_value;
         }

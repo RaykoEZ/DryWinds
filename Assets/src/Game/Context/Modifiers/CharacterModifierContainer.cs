@@ -14,7 +14,7 @@ namespace Curry.Game
         public event OnModifierExpire<CharacterModifierProperty> OnModExpire;
         public event OnModifierTrigger<CharacterModifierProperty> OnModTrigger;
         CharacterModifierProperty m_overallValue;
-        public CharacterModifierProperty Result { get { return m_overallValue; } }
+        public CharacterModifierProperty Current { get { return m_overallValue; } }
         public IReadOnlyList<IStatModifier<CharacterModifierProperty>> Modifiers => m_modifiers;
         public CharacterModifierContainer(float initVal)
         {
@@ -55,7 +55,7 @@ namespace Curry.Game
             {
                 return;
             }
-            mod.OnModifierExpire += OnModifierExpire;
+            mod.OnExpire += OnModifierExpire;
             mod.OnTrigger += OnModifierEffectTrigger;
             m_modifiers.Add(mod);
             m_overallValue = mod.Apply(m_overallValue);
@@ -67,11 +67,11 @@ namespace Curry.Game
             {
                 return;
             }
-            mod.OnModifierExpire -= OnModifierExpire;
+            mod.OnExpire -= OnModifierExpire;
             mod.OnTrigger -= OnModifierEffectTrigger;
 
             m_modifiers.Remove(mod);
-            m_overallValue = mod.Revert(m_overallValue);           
+            m_overallValue = mod.Expire(m_overallValue);           
             OnModExpire?.Invoke(mod);
         }
 
@@ -80,10 +80,10 @@ namespace Curry.Game
             m_toRemove.Add(mod);
         }
 
-        protected virtual void OnModifierEffectTrigger() 
+        protected virtual void OnModifierEffectTrigger(IStatModifier<CharacterModifierProperty> mod) 
         {
             UpdateModifierValue();
-            OnModTrigger?.Invoke();
+            OnModTrigger?.Invoke(mod);
         }
 
         protected virtual void UpdateModifierValue() 

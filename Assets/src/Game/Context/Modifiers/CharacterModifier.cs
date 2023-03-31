@@ -13,7 +13,7 @@ namespace Curry.Game
 
     public delegate void OnModifierExpire<T>(IStatModifier<T> modifier);
     public delegate void OnModifierChain<T>(IStatModifier<T> newModifier);
-    public delegate void OnModifierTrigger<T>();
+    public delegate void OnModifierTrigger<T>(IStatModifier<T> modifier);
 
     [Serializable]
     public abstract class CharacterModifier : IStatModifier<CharacterModifierProperty>
@@ -25,7 +25,7 @@ namespace Curry.Game
         [SerializeField] protected float m_duration = default;
         [SerializeField] protected CharacterModifierProperty m_value;
 
-        public event OnModifierExpire<CharacterModifierProperty> OnModifierExpire;
+        public event OnModifierExpire<CharacterModifierProperty> OnExpire;
         // Used to notify when modifier applied
         public event OnModifierTrigger<CharacterModifierProperty> OnTrigger;
 
@@ -43,25 +43,25 @@ namespace Curry.Game
         }
 
         public abstract CharacterModifierProperty Apply(CharacterModifierProperty baseVal);
-        public abstract CharacterModifierProperty Revert(CharacterModifierProperty baseVal);
+        public abstract CharacterModifierProperty Expire(CharacterModifierProperty baseVal);
 
         public virtual void OnTimeElapsed(float dt) 
         {
             m_duration -= dt;
             if(m_duration <= 0f) 
             {
-                OnExpire();
+                OnModExpire();
             }
         }
 
-        protected virtual void OnExpire() 
+        protected virtual void OnModExpire() 
         {
-            OnModifierExpire?.Invoke(this);
+            OnExpire?.Invoke(this);
         }
 
         protected virtual void TriggerEffect() 
         {
-            OnTrigger?.Invoke();
+            OnTrigger?.Invoke(this);
         }
     }
 }

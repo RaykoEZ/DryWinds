@@ -8,9 +8,20 @@ namespace Curry.Explore
         // Name of the modifier, e.g. a skill/item name
         [SerializeField] protected string m_name;
         public string Name => m_name;
-        public event OnModifierExpire<TacticalStats> OnModifierExpire;
+        public event OnModifierExpire<TacticalStats> OnExpire;
         public event OnModifierTrigger<TacticalStats> OnTrigger;
-        public abstract TacticalStats Apply(TacticalStats baseVal);
-        public abstract TacticalStats Revert(TacticalStats baseVal);
+        public TacticalStats Apply(TacticalStats baseVal) 
+        {
+            OnTrigger?.Invoke(this);
+            return Apply_Internal(baseVal);
+        }
+        public TacticalStats Expire(TacticalStats baseVal) 
+        {
+            OnExpire?.Invoke(this);
+            return Revert_Internal(baseVal);
+        }
+
+        protected abstract TacticalStats Apply_Internal(TacticalStats baseVal);
+        protected abstract TacticalStats Revert_Internal(TacticalStats baseVal);
     }
 }

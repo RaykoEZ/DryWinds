@@ -15,6 +15,7 @@ namespace Curry.Explore
         public override void OnGUI(Rect rect, SerializedProperty property, GUIContent label)
         {
             var damage = property.FindPropertyRelative("m_damage");
+            label.text = "Basic attack " + nameof(damage);
             damage.intValue = EditorGUI.IntSlider(rect, label, damage.intValue, 0, 999);
         }
     }

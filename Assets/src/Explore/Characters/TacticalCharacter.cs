@@ -9,33 +9,22 @@ namespace Curry.Explore
     public abstract class TacticalCharacter : PoolableBehaviour, ICharacter
     {
         [SerializeField] protected string m_name = default;
-        [Range(1, 100)]
-        [SerializeField] protected int m_maxHp = default;
-        [Range(0, 3)]
-        [SerializeField] protected int m_moveRange = default;
-        protected int m_currentHp = 1;
-        protected int m_currentmoveRange = 1;
+        [SerializeField] TacticalStats m_initStats = default;
+        protected TacticalStatManager m_statManager;
         protected bool m_blocked = false;
-        public virtual ObjectVisibility Visibility { get; protected set; } = ObjectVisibility.Visible;
         public Vector3 WorldPosition => transform.position;
         public string Name => m_name;
-        public int MaxHp
-        {
-            get { return m_maxHp; }
-            protected set { m_maxHp = Mathf.Clamp(value, 1, 100); }
-        }
-        public int CurrentHp { 
-            get { return m_currentHp; } 
-            protected set { m_currentHp = Mathf.Clamp(value, 0, MaxHp); } 
-        }
+        public int MaxHp => m_statManager.Current.MaxHp;
+        public int CurrentHp => m_statManager.Current.Hp;      
+        public int MoveRange => m_statManager.Current.MoveRange;     
+        public int Speed => m_statManager.Current.Speed;
+        public virtual ObjectVisibility Visibility => m_statManager.Current.Visibility;
 
-        public int MoveRange { get { return m_currentmoveRange; } protected set { m_currentmoveRange = Mathf.Clamp(value, 0, 3); } }
         public event OnMovementBlocked OnBlocked;
-
         public override void Prepare()
         {
-            CurrentHp = MaxHp;
-            MoveRange = m_moveRange;
+            m_statManager = new TacticalStatManager();
+            m_statManager.Init(m_initStats);
         }
         public abstract void Hide();
         public virtual void Move(Vector3 target)
@@ -44,6 +33,10 @@ namespace Curry.Explore
         }
         public virtual void OnMovementBlocked(ICharacter blocking) 
         {
+            if (blocking.Equals(this)) 
+            {
+                return;
+            }
             m_blocked = true;
             Reveal();
             blocking.Reveal();          
@@ -56,10 +49,21 @@ namespace Curry.Explore
         public virtual void Recover(int val)
         {
             Debug.Log("Player recovers " + val + " HP.");
-            CurrentHp += val;
+            m_statManager.RecoverHp(val);
         }
         public abstract void Reveal();
-        public abstract void TakeHit(int hitVal);
+        public void TakeHit(int hitVal) 
+        {
+            int result = m_statManager.CalculateDamage(hitVal);
+            TakeHit_Internal(result);
+            m_statManager.TakeDamage(result);
+
+            if (CurrentHp <= 0)
+            {
+                OnDefeated();
+            }
+        }
+        protected abstract void TakeHit_Internal(int hitVal);
         protected virtual IEnumerator Move_Internal(Vector3 target)
         {
             m_blocked = false;
@@ -93,7 +97,14 @@ namespace Curry.Explore
             }
             return hit.Length > 0;
         }
-
+        public void ApplyModifier(IStatModifier<TacticalStats> mod)
+        {
+            m_statManager.AddModifier(mod);
+        }
+        public void OnTimeElapsed(int dt) 
+        {
+            m_statManager.OnTimeElapsed(dt);
+        }
     }
 
 }

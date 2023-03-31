@@ -1,5 +1,6 @@
 ﻿using Curry.Game;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Curry.Explore
 {
@@ -14,11 +15,56 @@ namespace Curry.Explore
         public IReadOnlyList<IStatModifier<TacticalStats>> Modifiers => m_mods;
         public event OnModifierExpire<TacticalStats> OnModExpire;
         public event OnModifierTrigger<TacticalStats> OnModTrigger;
-        public TacticalStats Result { get; protected set; }
+        TacticalStats m_current;
+        public TacticalStats Current { get { return m_current; } protected set { m_current = value; } }
         public virtual void Init(TacticalStats start) 
         {
-            Result = start;
+            Current = start;
+
         } 
+
+        public int CalculateDamage(int hitVal) 
+        {
+            int ret = hitVal;
+            foreach(var mod in m_mods) 
+            { 
+                if(mod is IDamageModifier damageModifier) 
+                {
+                    ret = damageModifier.Apply(ret);
+                }
+            }
+            return Mathf.Max(0, ret);
+        }
+        public void SetMaxHp(int maxHp) 
+        {
+            if (maxHp < 1) return;
+            m_current.MaxHp = maxHp;
+        }
+        public void TakeDamage(int damage) 
+        {
+            if (damage < 0) return;
+            int result = m_current.Hp - damage;
+            m_current.Hp = Mathf.Max(result, 0);
+        }
+        public void RecoverHp(int recover) 
+        {
+            if (recover < 0) return;
+            int result = m_current.Hp + recover;
+            m_current.Hp = Mathf.Min(result,m_current.MaxHp);
+            
+        }
+        public void SetMovementRange(int range) 
+        {
+            m_current.MoveRange = Mathf.Clamp(range, 0, 3);
+        }
+        public void SetSpeed(int speed) 
+        {
+            m_current.Speed = speed;
+        }
+        public void SetVisibility(ObjectVisibility newVal) 
+        {
+            m_current.Visibility = newVal;
+        }
         public virtual void OnTimeElapsed(int dt) 
         {
             foreach (IStatModifier<TacticalStats> mod in m_mods)
@@ -54,10 +100,10 @@ namespace Curry.Explore
             {
                 return;
             }
-            mod.OnModifierExpire += OnModifierExpire;
+            mod.OnExpire += OnModifierExpire;
             mod.OnTrigger += OnModifierEffectTrigger;
             m_mods.Add(mod);
-            Result = mod.Apply(Result);
+            Current = mod.Apply(Current);
         }
 
         protected virtual void RemoveExpiredModifier(IStatModifier<TacticalStats> mod)
@@ -66,19 +112,21 @@ namespace Curry.Explore
             {
                 return;
             }
-            mod.OnModifierExpire -= OnModifierExpire;
+            mod.OnExpire -= OnModifierExpire;
             mod.OnTrigger -= OnModifierEffectTrigger;
             m_mods.Remove(mod);
             OnModExpire?.Invoke(mod);
+            UpdateModifierValue();
         }
         protected virtual void OnModifierExpire(IStatModifier<TacticalStats> mod)
         {
             m_toRemove.Add(mod);
+            OnModExpire?.Invoke(mod);
         }
-        protected virtual void OnModifierEffectTrigger()
+        protected virtual void OnModifierEffectTrigger(IStatModifier<TacticalStats> mod)
         {
             UpdateModifierValue();
-            OnModTrigger?.Invoke();
+            OnModTrigger?.Invoke(mod);
         }
         protected virtual void UpdateModifierValue()
         {
@@ -91,7 +139,7 @@ namespace Curry.Explore
                 // Apply all modifiera to base
                 foreach (var mod in m_mods)
                 {
-                    Result = mod.Apply(Result);
+                    Current = mod.Apply(Current);
                 }
             }
         }

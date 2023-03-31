@@ -333,11 +333,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_name: Border Patrol
-  m_maxHp: 5
-  m_moveRange: 1
-  m_navigator: {fileID: 4871995870995214804}
   m_initStats:
-    Speed: 1
+    MaxHp: 5
+    Hp: 5
+    MoveRange: 0
+    Speed: 2
     Visibility: 0
   m_anim: {fileID: 3642215462890439483}
   m_detect: {fileID: 9158939930621903418}

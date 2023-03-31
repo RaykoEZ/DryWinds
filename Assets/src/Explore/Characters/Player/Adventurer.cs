@@ -49,18 +49,12 @@ namespace Curry.Explore
             base.Recover(val);
             TakeDamage?.Invoke(val, CurrentHp);
         }
-        public override void TakeHit(int hitVal)
+        protected override void TakeHit_Internal(int hitVal)
         {
             Debug.Log("Player takes " + hitVal + " damage.");
             m_anim.ResetTrigger("TakeDamage");
             m_anim.SetTrigger("TakeDamage");
-            CurrentHp -= hitVal;
             TakeDamage?.Invoke(hitVal, CurrentHp);
-
-            if (CurrentHp <= 0) 
-            {
-                OnDefeated();
-            }
         }
 
         public override void OnDefeated()

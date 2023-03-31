@@ -120,8 +120,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_name: Player
-  m_maxHp: 10
-  m_moveRange: 1
+  m_initStats:
+    MaxHp: 10
+    Hp: 10
+    MoveRange: 2
+    Speed: 1
+    Visibility: 0
   m_anim: {fileID: 2571672766922976632}
   m_onPlayerPing:
     m_eventToTrigger: {fileID: 11400000, guid: b9f05c250782bdf49b964bc6c4d7abe9, type: 2}

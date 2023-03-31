@@ -213,11 +213,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_name: Imperial Sharpshooter
-  m_maxHp: 10
-  m_moveRange: 1
   m_initStats:
-    Speed: 1
-    Visibility: 0
+    MaxHp: 10
+    Hp: 10
+    MoveRange: 0
+    Speed: 10
+    Visibility: 1
   m_anim: {fileID: 5293342025262486339}
   m_detect: {fileID: 5032173810866119701}
   m_stormAmmo: {fileID: 1210613774268447844, guid: e2d4209ebe1a5894ba92c5883f0d5bc7, type: 3}

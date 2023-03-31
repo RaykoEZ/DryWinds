@@ -34,19 +34,19 @@ namespace Curry.Explore
         public event OnMovementBlocked OnBlocked;
         public bool SpotsTarget => false;
         public EnemyId Id { get; protected set; }
-        public TacticalStats InitStatus => new TacticalStats();
-        public TacticalStats CurrentStatus => new TacticalStats();
         public IEnumerator BasicAction => OnSpawnReinforcement();
         public IEnumerator Reaction => OnSpawnReinforcement();
         public string Name => "Reinforcement";
         public int MaxHp => 1;
         public int CurrentHp => 1;
         public int MoveRange => 0;
+        public int Speed => 0;
         public Vector3 WorldPosition => transform.position;
         public ObjectVisibility Visibility => ObjectVisibility.Visible;
         protected virtual bool CanSpawn => m_countdownTimer >= Countdown;
         public int Countdown { get { return m_countdown; } protected set { m_countdown = value; } }
         public PoolableBehaviour SpawnRef { get { return m_spawnRef; } protected set { m_spawnRef = value; } }
+
 
         public void Setup(ReinforcementTarget spawnTarget)
         {
@@ -127,6 +127,11 @@ namespace Curry.Explore
             {
                 Trigger(character);
             }
+        }
+
+        public void ApplyModifier(IStatModifier<TacticalStats> mod)
+        {
+            return;
         }
     }
 }

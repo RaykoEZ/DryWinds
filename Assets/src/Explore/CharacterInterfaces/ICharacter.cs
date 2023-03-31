@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Curry.Game;
+using UnityEngine;
 
 namespace Curry.Explore
 {
@@ -9,6 +10,7 @@ namespace Curry.Explore
         int MaxHp { get; }
         int CurrentHp { get; }
         int MoveRange { get; }
+        int Speed { get; }
         Vector3 WorldPosition { get; }
         ObjectVisibility Visibility { get; }
         event OnMovementBlocked OnBlocked;
@@ -18,6 +20,7 @@ namespace Curry.Explore
         void TakeHit(int hitVal);
         void OnDefeated();
         void OnMovementBlocked(ICharacter blocking);
+        void ApplyModifier(IStatModifier<TacticalStats> mod);
         void Move(Vector3 target);
         // returns if warp was successful
         bool Warp(Vector3 to);

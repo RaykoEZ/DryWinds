@@ -34,13 +34,13 @@ namespace Curry.Game
 
         protected virtual void Start() 
         {
-            m_multipliers.OnModTrigger += UpdateStats;
+            m_multipliers.OnModTrigger += OnModifierTrigger;
             m_multipliers.OnModExpire += OnModifierExpire;
 
-            m_adders.OnModTrigger += UpdateStats;
+            m_adders.OnModTrigger += OnModifierTrigger;
             m_adders.OnModExpire += OnModifierExpire;
 
-            m_specialMods.OnModTrigger += UpdateStats;
+            m_specialMods.OnModTrigger += OnModifierTrigger;
             m_specialMods.OnModExpire += OnModifierExpire;
         }
 
@@ -80,13 +80,13 @@ namespace Curry.Game
 
         public virtual void Shutdown() 
         {
-            m_multipliers.OnModTrigger -= UpdateStats;
+            m_multipliers.OnModTrigger -= OnModifierTrigger;
             m_multipliers.OnModExpire -= OnModifierExpire;
 
-            m_adders.OnModTrigger -= UpdateStats;
+            m_adders.OnModTrigger -= OnModifierTrigger;
             m_adders.OnModExpire -= OnModifierExpire;
 
-            m_specialMods.OnModTrigger -= UpdateStats;
+            m_specialMods.OnModTrigger -= OnModifierTrigger;
             m_specialMods.OnModExpire -= OnModifierExpire;
         }
         
@@ -109,8 +109,8 @@ namespace Curry.Game
 
         protected virtual CharacterContext CalculateModifiedStats()
         {
-            CharacterModifierProperty mult = m_multipliers.Result;
-            CharacterModifierProperty add = m_adders.Result;
+            CharacterModifierProperty mult = m_multipliers.Current;
+            CharacterModifierProperty add = m_adders.Current;
             return (m_current * mult) + add;
         }
 
@@ -155,6 +155,11 @@ namespace Curry.Game
         protected virtual void OnModifierExpire(IStatModifier<CharacterModifierProperty> mod) 
         {
             Debug.Log($"{mod.Name}'s effect expired.");
+            UpdateStats();
+        }
+        protected virtual void OnModifierTrigger(IStatModifier<CharacterModifierProperty> mod)
+        {
+            Debug.Log($"{mod.Name}'s effect triggered.");
             UpdateStats();
         }
     }
