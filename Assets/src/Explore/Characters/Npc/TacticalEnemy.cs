@@ -8,10 +8,8 @@ namespace Curry.Explore
     // Base enemy class
     public abstract class TacticalEnemy : TacticalCharacter, IEnemy, IPoolable
     {
-        [SerializeField] protected TacticalStats m_initStats = default;
         [SerializeField] protected Animator m_anim = default;
         [SerializeField] protected CharacterDetector m_detect = default;
-        protected TacticalStats m_current;
         protected IReadOnlyCollection<IPlayer> TargetsInSight => m_detect.TargetsInSight;
         protected IReadOnlyCollection<IEnemy> EnemiesInSight => m_detect.Enemies;
 
@@ -21,24 +19,15 @@ namespace Curry.Explore
         public event OnEnemyUpdate OnHide;
         public bool SpotsTarget => TargetsInSight.Count > 0;
         public virtual EnemyId Id { get; protected set; }
-        public TacticalStats InitStatus { get { return m_initStats; } }
-        public override ObjectVisibility Visibility { get { return CurrentStatus.Visibility; }
-            protected set { m_current.Visibility = value; }
-        }
-        public TacticalStats CurrentStatus
-        {
-            get { return m_current; }
-            protected set { m_current = value; }
-        }
         public override void Reveal()
         {
-            m_current.Visibility = ObjectVisibility.Visible;
+            m_statManager.SetVisibility(ObjectVisibility.Visible);
             m_anim.SetBool("hidden", false);
             OnReveal?.Invoke(this);
         }
         public override void Hide()
         {
-            m_current.Visibility = ObjectVisibility.Hidden;
+            m_statManager.SetVisibility(ObjectVisibility.Hidden);
             m_anim.SetBool("hidden", true);
             OnHide?.Invoke(this);
         }
@@ -46,7 +35,7 @@ namespace Curry.Explore
         {
             Debug.Log("Recover enemy");
         }
-        public override void TakeHit(int hitVal)
+        protected override void TakeHit_Internal(int hitVal)
         {
             m_anim?.SetTrigger("takeHit");
             Defeat();
@@ -93,9 +82,9 @@ namespace Curry.Explore
         #region pooling implementation
         public override void Prepare()
         {
+            base.Prepare();
             // Get new id for enemy
             Id = new EnemyId(gameObject.name);
-            m_current = m_initStats;
             m_detect.OnPlayerEnterDetection += OnDetectEnter;
             m_detect.OnPlayerExitDetection += OnDetectExit;
             m_detect.OnEnemyEnterDetection += OnOtherEnemyEnter;

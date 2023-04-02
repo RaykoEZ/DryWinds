@@ -6,6 +6,22 @@ using Curry.Events;
 
 namespace Curry.Explore
 {
+    #region scan game event argument definitions
+    public class ScanInfo : EventInfo
+    {
+        public ICharacter User { get; protected set; }
+        public int DetectionLevel { get; protected set; }
+        public float Diameter { get; protected set; }
+        public Vector3 OriginWorldPosition { get; protected set; }
+        public ScanInfo(ICharacter user, int detectionLevel, float diameter, Vector3 origin)
+        {
+            User = user;
+            DetectionLevel = detectionLevel;
+            Diameter = diameter;
+            OriginWorldPosition = origin;
+        }
+    }
+    #endregion
     // Displays sonar visual effects and do detection checks
     public class SonarHandler : SceneInterruptBehaviour
     {
@@ -15,6 +31,7 @@ namespace Curry.Explore
         [SerializeField] ContactFilter2D m_scanFilter = default;
         [SerializeField] CurryGameEventListener m_onSonar = default;
         protected int m_currentDetectionLevel = 0;
+        protected ICharacter m_currentUser;
         List<Transform> m_lastResults = new List<Transform>();
         #region Makeshift pooling for particle systems when scan hits an target
         int m_preLoad = 1;
@@ -24,6 +41,7 @@ namespace Curry.Explore
         float WaitTime => m_scanRender.main.duration;
         void Start()
         {
+            m_scanCollider.enabled = false;
             m_onSonar?.Init();
             m_hitPool.Init(m_preLoad, m_hitRender, transform);
         }
@@ -31,6 +49,8 @@ namespace Curry.Explore
         {
             if (info is ScanInfo scan)
             {
+                m_currentUser = scan.User;
+                transform.position = scan.OriginWorldPosition;
                 m_currentDetectionLevel = scan.DetectionLevel;
                 Scan(scan.Diameter);
             }
@@ -53,15 +73,17 @@ namespace Curry.Explore
                 ps?.Play();
             }
         }
-
         void ClearHits() 
         {
             m_lastResults.Clear();
             m_hitPool.ReturnAllToPool();
         }
-
         protected virtual void HandleDetection(ICharacter hit, Transform transform) 
         {
+            if(hit == m_currentUser) 
+            {
+                return;
+            }
             // Append hits if detected character is not stealthy / stealth component is not stealthy enough
             // (stealth level is lower than scan level)
             if (hit is IStealthy stealthy && 
@@ -83,7 +105,8 @@ namespace Curry.Explore
         {
             StartInterrupt();
             ClearHits();
-            List<Collider2D> results = new List<Collider2D>();            
+            List<Collider2D> results = new List<Collider2D>();
+            m_scanCollider.enabled = true;
             // Start scanning
             m_scanCollider.OverlapCollider(m_scanFilter, results);
             // Start trigger sonar particle system
@@ -99,6 +122,9 @@ namespace Curry.Explore
             }
             DisplayHits();
             EndInterrupt();
+            m_currentUser = null;
+            m_currentDetectionLevel = 0;
+            m_scanCollider.enabled = false;
         }
     }
 }

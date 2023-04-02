@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Curry.Events;
 using Curry.Util;
+using Curry.UI;
 
 namespace Curry.Explore
 {
@@ -22,6 +23,7 @@ namespace Curry.Explore
         [SerializeField] CurryGameEventListener m_onDropTileSelected = default;
         [SerializeField] Image m_playPanel = default;
         [SerializeField] SelectionManager m_selection = default;
+        [SerializeField] PostCardActivationHandler m_postActivation = default;
         // The card we are dragging into a play zone
         DraggableCard m_pendingCardRef;
         protected Hand m_cardsInHand = new Hand();
@@ -33,6 +35,8 @@ namespace Curry.Explore
             m_onDropTileSelected?.Init();
             m_onCardDraw?.Init();
             m_onDiscardHand?.Init();
+            m_postActivation.Init(m_time);
+            m_postActivation.OnCardReturn += AddCardsToHand;
             // get starting hand
             DraggableCard[] cards = m_cardHolderRoot.GetComponentsInChildren<DraggableCard>();
             foreach (DraggableCard card in cards)
@@ -49,6 +53,8 @@ namespace Curry.Explore
             foreach (AdventCard card in cards)
             {
                 drag = card.GetComponent<DraggableCard>();
+                card.GetComponent<CardInteractionController>()?.
+                    SetInteractionMode(CardInteractMode.Play | CardInteractMode.Inspect);
                 cardsToAdd.Add(drag);
                 PrepareCard(drag);
             }
@@ -81,6 +87,8 @@ namespace Curry.Explore
             OnCardLeavesHand(draggable);
             HidePlayZone();
             yield return StartCoroutine(m_cardsInHand.PlayCard(draggable, m_player));
+            // after effect activation, we spend the card
+            yield return StartCoroutine(m_postActivation.OnCardUse(card));
         }
         // When card is trying to actvated after it is dropped...
         void OnCardPlay(AdventCard card, Action onPlay, Action onCancel)
@@ -123,7 +131,7 @@ namespace Curry.Explore
             if (m_pendingCardRef != null && m_pendingCardRef.DoesCardNeedTarget)
             {
                 ITargetsPosition targetCard = m_pendingCardRef.Card as ITargetsPosition;
-                m_selection.SelectDropZoneTile( targetCard.Range, m_player.transform);
+                m_selection.SelectDropZoneTile(m_pendingCardRef.Card.Name, targetCard.Range, m_player.transform);
             }
             else
             {

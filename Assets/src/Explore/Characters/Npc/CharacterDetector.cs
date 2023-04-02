@@ -26,7 +26,7 @@ namespace Curry.Explore
         {
             if (collider.attachedRigidbody == null) 
             { 
-                return; 
+                return;  
             }
 
             if (collider.attachedRigidbody.TryGetComponent(out IPlayer character))

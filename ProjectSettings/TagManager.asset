@@ -20,7 +20,7 @@ TagManager:
   - Cards
   - Scan
   - EnemyDetection
-  - 
+  - StepOnTrigger
   - 
   - 
   - 
@@ -40,4 +40,13 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: GameplayObjects
+    uniqueID: 3442302439
+    locked: 0
+  - name: CardPlay
+    uniqueID: 2978448753
+    locked: 0
+  - name: GeneralUI
+    uniqueID: 579837007
     locked: 0

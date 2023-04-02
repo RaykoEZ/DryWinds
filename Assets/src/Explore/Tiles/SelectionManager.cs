@@ -1,5 +1,6 @@
 ﻿using Curry.Events;
 using Curry.UI;
+using Curry.Util;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -30,7 +31,7 @@ namespace Curry.Explore
             m_onCardActivate?.Init();
             m_targetGuide.OnFinish += CancelSelection;
             m_previewTileId = new ObjectId(m_previewTerrainTile);
-            m_tileHighlightManager.Add(m_previewTerrainTile, Vector3.zero, transform);
+            m_tileHighlightManager.Add(new ObjectId(m_previewTerrainTile), m_previewTerrainTile, Vector3.zero, transform);
         }
         public void TargetGuide(Transform origin) 
         {
@@ -51,10 +52,10 @@ namespace Curry.Explore
             m_rangeDisplay?.HidePrompt();
         }
 
-        public void SelectDropZoneTile(int range, Transform parent)
+        public void SelectDropZoneTile(string dropName, RangeMap range, Transform parent)
         {
             CancelSelection();
-            m_rangeDisplay.ShowRange(m_tileDropRef, range, parent);
+            m_rangeDisplay.ShowRange(dropName, m_tileDropRef, range, parent);
         }
 
         public void OnSelectTile(EventInfo info)
@@ -109,7 +110,7 @@ namespace Curry.Explore
             }
             m_rangeDisplay.ShowRange(
                     rangeTile,
-                    player.CurrentStats.MoveRange,
+                    player.MoveRange,
                     player.transform);
         }
     }

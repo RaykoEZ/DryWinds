@@ -16,6 +16,9 @@ MonoBehaviour:
     Name: Repair Kit
     Description: Recover 2 HP
     TimeCost: 1
+    Type: 2
+  m_resourceModules:
+  - {fileID: 0}
   m_healing:
     m_healAmount: 2
 --- !u!1001 &8988240515545042952
@@ -39,7 +42,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5636301306242561430, guid: ef1d3ab221ea8e440a5fa517863a4114, type: 3}
       propertyPath: m_Pivot.y
-      value: 0.9
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5636301306242561430, guid: ef1d3ab221ea8e440a5fa517863a4114, type: 3}
       propertyPath: m_RootOrder
@@ -47,7 +50,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5636301306242561430, guid: ef1d3ab221ea8e440a5fa517863a4114, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 5636301306242561430, guid: ef1d3ab221ea8e440a5fa517863a4114, type: 3}
       propertyPath: m_AnchorMax.y
@@ -55,7 +58,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5636301306242561430, guid: ef1d3ab221ea8e440a5fa517863a4114, type: 3}
       propertyPath: m_AnchorMin.x
-      value: 0
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 5636301306242561430, guid: ef1d3ab221ea8e440a5fa517863a4114, type: 3}
       propertyPath: m_AnchorMin.y
@@ -121,20 +124,9 @@ PrefabInstance:
       propertyPath: m_card
       value: 
       objectReference: {fileID: 5400319584234665114}
-    - target: {fileID: 6599436218162960579, guid: ef1d3ab221ea8e440a5fa517863a4114, type: 3}
-      propertyPath: m_Color.b
-      value: 0.5331023
-      objectReference: {fileID: 0}
-    - target: {fileID: 6599436218162960579, guid: ef1d3ab221ea8e440a5fa517863a4114, type: 3}
-      propertyPath: m_Color.g
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6599436218162960579, guid: ef1d3ab221ea8e440a5fa517863a4114, type: 3}
-      propertyPath: m_Color.r
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 5636301306242561433, guid: ef1d3ab221ea8e440a5fa517863a4114, type: 3}
+    - {fileID: 5258714694495575149, guid: ef1d3ab221ea8e440a5fa517863a4114, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: ef1d3ab221ea8e440a5fa517863a4114, type: 3}
 --- !u!1 &3640191682562909597 stripped
 GameObject:

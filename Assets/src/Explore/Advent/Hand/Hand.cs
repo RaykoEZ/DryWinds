@@ -39,7 +39,6 @@ namespace Curry.Explore
                 if (m_hand.Remove(card))
                 {
                     yield return card.StartCoroutine(card.Card.ActivateEffect(player));
-                    card.Card.ReturnToPool();
                 }
             }
             // Remove all cards in hand that doesn't retain

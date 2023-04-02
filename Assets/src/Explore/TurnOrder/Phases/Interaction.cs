@@ -17,7 +17,7 @@ namespace Curry.Explore
         [SerializeField] HandManager m_cardPlay = default;
         Stack<List<IEnumerator>> m_interruptBuffer = new Stack<List<IEnumerator>>();
 
-        protected override Type NextState => typeof(PlayerAction);
+        protected override Type NextState { get; set; } = typeof(PlayerAction);
 
         public override void Init()
         {
@@ -25,7 +25,7 @@ namespace Curry.Explore
             m_playerMovement.OnStart += OnPlayerAction;
             m_enemy.OnActionBegin += OnEnemyAction;
         }
-        void OnPlayerAction(int timeSpent, List<IEnumerator> actions = null)
+        void OnPlayerAction(int timeSpent = 0, List<IEnumerator> actions = null)
         {
             m_interruptBuffer?.Push(actions);
             // Check if there are enemy responses for this player action
@@ -33,11 +33,13 @@ namespace Curry.Explore
             {
                 m_interruptBuffer?.Push(resp);
             }
+            NextState = typeof(PlayerAction);
             Interrupt();
         }
         void OnEnemyAction(List<IEnumerator> actions) 
         {
             m_interruptBuffer.Push(actions);
+            NextState = typeof(EnemyAction);
             Interrupt();
         }
 
@@ -46,14 +48,19 @@ namespace Curry.Explore
             // If we need to resolve interrupts from activated enemies, do it first
             while (m_interruptBuffer.Count > 0)
             {
-                foreach (IEnumerator call in m_interruptBuffer.Pop())
-                {
-                    yield return StartCoroutine(call);
-                    yield return new WaitForEndOfFrame();
-                }
+                yield return StartCoroutine(CallActions(m_interruptBuffer.Pop()));
                 yield return new WaitForSeconds(0.1f);
             }
             TransitionTo();
+        }
+
+        protected IEnumerator CallActions(List<IEnumerator> actions) 
+        {
+            foreach (IEnumerator call in actions)
+            {
+                yield return StartCoroutine(call);             
+                yield return new WaitForEndOfFrame();
+            }
         }
     }
 }

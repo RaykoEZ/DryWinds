@@ -2,6 +2,8 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using Curry.Events;
+using System.Runtime.InteropServices.ComTypes;
+
 namespace Curry.Explore
 {
     public class FogOfWar : MonoBehaviour
@@ -28,6 +30,12 @@ namespace Curry.Explore
             }
             m_map.SetTile(mapCoord, tileToSet);
         }
+        public bool IsCellClear(Vector3Int cell) 
+        {
+            TileBase tile = m_map.GetTile(cell);
+            bool ret = tile == null || tile == m_clearTile;
+            return ret;
+        }
 
         public void FogTile(EventInfo info) 
         {
@@ -38,9 +46,9 @@ namespace Curry.Explore
                 Vector3 worldPos = Camera.main.ScreenToWorldPoint(select.ClickScreenPosition);
                 SetFogOfWar(worldPos, clearFog: false);
             }
-            else if(info is PlayerInfo player) 
+            else if(info is CharacterInfo player) 
             {
-                SetFogOfWar(player.PlayerStats.WorldPosition, clearFog: false);
+                SetFogOfWar(player.Character.WorldPosition, clearFog: false);
             }
         }
 
@@ -53,9 +61,9 @@ namespace Curry.Explore
                 Vector3 worldPos = Camera.main.ScreenToWorldPoint(select.ClickScreenPosition);
                 SetFogOfWar(worldPos);
             }
-            else if (info is PlayerInfo player)
+            else if (info is CharacterInfo player)
             {
-                SetFogOfWar(player.PlayerStats.WorldPosition);
+                SetFogOfWar(player.Character.WorldPosition);
             }
             else if (info is RangeInfo range) 
             { 

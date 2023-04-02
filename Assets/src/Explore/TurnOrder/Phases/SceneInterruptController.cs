@@ -19,6 +19,7 @@ namespace Curry.Explore
             m_interruptors.Init();
             m_interruptors.OnInterruptBegin += DisableScene;
             m_interruptors.OnInterruptEnd += EnableScene;
+            DisableScene();
         }
         protected virtual void EnableScene()
         {

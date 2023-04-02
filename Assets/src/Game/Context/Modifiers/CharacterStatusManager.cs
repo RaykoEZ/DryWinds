@@ -34,16 +34,13 @@ namespace Curry.Game
 
         protected virtual void Start() 
         {
-            m_multipliers.OnEffectTrigger += UpdateStats;
-            m_multipliers.OnModChain += AddModifier;
+            m_multipliers.OnModTrigger += OnModifierTrigger;
             m_multipliers.OnModExpire += OnModifierExpire;
 
-            m_adders.OnEffectTrigger += UpdateStats;
-            m_adders.OnModChain += AddModifier;
+            m_adders.OnModTrigger += OnModifierTrigger;
             m_adders.OnModExpire += OnModifierExpire;
 
-            m_specialMods.OnEffectTrigger += UpdateStats;
-            m_specialMods.OnModChain += AddModifier;
+            m_specialMods.OnModTrigger += OnModifierTrigger;
             m_specialMods.OnModExpire += OnModifierExpire;
         }
 
@@ -83,16 +80,13 @@ namespace Curry.Game
 
         public virtual void Shutdown() 
         {
-            m_multipliers.OnEffectTrigger -= UpdateStats;
-            m_multipliers.OnModChain -= AddModifier;
+            m_multipliers.OnModTrigger -= OnModifierTrigger;
             m_multipliers.OnModExpire -= OnModifierExpire;
 
-            m_adders.OnEffectTrigger -= UpdateStats;
-            m_adders.OnModChain -= AddModifier;
+            m_adders.OnModTrigger -= OnModifierTrigger;
             m_adders.OnModExpire -= OnModifierExpire;
 
-            m_specialMods.OnEffectTrigger -= UpdateStats;
-            m_specialMods.OnModChain -= AddModifier;
+            m_specialMods.OnModTrigger -= OnModifierTrigger;
             m_specialMods.OnModExpire -= OnModifierExpire;
         }
         
@@ -115,8 +109,8 @@ namespace Curry.Game
 
         protected virtual CharacterContext CalculateModifiedStats()
         {
-            CharacterModifierProperty mult = m_multipliers.OverallValue;
-            CharacterModifierProperty add = m_adders.OverallValue;
+            CharacterModifierProperty mult = m_multipliers.Current;
+            CharacterModifierProperty add = m_adders.Current;
             return (m_current * mult) + add;
         }
 
@@ -126,25 +120,28 @@ namespace Curry.Game
             m_contextFactoryRef.UpdateContext(CalculateModifiedStats());
         }
 
-        public virtual void AddModifier(CharacterModifier mod) 
+        public virtual void AddModifier(IStatModifier<CharacterModifierProperty> mod) 
         {
-            CharacterModifierContainer modifierContainer;
-            switch (mod.Type)
+            if(mod is CharacterModifier modifier) 
             {
-                case ModifierOpType.Add:
-                    modifierContainer = m_adders;
-                    break;
-                case ModifierOpType.Multiply:
-                    modifierContainer = m_multipliers;
-                    break;
-                case ModifierOpType.Special:
-                    modifierContainer = m_specialMods;
-                    break;
-                default:
-                    return;
+                CharacterModifierContainer modifierContainer;
+                switch (modifier.Type)
+                {
+                    case ModifierOpType.Add:
+                        modifierContainer = m_adders;
+                        break;
+                    case ModifierOpType.Multiply:
+                        modifierContainer = m_multipliers;
+                        break;
+                    case ModifierOpType.Special:
+                        modifierContainer = m_specialMods;
+                        break;
+                    default:
+                        return;
+                }
+                modifierContainer?.AddModifier(modifier);
             }
 
-            modifierContainer?.Add(mod);
             UpdateStats();
         }
 
@@ -155,9 +152,14 @@ namespace Curry.Game
             m_specialMods.OnTimeElapsed(dt);
         }
 
-        protected virtual void OnModifierExpire(CharacterModifier mod) 
+        protected virtual void OnModifierExpire(IStatModifier<CharacterModifierProperty> mod) 
         {
             Debug.Log($"{mod.Name}'s effect expired.");
+            UpdateStats();
+        }
+        protected virtual void OnModifierTrigger(IStatModifier<CharacterModifierProperty> mod)
+        {
+            Debug.Log($"{mod.Name}'s effect triggered.");
             UpdateStats();
         }
     }

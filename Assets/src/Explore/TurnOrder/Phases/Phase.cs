@@ -6,19 +6,18 @@ namespace Curry.Explore
     public delegate void OnPhaseInterrupt(Phase sender);
     // Each turn will contain different phases
     [Serializable]
-    public abstract class Phase : SceneInterruptBehaviour
+    public abstract class Phase : MonoBehaviour
     {
         [SerializeField] string m_displayName = default;
         public event OnTurnPhaseTransition OnGameStateTransition;
         // Trigger interrupt for UI and others
         public event OnPhaseInterrupt OnInterrupt;
-        protected abstract Type NextState { get;}
+        protected abstract Type NextState { get; set; }
         public string Name => m_displayName;
         public virtual void Init() { }
 
         public virtual void OnEnter(Phase incomingState) 
         {
-            StartInterrupt();
             Evaluate();
         }
         public virtual void Pause() { }
@@ -37,7 +36,5 @@ namespace Curry.Explore
         {
             OnGameStateTransition?.Invoke(NextState);
         }
-
     }
-
 }

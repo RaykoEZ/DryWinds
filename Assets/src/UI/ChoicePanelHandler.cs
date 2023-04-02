@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 using static Curry.UI.ChoiceResult;
 using Curry.Explore;
+using Curry.Game;
 
 namespace Curry.UI
 {
@@ -49,12 +50,13 @@ namespace Curry.UI
     public struct ChoiceResult
     {
         public ChoiceStatus Status { get; set; }
-        public IReadOnlyList<IChoice> Choices { get; set; }
-
-        public ChoiceResult(ChoiceStatus status, List<IChoice> choices)
+        public IReadOnlyList<IChoice> Chosen { get; set; }
+        public IReadOnlyList<IChoice> ChoseFrom { get; set; }
+        public ChoiceResult(ChoiceStatus status, List<IChoice> choices, List<IChoice> chosen)
         {
             Status = status;
-            Choices = choices;
+            Chosen = chosen;
+            ChoseFrom = choices;
         }
         public enum ChoiceStatus
         {
@@ -62,12 +64,12 @@ namespace Curry.UI
             Cancelled
         }
     }
-    #endregion
+#endregion
 
     public delegate void OnChoiceFinish(ChoiceResult result);
     public class ChoicePanelHandler : MonoBehaviour
     {
-        [SerializeField] Animator m_panelAnim = default;
+        [SerializeField] PanelUIHandler m_panelAnim = default;
         [SerializeField] TextMeshProUGUI m_title = default;
         [SerializeField] Transform m_content = default;
         [SerializeField] Button m_confirm = default;
@@ -82,12 +84,18 @@ namespace Curry.UI
         {
             if (!m_inProgress) 
             {
-                // Clear all leftover choices
-                foreach(Transform t in m_content) 
+                // Clear all leftover items
+                foreach (Transform t in m_content)
                 {
-                    Destroy(t.gameObject);
+                    if (t.TryGetComponent(out PoolableBehaviour poolable)) 
+                    {
+                        poolable.ReturnToPool();
+                    }
+                    else 
+                    {
+                        Destroy(t.gameObject);
+                    }
                 }
-
                 m_inProgress = true;
                 OnChoiceComplete += onFinish;
                 m_currentContext = context;
@@ -95,7 +103,7 @@ namespace Curry.UI
                 m_confirm.interactable = false;
                 m_cancel.interactable = context.Conditons.CanCancel;
                 PrepareChoices();
-                m_panelAnim.SetBool("show", true);
+                m_panelAnim.Show();
             }
         }
         protected virtual void PrepareChoices() 
@@ -111,7 +119,7 @@ namespace Curry.UI
         {
             m_confirm.interactable = false;
             m_cancel.interactable = false;
-            m_panelAnim.SetBool("show", false);
+            m_panelAnim.Hide();
             foreach (IChoice choice in m_currentContext.ChooseFrom)
             {
                 choice.OnChosen -= OnChoose;
@@ -124,13 +132,13 @@ namespace Curry.UI
         }
         public virtual void ConfirmChoice() 
         {
-            ChoiceResult result = new ChoiceResult(ChoiceStatus.Confirmed, new List<IChoice>(m_chosen));
+            ChoiceResult result = new ChoiceResult(ChoiceStatus.Confirmed, m_currentContext.ChooseFrom, new List<IChoice>(m_chosen));
             OnChoiceComplete?.Invoke(result);
             Clear();
         }
         public virtual void CancelChoice() 
         {
-            ChoiceResult result = new ChoiceResult(ChoiceStatus.Cancelled, new List<IChoice>());
+            ChoiceResult result = new ChoiceResult(ChoiceStatus.Cancelled, m_currentContext.ChooseFrom, new List<IChoice>());
             OnChoiceComplete?.Invoke(result);
             Clear();
         }

@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.Tilemaps;
 using Curry.Util;
+using UnityEditor.iOS.Xcode;
+
 namespace Curry.Explore
 {
     public class RangeDisplayHandler : MonoBehaviour
@@ -15,32 +17,38 @@ namespace Curry.Explore
             m_rangeTileManager.HideAll();
         }
         #endregion
+        // make new id for each unique range pattern
+        ObjectId MakeRangeMapId(int range, GameObject tileRef) 
+        {
+            string idVal = "r" + range;
+            idVal += tileRef.name;
+            return new ObjectId(idVal);
+        }
 
         #region Show method used for spawning range tiles
-        void Show(RangeMap tileOffsets, GameObject tileRef, Transform parent)
+        void Show(ObjectId id, RangeMap tileOffsets, GameObject tileRef, Transform parent)
         {
-            if (tileRef == null) 
+            if (tileRef == null)
             { 
                 return; 
             }
-            ObjectId newId = new ObjectId(tileRef);
-            if (!m_rangeTileManager.DoTilesExist(newId))
+            if (!m_rangeTileManager.DoTilesExist(id))
             {
-                MakeNewTiles(tileOffsets, tileRef, parent);
+                MakeNewTiles(id, tileOffsets, tileRef, parent);
 
             }
-            m_currentObjectId = newId;
+            m_currentObjectId = id;
             m_rangeTileManager.Show(m_currentObjectId);
         }
 
-        void MakeNewTiles(RangeMap tileOffsets, GameObject tileRef, Transform parent) 
+        void MakeNewTiles(ObjectId id, RangeMap tileOffsets, GameObject tileRef, Transform parent) 
         {
             // If tiles never existed, make new tiles
             // This is for showing/creating range tiles.
             foreach (Vector3Int p in tileOffsets?.OffsetsFromOrigin)
             {
                 Vector3 offsetPos = m_map.CellToWorld(p);
-                m_rangeTileManager.Add(tileRef, offsetPos, parent);
+                m_rangeTileManager.Add(id, tileRef, offsetPos, parent);
             }
         }
         #endregion
@@ -54,9 +62,11 @@ namespace Curry.Explore
             bool toggle = false)
         {
             RangeMap map = m_rangeDb.GetSquareRadiusMap(range);
+            ObjectId id = MakeRangeMapId(range, tileToSpawn);
             if (toggle)
             {
                 Toggle_Internal(
+                    id,
                     map,
                     tileToSpawn,
                     parent);
@@ -64,7 +74,34 @@ namespace Curry.Explore
             else
             {
                 Show_Internal(
+                    id,
                     map,
+                    tileToSpawn,
+                    parent);
+            }
+        }
+
+        public void ShowRange(
+            string name,
+            GameObject tileToSpawn,
+            RangeMap range,
+            Transform parent,
+            bool toggle = false)
+        {
+            ObjectId id = new ObjectId(name + tileToSpawn.name);
+            if (toggle)
+            {
+                Toggle_Internal(
+                    id,
+                    range,
+                    tileToSpawn,
+                    parent);
+            }
+            else
+            {
+                Show_Internal(
+                    id,
+                    range,
                     tileToSpawn,
                     parent);
             }
@@ -74,22 +111,23 @@ namespace Curry.Explore
 
         #region Utility for Show/ToggleRangeMap
         void Show_Internal(
+            ObjectId id,
             RangeMap rangeMap,
             GameObject tileRef,
             Transform parent)
         {
             m_rangeTileManager.Hide(tileRef);
-            Show(rangeMap, tileRef, parent);
+            Show(id, rangeMap, tileRef, parent);
         }
 
         // true - Display is now active
         // false - Display is now not active
         bool Toggle_Internal(
+            ObjectId id,
             RangeMap rangeMap,
             GameObject tileRef,
             Transform parent)
         {
-            ObjectId id = new ObjectId(tileRef);
             bool tilesActive = m_rangeTileManager.AreTilesActive(id);
             if (tilesActive)
             {
@@ -98,7 +136,7 @@ namespace Curry.Explore
             }
             m_rangeTileManager.Hide(tileRef);
 
-            Show(rangeMap, tileRef, parent);
+            Show(id, rangeMap, tileRef, parent);
             return true;
         }
         #endregion

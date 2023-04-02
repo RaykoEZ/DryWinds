@@ -13,8 +13,6 @@ namespace Curry.Explore
     {
         bool SpotsTarget { get; }
         EnemyId Id { get; }
-        TacticalStats InitStatus { get; }
-        TacticalStats CurrentStatus { get; }
         event OnEnemyUpdate OnDefeat;
         event OnEnemyUpdate OnReveal;
         event OnEnemyUpdate OnHide;

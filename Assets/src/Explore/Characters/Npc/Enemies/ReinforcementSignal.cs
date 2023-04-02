@@ -34,18 +34,19 @@ namespace Curry.Explore
         public event OnMovementBlocked OnBlocked;
         public bool SpotsTarget => false;
         public EnemyId Id { get; protected set; }
-        public TacticalStats InitStatus => new TacticalStats();
-        public TacticalStats CurrentStatus => new TacticalStats();
         public IEnumerator BasicAction => OnSpawnReinforcement();
         public IEnumerator Reaction => OnSpawnReinforcement();
         public string Name => "Reinforcement";
         public int MaxHp => 1;
         public int CurrentHp => 1;
+        public int MoveRange => 0;
+        public int Speed => 0;
         public Vector3 WorldPosition => transform.position;
         public ObjectVisibility Visibility => ObjectVisibility.Visible;
         protected virtual bool CanSpawn => m_countdownTimer >= Countdown;
         public int Countdown { get { return m_countdown; } protected set { m_countdown = value; } }
         public PoolableBehaviour SpawnRef { get { return m_spawnRef; } protected set { m_spawnRef = value; } }
+
 
         public void Setup(ReinforcementTarget spawnTarget)
         {
@@ -65,7 +66,7 @@ namespace Curry.Explore
         {
             OnHide?.Invoke(this);
         }
-        public void Move(Vector2Int direction)
+        public void Move(Vector3 target)
         {
             OnBlocked?.Invoke(transform.position);
         }
@@ -104,21 +105,30 @@ namespace Curry.Explore
                 Debug.LogWarning("reinforcement failed, spawn reference object is null.");
                 return;
             }
-            // check if any characters are on top of spawner, do not spawn if true
-            Collider2D hit = Physics2D.OverlapCircle(transform.position, 0.1f, m_spawn.DoNotSpawnOn);
-            if (hit.TryGetComponent(out IStepOnTrigger _)) 
-            {
-                Debug.Log("Spawn reinforcement");
-                m_countdownTimer = 0;
-                m_spawn.ApplyEffect(transform.position, SpawnRef);
-            }
+
+            Debug.Log("Spawn reinforcement");
+            m_countdownTimer = 0;
+            m_spawn.ApplyEffect(transform.position, SpawnRef);
+            
         }
         // When a character steps on this object before reinforcement arrives,
         // destrpy this signal (canceling the reinforcement).
         public void Trigger(ICharacter overlapping)
         {
             m_countdownTimer = 0;
-            OnDefeat?.Invoke(this);
+            OnDefeat?.Invoke(this); 
+        }
+        protected void OnTriggerEnter2D(Collider2D collision)
+        {
+            if (collision.TryGetComponent(out ICharacter character)) 
+            {
+                Trigger(character);
+            }
+        }
+
+        public void ApplyModifier(IStatModifier<TacticalStats> mod)
+        {
+            return;
         }
     }
 }

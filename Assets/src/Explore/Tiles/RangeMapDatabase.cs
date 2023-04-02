@@ -49,7 +49,7 @@ namespace Curry.Explore
         {
             if (range < 0 || range > m_squareRadiusRangeMaps.Count)
             {
-                return null;
+                return m_squareRadiusRangeMaps[0].ToExternal();
             }
 
             return m_squareRadiusRangeMaps[range].ToExternal();

@@ -11,12 +11,12 @@ namespace Curry.Game
         Special
     }
 
-    public delegate void OnModifierExpire(CharacterModifier modifier);
-    public delegate void OnModifierChain(CharacterModifier newModifier);
-    public delegate void OnModifierTrigger();
+    public delegate void OnModifierExpire<T>(IStatModifier<T> modifier);
+    public delegate void OnModifierChain<T>(IStatModifier<T> newModifier);
+    public delegate void OnModifierTrigger<T>(IStatModifier<T> modifier);
 
     [Serializable]
-    public abstract class CharacterModifier
+    public abstract class CharacterModifier : IStatModifier<CharacterModifierProperty>
     {
         // Name of the modifier, e.g. a skill/item name
         [SerializeField] protected string m_name;
@@ -25,11 +25,9 @@ namespace Curry.Game
         [SerializeField] protected float m_duration = default;
         [SerializeField] protected CharacterModifierProperty m_value;
 
-        public event OnModifierExpire OnModifierExpire;
-        // Used to apply additional modifiers from a modifier's effect
-        public event OnModifierChain OnModifierChain;
+        public event OnModifierExpire<CharacterModifierProperty> OnExpire;
         // Used to notify when modifier applied
-        public event OnModifierTrigger OnTrigger;
+        public event OnModifierTrigger<CharacterModifierProperty> OnTrigger;
 
         public string Name { get { return m_name; } }
         public virtual CharacterModifierProperty Value { get { return m_value; } }
@@ -52,23 +50,18 @@ namespace Curry.Game
             m_duration -= dt;
             if(m_duration <= 0f) 
             {
-                OnExpire();
+                OnModExpire();
             }
         }
 
-        protected virtual void OnExpire() 
+        protected virtual void OnModExpire() 
         {
-            OnModifierExpire?.Invoke(this);
-        }
-
-        protected virtual void OnChain(CharacterModifier newModifier) 
-        {
-            OnModifierChain?.Invoke(newModifier);
+            OnExpire?.Invoke(this);
         }
 
         protected virtual void TriggerEffect() 
         {
-            OnTrigger?.Invoke();
+            OnTrigger?.Invoke(this);
         }
     }
 }

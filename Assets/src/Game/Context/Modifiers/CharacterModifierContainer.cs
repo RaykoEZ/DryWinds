@@ -3,20 +3,19 @@ using UnityEngine;
 
 namespace Curry.Game
 {
-    public class CharacterModifierContainer 
+    public class CharacterModifierContainer : 
+        IModifierContainer<CharacterModifierProperty>
     {
         protected List<CharacterModifier> m_modifiers;
-        protected List<CharacterModifier> m_toRemove = new List<CharacterModifier>();
+        protected List<IStatModifier<CharacterModifierProperty>> m_toRemove = 
+            new List<IStatModifier<CharacterModifierProperty>>();
         protected List<CharacterModifier> m_toAdd = new List<CharacterModifier>();
 
-        public event OnModifierExpire OnModExpire;
-        public event OnModifierChain OnModChain;
-        public event OnModifierTrigger OnEffectTrigger;
-
+        public event OnModifierExpire<CharacterModifierProperty> OnModExpire;
+        public event OnModifierTrigger<CharacterModifierProperty> OnModTrigger;
         CharacterModifierProperty m_overallValue;
-
-        public CharacterModifierProperty OverallValue { get { return m_overallValue; } }
-
+        public CharacterModifierProperty Current { get { return m_overallValue; } }
+        public IReadOnlyList<IStatModifier<CharacterModifierProperty>> Modifiers => m_modifiers;
         public CharacterModifierContainer(float initVal)
         {
             m_modifiers = new List<CharacterModifier>();
@@ -40,25 +39,24 @@ namespace Curry.Game
             //Add all new modifiers
             foreach (CharacterModifier newMod in m_toAdd)
             {
-                AddModifier(newMod);
+                AddModifier_Internal(newMod);
             }
             m_toAdd.Clear();
         }
 
-        public virtual void Add(CharacterModifier mod) 
+        public virtual void AddModifier(IStatModifier<CharacterModifierProperty> mod) 
         {
-            m_toAdd.Add(mod);
+            m_toAdd.Add(mod as CharacterModifier);
         }
 
-        protected virtual void AddModifier(CharacterModifier mod) 
+        protected virtual void AddModifier_Internal(CharacterModifier mod) 
         {
             if (mod == null)
             {
                 return;
             }
-            mod.OnModifierExpire += OnModifierExpire;
+            mod.OnExpire += OnModifierExpire;
             mod.OnTrigger += OnModifierEffectTrigger;
-            mod.OnModifierChain += OnModChain;
             m_modifiers.Add(mod);
             m_overallValue = mod.Apply(m_overallValue);
         }
@@ -69,24 +67,23 @@ namespace Curry.Game
             {
                 return;
             }
-            mod.OnModifierExpire -= OnModifierExpire;
+            mod.OnExpire -= OnModifierExpire;
             mod.OnTrigger -= OnModifierEffectTrigger;
-            mod.OnModifierChain -= OnModChain;
 
             m_modifiers.Remove(mod);
             m_overallValue = mod.Revert(m_overallValue);           
             OnModExpire?.Invoke(mod);
         }
 
-        protected virtual void OnModifierExpire(CharacterModifier mod) 
+        protected virtual void OnModifierExpire(IStatModifier<CharacterModifierProperty> mod) 
         {
             m_toRemove.Add(mod);
         }
 
-        protected virtual void OnModifierEffectTrigger() 
+        protected virtual void OnModifierEffectTrigger(IStatModifier<CharacterModifierProperty> mod) 
         {
             UpdateModifierValue();
-            OnEffectTrigger?.Invoke();
+            OnModTrigger?.Invoke(mod);
         }
 
         protected virtual void UpdateModifierValue() 
@@ -108,11 +105,6 @@ namespace Curry.Game
                     m_overallValue = m_modifiers[i].Apply(m_overallValue);
                 }
             }
-        }
-
-        protected virtual void OnModifierChain(CharacterModifier newModifier) 
-        {
-            OnModChain?.Invoke(newModifier);
         }
     }
 }

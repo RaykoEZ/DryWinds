@@ -8,9 +8,6 @@
         event OnPlayerUpdate OnDefeat;
         event OnPlayerUpdate OnReveal;
         event OnPlayerUpdate OnHide;
-        AdventurerStats StartingStats { get; }
-        AdventurerStats CurrentStats { get; }
-
     }
 
 }

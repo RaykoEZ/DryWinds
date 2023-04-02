@@ -5,7 +5,7 @@ namespace Curry.Explore
 {
     public class TurnEnd : Phase
     {
-        protected override Type NextState => typeof(TurnStart);
+        protected override Type NextState { get; set; } = typeof(TurnStart);
 
         protected override IEnumerator Evaluate_Internal()
         {

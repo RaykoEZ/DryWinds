@@ -1,77 +1,54 @@
 ﻿using Curry.Game;
 using System.Collections;
+using System.Runtime.InteropServices.ComTypes;
 using UnityEngine;
+using UnityEngine.AI;
 
 namespace Curry.Explore
 {
     public abstract class TacticalCharacter : PoolableBehaviour, ICharacter
     {
-        [SerializeField] string m_name = default;
-        [Range(1, 100)]
-        [SerializeField] int m_maxHp = default;
-        protected int m_currentHp = 1;
-        // A list of layer names to check when we intend to move towards a position 
-        static readonly string[] c_occupanceCheckFilter = new string[]
-        {
-            "Obstacles",
-            "Enemies",
-            "Player"
-        };
-        protected static LayerMask OccupanceContactFilter => LayerMask.GetMask(c_occupanceCheckFilter);
-        public virtual ObjectVisibility Visibility { get; protected set; } = ObjectVisibility.Visible;
+        [SerializeField] protected string m_name = default;
+        [SerializeField] TacticalStats m_initStats = default;
+        protected TacticalStatManager m_statManager;
+        protected bool m_blocked = false;
+        protected bool m_moving = false;
         public Vector3 WorldPosition => transform.position;
         public string Name => m_name;
-        public int MaxHp
-        {
-            get { return m_maxHp; }
-            protected set { m_maxHp = Mathf.Clamp(value, 1, 100); }
-        }
-        public int CurrentHp { 
-            get { return m_currentHp; } 
-            protected set { m_currentHp = Mathf.Clamp(value, 0, MaxHp); } 
-        }
+        public int MaxHp => m_statManager.Current.MaxHp;
+        public int CurrentHp => m_statManager.Current.Hp;      
+        public int MoveRange => m_statManager.Current.MoveRange;     
+        public int Speed => m_statManager.Current.Speed;
+        public virtual ObjectVisibility Visibility => m_statManager.Current.Visibility;
 
         public event OnMovementBlocked OnBlocked;
+        protected virtual void OnTriggerEnter2D(Collider2D collision)
+        {
+            if (m_moving && collision.TryGetComponent(out ICharacter block))
+            {
+                OnMovementBlocked(block);
+            }
+        }
         public override void Prepare()
         {
-            CurrentHp = MaxHp;
+            m_statManager = new TacticalStatManager();
+            m_statManager.Init(m_initStats);
         }
         public abstract void Hide();
-        public virtual void Move(Vector2Int direction)
+        public virtual void Move(Vector3 target)
         {
-            Vector3 target = transform.position + new Vector3(direction.x, direction.y, 0f);
-            RaycastHit2D hit = Physics2D.CircleCast(
-                    target,
-                    0.1f,
-                    Vector2.zero,
-                    distance: 0f,
-                    OccupanceContactFilter);
-            // Check for walls and occupying entities
-            if (!hit)
-            {
-                StartCoroutine(Move_Internal(target));
-            }
-            else if(hit.rigidbody.TryGetComponent(out IStepOnTrigger steppedOn))
-            {
-                StartCoroutine(Move_Internal(target));
-                steppedOn.Trigger(this);
-            }
-            else 
-            {
-                OnMovementBlocked(hit);
-            }
+            StartCoroutine(Move_Internal(target));
         }
-        void OnMovementBlocked(RaycastHit2D hit) 
+        protected virtual void OnMovementBlocked(ICharacter blocking) 
         {
-            Rigidbody2D rb = hit.rigidbody;
-            if(rb == null)
+            Debug.Log("blocked by: " + blocking.Name);
+            if (blocking.Equals(this)) 
             {
-                OnBlocked?.Invoke(hit.point);
+                return;
             }
-            else if (rb.TryGetComponent(out ICharacter character)) 
-            {
-                character.Reveal();
-            }
+            m_blocked = true;
+            Reveal();
+            blocking.Reveal();
         }
 
         public virtual void OnDefeated()
@@ -80,24 +57,47 @@ namespace Curry.Explore
         }
         public virtual void Recover(int val)
         {
-            Debug.Log("Player recovers" + val + " HP.");
-            CurrentHp += val;
+            Debug.Log("Player recovers " + val + " HP.");
+            m_statManager.RecoverHp(val);
         }
         public abstract void Reveal();
-        public abstract void TakeHit(int hitVal);
+        public void TakeHit(int hitVal) 
+        {
+            int result = m_statManager.CalculateDamage(hitVal);
+            m_statManager.TakeDamage(result);
+            TakeHit_Internal(result);
+
+            if (CurrentHp <= 0)
+            {
+                OnDefeated();
+            }
+        }
+        protected abstract void TakeHit_Internal(int hitVal);
         protected virtual IEnumerator Move_Internal(Vector3 target)
-        {          
+        {
+            m_blocked = false;
+            m_moving = true;
+            yield return new WaitForEndOfFrame();
             float duration = 1f;
             float timeElapsed = 0f;
             while (timeElapsed <= duration)
             {
+                if (m_blocked)
+                {
+                    OnBlocked?.Invoke(WorldPosition);
+                    break;
+                }
                 timeElapsed += Time.deltaTime;
-                transform.position = Vector3.Lerp(transform.position, target, timeElapsed / duration);
+                transform.position = Vector2.Lerp(transform.position, target, timeElapsed / duration);
                 yield return null;
             }
             OnMoveFinish();
         }
-        protected virtual void OnMoveFinish() { }
+        protected virtual void OnMoveFinish() 
+        {
+            m_moving = false;
+            m_statManager.OnMovementFinish();
+        }
         public bool Warp(Vector3 to)
         {
             int boundFilter = 1 << LayerMask.NameToLayer("Environment");
@@ -111,7 +111,14 @@ namespace Curry.Explore
             }
             return hit.Length > 0;
         }
-
+        public void ApplyModifier(IStatModifier<TacticalStats> mod)
+        {
+            m_statManager.AddModifier(mod);
+        }
+        public void OnTimeElapsed(int dt) 
+        {
+            m_statManager.OnTimeElapsed(dt);
+        }
     }
 
 }

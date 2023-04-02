@@ -11,7 +11,6 @@ namespace Curry.Explore
         IPointerEnterHandler,
         IPointerExitHandler
     {
-        [SerializeField] Animator m_anim = default;
         [SerializeField] Button m_button = default;
         [SerializeField] TextMeshProUGUI m_descriptionText = default;
         protected EncounterOptionAttribute m_details;

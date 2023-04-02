@@ -1,15 +1,45 @@
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 
 namespace Curry.Util
 {
     public static class GameUtil
     { 
-        public static RaycastHit2D[] SearchTargetPosition(Vector3 targetPos, LayerMask m_searchFilter) 
+        public static List<int> RandomRangeUnique(int min, int max, int numToGet) 
+        {
+            List<int> ret = new List<int>();
+            int index;
+            while (ret.Count < numToGet)
+            {
+                index = UnityEngine.Random.Range(0, max);
+                if (!ret.Contains(index))
+                {
+                    ret.Add(index);
+                }
+            }
+            return ret;
+        }
+        // look for target hits in world position
+        public static RaycastHit2D[] SearchTargetPosition(Vector3 targetPos, LayerMask searchFilter) 
         { 
-            return Physics2D.CircleCastAll(targetPos, 0.01f, Vector2.zero, 0f, m_searchFilter);
+            return Physics2D.CircleCastAll(targetPos, 0.01f, Vector2.zero, 0f, searchFilter);
+        }
+        // search for a specific target of type : T_Target, in world position
+        public static bool TrySearchTarget<T_Target>(Vector3 targetPos, LayerMask searchFilter, out T_Target target) 
+        {
+            target = default;
+            RaycastHit2D[] hits = SearchTargetPosition(targetPos, searchFilter);
+            foreach(RaycastHit2D hit in hits) 
+            {
+                if (hit.transform.TryGetComponent(out T_Target found))
+                {
+                    target = found;
+                    return true;
+                }
+            }
+            return false;
         }
         /// returns ratio of two velocities
         public static float ScaleFactior(float v1, float v2, float minFactor, float maxFactor) 

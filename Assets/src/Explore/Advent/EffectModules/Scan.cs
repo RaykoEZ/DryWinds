@@ -13,7 +13,7 @@ namespace Curry.Explore
 
         public void ApplyEffect(ICharacter target, ICharacter user)
         {
-            ScanInfo info = new ScanInfo(m_detectionLevel, 3f, target.WorldPosition);
+            ScanInfo info = new ScanInfo(user, m_detectionLevel, 3f, target.WorldPosition);
             m_onScan?.TriggerEvent(info);
         }
     }

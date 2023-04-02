@@ -49,17 +49,17 @@ namespace Curry.Util
         }
         public virtual void DropObject(Transform parent, int siblingIndex = 0)
         {
-            transform.SetParent(parent);
+            transform.SetParent(parent, false);
             transform.SetSiblingIndex(siblingIndex);
         }
-        protected virtual void ReturnToBeforeDrag() 
+        public virtual void ReturnToBeforeDrag() 
         {
             DropObject(m_origin, m_originIndex);
         }
         void SetDragPosition(PointerEventData e)
         {
             Vector2 worldPos = e.pressEventCamera.ScreenToWorldPoint(e.position - m_anchorOffset);
-            transform.position = worldPos;
+            GetComponent<RectTransform>().position = worldPos;
         }
     }
 

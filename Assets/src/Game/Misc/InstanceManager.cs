@@ -36,7 +36,7 @@ namespace Curry.Game
     {
         protected abstract PoolCollection<T> Pool { get; }
         ObjectPool<T> m_currentPool = default;
-
+        public Transform DefaultParent => Pool.DefaultParent;
         public virtual void PrepareNewInstance(GameObject instance, Transform parent = null)
         {
             string instanceId = instance.name;

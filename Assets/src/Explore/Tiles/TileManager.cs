@@ -29,9 +29,8 @@ namespace Curry.Explore
             }
             return DoTilesExist(id) && m_containers[id].IsActive;
         }
-        public void Add(GameObject objectRef, Vector3 pos, Transform parent)
+        public void Add(ObjectId id, GameObject objectRef, Vector3 pos, Transform parent)
         {
-            ObjectId id = new ObjectId(objectRef);
             GameObject o = m_spawner.SpawnTile(objectRef, pos, parent, false);
             TileItem item = new TileItem { TileObject = o };
             if (!m_containers.TryGetValue(id, out TileContainer val) || val == null)

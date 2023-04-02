@@ -16,6 +16,10 @@ MonoBehaviour:
     Name: King's Sight
     Description: Kingkingkingking
     TimeCost: 5
+    Type: 0
+  m_resourceModules:
+  - {fileID: 290314039555069096}
+  m_cooldown: {fileID: 290314039555069096}
   m_defog:
     m_scoutRange: 2
     m_defog:
@@ -27,6 +31,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 5258714694495575149, guid: ef1d3ab221ea8e440a5fa517863a4114, type: 3}
+      propertyPath: m_cooldownTime
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 5636301304751964453, guid: ef1d3ab221ea8e440a5fa517863a4114, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -41,7 +49,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5636301306242561430, guid: ef1d3ab221ea8e440a5fa517863a4114, type: 3}
       propertyPath: m_Pivot.y
-      value: 0.9
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5636301306242561430, guid: ef1d3ab221ea8e440a5fa517863a4114, type: 3}
       propertyPath: m_RootOrder
@@ -49,7 +57,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5636301306242561430, guid: ef1d3ab221ea8e440a5fa517863a4114, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 5636301306242561430, guid: ef1d3ab221ea8e440a5fa517863a4114, type: 3}
       propertyPath: m_AnchorMax.y
@@ -57,7 +65,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5636301306242561430, guid: ef1d3ab221ea8e440a5fa517863a4114, type: 3}
       propertyPath: m_AnchorMin.x
-      value: 0
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 5636301306242561430, guid: ef1d3ab221ea8e440a5fa517863a4114, type: 3}
       propertyPath: m_AnchorMin.y
@@ -131,3 +139,14 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 5636301306242561429, guid: ef1d3ab221ea8e440a5fa517863a4114, type: 3}
   m_PrefabInstance: {fileID: 5547821435368769733}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &290314039555069096 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5258714694495575149, guid: ef1d3ab221ea8e440a5fa517863a4114, type: 3}
+  m_PrefabInstance: {fileID: 5547821435368769733}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 199838572023151952}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 919f5f6ba28c0324aa2adae32af97f54, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

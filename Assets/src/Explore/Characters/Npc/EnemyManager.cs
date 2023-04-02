@@ -60,7 +60,7 @@ namespace Curry.Explore
                     else
                     {
                         // ...and y is not null, return countdown difference
-                        return x.CurrentStatus.Speed - y.CurrentStatus.Speed;
+                        return x.Speed - y.Speed;
                     }
                 }
             }
@@ -152,7 +152,7 @@ namespace Curry.Explore
             m_toRemove.Add(remove);
             remove.OnDefeated();
         }
-        void OnMovementBlocked(Vector2 pos) 
+        void OnMovementBlocked(Vector3 pos) 
         {
             m_fog.SetFogOfWar(pos);
         }
@@ -210,7 +210,11 @@ namespace Curry.Explore
                     calls.Add(chosenAction);
                 }
             }
-            calls.Add(FinishActionPhase());
+            
+            if(calls.Count > 0) 
+            {
+                calls.Add(FinishActionPhase());
+            }
             UpdateActivity();
             return calls;
         }
