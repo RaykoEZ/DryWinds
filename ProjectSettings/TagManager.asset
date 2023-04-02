@@ -41,8 +41,17 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Terrain
+    uniqueID: 4187708643
+    locked: 0
   - name: GameplayObjects
     uniqueID: 3442302439
+    locked: 0
+  - name: MapWalls
+    uniqueID: 1122130893
+    locked: 0
+  - name: MapOverlay
+    uniqueID: 1235874715
     locked: 0
   - name: CardPlay
     uniqueID: 2978448753
