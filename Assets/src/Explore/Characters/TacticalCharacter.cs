@@ -12,6 +12,7 @@ namespace Curry.Explore
         [SerializeField] TacticalStats m_initStats = default;
         protected TacticalStatManager m_statManager;
         protected bool m_blocked = false;
+        protected bool m_moving = false;
         public Vector3 WorldPosition => transform.position;
         public string Name => m_name;
         public int MaxHp => m_statManager.Current.MaxHp;
@@ -21,6 +22,13 @@ namespace Curry.Explore
         public virtual ObjectVisibility Visibility => m_statManager.Current.Visibility;
 
         public event OnMovementBlocked OnBlocked;
+        protected virtual void OnTriggerEnter2D(Collider2D collision)
+        {
+            if (m_moving && collision.TryGetComponent(out ICharacter block))
+            {
+                OnMovementBlocked(block);
+            }
+        }
         public override void Prepare()
         {
             m_statManager = new TacticalStatManager();
@@ -31,15 +39,16 @@ namespace Curry.Explore
         {
             StartCoroutine(Move_Internal(target));
         }
-        public virtual void OnMovementBlocked(ICharacter blocking) 
+        protected virtual void OnMovementBlocked(ICharacter blocking) 
         {
+            Debug.Log("blocked by: " + blocking.Name);
             if (blocking.Equals(this)) 
             {
                 return;
             }
             m_blocked = true;
             Reveal();
-            blocking.Reveal();          
+            blocking.Reveal();
         }
 
         public virtual void OnDefeated()
@@ -67,6 +76,7 @@ namespace Curry.Explore
         protected virtual IEnumerator Move_Internal(Vector3 target)
         {
             m_blocked = false;
+            m_moving = true;
             yield return new WaitForEndOfFrame();
             float duration = 1f;
             float timeElapsed = 0f;
@@ -85,6 +95,7 @@ namespace Curry.Explore
         }
         protected virtual void OnMoveFinish() 
         {
+            m_moving = false;
             m_statManager.OnMovementFinish();
         }
         public bool Warp(Vector3 to)

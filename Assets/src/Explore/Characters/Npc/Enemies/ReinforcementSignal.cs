@@ -62,9 +62,6 @@ namespace Curry.Explore
         {
             ReturnToPool();
         }
-        public void OnMovementBlocked(ICharacter blocking)
-        {
-        }
         public void Hide()
         {
             OnHide?.Invoke(this);

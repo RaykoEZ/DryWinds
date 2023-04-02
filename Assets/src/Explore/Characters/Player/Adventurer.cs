@@ -5,21 +5,6 @@ using UnityEngine.InputSystem;
 
 namespace Curry.Explore
 {
-    #region some game event argument definitions
-    public class ScanInfo : EventInfo 
-    {
-        public int DetectionLevel { get; protected set; }
-        public float Diameter { get; protected set; }
-        public Vector3 OriginWorldPosition { get; protected set; }
-
-        public ScanInfo(int detectionLevel, float diameter, Vector3 origin)
-        {
-            DetectionLevel = detectionLevel;
-            Diameter = diameter;
-            OriginWorldPosition = origin;
-        }
-    }
-    #endregion
     // A basic player character for adventure mode
     public class Adventurer : TacticalCharacter, IPlayer
     {
@@ -85,8 +70,9 @@ namespace Curry.Explore
             m_onScout?.TriggerEvent(info);
         }
 
-        protected virtual void OnTriggerEnter2D(Collider2D collider)
+        protected override void OnTriggerEnter2D(Collider2D collider)
         {
+            base.OnTriggerEnter2D(collider);
             if (collider.gameObject.TryGetComponent(out IRescue rescue))
             {
                 m_rescuee = rescue;

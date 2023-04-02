@@ -19,7 +19,6 @@ namespace Curry.Explore
         void Recover(int val);
         void TakeHit(int hitVal);
         void OnDefeated();
-        void OnMovementBlocked(ICharacter blocking);
         void ApplyModifier(IStatModifier<TacticalStats> mod);
         void Move(Vector3 target);
         // returns if warp was successful
