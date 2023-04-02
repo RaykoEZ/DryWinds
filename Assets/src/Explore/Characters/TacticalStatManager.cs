@@ -4,24 +4,37 @@ using UnityEngine;
 
 namespace Curry.Explore
 {
+    // handles modifiers applied by cards, items, attacks 
     public class TacticalStatManager : IModifierContainer<TacticalStats>
     {
         protected List<IStatModifier<TacticalStats>> m_mods = 
             new List<IStatModifier<TacticalStats>>();
         protected List<IStatModifier<TacticalStats>> m_toRemove =
-           new List<IStatModifier<TacticalStats>>();
-        protected List<IStatModifier<TacticalStats>> m_toAdd = 
+            new List<IStatModifier<TacticalStats>>();
+        protected List<IStatModifier<TacticalStats>> m_toAdd =
             new List<IStatModifier<TacticalStats>>();
         public IReadOnlyList<IStatModifier<TacticalStats>> Modifiers => m_mods;
         public event OnModifierExpire<TacticalStats> OnModExpire;
         public event OnModifierTrigger<TacticalStats> OnModTrigger;
+        TacticalStats m_base;
         TacticalStats m_current;
         public TacticalStats Current { get { return m_current; } protected set { m_current = value; } }
         public virtual void Init(TacticalStats start) 
         {
-            Current = start;
-
+            m_base = start;
+            m_current = m_base;
         } 
+        public void OnMovementFinish() 
+        {
+            foreach (var mod in m_mods)
+            {
+                if (mod is IMovementElement<TacticalStats> movement)
+                {
+                    movement.OnCharacterMoved(Current);
+                }
+            }
+            UpdateModifierState();
+        }
 
         public int CalculateDamage(int hitVal) 
         {
@@ -33,6 +46,7 @@ namespace Curry.Explore
                     ret = damageModifier.Apply(ret);
                 }
             }
+            UpdateModifierState();
             return Mathf.Max(0, ret);
         }
         public void SetMaxHp(int maxHp) 
@@ -50,8 +64,7 @@ namespace Curry.Explore
         {
             if (recover < 0) return;
             int result = m_current.Hp + recover;
-            m_current.Hp = Mathf.Min(result,m_current.MaxHp);
-            
+            m_current.Hp = Mathf.Min(result,m_current.MaxHp);      
         }
         public void SetMovementRange(int range) 
         {
@@ -74,7 +87,45 @@ namespace Curry.Explore
                     timer.OnTimeElapsed(dt);
                 }
             }
+            UpdateModifierState();
+        }
+        public virtual void AddModifier(IStatModifier<TacticalStats> mod)
+        {
+            m_toAdd.Add(mod);
+        }
+        protected virtual void OnModifierExpire(IStatModifier<TacticalStats> mod)
+        {
+            m_toRemove.Add(mod);
+        }
+        protected virtual void AddModifier_Internal(IStatModifier<TacticalStats> mod)
+        {
+            if (mod == null)
+            {
+                return;
+            }
+            mod.OnExpire += OnModifierExpire;
+            mod.OnTrigger += OnModifierEffectTrigger;
+            m_mods.Add(mod);
+        }
 
+        protected virtual void RemoveExpiredModifier(IStatModifier<TacticalStats> mod)
+        {
+            if (mod == null)
+            {
+                return;
+            }
+            mod.OnExpire -= OnModifierExpire;
+            mod.OnTrigger -= OnModifierEffectTrigger;
+            m_mods.Remove(mod);
+            OnModExpire?.Invoke(mod);
+        }
+        protected virtual void OnModifierEffectTrigger(IStatModifier<TacticalStats> mod)
+        {
+            UpdateModifierState();
+            OnModTrigger?.Invoke(mod);
+        }
+        protected virtual void UpdateModifierState()
+        {
             // Clear all expired mods this frame
             foreach (IStatModifier<TacticalStats> expired in m_toRemove)
             {
@@ -88,48 +139,9 @@ namespace Curry.Explore
                 AddModifier_Internal(newMod);
             }
             m_toAdd.Clear();
-        }
-
-        public virtual void AddModifier(IStatModifier<TacticalStats> mod)
-        {
-            m_toAdd.Add(mod);
-        }
-        protected virtual void AddModifier_Internal(IStatModifier<TacticalStats> mod)
-        {
-            if (mod == null)
-            {
-                return;
-            }
-            mod.OnExpire += OnModifierExpire;
-            mod.OnTrigger += OnModifierEffectTrigger;
-            m_mods.Add(mod);
-            Current = mod.Apply(Current);
-        }
-
-        protected virtual void RemoveExpiredModifier(IStatModifier<TacticalStats> mod)
-        {
-            if (mod == null)
-            {
-                return;
-            }
-            mod.OnExpire -= OnModifierExpire;
-            mod.OnTrigger -= OnModifierEffectTrigger;
-            m_mods.Remove(mod);
-            OnModExpire?.Invoke(mod);
-            UpdateModifierValue();
-        }
-        protected virtual void OnModifierExpire(IStatModifier<TacticalStats> mod)
-        {
-            m_toRemove.Add(mod);
-            OnModExpire?.Invoke(mod);
-        }
-        protected virtual void OnModifierEffectTrigger(IStatModifier<TacticalStats> mod)
-        {
-            UpdateModifierValue();
-            OnModTrigger?.Invoke(mod);
-        }
-        protected virtual void UpdateModifierValue()
-        {
+            // Reset to base stat
+            Current = m_base;
+            // if there are modifiers, reapply them to reset stats
             if (m_mods.Count == 0)
             {
                 return;

@@ -67,6 +67,7 @@ namespace Curry.Explore
         #region Movement impl
         protected override void OnMoveFinish()
         {
+            base.OnMoveFinish();
             CharacterInfo info = new CharacterInfo(this);
             m_onPlayerPing?.TriggerEvent(info);
             m_onScout?.TriggerEvent(info);

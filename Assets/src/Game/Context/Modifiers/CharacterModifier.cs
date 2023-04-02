@@ -43,7 +43,7 @@ namespace Curry.Game
         }
 
         public abstract CharacterModifierProperty Apply(CharacterModifierProperty baseVal);
-        public abstract CharacterModifierProperty Expire(CharacterModifierProperty baseVal);
+        public abstract CharacterModifierProperty Revert(CharacterModifierProperty baseVal);
 
         public virtual void OnTimeElapsed(float dt) 
         {

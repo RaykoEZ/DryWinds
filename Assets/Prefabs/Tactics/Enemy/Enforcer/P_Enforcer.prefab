@@ -348,7 +348,7 @@ MonoBehaviour:
   m_anim: {fileID: 4140017887156134203}
   m_detect: {fileID: 8423108616808915002}
   m_basicAttack:
-    m_damage: 2
+    m_baseDamage: 1
 --- !u!212 &739967294596036872
 SpriteRenderer:
   m_ObjectHideFlags: 0

@@ -119,7 +119,7 @@ namespace Curry.Explore
         public void Trigger(ICharacter overlapping)
         {
             m_countdownTimer = 0;
-            OnDefeat?.Invoke(this);
+            OnDefeat?.Invoke(this); 
         }
         protected void OnTriggerEnter2D(Collider2D collision)
         {

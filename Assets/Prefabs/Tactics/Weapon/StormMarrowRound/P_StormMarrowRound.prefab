@@ -70,9 +70,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_damage:
-    m_damage: 3
+    m_baseDamage: 2
   m_anim: {fileID: 8563760736699786092}
   m_onImpact: {fileID: 7400000, guid: 43ca2c7b22cb2584194bc5a55c0900ce, type: 2}
+  m_impedeEffect:
+    m_name: Impeded
+    m_numBeforeExpiry: 1
+    m_rangeDecrease: 1
 --- !u!212 &3635696051094604863
 SpriteRenderer:
   m_ObjectHideFlags: 0

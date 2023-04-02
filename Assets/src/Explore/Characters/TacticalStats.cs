@@ -19,11 +19,14 @@ namespace Curry.Explore
         public int Speed;
         public ObjectVisibility Visibility;
     }
-    public interface ITimedElement<T_Arg>
+    public interface ITimedElement<T>
     {
-        void OnTimeElapsed(T_Arg dt);
+        void OnTimeElapsed(T dt);
     }
-
+    public interface IMovementElement<T> 
+    {
+        void OnCharacterMoved(T baseStat);
+    }
     public interface IDamageModifier 
     {
         int Apply(int hitVal);

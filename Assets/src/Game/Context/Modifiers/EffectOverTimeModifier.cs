@@ -39,7 +39,7 @@ namespace Curry.Game
             return baseVal;
         }
 
-        public override CharacterModifierProperty Expire(CharacterModifierProperty baseVal) 
+        public override CharacterModifierProperty Revert(CharacterModifierProperty baseVal) 
         {
             return baseVal;
         }

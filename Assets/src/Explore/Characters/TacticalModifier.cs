@@ -12,16 +12,16 @@ namespace Curry.Explore
         public event OnModifierTrigger<TacticalStats> OnTrigger;
         public TacticalStats Apply(TacticalStats baseVal) 
         {
-            OnTrigger?.Invoke(this);
             return Apply_Internal(baseVal);
         }
-        public TacticalStats Expire(TacticalStats baseVal) 
+        protected void Trigger()
+        {
+            OnTrigger?.Invoke(this);
+        }
+        protected void Expire()
         {
             OnExpire?.Invoke(this);
-            return Revert_Internal(baseVal);
         }
-
         protected abstract TacticalStats Apply_Internal(TacticalStats baseVal);
-        protected abstract TacticalStats Revert_Internal(TacticalStats baseVal);
     }
 }

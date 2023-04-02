@@ -55,8 +55,8 @@ namespace Curry.Explore
         public void TakeHit(int hitVal) 
         {
             int result = m_statManager.CalculateDamage(hitVal);
-            TakeHit_Internal(result);
             m_statManager.TakeDamage(result);
+            TakeHit_Internal(result);
 
             if (CurrentHp <= 0)
             {
@@ -83,7 +83,10 @@ namespace Curry.Explore
             }
             OnMoveFinish();
         }
-        protected virtual void OnMoveFinish() { }
+        protected virtual void OnMoveFinish() 
+        {
+            m_statManager.OnMovementFinish();
+        }
         public bool Warp(Vector3 to)
         {
             int boundFilter = 1 << LayerMask.NameToLayer("Environment");

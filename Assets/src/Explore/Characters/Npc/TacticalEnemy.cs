@@ -20,9 +20,9 @@ namespace Curry.Explore
         public bool SpotsTarget => TargetsInSight.Count > 0;
         public virtual EnemyId Id { get; protected set; }
 
-        protected void OnTriggerEnter2D(Collider2D collision)
+        protected void OnCollisionEnter2D(Collision2D collision)
         {
-            if (collision.gameObject.TryGetComponent(out ICharacter block)) 
+            if (collision.otherCollider.TryGetComponent(out ICharacter block))
             {
                 block?.OnMovementBlocked(this);
             }

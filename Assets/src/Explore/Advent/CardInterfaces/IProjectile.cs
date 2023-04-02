@@ -6,7 +6,7 @@ namespace Curry.Explore
 {
     public interface IProjectile  
     { 
-        List<ITargetEffectModule> OnHitEffect { get; }
+        IReadOnlyList<ITargetEffectModule> OnHitEffects { get; }
         IEnumerator FireAt(Vector3 targetPos);
         void Stop();
         void Deflect(Vector3 deflectDirection);

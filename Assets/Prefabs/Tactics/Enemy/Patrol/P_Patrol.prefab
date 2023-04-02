@@ -343,7 +343,7 @@ MonoBehaviour:
   m_detect: {fileID: 9158939930621903418}
   m_stealthLevel: 1
   m_basicAttack:
-    m_damage: 1
+    m_baseDamage: 1
   m_backup:
     m_signal: {fileID: 7365727130124127263, guid: 8e01471e2c522a4449af9ef1ac38054e, type: 3}
     m_reinforcement:

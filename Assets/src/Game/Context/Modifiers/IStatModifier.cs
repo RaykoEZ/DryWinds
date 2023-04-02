@@ -10,7 +10,6 @@ namespace Curry.Game
         // Used to notify when modifier applied
         event OnModifierTrigger<T> OnTrigger;
         T Apply(T baseVal);
-        T Expire(T baseVal);
     }
     public interface IModifierContainer<T>
     {

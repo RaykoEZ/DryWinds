@@ -71,7 +71,7 @@ namespace Curry.Game
             mod.OnTrigger -= OnModifierEffectTrigger;
 
             m_modifiers.Remove(mod);
-            m_overallValue = mod.Expire(m_overallValue);           
+            m_overallValue = mod.Revert(m_overallValue);           
             OnModExpire?.Invoke(mod);
         }
 
