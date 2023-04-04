@@ -206,12 +206,9 @@ MonoBehaviour:
       m_maxSp: 50
       m_stamina: 50
       m_sp: 50
-      m_speed: 1
+      m_moveSpeed: 0
       m_spRegenPerSec: 5
       m_hitRecoveryTime: 1
-      m_collisionStats:
-        m_contactDamage: 0
-        m_knockback: 1
     m_basicSkillRefs:
     - m_AssetGUID: 7fdf6cff9c0eb9642870a1ddc3aba327
       m_SubObjectName: 
@@ -556,6 +553,12 @@ MonoBehaviour:
     m_Mode: 1
     m_NumColorKeys: 3
     m_NumAlphaKeys: 2
+  m_lerpSpeed:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   m_smoothValueChange: 1
 --- !u!1 &4983828272642521026
 GameObject:
@@ -572,7 +575,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8502690385124269331
 Transform:
   m_ObjectHideFlags: 0
