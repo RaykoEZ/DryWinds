@@ -14,22 +14,20 @@ namespace Curry.Explore
         protected IReadOnlyCollection<IEnemy> EnemiesInSight => m_detect.Enemies;
 
         #region ICharacter & IEnemy interface 
-        public event OnEnemyUpdate OnDefeat;
-        public event OnEnemyUpdate OnReveal;
-        public event OnEnemyUpdate OnHide;
         public bool SpotsTarget => TargetsInSight.Count > 0;
         public virtual EnemyId Id { get; protected set; }
         public override void Reveal()
         {
             m_statManager.SetVisibility(ObjectVisibility.Visible);
             m_anim.SetBool("hidden", false);
-            OnReveal?.Invoke(this);
+            base.Reveal();
         }
         public override void Hide()
         {
             m_statManager.SetVisibility(ObjectVisibility.Hidden);
             m_anim.SetBool("hidden", true);
-            OnHide?.Invoke(this);
+            base.Hide();
+
         }
         public override void Recover(int val)
         {
@@ -93,7 +91,6 @@ namespace Curry.Explore
         public override void ReturnToPool()
         {
             m_detect.Shutdown();
-            OnDefeat = null;
             m_detect.OnPlayerEnterDetection -= OnDetectEnter;
             m_detect.OnPlayerExitDetection -= OnDetectExit;
             m_detect.OnEnemyEnterDetection -= OnOtherEnemyEnter;
@@ -136,7 +133,7 @@ namespace Curry.Explore
                     return m_anim.GetCurrentAnimatorStateInfo(m_anim.GetLayerIndex("TakeHit")).IsName("Defeat") &&
                     m_anim.GetCurrentAnimatorStateInfo(m_anim.GetLayerIndex("TakeHit")).normalizedTime >= 1.0f; 
                 });
-            OnDefeat?.Invoke(this);
+            OnDefeated();
         }
         void OnDetectEnter(IPlayer adv)
         {

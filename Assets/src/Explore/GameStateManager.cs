@@ -78,7 +78,7 @@ namespace Curry.Explore
             }
         }
 
-        void OnPlayerDefeat(IPlayer player) 
+        void OnPlayerDefeat(ICharacter player) 
         {
             m_resultText.text = "Game Over";
             UpdateResultPanel();

@@ -135,22 +135,22 @@ namespace Curry.Explore
         #endregion
 
         #region IEnemy event handlers
-        void OnEnemyReveal(IEnemy reveal)
+        void OnEnemyReveal(ICharacter reveal)
         {
             m_fog.SetFogOfWar(reveal.WorldPosition, clearFog: true);
         }
-        void OnEnemyHide(IEnemy hide)
+        void OnEnemyHide(ICharacter hide)
         {
             m_fog.SetFogOfWar(hide.WorldPosition, clearFog: false);
         }
-        void OnEnemyRemove(IEnemy remove)
+        void OnEnemyRemove(ICharacter remove)
         {
             remove.OnDefeat -= OnEnemyRemove;
             remove.OnReveal -= OnEnemyReveal;
             remove.OnHide -= OnEnemyHide;
             remove.OnBlocked -= OnMovementBlocked;
-            m_toRemove.Add(remove);
-            remove.OnDefeated();
+            m_toRemove.Add(remove as IEnemy);
+            remove.Despawn();       
         }
         void OnMovementBlocked(Vector3 pos) 
         {
@@ -223,7 +223,7 @@ namespace Curry.Explore
             OnActionFinish?.Invoke();
             yield return null;
         }
-        IEnumerator PresentActingEnemy(IEnemy e) 
+        IEnumerator PresentActingEnemy(ICharacter e) 
         {
             StartInterrupt();
             m_camera.FocusCamera(e.WorldPosition);

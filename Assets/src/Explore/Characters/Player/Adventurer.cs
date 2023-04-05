@@ -16,36 +16,16 @@ namespace Curry.Explore
         #endregion
         IRescue m_rescuee;
         #region IPlayer interface impl
-        public event OnTakeDamage TakeDamage;
-        public event OnPlayerUpdate OnDefeat;
-        public event OnPlayerUpdate OnReveal;
-        public event OnPlayerUpdate OnHide;
-        public event OnPlayerUpdate OnMoveFinished;
-        public override void Reveal()
-        {
-            OnReveal?.Invoke(this);
-        }
-        public override void Hide()
-        {
-            OnHide?.Invoke(this);
-        }
-        public override void Recover(int val)
-        {
-            base.Recover(val);
-            TakeDamage?.Invoke(val, CurrentHp);
-        }
         protected override void TakeHit_Internal(int hitVal)
         {
             Debug.Log("Player takes " + hitVal + " damage.");
             m_anim.ResetTrigger("TakeDamage");
             m_anim.SetTrigger("TakeDamage");
-            TakeDamage?.Invoke(hitVal, CurrentHp);
         }
-
         public override void OnDefeated()
         {
             Debug.Log("Player defeated");
-            OnDefeat?.Invoke(this);
+            base.OnDefeated();
         }
         #endregion
 
@@ -60,7 +40,6 @@ namespace Curry.Explore
             {
                 m_rescuee.Rescue();
             }
-            OnMoveFinished?.Invoke(this);
         }
         #endregion
         void Start()

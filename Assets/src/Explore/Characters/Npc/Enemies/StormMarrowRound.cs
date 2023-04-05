@@ -18,12 +18,10 @@ namespace Curry.Explore
             m_numBeforeExpiry = source.m_numBeforeExpiry;
             m_rangeDecrease = source.m_rangeDecrease;
         }
-
         public void ApplyEffect(ICharacter target)
         {
             target.ApplyModifier(this);
         }
-
         public virtual void OnCharacterMoved(TacticalStats stat)
         {
             m_numBeforeExpiry--;
