@@ -51,23 +51,79 @@ namespace Curry.UI
     // A list of a character's abilities
     public class AbilityCollection : MonoBehaviour 
     {
-        List<AbilityContent> m_currentContent = new List<AbilityContent>();
-        public void Setup(List<AbilityContent> contentList) { }
-        public void StopDisplay() { }
-        public void NextAbility() { }
-        public void PreviousAbility() { }
-        void ResetDisplay() { }
+        [SerializeField] AbilityDisplay m_displaySample = default;
+        List<AbilityContent> m_currentContent;
+        List<AbilityDisplay> m_abilityDisplays;
+        int m_currentIndex = 0;
+        public void Setup(List<AbilityContent> contentList) 
+        {
+            m_currentContent = contentList;
+            m_abilityDisplays = new List<AbilityDisplay>(contentList.Count);
+            foreach(var content in m_currentContent) 
+            {
+                AbilityDisplay instance = Instantiate(m_displaySample, transform);
+                instance.Setup(content);
+                m_abilityDisplays.Add(instance);
+            }
+        }
+        public void StopDisplay() 
+        {
+            m_abilityDisplays[m_currentIndex]?.Hide();
+            ResetDisplay();
+        }
+        public void NextAbility() 
+        {
+            m_abilityDisplays[m_currentIndex]?.Hide();
+            m_currentIndex = m_currentIndex < m_abilityDisplays.Count - 1 ? m_currentIndex + 1 : 0;
+            m_abilityDisplays[m_currentIndex]?.Show();
+
+        }
+        public void PreviousAbility() 
+        {
+            m_abilityDisplays[m_currentIndex]?.Hide();
+            m_currentIndex = m_currentIndex == 0 ? m_abilityDisplays.Count - 1 : m_currentIndex - 1;
+            m_abilityDisplays[m_currentIndex]?.Show();
+        }
+        void ResetDisplay() 
+        {
+            m_currentContent.Clear();
+            m_currentIndex = 0;
+            foreach (AbilityDisplay display in m_abilityDisplays)
+            {
+                display.ResetDisplay();
+                Destroy(display);
+            }
+            m_abilityDisplays.Clear();
+        }
     }
     // A ui element for character ability 
     public class AbilityDisplay : MonoBehaviour
     {
+        [SerializeField] PanelUIHandler m_uiHandler = default;
         [SerializeField] TextMeshProUGUI m_name = default;
         [SerializeField] TextMeshProUGUI m_description = default;
         [SerializeField] Image m_icon = default;
-        public void Setup(AbilityContent content) { }
-        public void ResetDisplay() { }
-        public void Show() { }
-        public void Hide() { }
+        [SerializeField] Image m_rangePattern = default;
+        public void Setup(AbilityContent content) 
+        {
+            m_name.text = content.Name;
+            m_description.text = content.Description;
+            m_icon.sprite = content.Icon;
+            m_rangePattern.sprite = content.RangePattern;
+        }
+        public void ResetDisplay() 
+        {
+            m_name.text = "";
+            m_description.text = "";
+        }
+        public void Show() 
+        {
+            m_uiHandler?.Show();
+        }
+        public void Hide() 
+        {
+            m_uiHandler?.Hide();
+        }
     }
 
     // For displaying a list of modifiers that is active on a character
@@ -98,6 +154,7 @@ namespace Curry.UI
     // A UI item to display a bespoke character modifier
     public class ModifierIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
+        [SerializeField] PanelUIHandler m_uiHandler = default;
         [SerializeField] TextMeshProUGUI m_name = default;
         [SerializeField] TextMeshProUGUI m_description = default;
         [SerializeField] TextMeshProUGUI m_expire = default;
@@ -113,8 +170,14 @@ namespace Curry.UI
             throw new System.NotImplementedException();
         }
 
-        public void ShowTip() { }
-        public void HideTip() { }
+        public void Show() 
+        {
+            m_uiHandler?.Show();
+        }
+        public void Hide() 
+        {
+            m_uiHandler?.Hide();
+        }
         public void SetupIcon() 
         { 
         
