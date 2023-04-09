@@ -5,7 +5,7 @@ namespace Curry.UI
 {
     // A list of a character's abilities
     public class AbilityCollection : MonoBehaviour 
-    {
+    {       
         [SerializeField] AbilityDisplay m_display = default;
         List<AbilityContent> m_currentContent;
         int m_currentIndex = 0;
