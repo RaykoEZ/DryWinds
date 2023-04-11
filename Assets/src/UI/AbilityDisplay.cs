@@ -7,7 +7,6 @@ namespace Curry.UI
     // A ui element for character ability 
     public class AbilityDisplay : MonoBehaviour
     {
-        [SerializeField] Animator m_anim = default;
         [SerializeField] TextMeshProUGUI m_name = default;
         [SerializeField] TextMeshProUGUI m_description = default;
         [SerializeField] Image m_icon = default;
@@ -25,12 +24,6 @@ namespace Curry.UI
             m_description.text = "";
             m_icon.sprite = null;
             m_rangePattern.sprite = null;
-        }
-        public void Show() 
-        {
-        }
-        public void Hide() 
-        {
         }
     }
 }

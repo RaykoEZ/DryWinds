@@ -487,6 +487,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7724829468880086922}
+  - component: {fileID: 8241943948384306041}
   - component: {fileID: 3067427439277142195}
   m_Layer: 5
   m_Name: P_ModifierIcon
@@ -515,6 +516,25 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!95 &8241943948384306041
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7220743238649729430}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 22100000, guid: 578c13d0e27e5ec4d8b36bbad769178c, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!114 &3067427439277142195
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -528,11 +548,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_uiHandler:
-    m_anim: {fileID: 0}
-  m_name: {fileID: 0}
-  m_description: {fileID: 0}
-  m_expire: {fileID: 0}
-  m_icon: {fileID: 0}
+    m_anim: {fileID: 8241943948384306041}
+  m_name: {fileID: 6592567090774219938}
+  m_description: {fileID: 5759646782301929453}
+  m_expire: {fileID: 2060612510754885008}
+  m_icon: {fileID: 555774724453862433}
 --- !u!1 &8603826175601977431
 GameObject:
   m_ObjectHideFlags: 0
@@ -550,7 +570,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &4341147702386368748
 RectTransform:
   m_ObjectHideFlags: 0
