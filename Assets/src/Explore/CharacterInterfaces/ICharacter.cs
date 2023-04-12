@@ -1,8 +1,26 @@
 ﻿using Curry.Game;
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Curry.Explore
 {
+    [Serializable]
+    public struct AbilityContent
+    {
+        [SerializeField] public string Name;
+        [SerializeField] public string Description;
+        // This sprite will be a grid pattern
+        [SerializeField] public Sprite RangePattern;
+        [SerializeField] public Sprite Icon;
+    }
+    // We need to display and interact with abilities in UI
+    public interface IAbilityDetailList
+    {
+        // Used to display descriptions for a character's abilities
+        IReadOnlyList<AbilityContent> AbilityDetails { get; }
+    }
+
     public delegate void OnCharacterUpdate(ICharacter character);
     public delegate void OnHpUpdate(int deltaVal, int newHP);
     public delegate void OnMovementBlocked(Vector3 blockedWorldPos);
@@ -27,7 +45,6 @@ namespace Curry.Explore
         void TakeHit(int hitVal);
         void OnDefeated();
         void Despawn();
-        void ApplyModifier(IStatModifier<TacticalStats> mod);
         void Move(Vector3 target);
         // returns if warp was successful
         bool Warp(Vector3 to);

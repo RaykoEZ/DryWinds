@@ -44,7 +44,7 @@ namespace Curry.Game
             m_toAdd.Clear();
         }
 
-        public virtual void AddModifier(IStatModifier<CharacterModifierProperty> mod) 
+        public virtual void ApplyModifier(IStatModifier<CharacterModifierProperty> mod) 
         {
             m_toAdd.Add(mod as CharacterModifier);
         }

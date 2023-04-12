@@ -1,19 +1,19 @@
 ﻿using Curry.Explore;
-using Curry.Util;
-using System;
 using System.Collections;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
 namespace Curry.UI
 {
-    public class TacticalStatDisplay : MonoBehaviour
+    public class CharacterDetailDisplay : MonoBehaviour
     {
-        [SerializeField] Animator m_anim = default;
+        [SerializeField] PanelUIHandler m_anim = default;
         [SerializeField] CharacterHpBar m_hpBar = default;
         [SerializeField] TextMeshProUGUI m_speed = default;
         [SerializeField] TextMeshProUGUI m_moveRange = default;
-
+        [SerializeField] AbilityList m_abilities = default;
+        [SerializeField] ModifierList m_modifiers = default;
         public void Display(ICharacter character) 
         {
             StartCoroutine(Display_Internal(character));
@@ -23,8 +23,13 @@ namespace Curry.UI
             m_hpBar?.SetDisplayTarget(character);
             m_speed.text = character.Speed.ToString();
             m_moveRange.text = character.MoveRange.ToString();
+            List<AbilityContent> abilities = new List<AbilityContent>();
+            m_abilities.Setup(abilities);
+            List<ModifierContent> mods = new List<ModifierContent>();
+            m_modifiers.Setup(mods);
             yield return new WaitForEndOfFrame();
             // start animation for entry
+            m_anim?.Show();
         }
         public void EndDisplay() 
         {
@@ -33,16 +38,10 @@ namespace Curry.UI
         IEnumerator EndDisplay_Internal() 
         {
             // Start anim for exit
-            yield return new WaitForEndOfFrame();
+            m_anim?.Hide();
+            yield return new WaitForSeconds(0.5f);
+            m_abilities.Hide();
+            m_modifiers.Hide();
         }
-    }
-    [Serializable]
-    public struct AbilityContent 
-    {
-        [SerializeField] public string Name;
-        [SerializeField] public string Description;
-        // This sprite will be a grid pattern
-        [SerializeField] public Sprite RangePattern;
-        [SerializeField] public Sprite Icon;
     }
 }

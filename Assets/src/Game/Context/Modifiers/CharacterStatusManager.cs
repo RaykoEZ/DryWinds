@@ -139,7 +139,7 @@ namespace Curry.Game
                     default:
                         return;
                 }
-                modifierContainer?.AddModifier(modifier);
+                modifierContainer?.ApplyModifier(modifier);
             }
 
             UpdateStats();

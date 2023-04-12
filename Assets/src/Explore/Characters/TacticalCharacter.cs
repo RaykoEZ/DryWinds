@@ -6,7 +6,11 @@ using UnityEngine.AI;
 
 namespace Curry.Explore
 {
-    public abstract class TacticalCharacter : PoolableBehaviour, ICharacter
+    public interface IModifiable
+    {
+        IModifierContainer<TacticalStats> CurrentStats { get; }
+    }
+    public abstract class TacticalCharacter : PoolableBehaviour, ICharacter, IModifiable
     {
         [SerializeField] protected string m_name = default;
         [SerializeField] TacticalStats m_initStats = default;
@@ -20,6 +24,8 @@ namespace Curry.Explore
         public int MoveRange => m_statManager.Current.MoveRange;     
         public int Speed => m_statManager.Current.Speed;
         public virtual ObjectVisibility Visibility => m_statManager.Current.Visibility;
+        public IModifierContainer<TacticalStats> CurrentStats => m_statManager;
+
         public event OnHpUpdate TakeDamage;
         public event OnHpUpdate RecoverHp;
         public event OnCharacterUpdate OnDefeat;
@@ -127,10 +133,6 @@ namespace Curry.Explore
                 transform.position = to;
             }
             return hit.Length > 0;
-        }
-        public void ApplyModifier(IStatModifier<TacticalStats> mod)
-        {
-            m_statManager.AddModifier(mod);
         }
         public void OnTimeElapsed(int dt) 
         {

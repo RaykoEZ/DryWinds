@@ -14,6 +14,8 @@ namespace Curry.UI
         [SerializeField] TextMeshProUGUI m_description = default;
         [SerializeField] TextMeshProUGUI m_expire = default;
         [SerializeField] Image m_icon = default;
+        bool m_ready = false;
+
         public void OnPointerEnter(PointerEventData eventData)
         {
             Show();
@@ -26,11 +28,14 @@ namespace Curry.UI
 
         void Show() 
         {
-            m_uiHandler?.Show();
+            if (m_ready) 
+            {
+                m_uiHandler?.Show();
+            }
         }
         void Hide() 
         {
-            m_uiHandler?.Hide();
+            m_uiHandler?.Hide();      
         }
         public void SetupIcon(ModifierContent content) 
         {
@@ -38,10 +43,12 @@ namespace Curry.UI
             m_description.text = content.Description;
             m_icon.sprite = content.Icon;
             m_icon.color = Color.white;
+            m_ready = true;
         }
         public void ResetIcon()
         {
             Hide();
+            m_ready = false;
             m_name.text = "";
             m_description.text = "";
             m_expire.text = "";

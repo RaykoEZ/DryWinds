@@ -89,7 +89,7 @@ namespace Curry.Explore
             }
             UpdateModifierState();
         }
-        public virtual void AddModifier(IStatModifier<TacticalStats> mod)
+        public virtual void ApplyModifier(IStatModifier<TacticalStats> mod)
         {
             m_toAdd.Add(mod);
         }

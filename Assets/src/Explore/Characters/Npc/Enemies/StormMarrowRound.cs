@@ -20,7 +20,10 @@ namespace Curry.Explore
         }
         public void ApplyEffect(ICharacter target)
         {
-            target.ApplyModifier(this);
+            if(target is IModifiable modifiable) 
+            {
+                modifiable.CurrentStats.ApplyModifier(this);
+            }
         }
         public virtual void OnCharacterMoved(TacticalStats stat)
         {
