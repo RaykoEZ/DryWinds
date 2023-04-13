@@ -23,7 +23,17 @@ namespace Curry.Explore
         {
             m_base = start;
             m_current = m_base;
-        } 
+        }
+        public IReadOnlyList<ModifierContent> GetCurrentModifierDetails()
+        {
+            List<ModifierContent> ret = new List<ModifierContent>();
+            UpdateModifierState();
+            foreach (var mod in m_mods) 
+            {
+                ret.Add(mod.Content);
+            }
+            return ret;
+        }
         public void OnMovementFinish() 
         {
             foreach (var mod in m_mods)

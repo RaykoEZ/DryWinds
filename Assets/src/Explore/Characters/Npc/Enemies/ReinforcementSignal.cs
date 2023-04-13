@@ -50,6 +50,8 @@ namespace Curry.Explore
         public int Countdown { get { return m_countdown; } protected set { m_countdown = value; } }
         public PoolableBehaviour SpawnRef { get { return m_spawnRef; } protected set { m_spawnRef = value; } }
 
+        public IReadOnlyList<AbilityContent> AbilityDetails => throw new NotImplementedException();
+
         public void Setup(ReinforcementTarget spawnTarget)
         {
             Countdown = spawnTarget.Countdown;

@@ -7,7 +7,7 @@ namespace Curry.UI
 {
     public interface IUIContentList<T> 
     {
-        void Setup(List<T> content);
+        void Setup(IReadOnlyList<T> content);
         void Show();
         void Hide();
     }
@@ -19,9 +19,9 @@ namespace Curry.UI
         [SerializeField] AbilityDisplay m_display = default;
         List<AbilityContent> m_currentContent;
         int m_currentIndex = 0;
-        public void Setup(List<AbilityContent> contentList) 
+        public void Setup(IReadOnlyList<AbilityContent> contentList) 
         {
-            m_currentContent = contentList;
+            m_currentContent = new List<AbilityContent>(contentList);
             Show();
         }
         public void Show()

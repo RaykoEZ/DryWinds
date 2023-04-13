@@ -10,6 +10,9 @@ namespace Curry.Explore
         [SerializeField] protected StormMarrowRound m_stormAmmo = default;
         [SerializeField] protected PositionTargetingModule m_deadEyeCheck = default;
         bool m_deadEye = false;
+
+        public override IReadOnlyList<AbilityContent> AbilityDetails => throw new System.NotImplementedException();
+
         protected event FireWeapon Fire;
         protected void FiringWeapon() 
         {

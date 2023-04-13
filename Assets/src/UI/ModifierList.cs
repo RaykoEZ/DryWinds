@@ -12,7 +12,7 @@ namespace Curry.UI
         // icons we are not using right now
         [SerializeField] List<ModifierIcon> m_idleIcons = default;
         List<ModifierIcon> m_iconsInUse = new List<ModifierIcon>();
-        public void Setup(List<ModifierContent> content) 
+        public void Setup(IReadOnlyList<ModifierContent> content) 
         {
             foreach (var item in content) 
             {

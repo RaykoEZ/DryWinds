@@ -23,10 +23,14 @@ namespace Curry.UI
             m_hpBar?.SetDisplayTarget(character);
             m_speed.text = character.Speed.ToString();
             m_moveRange.text = character.MoveRange.ToString();
-            List<AbilityContent> abilities = new List<AbilityContent>();
+            IReadOnlyList<AbilityContent> abilities = character.AbilityDetails;
             m_abilities.Setup(abilities);
-            List<ModifierContent> mods = new List<ModifierContent>();
-            m_modifiers.Setup(mods);
+            if (character is IModifiable modify) 
+            {
+                IReadOnlyList<ModifierContent> mods = modify.CurrentStats.GetCurrentModifierDetails();
+                m_modifiers.Setup(mods);
+            }
+
             yield return new WaitForEndOfFrame();
             // start animation for entry
             m_anim?.Show();

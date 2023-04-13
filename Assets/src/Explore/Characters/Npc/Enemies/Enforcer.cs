@@ -9,6 +9,20 @@ namespace Curry.Explore
     {
         [SerializeField] DealDamageTo m_basicAttack = default;
         [SerializeField] SwapPosition m_relief = default;
+
+        public override IReadOnlyList<AbilityContent> AbilityDetails => 
+            new List<AbilityContent>{
+                BasicAttack
+            };
+
+        public AbilityContent BasicAttack => new AbilityContent
+        {
+            Description = $"Deal {m_basicAttack.BaseDamage + m_basicAttack.AddDamage} (+{m_basicAttack.AddDamage}) damage to target.",
+            Name = "Basic Attack",
+            RangePattern = null,
+            Icon = null
+        };
+
         protected override bool ChooseAction_Internal(int dt, out IEnumerator action)
         {
             bool reliefNeeded = false;

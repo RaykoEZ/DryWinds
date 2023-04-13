@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Curry.Explore
@@ -11,6 +12,9 @@ namespace Curry.Explore
         [SerializeField] DealDamageTo m_basicAttack = default;
         [SerializeField] CallBackup m_backup = default;
         public int StealthLevel => m_stealthLevel;
+
+        public override IReadOnlyList<AbilityContent> AbilityDetails => throw new System.NotImplementedException();
+
         public override void Prepare()
         {
             // Restore reinforcement uses

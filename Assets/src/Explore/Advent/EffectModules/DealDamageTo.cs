@@ -11,6 +11,7 @@ namespace Curry.Explore
         public int AddDamage { 
             get { return m_addDamage; } 
             set { m_addDamage = Mathf.Max(value, 0); } }
+
         public void ApplyEffect(ICharacter target, ICharacter user)
         {
             target.TakeHit(m_baseDamage + AddDamage);

@@ -14,7 +14,7 @@ namespace Curry.Explore
         [SerializeField] int m_rangeDecrease = default;
         public Impediment(Impediment source) 
         {
-            m_content.Name = source.Name;
+            m_content.Name = source.Content.Name;
             m_numBeforeExpiry = source.m_numBeforeExpiry;
             m_rangeDecrease = source.m_rangeDecrease;
         }

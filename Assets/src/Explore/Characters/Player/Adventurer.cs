@@ -2,6 +2,7 @@
 using UnityEngine;
 using Curry.Events;
 using UnityEngine.InputSystem;
+using System.Collections.Generic;
 
 namespace Curry.Explore
 {
@@ -15,6 +16,8 @@ namespace Curry.Explore
         [SerializeField] CurryGameEventTrigger m_onScout = default;
         #endregion
         IRescue m_rescuee;
+
+        public override IReadOnlyList<AbilityContent> AbilityDetails => throw new System.NotImplementedException();
         #region IPlayer interface impl
         protected override void TakeHit_Internal(int hitVal)
         {

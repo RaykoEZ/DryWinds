@@ -14,13 +14,10 @@ namespace Curry.Explore
         [SerializeField] public Sprite RangePattern;
         [SerializeField] public Sprite Icon;
     }
-    // We need to display and interact with abilities in UI
-    public interface IAbilityDetailList
+    public interface IAbility 
     {
-        // Used to display descriptions for a character's abilities
-        IReadOnlyList<AbilityContent> AbilityDetails { get; }
+        AbilityContent Content { get; }
     }
-
     public delegate void OnCharacterUpdate(ICharacter character);
     public delegate void OnHpUpdate(int deltaVal, int newHP);
     public delegate void OnMovementBlocked(Vector3 blockedWorldPos);
@@ -38,6 +35,7 @@ namespace Curry.Explore
         int Speed { get; }
         Vector3 WorldPosition { get; }
         ObjectVisibility Visibility { get; }
+        IReadOnlyList<AbilityContent> AbilityDetails { get; }
         event OnMovementBlocked OnBlocked;
         void Reveal();
         void Hide();

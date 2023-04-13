@@ -4,8 +4,8 @@ using System.Collections.Generic;
 namespace Curry.Game
 {
     public interface IStatModifier<T>
-    { 
-        string Name { get; }
+    {
+        ModifierContent Content { get; }
         event OnModifierExpire<T> OnExpire;
         // Used to notify when modifier applied
         event OnModifierTrigger<T> OnTrigger;
@@ -18,5 +18,7 @@ namespace Curry.Game
         T Current { get; }
         IReadOnlyList<IStatModifier<T>> Modifiers { get; }
         void ApplyModifier(IStatModifier<T> mod);
+        IReadOnlyList<ModifierContent> GetCurrentModifierDetails();
+
     }
 }
