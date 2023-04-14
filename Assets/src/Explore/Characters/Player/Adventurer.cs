@@ -16,8 +16,7 @@ namespace Curry.Explore
         [SerializeField] CurryGameEventTrigger m_onScout = default;
         #endregion
         IRescue m_rescuee;
-
-        public override IReadOnlyList<AbilityContent> AbilityDetails => throw new System.NotImplementedException();
+        public override IReadOnlyList<AbilityContent> AbilityDetails => new List<AbilityContent>();
         #region IPlayer interface impl
         protected override void TakeHit_Internal(int hitVal)
         {

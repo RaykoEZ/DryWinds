@@ -7,7 +7,7 @@ using Curry.Game;
 namespace Curry.Explore
 {
     [Serializable]
-    public class CallBackup : ILimitedUse
+    public class CallBackup : BaseAbility, ILimitedUse, IAbility
     {
         [SerializeField] ReinforcementSignal m_signal = default;
         [SerializeField] Reinforcement m_reinforcement = default;
@@ -16,6 +16,14 @@ namespace Curry.Explore
         int m_useLeft = 0;
         public int UsesLeft { get { return m_useLeft; } protected set { m_useLeft = value; } }
         public bool Usable => UsesLeft > 0;
+        public override AbilityContent GetContent()
+        {
+            var ret = base.GetContent();
+            ret.Name = "Call Baclup";
+            ret.Description = $"Requests reinforcement on an adjacent position.";
+            return ret;
+        }
+
         public void Refresh()
         {
             UsesLeft = m_maxUses;

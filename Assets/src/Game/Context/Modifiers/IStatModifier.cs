@@ -19,6 +19,5 @@ namespace Curry.Game
         IReadOnlyList<IStatModifier<T>> Modifiers { get; }
         void ApplyModifier(IStatModifier<T> mod);
         IReadOnlyList<ModifierContent> GetCurrentModifierDetails();
-
     }
 }

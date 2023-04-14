@@ -1,54 +1,39 @@
 ﻿using Curry.Game;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Curry.Explore
 {
-    [Serializable]
-    // A modifier to decrease movement range 
-    public class Impediment : TacticalModifier, IMovementElement<TacticalStats>, ITargetEffectModule
-    {
-        [SerializeField] int m_numBeforeExpiry = default;
-        [SerializeField] int m_rangeDecrease = default;
-        public Impediment(Impediment source) 
-        {
-            m_content.Name = source.Content.Name;
-            m_numBeforeExpiry = source.m_numBeforeExpiry;
-            m_rangeDecrease = source.m_rangeDecrease;
-        }
-        public void ApplyEffect(ICharacter target)
-        {
-            if(target is IModifiable modifiable) 
-            {
-                modifiable.CurrentStats.ApplyModifier(this);
-            }
-        }
-        public virtual void OnCharacterMoved(TacticalStats stat)
-        {
-            m_numBeforeExpiry--;
-            if( m_numBeforeExpiry <= 0) 
-            {
-                Expire();
-            }
-        }
-        protected override TacticalStats Apply_Internal(TacticalStats baseVal)
-        {
-            baseVal.MoveRange -= m_rangeDecrease;
-            return baseVal;
-        }
-    }
 
-    public class StormMarrowRound : MonoBehaviour, IProjectile
+    public class StormMarrowRound : BaseAbility, IProjectile, IAbility, IDamageAbility
     {
         [SerializeField] protected DealDamageTo m_damage = default;
         [SerializeField] protected Animator m_anim = default;
         [SerializeField] protected AnimationClip m_onImpact = default;
         [SerializeField] protected Impediment m_impedeEffect = default;
         protected List<ITargetEffectModule> m_onHit = new List<ITargetEffectModule> {};
+        public int Damage => m_damage.AddDamage + m_damage.BaseDamage;
         public IReadOnlyList<ITargetEffectModule> OnHitEffects => m_onHit;
         protected bool upgraded = false;
+        public override AbilityContent GetContent()
+        {
+            var ret = base.GetContent();
+            ret.Name = "StormMarrow Strike";
+            ret.Description = $"Deal {Damage} (+{m_damage.AddDamage}) damage to target.";   
+            return ret;
+        }
+        public void AddOnHitEffect(ITargetEffectModule mod)
+        {
+            if (mod == null) return;
+
+            m_onHit.Add(mod);
+        }
+
+        public void AddDamage(int val)
+        {
+            m_damage.AddDamage += val;
+        }
         public void Deflect(Vector3 deflectDirection)
         {
             Stop();

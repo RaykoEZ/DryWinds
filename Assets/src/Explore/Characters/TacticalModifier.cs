@@ -23,8 +23,7 @@ namespace Curry.Explore
     }
     public abstract class TacticalModifier : IStatModifier<TacticalStats>
     {
-        [SerializeField] protected ModifierContent m_content = default;
-        public ModifierContent Content => m_content;
+        public abstract ModifierContent Content { get; }
         public event OnModifierExpire<TacticalStats> OnExpire;
         public event OnModifierTrigger<TacticalStats> OnTrigger;
         public TacticalStats Apply(TacticalStats baseVal) 

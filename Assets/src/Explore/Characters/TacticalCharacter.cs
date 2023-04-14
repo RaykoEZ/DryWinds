@@ -26,7 +26,6 @@ namespace Curry.Explore
         public int Speed => m_statManager.Current.Speed;
         public virtual ObjectVisibility Visibility => m_statManager.Current.Visibility;
         public IModifierContainer<TacticalStats> CurrentStats => m_statManager;
-
         public abstract IReadOnlyList<AbilityContent> AbilityDetails { get; }
 
         public event OnHpUpdate TakeDamage;

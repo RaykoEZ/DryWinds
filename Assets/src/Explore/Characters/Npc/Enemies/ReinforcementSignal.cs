@@ -46,15 +46,23 @@ namespace Curry.Explore
         public int Speed => 0;
         public Vector3 WorldPosition => transform.position;
         public ObjectVisibility Visibility => ObjectVisibility.Visible;
-        protected virtual bool CanSpawn => m_countdownTimer >= Countdown;
-        public int Countdown { get { return m_countdown; } protected set { m_countdown = value; } }
+        protected virtual bool CanSpawn => m_countdownTimer >= CountdownDuration;
+        public int CountdownTimer => m_countdownTimer;
+        public int CountdownDuration { get { return m_countdown; } protected set { m_countdown = value; } }
         public PoolableBehaviour SpawnRef { get { return m_spawnRef; } protected set { m_spawnRef = value; } }
-
-        public IReadOnlyList<AbilityContent> AbilityDetails => throw new NotImplementedException();
-
+        public IReadOnlyList<AbilityContent> AbilityDetails => new List<AbilityContent> 
+        { 
+            new AbilityContent { 
+                Name = "Reinforcement", 
+                Description = 
+                $"Reinforce inbound in: {CountdownDuration - CountdownTimer} dt. (Occupy this position in time to stop this!)",
+                RangePattern = default,
+                Icon = default
+            } 
+        };
         public void Setup(ReinforcementTarget spawnTarget)
         {
-            Countdown = spawnTarget.Countdown;
+            CountdownDuration = spawnTarget.Countdown;
             SpawnRef = spawnTarget.ReinforcementUnit;
         }
         public override void Prepare()

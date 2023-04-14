@@ -1,4 +1,5 @@
 ﻿using Curry.Game;
+using Curry.Util;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,12 +12,8 @@ namespace Curry.Explore
         [SerializeField] public string Name;
         [SerializeField] public string Description;
         // This sprite will be a grid pattern
-        [SerializeField] public Sprite RangePattern;
+        [SerializeField] public RangeMap RangePattern;
         [SerializeField] public Sprite Icon;
-    }
-    public interface IAbility 
-    {
-        AbilityContent Content { get; }
     }
     public delegate void OnCharacterUpdate(ICharacter character);
     public delegate void OnHpUpdate(int deltaVal, int newHP);
