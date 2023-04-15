@@ -1144,7 +1144,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_initTarget: {fileID: 0}
   m_bar: {fileID: 1644076719736387771}
-  m_hpText: {fileID: 0}
+  m_hpText: {fileID: 1497487055772435550}
 --- !u!1 &8611613783382009130
 GameObject:
   m_ObjectHideFlags: 0

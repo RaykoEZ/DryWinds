@@ -7,8 +7,6 @@ namespace Curry.Explore
     // A basic enemy with stealth level
     public class BorderPatrol : TacticalEnemy
     {
-        [Range(1, 3)]
-        [SerializeField] int m_stealthLevel = default;
         [SerializeField] DealDamageTo m_basicAttack = default;
         [SerializeField] CallBackup m_backup = default;
         public override IReadOnlyList<AbilityContent> AbilityDetails => throw new System.NotImplementedException();

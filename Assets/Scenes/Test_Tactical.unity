@@ -1598,7 +1598,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 124719436035578632, guid: 613f89d64653ca341b7e26c82704d43c, type: 3}
       propertyPath: m_SortingLayer
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4063988590427125915, guid: 613f89d64653ca341b7e26c82704d43c, type: 3}
       propertyPath: m_test.m_Bits
@@ -6135,10 +6135,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1968542685}
     m_Modifications:
-    - target: {fileID: 5721523385255238380, guid: 80d8f0c6732715c4c9298055a44fffdd, type: 3}
-      propertyPath: m_SortingLayer
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 6175265371599182551, guid: 80d8f0c6732715c4c9298055a44fffdd, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -6226,10 +6222,6 @@ PrefabInstance:
     - target: {fileID: 6716249637858086047, guid: 80d8f0c6732715c4c9298055a44fffdd, type: 3}
       propertyPath: m_Name
       value: P_Sharpshooter
-      objectReference: {fileID: 0}
-    - target: {fileID: 6716249637858086047, guid: 80d8f0c6732715c4c9298055a44fffdd, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 80d8f0c6732715c4c9298055a44fffdd, type: 3}
@@ -6429,6 +6421,7 @@ MonoBehaviour:
   m_map: {fileID: 1252504617}
   m_targetGuide: {fileID: 615583782}
   m_tileHighlightManager: {fileID: 1334039898}
+  m_characterDetail: {fileID: 7493065183111660258}
   m_cam: {fileID: 765189990}
   m_rangeDisplay: {fileID: 1334039899}
   m_onAdventurePrompt:
@@ -6492,6 +6485,7 @@ MonoBehaviour:
   m_rangeTileManager: {fileID: 1334039898}
   m_map: {fileID: 1252504617}
   m_rangeDb: {fileID: 11400000, guid: 72c959da387b00442b82e0424d224c39, type: 2}
+  m_defaultParent: {fileID: 1020797060}
 --- !u!1 &1356589892
 GameObject:
   m_ObjectHideFlags: 0
@@ -9315,6 +9309,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4205243012925911456, guid: c710e0229225de9489229e46ed4c33fa, type: 3}
+      propertyPath: m_rangeDisplay
+      value: 
+      objectReference: {fileID: 1334039899}
     - target: {fileID: 5213438639849147915, guid: c710e0229225de9489229e46ed4c33fa, type: 3}
       propertyPath: m_SizeDelta.x
       value: 0
@@ -9589,3 +9587,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c710e0229225de9489229e46ed4c33fa, type: 3}
+--- !u!114 &7493065183111660258 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8305593886435461068, guid: c710e0229225de9489229e46ed4c33fa, type: 3}
+  m_PrefabInstance: {fileID: 7493065183111660257}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38239fa7aa50897489e87a865dfff3e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

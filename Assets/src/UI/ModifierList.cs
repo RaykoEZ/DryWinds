@@ -6,13 +6,13 @@ namespace Curry.UI
 {
     // For displaying a list of modifiers that is active on a character
     // This displays a snapshot so it doesn't update lodifier live
-    public class ModifierList : MonoBehaviour , IUIContentList<ModifierContent>
+    public class ModifierList : MonoBehaviour , ICharacterUIContentList<ModifierContent>
     {
         [SerializeField] ModifierIcon m_iconRef = default;
         // icons we are not using right now
         [SerializeField] List<ModifierIcon> m_idleIcons = default;
         List<ModifierIcon> m_iconsInUse = new List<ModifierIcon>();
-        public void Setup(IReadOnlyList<ModifierContent> content) 
+        public void Setup(ICharacter displayTarget, IReadOnlyList<ModifierContent> content) 
         {
             foreach (var item in content) 
             {

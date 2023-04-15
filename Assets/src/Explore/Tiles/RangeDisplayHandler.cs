@@ -10,6 +10,7 @@ namespace Curry.Explore
         [SerializeField] TileManager m_rangeTileManager = default;
         [SerializeField] Tilemap m_map = default;
         [SerializeField] RangeMapDatabase m_rangeDb = default;
+        [SerializeField] Transform m_defaultParent = default;
         ObjectId m_currentObjectId;
         #region Methods to cancel prompt display
         public void HidePrompt()
@@ -85,9 +86,10 @@ namespace Curry.Explore
             string name,
             GameObject tileToSpawn,
             RangeMap range,
-            Transform parent,
+            Transform parent = null,
             bool toggle = false)
         {
+            Transform parentToUse = parent == null ? m_defaultParent : parent;
             ObjectId id = new ObjectId(name + tileToSpawn.name);
             if (toggle)
             {
@@ -95,7 +97,7 @@ namespace Curry.Explore
                     id,
                     range,
                     tileToSpawn,
-                    parent);
+                    parentToUse);
             }
             else
             {
@@ -103,8 +105,13 @@ namespace Curry.Explore
                     id,
                     range,
                     tileToSpawn,
-                    parent);
+                    parentToUse);
             }
+        }
+        public void MoveRangeTileTo(string nameOfTileItem, GameObject tileRef, Vector3 moveTo) 
+        {
+            ObjectId id = new ObjectId(nameOfTileItem + tileRef.name);
+            m_rangeTileManager.MoveTileTo(id, moveTo);
         }
 
         #endregion

@@ -2,31 +2,34 @@
 using System.Collections;
 using UnityEngine;
 using Curry.Explore;
+using static UnityEngine.GraphicsBuffer;
 
 namespace Curry.UI
 {
-    public interface IUIContentList<T> 
+    public interface ICharacterUIContentList<T> 
     {
-        void Setup(IReadOnlyList<T> content);
+        void Setup(ICharacter displayTarget, IReadOnlyList<T> content);
         void Show();
         void Hide();
     }
     // A list of a character's abilities
-    public class AbilityList : MonoBehaviour , IUIContentList<AbilityContent>
+    public class AbilityList : MonoBehaviour , ICharacterUIContentList<AbilityContent>
     {
         // Handles list iterating animations
         [SerializeField] Animator m_anim = default;
         [SerializeField] AbilityDisplay m_display = default;
         List<AbilityContent> m_currentContent;
         int m_currentIndex = 0;
-        public void Setup(IReadOnlyList<AbilityContent> contentList) 
+        ICharacter m_target;
+        public void Setup(ICharacter displayTarget, IReadOnlyList<AbilityContent> contentList) 
         {
+            m_target = displayTarget;
             m_currentContent = new List<AbilityContent>(contentList);
             Show();
         }
         public void Show()
         {
-            m_display?.Setup(m_currentContent[m_currentIndex]);
+            m_display?.Setup(m_target.WorldPosition, m_currentContent[m_currentIndex]);
             m_anim?.SetBool("introReady", true);
         }
         public void Hide() 
@@ -43,6 +46,7 @@ namespace Curry.UI
         }
         void ResetDisplay() 
         {
+            m_target = null;
             m_currentContent.Clear();
             m_currentIndex = 0;
             m_display?.ResetDisplay();

@@ -264,6 +264,8 @@ MonoBehaviour:
   m_name: {fileID: 4109303683078493260}
   m_description: {fileID: 4977252202665779884}
   m_icon: {fileID: 350534560840172971}
+  m_rangeDisplay: {fileID: 0}
+  m_rangePreview: {fileID: 8844517732680940313, guid: 05a7fe5038da1ec498dd8b242f68fd8c, type: 3}
 --- !u!225 &1622477644271792716
 CanvasGroup:
   m_ObjectHideFlags: 0

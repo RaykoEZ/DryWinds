@@ -17,11 +17,11 @@ namespace Curry.Explore
         [SerializeField] Tilemap m_map = default;
         [SerializeField] TargetGuideHandler m_targetGuide = default;
         [SerializeField] TileManager m_tileHighlightManager = default;
+        [SerializeField] CharacterDetailDisplay m_characterDetail = default;
         [SerializeField] CameraManager m_cam = default;
         [SerializeField] RangeDisplayHandler m_rangeDisplay = default;
         [SerializeField] CurryGameEventListener m_onAdventurePrompt = default;
         [SerializeField] CurryGameEventListener m_onCardActivate = default;
-
         public event OnTileSelect OnTileSelected = default;
         protected ObjectId m_previewTileId;
 
@@ -75,10 +75,22 @@ namespace Curry.Explore
             OnTileSelected?.Invoke(gridCoord);
             HighlightTileInternal(gridCoord);
 
-            if (select.SelectedObject != null &&
-                select.SelectedObject.TryGetComponent(out Adventurer player))
+            if(select.SelectedObject != null && 
+                select.SelectedObject.TryGetComponent(out ICharacter character)) 
             {
-                OnSelectPlayer(player, select.SelectionMode);
+                OnSelectCharacter(character, select.SelectionMode);
+            }
+            else 
+            {
+                m_characterDetail?.EndDisplay();
+            }
+        }
+        void OnSelectCharacter(ICharacter character, TileSelectionMode mode) 
+        {
+            m_characterDetail?.Display(character);
+            if(character is IPlayer player) 
+            {
+                OnSelectPlayer(player, mode);
             }
         }
         void HighlightTileInternal(Vector3Int newCoord, bool focusCamera = true)
@@ -90,10 +102,10 @@ namespace Curry.Explore
             {
                 m_cam.FocusCamera(centerWorld);
             }
-            m_tileHighlightManager.MoveTileTo(m_previewTerrainTile, centerWorld);
+            m_tileHighlightManager.MoveTileTo(new ObjectId(m_previewTerrainTile), centerWorld);
             m_tileHighlightManager.Show(m_previewTileId);
         }
-        void OnSelectPlayer(Adventurer player, TileSelectionMode mode)
+        void OnSelectPlayer(IPlayer player, TileSelectionMode mode)
         {
             GameObject rangeTile;
             switch (mode)
@@ -111,7 +123,7 @@ namespace Curry.Explore
             m_rangeDisplay.ShowRange(
                     rangeTile,
                     player.MoveRange,
-                    player.transform);
+                    player.GetTransform());
         }
     }
 }

@@ -24,11 +24,11 @@ namespace Curry.UI
             m_speed.text = character.Speed.ToString();
             m_moveRange.text = character.MoveRange.ToString();
             IReadOnlyList<AbilityContent> abilities = character.AbilityDetails;
-            m_abilities.Setup(abilities);
+            m_abilities.Setup(character, abilities);
             if (character is IModifiable modify) 
             {
                 IReadOnlyList<ModifierContent> mods = modify.CurrentStats.GetCurrentModifierDetails();
-                m_modifiers.Setup(mods);
+                m_modifiers.Setup(character, mods);
             }
 
             yield return new WaitForEndOfFrame();

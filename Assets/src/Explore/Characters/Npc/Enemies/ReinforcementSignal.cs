@@ -150,5 +150,10 @@ namespace Curry.Explore
         {
             return false;
         }
+
+        public Transform GetTransform()
+        {
+            return transform;
+        }
     }
 }

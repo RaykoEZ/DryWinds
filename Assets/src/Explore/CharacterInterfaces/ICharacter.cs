@@ -34,6 +34,7 @@ namespace Curry.Explore
         ObjectVisibility Visibility { get; }
         IReadOnlyList<AbilityContent> AbilityDetails { get; }
         event OnMovementBlocked OnBlocked;
+        Transform GetTransform();
         void Reveal();
         void Hide();
         void Recover(int val);

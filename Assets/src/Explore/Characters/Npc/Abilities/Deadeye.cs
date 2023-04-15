@@ -9,7 +9,7 @@ namespace Curry.Explore
     {
         [SerializeField] protected PositionTargetingModule m_deadEyeCheck = default;
         [SerializeField] protected int m_damageUp = default;
-        [SerializeField] protected TacticalModifier m_applyOnHit = default;
+        [SerializeField] protected Impediment m_applyOnHit = default;
         public int DamageUp => m_damageUp;
         public TacticalModifier AppyOnHit => m_applyOnHit;
         public override AbilityContent GetContent()

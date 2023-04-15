@@ -43,6 +43,10 @@ namespace Curry.Explore
                 OnMovementBlocked(block);
             }
         }
+        public Transform GetTransform()
+        {
+            return transform;
+        }
         public override void Prepare()
         {
             m_statManager = new TacticalStatManager();
