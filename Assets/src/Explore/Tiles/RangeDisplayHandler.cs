@@ -108,12 +108,16 @@ namespace Curry.Explore
                     parentToUse);
             }
         }
-        public void MoveRangeTileTo(string nameOfTileItem, GameObject tileRef, Vector3 moveTo) 
+        public void MoveRangeTile(string nameOfTileItem, GameObject tileRef, Vector3 offset) 
         {
             ObjectId id = new ObjectId(nameOfTileItem + tileRef.name);
-            m_rangeTileManager.MoveTileTo(id, moveTo);
+            m_rangeTileManager.MoveTile(id, offset);
         }
-
+        public void ClearRangeTile(string nameOfTileItem, GameObject tileRef) 
+        {
+            ObjectId id = new ObjectId(nameOfTileItem + tileRef.name);
+            m_rangeTileManager.RemoveTiles(id);
+        }
         #endregion
 
         #region Utility for Show/ToggleRangeMap

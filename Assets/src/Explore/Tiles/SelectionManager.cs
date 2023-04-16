@@ -69,7 +69,6 @@ namespace Curry.Explore
             {
                 return;
             }
-
             Vector3 worldPos = Camera.main.ScreenToWorldPoint(select.ClickScreenPosition);
             Vector3Int gridCoord = m_map.WorldToCell(worldPos);
             OnTileSelected?.Invoke(gridCoord);
@@ -87,10 +86,13 @@ namespace Curry.Explore
         }
         void OnSelectCharacter(ICharacter character, TileSelectionMode mode) 
         {
-            m_characterDetail?.Display(character);
             if(character is IPlayer player) 
             {
                 OnSelectPlayer(player, mode);
+            }
+            else 
+            {
+                m_characterDetail?.Display(character);
             }
         }
         void HighlightTileInternal(Vector3Int newCoord, bool focusCamera = true)
@@ -112,6 +114,7 @@ namespace Curry.Explore
             {
                 case TileSelectionMode.Preview:
                     rangeTile = m_previewRangeTile;
+                    m_characterDetail?.Display(player);
                     break;
                 case TileSelectionMode.Adventure:
                     rangeTile = m_selectionTile;

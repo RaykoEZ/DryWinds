@@ -67,7 +67,7 @@ namespace Curry.Explore
                         break;
                     }
                 default:
-                    { 
+                    {
                         TileSelectionInfo info = new TileSelectionInfo(
                             m_selectionMode,
                             eventData.pointerEnter,

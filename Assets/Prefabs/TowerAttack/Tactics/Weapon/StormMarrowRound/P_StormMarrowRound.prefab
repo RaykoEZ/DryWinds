@@ -69,6 +69,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1005dddc71014df4cbbb53d8d7f52cdc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_Icon: {fileID: 0}
   m_damage:
     m_baseDamage: 2
   m_anim: {fileID: 8563760736699786092}
@@ -77,6 +78,8 @@ MonoBehaviour:
     m_numBeforeExpiry: 1
     m_rangeDecrease: 1
     m_modIcon: {fileID: 21300000, guid: 664488f981a837845a5ae2bb4711a078, type: 3}
+  m_rangedb: {fileID: 11400000, guid: 72c959da387b00442b82e0424d224c39, type: 2}
+  m_rangeRadius: 3
 --- !u!212 &3635696051094604863
 SpriteRenderer:
   m_ObjectHideFlags: 0

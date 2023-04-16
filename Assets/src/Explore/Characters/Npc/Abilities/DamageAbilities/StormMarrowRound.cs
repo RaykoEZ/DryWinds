@@ -1,4 +1,5 @@
 ﻿using Curry.Game;
+using Curry.Util;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,9 +13,15 @@ namespace Curry.Explore
         [SerializeField] protected Animator m_anim = default;
         [SerializeField] protected AnimationClip m_onImpact = default;
         [SerializeField] protected Impediment m_impedeEffect = default;
+        [SerializeField] protected RangeMapDatabase m_rangedb = default;
+        [Range(1, 5)]
+        [SerializeField] protected int m_rangeRadius = default;
         protected List<ITargetEffectModule> m_onHit = new List<ITargetEffectModule> {};
         public int Damage => m_damage.AddDamage + m_damage.BaseDamage;
         public IReadOnlyList<ITargetEffectModule> OnHitEffects => m_onHit;
+
+        protected override RangeMap Range => m_rangedb.GetSquareRadiusMap(m_rangeRadius);
+
         protected bool upgraded = false;
         public override AbilityContent GetContent()
         {

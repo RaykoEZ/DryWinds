@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Curry.Explore;
 using Curry.Events;
+using System.Collections.Generic;
 
 namespace Curry.UI
 {
@@ -14,8 +15,10 @@ namespace Curry.UI
         [SerializeField] Image m_icon = default;
         [SerializeField] RangeDisplayHandler m_rangeDisplay = default;
         [SerializeField] GameObject m_rangePreview = default;
-        public void Setup(Vector3 moveTo, AbilityContent content) 
+        List<string> m_abilityNamesInPreview = new List<string>();
+        public void Setup(Vector3 offset, AbilityContent content) 
         {
+            m_rangeDisplay.HidePrompt();
             m_name.text = content.Name;
             m_description.text = content.Description;
             m_icon.sprite = content.Icon;
@@ -23,13 +26,21 @@ namespace Curry.UI
             // Display range preview on range Display
             m_rangeDisplay.ShowRange(
                 name,
-                m_rangePreview, 
+                m_rangePreview,
                 content.RangePattern);
-            m_rangeDisplay.MoveRangeTileTo(name, m_rangePreview, moveTo);
-
+            if (!m_abilityNamesInPreview.Contains(name)) 
+            {
+                m_rangeDisplay.MoveRangeTile(name, m_rangePreview, offset);
+                m_abilityNamesInPreview.Add(name);
+            }
         }
         public void ResetDisplay() 
         {
+            foreach(string name in m_abilityNamesInPreview) 
+            {
+                m_rangeDisplay.ClearRangeTile(name, m_rangePreview);
+            }
+            m_abilityNamesInPreview.Clear();
             m_name.text = "";
             m_description.text = "";
             m_icon.sprite = null;

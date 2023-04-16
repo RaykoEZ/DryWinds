@@ -12,7 +12,6 @@ namespace Curry.UI
         [SerializeField] PanelUIHandler m_uiHandler = default;
         [SerializeField] TextMeshProUGUI m_name = default;
         [SerializeField] TextMeshProUGUI m_description = default;
-        [SerializeField] TextMeshProUGUI m_expire = default;
         [SerializeField] Image m_icon = default;
         bool m_ready = false;
 
@@ -51,7 +50,6 @@ namespace Curry.UI
             m_ready = false;
             m_name.text = "";
             m_description.text = "";
-            m_expire.text = "";
             m_icon.sprite = null;
             m_icon.color = Color.clear;
         }

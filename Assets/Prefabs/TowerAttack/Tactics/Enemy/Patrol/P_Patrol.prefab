@@ -272,6 +272,7 @@ GameObject:
   - component: {fileID: 124719436035578632}
   - component: {fileID: 8231386241522679744}
   - component: {fileID: 7639117143483301035}
+  - component: {fileID: 7394046197572877155}
   m_Layer: 9
   m_Name: P_Patrol
   m_TagString: Untagged
@@ -461,6 +462,22 @@ MonoBehaviour:
     - Countdown: 3
       ReinforcementUnit: {fileID: 1037856119560118966, guid: 49d85925633149a45a5f62b7b50bda59, type: 3}
   m_maxUses: 1
+--- !u!114 &7394046197572877155
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4063988590427125918}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5bc7f77a1798794886645cf28691c72, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_onPointerClick:
+    m_eventToTrigger: {fileID: 11400000, guid: c0b492fa8f79db445bfe3855193dc19a, type: 2}
+  m_selectionMode: 0
+  RegisterPointerClick: 1
 --- !u!1 &5720808228628579357
 GameObject:
   m_ObjectHideFlags: 0

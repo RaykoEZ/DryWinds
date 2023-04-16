@@ -2052,7 +2052,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 25
   m_SortingLayerID: 579837007
-  m_SortingOrder: 1
+  m_SortingOrder: 10
   m_TargetDisplay: 0
 --- !u!224 &517402209
 RectTransform:
@@ -3146,7 +3146,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 085bdcaeef0c66640ab921759396bdcd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_initTarget: {fileID: 0}
+  m_initTarget: {fileID: 1488958116}
   m_bar: {fileID: 664392036}
   m_hpText: {fileID: 0}
 --- !u!1 &652480100
@@ -4121,7 +4121,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_EventMask:
     serializedVersion: 2
-    m_Bits: 5216
+    m_Bits: 5728
   m_MaxRayIntersections: 1
 --- !u!114 &765189990
 MonoBehaviour:
@@ -6181,7 +6181,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6175265371599182551, guid: 80d8f0c6732715c4c9298055a44fffdd, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6175265371599182551, guid: 80d8f0c6732715c4c9298055a44fffdd, type: 3}
       propertyPath: m_LocalRotation.w
@@ -8102,7 +8102,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1968542684}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -3}
+  m_LocalPosition: {x: 0, y: 0, z: -5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1289016760}
@@ -9282,6 +9282,18 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1904814035443967424, guid: c710e0229225de9489229e46ed4c33fa, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2877968577714479009, guid: c710e0229225de9489229e46ed4c33fa, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2877968577714479009, guid: c710e0229225de9489229e46ed4c33fa, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2877968577714479009, guid: c710e0229225de9489229e46ed4c33fa, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Curry.Util;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -12,6 +13,9 @@ namespace Curry.Explore
         [SerializeField] protected Impediment m_applyOnHit = default;
         public int DamageUp => m_damageUp;
         public TacticalModifier AppyOnHit => m_applyOnHit;
+
+        protected override RangeMap Range => m_deadEyeCheck.Range;
+
         public override AbilityContent GetContent()
         {
             var ret = base.GetContent();

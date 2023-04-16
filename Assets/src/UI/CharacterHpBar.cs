@@ -22,8 +22,8 @@ namespace Curry.UI
                 m_currentTarget.TakeDamage += UpdateHp;
                 m_currentTarget.RecoverHp += UpdateHp;
                 SetHpText(m_currentTarget.CurrentHp, m_currentTarget.MaxHp);
-                m_bar?.SetMaxValue(m_currentTarget.CurrentHp);
-                m_bar?.SetBarValue(m_currentTarget.MaxHp, forceInstantChange: true);
+                m_bar?.SetMaxValue(m_currentTarget.MaxHp);
+                m_bar?.SetBarValue(m_currentTarget.CurrentHp, forceInstantChange: true);
             }
         }
         void SetHpText(int current, int max) 

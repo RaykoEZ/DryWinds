@@ -150,7 +150,14 @@ namespace Curry.Explore
             }
             m_toAdd.Clear();
             // Reset to base stat
-            Current = m_base;
+            Current = new TacticalStats
+            {
+                MaxHp = m_base.MaxHp,
+                Hp = Current.Hp,
+                MoveRange = m_base.MoveRange,
+                Speed = m_base.Speed,
+                Visibility = Current.Visibility
+            };
             // if there are modifiers, reapply them to reset stats
             if (m_mods.Count == 0)
             {

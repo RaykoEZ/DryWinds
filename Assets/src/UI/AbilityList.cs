@@ -29,8 +29,10 @@ namespace Curry.UI
         }
         public void Show()
         {
-            m_display?.Setup(m_target.WorldPosition, m_currentContent[m_currentIndex]);
-            m_anim?.SetBool("introReady", true);
+            if (m_currentContent.Count > 0) 
+            {
+                m_display?.Setup(m_target.WorldPosition, m_currentContent[m_currentIndex]);
+            }
         }
         public void Hide() 
         {
@@ -58,10 +60,10 @@ namespace Curry.UI
             m_anim?.SetBool("introReady", false);
             m_anim?.SetTrigger("moveRight");
             yield return new WaitForEndOfFrame();
-            ResetDisplay();
             m_currentIndex = m_currentIndex == 0 ? m_currentContent.Count - 1 : m_currentIndex - 1;
+            m_anim?.SetBool("introReady", true);
+            yield return new WaitForSeconds(0.25f);
             Show();
-            yield return null;
         }
         IEnumerator Next_Internal() 
         {
@@ -69,10 +71,10 @@ namespace Curry.UI
             m_anim?.SetBool("introReady", false);
             m_anim?.SetTrigger("moveLeft");
             yield return new WaitForEndOfFrame();
-            ResetDisplay();
             m_currentIndex = m_currentIndex < m_currentContent.Count - 1 ? m_currentIndex + 1 : 0;
+            m_anim?.SetBool("introReady", true);
+            yield return new WaitForSeconds(0.25f);
             Show();
-            yield return null;
         }
     }
 }

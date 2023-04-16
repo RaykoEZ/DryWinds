@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 517503504182058161}
   - component: {fileID: 5032173810866119701}
-  - component: {fileID: 3439226400554985570}
+  - component: {fileID: 2063475975042575233}
   m_Layer: 14
   m_Name: DetectionRange
   m_TagString: Untagged
@@ -49,8 +49,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d17600633a00b62438c21ce4f5cb34bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!58 &3439226400554985570
-CircleCollider2D:
+--- !u!60 &2063475975042575233
+PolygonCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -63,8 +63,21 @@ CircleCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 2.47
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: 0, y: 2.9}
+      - {x: 2.9, y: 0}
+      - {x: 0, y: -2.9}
+      - {x: -2.9, y: 0}
 --- !u!1 &5850886529137693423
 GameObject:
   m_ObjectHideFlags: 0
@@ -150,6 +163,7 @@ GameObject:
   - component: {fileID: 5633357285924559840}
   - component: {fileID: 1189805475367096099}
   - component: {fileID: 5721523385255238380}
+  - component: {fileID: 4109295170073636609}
   - component: {fileID: 149072329227652584}
   - component: {fileID: 1390615627}
   m_Layer: 9
@@ -296,6 +310,22 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &4109295170073636609
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6716249637858086047}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5bc7f77a1798794886645cf28691c72, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_onPointerClick:
+    m_eventToTrigger: {fileID: 11400000, guid: c0b492fa8f79db445bfe3855193dc19a, type: 2}
+  m_selectionMode: 0
+  RegisterPointerClick: 1
 --- !u!58 &149072329227652584
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -324,8 +354,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e515c803300de6f459f23fa2cd488421, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_range:
-    m_offsetList: []
   m_Icon: {fileID: 0}
   m_deadEyeCheck:
     m_targetLayer:
@@ -333,10 +361,14 @@ MonoBehaviour:
       m_Bits: 1024
     m_range:
       m_offsetList:
-      - {x: 2, y: 2, z: 0}
-      - {x: -2, y: 2, z: 0}
-      - {x: 2, y: -2, z: 0}
-      - {x: -2, y: -2, z: 0}
+      - {x: 2, y: 1, z: 0}
+      - {x: -2, y: 1, z: 0}
+      - {x: 1, y: -2, z: 0}
+      - {x: -2, y: -1, z: 0}
+      - {x: 1, y: 2, z: 0}
+      - {x: -1, y: 2, z: 0}
+      - {x: 2, y: -1, z: 0}
+      - {x: -1, y: -2, z: 0}
   m_damageUp: 1
   m_applyOnHit:
     m_numBeforeExpiry: 1

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Curry.Util;
+using System;
 using UnityEngine;
 
 namespace Curry.Explore
@@ -7,6 +8,9 @@ namespace Curry.Explore
     public class ReliefAlly : BaseAbility, IAbility
     {
         [SerializeField] SwapPosition m_relief = default;
+
+        protected override RangeMap Range => RangeMap.Adjacent;
+
         public override AbilityContent GetContent()
         {
             AbilityContent ret = base.GetContent();
