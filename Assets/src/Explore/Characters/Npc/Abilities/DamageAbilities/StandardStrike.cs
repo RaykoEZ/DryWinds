@@ -10,7 +10,6 @@ namespace Curry.Explore
         [SerializeField] DealDamageTo m_basicAttack = default;
         public int Damage => m_basicAttack.BaseDamage + m_basicAttack.AddDamage;
         protected override RangeMap Range => RangeMap.Adjacent;
-
         public override AbilityContent GetContent()
         {
             AbilityContent ret = base.GetContent();

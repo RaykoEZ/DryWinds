@@ -14,7 +14,8 @@ namespace Curry.Explore
         [SerializeField] GameObject m_selectionTile = default;
         [SerializeField] GameObject m_tileDropRef = default;
 
-        [SerializeField] Tilemap m_map = default;
+        [SerializeField] FogOfWar m_fogOfWar = default;
+        [SerializeField] Tilemap m_terrain = default;
         [SerializeField] TargetGuideHandler m_targetGuide = default;
         [SerializeField] TileManager m_tileHighlightManager = default;
         [SerializeField] CharacterDetailDisplay m_characterDetail = default;
@@ -70,11 +71,11 @@ namespace Curry.Explore
                 return;
             }
             Vector3 worldPos = Camera.main.ScreenToWorldPoint(select.ClickScreenPosition);
-            Vector3Int gridCoord = m_map.WorldToCell(worldPos);
+            Vector3Int gridCoord = m_terrain.WorldToCell(worldPos);
             OnTileSelected?.Invoke(gridCoord);
             HighlightTileInternal(gridCoord);
-
-            if(select.SelectedObject != null && 
+            bool isCoordClear = m_fogOfWar.IsCellClear(gridCoord);
+            if(isCoordClear && select.SelectedObject != null && 
                 select.SelectedObject.TryGetComponent(out ICharacter character)) 
             {
                 OnSelectCharacter(character, select.SelectionMode);
@@ -98,7 +99,7 @@ namespace Curry.Explore
         void HighlightTileInternal(Vector3Int newCoord, bool focusCamera = true)
         {
             m_rangeDisplay?.HidePrompt();
-            Vector3 centerWorld = m_map.GetCellCenterWorld(newCoord);
+            Vector3 centerWorld = m_terrain.GetCellCenterWorld(newCoord);
             centerWorld.z = 0f;
             if (focusCamera)
             {

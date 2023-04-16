@@ -7,9 +7,13 @@ namespace Curry.Explore
     // A basic enemy with stealth level
     public class BorderPatrol : TacticalEnemy
     {
-        [SerializeField] DealDamageTo m_basicAttack = default;
+        [SerializeField] StandardStrike m_standardAttack = default;
         [SerializeField] CallBackup m_backup = default;
-        public override IReadOnlyList<AbilityContent> AbilityDetails => throw new System.NotImplementedException();
+        public override IReadOnlyList<AbilityContent> AbilityDetails => new List<AbilityContent> 
+        {
+            m_standardAttack.GetContent(),
+            m_backup.GetContent()
+        };
         public override void Prepare()
         {
             // Restore reinforcement uses
@@ -26,7 +30,7 @@ namespace Curry.Explore
             {
                 Reveal();
                 m_anim?.SetTrigger("strike");
-                m_basicAttack.ApplyEffect(player, this);
+                m_standardAttack.Activate(player);
                 yield break;
             }
         }

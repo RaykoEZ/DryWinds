@@ -6418,7 +6418,8 @@ MonoBehaviour:
   m_previewRangeTile: {fileID: 8844517732680940313, guid: 05a7fe5038da1ec498dd8b242f68fd8c, type: 3}
   m_selectionTile: {fileID: 1742876462523942320, guid: ddce333e45405b5449bb9e8d68a23ec6, type: 3}
   m_tileDropRef: {fileID: 3083747471163134155, guid: f0828209665d8244780615afcd158584, type: 3}
-  m_map: {fileID: 1252504617}
+  m_fogOfWar: {fileID: 2017579930}
+  m_terrain: {fileID: 1252504617}
   m_targetGuide: {fileID: 615583782}
   m_tileHighlightManager: {fileID: 1334039898}
   m_characterDetail: {fileID: 7493065183111660258}

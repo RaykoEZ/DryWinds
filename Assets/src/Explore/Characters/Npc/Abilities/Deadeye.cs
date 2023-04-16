@@ -10,9 +10,9 @@ namespace Curry.Explore
     {
         [SerializeField] protected PositionTargetingModule m_deadEyeCheck = default;
         [SerializeField] protected int m_damageUp = default;
-        [SerializeField] protected Impediment m_applyOnHit = default;
+        [SerializeField] protected Impediment m_impediment = default;
         public int DamageUp => m_damageUp;
-        public TacticalModifier AppyOnHit => m_applyOnHit;
+        public TacticalModifier AppyOnHit => m_impediment;
 
         protected override RangeMap Range => m_deadEyeCheck.Range;
 
@@ -20,7 +20,7 @@ namespace Curry.Explore
         {
             var ret = base.GetContent();
             ret.Name = "Deadeye";
-            ret.Description = $"When target is in specific positions, increase attack damage and apply [{m_applyOnHit.Content.Name}] on projectile hit.";
+            ret.Description = $"When target is in specific positions, increase attack damage and apply [{m_impediment.Content.Name}] on projectile hit.";
             return ret;
         }
         public bool CheckConditions<T>(ICharacter user, out List<T> validTargets)
@@ -34,7 +34,7 @@ namespace Curry.Explore
             {
                 damage.AddDamage(m_damageUp);
             }
-            applyTo.AddOnHitEffect(m_applyOnHit as ITargetEffectModule);
+            applyTo.AddOnHitEffect(m_impediment as ITargetEffectModule);
         }
     }
 }
