@@ -139,7 +139,7 @@ namespace Curry.Game
                     default:
                         return;
                 }
-                modifierContainer?.AddModifier(modifier);
+                modifierContainer?.ApplyModifier(modifier);
             }
 
             UpdateStats();
@@ -154,12 +154,12 @@ namespace Curry.Game
 
         protected virtual void OnModifierExpire(IStatModifier<CharacterModifierProperty> mod) 
         {
-            Debug.Log($"{mod.Name}'s effect expired.");
+            Debug.Log($"{mod.Content.Name}'s effect expired.");
             UpdateStats();
         }
         protected virtual void OnModifierTrigger(IStatModifier<CharacterModifierProperty> mod)
         {
-            Debug.Log($"{mod.Name}'s effect triggered.");
+            Debug.Log($"{mod.Content.Name}'s effect triggered.");
             UpdateStats();
         }
     }

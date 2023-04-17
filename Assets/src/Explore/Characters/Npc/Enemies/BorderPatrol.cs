@@ -1,16 +1,19 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Curry.Explore
 {
     // A basic enemy with stealth level
-    public class BorderPatrol : TacticalEnemy, IStealthy
+    public class BorderPatrol : TacticalEnemy
     {
-        [Range(1, 3)]
-        [SerializeField] int m_stealthLevel = default;
-        [SerializeField] DealDamageTo m_basicAttack = default;
+        [SerializeField] StandardStrike m_standardAttack = default;
         [SerializeField] CallBackup m_backup = default;
-        public int StealthLevel => m_stealthLevel;
+        public override IReadOnlyList<AbilityContent> AbilityDetails => new List<AbilityContent> 
+        {
+            m_standardAttack.GetContent(),
+            m_backup.GetContent()
+        };
         public override void Prepare()
         {
             // Restore reinforcement uses
@@ -27,7 +30,7 @@ namespace Curry.Explore
             {
                 Reveal();
                 m_anim?.SetTrigger("strike");
-                m_basicAttack.ApplyEffect(player, this);
+                m_standardAttack.Activate(player);
                 yield break;
             }
         }

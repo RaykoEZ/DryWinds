@@ -1,3 +1,4 @@
+using Curry.Explore;
 using System;
 using UnityEngine;
 
@@ -34,6 +35,8 @@ namespace Curry.Game
 
         public float Duration { get { return m_duration; } }
         public abstract ModifierOpType Type { get; }
+
+        public virtual ModifierContent Content => new ModifierContent { Description = "", Icon = null, Name = m_name};
 
         public CharacterModifier(string name, CharacterModifierProperty value, float duration)
         {

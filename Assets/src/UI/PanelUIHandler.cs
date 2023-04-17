@@ -6,12 +6,12 @@ namespace Curry.UI
     [Serializable]
     public class PanelUIHandler 
     {
-        [SerializeField] Animator m_anim = default;
-        public void Show() 
+        [SerializeField] protected Animator m_anim = default;
+        public virtual void Show() 
         {
             m_anim.SetBool("show", true);
         }
-        public void Hide() 
+        public virtual void Hide() 
         {
             m_anim.SetBool("show", false);
         }

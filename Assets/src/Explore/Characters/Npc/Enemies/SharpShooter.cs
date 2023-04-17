@@ -8,8 +8,13 @@ namespace Curry.Explore
     public class SharpShooter : TacticalEnemy
     {
         [SerializeField] protected StormMarrowRound m_stormAmmo = default;
-        [SerializeField] protected PositionTargetingModule m_deadEyeCheck = default;
-        bool m_deadEye = false;
+        [SerializeField] protected Deadeye m_deadEye = default;
+        bool m_deadEyeMode = false;
+        public override IReadOnlyList<AbilityContent> AbilityDetails => new List<AbilityContent> 
+        {
+            m_stormAmmo.GetContent(),
+            m_deadEye.GetContent(), 
+        };
         protected event FireWeapon Fire;
         protected void FiringWeapon() 
         {
@@ -21,7 +26,7 @@ namespace Curry.Explore
             if (SpotsTarget)
             {
                 // Check for dead Eye
-                m_deadEye = DeadEyeCheck();
+                m_deadEyeMode = DeadEyeCheck();
                 action = ExecuteAction_Internal();
             }
             else
@@ -57,10 +62,10 @@ namespace Curry.Explore
                 Quaternion rot = Quaternion.LookRotation(dir, Vector3.forward);
                 StormMarrowRound instance = Instantiate(m_stormAmmo, transform.position, rot, transform.parent);
                 // OnAttack, if target in deadEye range, upgrade attack instance
-                if (m_deadEye) 
+                if (m_deadEyeMode) 
                 {
                     Debug.Log("Dead Eye activate");
-                    instance.Upgrade();
+                    m_deadEye.Activate(instance);
                 }
                 yield return StartCoroutine(instance.FireAt(target.WorldPosition));
                 break;
@@ -70,7 +75,7 @@ namespace Curry.Explore
 
         protected virtual bool DeadEyeCheck() 
         {
-            return m_deadEyeCheck.HasValidTarget(transform.position, out List<IPlayer> _);
+            return m_deadEye.CheckConditions<IPlayer>(this, out _);
         }
     }
 }

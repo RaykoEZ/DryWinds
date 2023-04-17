@@ -39,7 +39,7 @@ namespace Curry.Explore
             Vector3 cellPos = m_terrain.GetCellCenterWorld(cell);
             m_player.transform.position = new Vector3(cellPos.x, cellPos.y, transform.position.z);
         }
-        void OnPlayerMovementFinish(IPlayer player) 
+        void OnPlayerMovementFinish(ICharacter player) 
         {
             m_movementInProgress = false;
         }

@@ -23,7 +23,17 @@ namespace Curry.Explore
         {
             m_base = start;
             m_current = m_base;
-        } 
+        }
+        public IReadOnlyList<ModifierContent> GetCurrentModifierDetails()
+        {
+            List<ModifierContent> ret = new List<ModifierContent>();
+            UpdateModifierState();
+            foreach (var mod in m_mods) 
+            {
+                ret.Add(mod.Content);
+            }
+            return ret;
+        }
         public void OnMovementFinish() 
         {
             foreach (var mod in m_mods)
@@ -89,7 +99,7 @@ namespace Curry.Explore
             }
             UpdateModifierState();
         }
-        public virtual void AddModifier(IStatModifier<TacticalStats> mod)
+        public virtual void ApplyModifier(IStatModifier<TacticalStats> mod)
         {
             m_toAdd.Add(mod);
         }
@@ -140,7 +150,14 @@ namespace Curry.Explore
             }
             m_toAdd.Clear();
             // Reset to base stat
-            Current = m_base;
+            Current = new TacticalStats
+            {
+                MaxHp = m_base.MaxHp,
+                Hp = Current.Hp,
+                MoveRange = m_base.MoveRange,
+                Speed = m_base.Speed,
+                Visibility = Current.Visibility
+            };
             // if there are modifiers, reapply them to reset stats
             if (m_mods.Count == 0)
             {

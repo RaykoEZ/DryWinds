@@ -28,12 +28,15 @@ namespace Curry.Explore
         int m_countdownTimer = 0;
         int m_countdown = 0;
         PoolableBehaviour m_spawnRef;
-        public event OnEnemyUpdate OnDefeat;
-        public event OnEnemyUpdate OnReveal;
-        public event OnEnemyUpdate OnHide;
+        public event OnCharacterUpdate OnDefeat;
+        public event OnCharacterUpdate OnReveal;
+        public event OnCharacterUpdate OnHide;
+        public event OnHpUpdate TakeDamage;
+        public event OnHpUpdate RecoverHp;
         public event OnMovementBlocked OnBlocked;
+
         public bool SpotsTarget => false;
-        public EnemyId Id { get; protected set; }
+        public EnemyId Id { get { return new EnemyId(gameObject.name); } }
         public IEnumerator BasicAction => OnSpawnReinforcement();
         public IEnumerator Reaction => OnSpawnReinforcement();
         public string Name => "Reinforcement";
@@ -43,49 +46,29 @@ namespace Curry.Explore
         public int Speed => 0;
         public Vector3 WorldPosition => transform.position;
         public ObjectVisibility Visibility => ObjectVisibility.Visible;
-        protected virtual bool CanSpawn => m_countdownTimer >= Countdown;
-        public int Countdown { get { return m_countdown; } protected set { m_countdown = value; } }
+        protected virtual bool CanSpawn => m_countdownTimer >= CountdownDuration;
+        public int CountdownTimer => m_countdownTimer;
+        public int CountdownDuration { get { return m_countdown; } protected set { m_countdown = value; } }
         public PoolableBehaviour SpawnRef { get { return m_spawnRef; } protected set { m_spawnRef = value; } }
-
-
+        public IReadOnlyList<AbilityContent> AbilityDetails => new List<AbilityContent> 
+        { 
+            new AbilityContent { 
+                Name = "Reinforcement", 
+                Description = 
+                $"Reinforce inbound in: {CountdownDuration - CountdownTimer} dt. (Occupy this position in time to stop this!)",
+                RangePattern = default,
+                Icon = default
+            } 
+        };
         public void Setup(ReinforcementTarget spawnTarget)
         {
-            Countdown = spawnTarget.Countdown;
+            CountdownDuration = spawnTarget.Countdown;
             SpawnRef = spawnTarget.ReinforcementUnit;
         }
         public override void Prepare()
         {
             m_countdownTimer = 0;
         }
-        #region IEnemy calls
-        public void OnDefeated()
-        {
-            ReturnToPool();
-        }
-        public void Hide()
-        {
-            OnHide?.Invoke(this);
-        }
-        public void Move(Vector3 target)
-        {
-            OnBlocked?.Invoke(transform.position);
-        }
-        public void Recover(int val)
-        {
-        }
-        public void Reveal()
-        {
-            OnReveal?.Invoke(this);
-        }
-        public void TakeHit(int hitVal)
-        {
-        }
-        public bool Warp(Vector3 to)
-        {
-            return false;
-        }
-        #endregion
-
         public virtual bool OnAction(int dt, bool reaction, out IEnumerator action)
         {
             m_countdownTimer += dt;
@@ -96,7 +79,7 @@ namespace Curry.Explore
         {
             Spawn();
             yield return new WaitForSeconds(0.1f);
-            OnDefeat?.Invoke(this);
+            OnDefeated();
         }
         protected virtual void Spawn()
         {
@@ -116,7 +99,7 @@ namespace Curry.Explore
         public void Trigger(ICharacter overlapping)
         {
             m_countdownTimer = 0;
-            OnDefeat?.Invoke(this); 
+            OnDefeated();
         }
         protected void OnTriggerEnter2D(Collider2D collision)
         {
@@ -125,10 +108,52 @@ namespace Curry.Explore
                 Trigger(character);
             }
         }
-
         public void ApplyModifier(IStatModifier<TacticalStats> mod)
         {
             return;
+        }
+        public void Despawn()
+        {
+            ReturnToPool();
+        }
+
+        public void Reveal()
+        {
+            OnReveal?.Invoke(this);
+        }
+
+        public void Hide()
+        {
+            OnHide?.Invoke(this);
+        }
+
+        public void Recover(int val)
+        {
+            RecoverHp?.Invoke(val, CurrentHp);
+        }
+
+        public void TakeHit(int hitVal)
+        {
+            TakeDamage?.Invoke(hitVal, CurrentHp);
+        }
+
+        public void OnDefeated()
+        {
+            OnDefeat?.Invoke(this);
+        }
+
+        public void Move(Vector3 target)
+        {
+            OnBlocked?.Invoke(WorldPosition);
+        }
+        public bool Warp(Vector3 to)
+        {
+            return false;
+        }
+
+        public Transform GetTransform()
+        {
+            return transform;
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,8 +6,13 @@ namespace Curry.Explore
 {
     public class Enforcer : TacticalEnemy 
     {
-        [SerializeField] DealDamageTo m_basicAttack = default;
-        [SerializeField] SwapPosition m_relief = default;
+        [SerializeField] StandardStrike m_basicAttack = default;
+        [SerializeField] ReliefAlly m_relief = default;
+        public override IReadOnlyList<AbilityContent> AbilityDetails => 
+            new List<AbilityContent>{
+                m_basicAttack.GetContent(),
+                m_relief.GetContent()
+            };
         protected override bool ChooseAction_Internal(int dt, out IEnumerator action)
         {
             bool reliefNeeded = false;
@@ -41,7 +45,7 @@ namespace Curry.Explore
             // swap position with one of them
             if (activeEnemies.Count > 0)
             {
-                int rand = UnityEngine.Random.Range(0, activeEnemies.Count);
+                int rand = Random.Range(0, activeEnemies.Count);
                 action = ReliefAlly(activeEnemies[rand]);
                 reliefNeeded = true;
             }
@@ -55,10 +59,9 @@ namespace Curry.Explore
         protected override IEnumerator ExecuteAction_Internal()
         {
             yield return base.ExecuteAction_Internal();
-            Reveal();
             foreach (IPlayer player in TargetsInSight)
             {
-                m_basicAttack.ApplyEffect(player, this);
+                m_basicAttack.Activate(player);
                 break;
             }
             yield return null;
@@ -66,7 +69,7 @@ namespace Curry.Explore
 
         protected virtual IEnumerator ReliefAlly(ICharacter target) 
         {
-            m_relief?.ApplyEffect(target, this);
+            m_relief?.Activate(target, this);
             yield return new WaitForEndOfFrame();
         }
     }

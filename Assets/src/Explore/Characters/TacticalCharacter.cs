@@ -1,12 +1,17 @@
 ﻿using Curry.Game;
 using System.Collections;
+using System.Collections.Generic;
 using System.Runtime.InteropServices.ComTypes;
 using UnityEngine;
 using UnityEngine.AI;
 
 namespace Curry.Explore
 {
-    public abstract class TacticalCharacter : PoolableBehaviour, ICharacter
+    public interface IModifiable
+    {
+        IModifierContainer<TacticalStats> CurrentStats { get; }
+    }
+    public abstract class TacticalCharacter : PoolableBehaviour, ICharacter, IModifiable
     {
         [SerializeField] protected string m_name = default;
         [SerializeField] TacticalStats m_initStats = default;
@@ -20,8 +25,17 @@ namespace Curry.Explore
         public int MoveRange => m_statManager.Current.MoveRange;     
         public int Speed => m_statManager.Current.Speed;
         public virtual ObjectVisibility Visibility => m_statManager.Current.Visibility;
+        public IModifierContainer<TacticalStats> CurrentStats => m_statManager;
+        public abstract IReadOnlyList<AbilityContent> AbilityDetails { get; }
 
+        public event OnHpUpdate TakeDamage;
+        public event OnHpUpdate RecoverHp;
+        public event OnCharacterUpdate OnDefeat;
+        public event OnCharacterUpdate OnReveal;
+        public event OnCharacterUpdate OnHide;
+        public event OnCharacterUpdate OnMoveFinished;
         public event OnMovementBlocked OnBlocked;
+
         protected virtual void OnTriggerEnter2D(Collider2D collision)
         {
             if (m_moving && collision.TryGetComponent(out ICharacter block))
@@ -29,12 +43,31 @@ namespace Curry.Explore
                 OnMovementBlocked(block);
             }
         }
+        public Transform GetTransform()
+        {
+            return transform;
+        }
         public override void Prepare()
         {
             m_statManager = new TacticalStatManager();
             m_statManager.Init(m_initStats);
         }
-        public abstract void Hide();
+        public virtual void Hide() 
+        {
+            OnHide?.Invoke(this);
+        }
+        public virtual void OnDefeated()
+        {
+            OnDefeat?.Invoke(this);
+        }
+        public virtual void Reveal()
+        {
+            OnReveal?.Invoke(this);
+        }
+        public void Despawn()
+        {
+            ReturnToPool();
+        }
         public virtual void Move(Vector3 target)
         {
             StartCoroutine(Move_Internal(target));
@@ -50,23 +83,18 @@ namespace Curry.Explore
             Reveal();
             blocking.Reveal();
         }
-
-        public virtual void OnDefeated()
-        {
-            ReturnToPool();
-        }
         public virtual void Recover(int val)
         {
             Debug.Log("Player recovers " + val + " HP.");
             m_statManager.RecoverHp(val);
+            RecoverHp?.Invoke(val, CurrentHp);
         }
-        public abstract void Reveal();
         public void TakeHit(int hitVal) 
         {
             int result = m_statManager.CalculateDamage(hitVal);
             m_statManager.TakeDamage(result);
             TakeHit_Internal(result);
-
+            TakeDamage?.Invoke(result, CurrentHp);
             if (CurrentHp <= 0)
             {
                 OnDefeated();
@@ -97,6 +125,7 @@ namespace Curry.Explore
         {
             m_moving = false;
             m_statManager.OnMovementFinish();
+            OnMoveFinished?.Invoke(this);
         }
         public bool Warp(Vector3 to)
         {
@@ -110,10 +139,6 @@ namespace Curry.Explore
                 transform.position = to;
             }
             return hit.Length > 0;
-        }
-        public void ApplyModifier(IStatModifier<TacticalStats> mod)
-        {
-            m_statManager.AddModifier(mod);
         }
         public void OnTimeElapsed(int dt) 
         {

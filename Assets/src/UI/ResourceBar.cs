@@ -14,7 +14,8 @@ namespace Curry.UI
         [SerializeField] Gradient m_warningGradient = default;
         [SerializeField] AnimationCurve m_lerpSpeed = default;
         [SerializeField] bool m_smoothValueChange = default;
-        
+        public float Current => m_slider.value;
+        public float Max => m_slider.maxValue;
         bool m_changeInProgress = false;
         float m_currentTargetVal = 0f;
         Coroutine m_currentTransition = default;

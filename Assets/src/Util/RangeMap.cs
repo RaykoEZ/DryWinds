@@ -7,6 +7,7 @@ namespace Curry.Util
     [Serializable]
     public class RangeMap
     {
+        public static RangeMap Self => new RangeMap( new List<Vector3Int> { Vector3Int.zero });
         public static RangeMap Adjacent => new RangeMap(
             new List<Vector3Int> { Vector3Int.up, Vector3Int.down, Vector3Int.left, Vector3Int.right});
         //List for common operations

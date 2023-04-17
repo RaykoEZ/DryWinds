@@ -71,17 +71,15 @@ namespace Curry.Explore
             }
         }
 
-        public virtual void MoveTile(GameObject objectRef, Vector3 offset)
+        public virtual void MoveTile(ObjectId id, Vector3 offset)
         {
-            ObjectId id = new ObjectId(objectRef);
             if (m_containers.TryGetValue(id, out TileContainer val) && val != null)
             {
                 val.MoveTiles(offset);
             }
         }
-        public void MoveTileTo(GameObject objectRef, Vector3 target) 
+        public void MoveTileTo(ObjectId id, Vector3 target) 
         {
-            ObjectId id = new ObjectId(objectRef);
             if (m_containers.TryGetValue(id, out TileContainer val) && val != null)
             {
                 val.MoveTilesTo(target);

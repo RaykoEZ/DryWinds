@@ -27,6 +27,11 @@ namespace Curry.Explore
     {
         void OnCharacterMoved(T baseStat);
     }
+    public interface IExpiringElement
+    {
+        // A description of when the element expires, for displaying modifiers that expires when something happens
+        string ExpiryCondition { get; }
+    }
     public interface IDamageModifier 
     {
         int Apply(int hitVal);

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Curry.Explore;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Curry.Game
@@ -44,7 +45,7 @@ namespace Curry.Game
             m_toAdd.Clear();
         }
 
-        public virtual void AddModifier(IStatModifier<CharacterModifierProperty> mod) 
+        public virtual void ApplyModifier(IStatModifier<CharacterModifierProperty> mod) 
         {
             m_toAdd.Add(mod as CharacterModifier);
         }
@@ -105,6 +106,11 @@ namespace Curry.Game
                     m_overallValue = m_modifiers[i].Apply(m_overallValue);
                 }
             }
+        }
+
+        public IReadOnlyList<ModifierContent> GetCurrentModifierDetails()
+        {
+            throw new System.NotImplementedException();
         }
     }
 }
