@@ -1,4 +1,5 @@
 ﻿using Curry.Game;
+using Curry.Util;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices.ComTypes;
@@ -58,10 +59,12 @@ namespace Curry.Explore
         }
         public virtual void OnDefeated()
         {
+            GameUtil.LowlightGameplayObject(gameObject);
             OnDefeat?.Invoke(this);
         }
         public virtual void Reveal()
         {
+            GameUtil.HighlightGameplayObject(gameObject);
             OnReveal?.Invoke(this);
         }
         public void Despawn()

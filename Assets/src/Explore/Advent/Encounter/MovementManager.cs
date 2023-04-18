@@ -68,7 +68,6 @@ namespace Curry.Explore
             // Trigger player to move to selected tile
             Vector3Int cell = m_terrain.WorldToCell(worldPos);
             Vector3 cellCenter = m_terrain.GetCellCenterWorld(cell);
-
             if (tile != null && !IsPathObstructed(cellCenter) && m_time.TrySpendTime(tile.Difficulty))
             {
                 List<IEnumerator> action = new List<IEnumerator>
@@ -149,7 +148,6 @@ namespace Curry.Explore
             }           
             EndInterrupt();
         }
-
 
         // one time events in locations
         bool SpecialEvents(Vector3 worldPosition)

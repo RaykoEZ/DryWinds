@@ -123,7 +123,6 @@ namespace Curry.Explore
         void InitInstance(PoolableBehaviour newBehaviour, Vector3 cellCenterWorld) 
         {
             // setup new spawn instance
-            cellCenterWorld.z = -1f;
             newBehaviour.gameObject.transform.position = cellCenterWorld;
             newBehaviour.TryGetComponent(out IEnemy spawn);
             spawn.OnDefeat += OnEnemyRemove;
