@@ -20,7 +20,7 @@ namespace Curry.Explore
         public int Damage => m_damage.AddDamage + m_damage.BaseDamage;
         public IReadOnlyList<ITargetEffectModule> OnHitEffects => m_onHit;
 
-        protected override RangeMap Range => m_rangedb.GetSquareRadiusMap(m_rangeRadius);
+        public override RangeMap Range => m_rangedb.GetSquareRadiusMap(m_rangeRadius);
 
         protected bool upgraded = false;
         public override AbilityContent GetContent()

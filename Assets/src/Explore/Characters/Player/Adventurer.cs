@@ -15,7 +15,6 @@ namespace Curry.Explore
         [SerializeField] CurryGameEventTrigger m_onPlayerPing = default;
         [SerializeField] CurryGameEventTrigger m_onScout = default;
         #endregion
-        IRescue m_rescuee;
         public override IReadOnlyList<AbilityContent> AbilityDetails => new List<AbilityContent>();
         #region IPlayer interface impl
         protected override void TakeHit_Internal(int hitVal)
@@ -38,10 +37,6 @@ namespace Curry.Explore
             CharacterInfo info = new CharacterInfo(this);
             m_onPlayerPing?.TriggerEvent(info);
             m_onScout?.TriggerEvent(info);
-            if (m_rescuee != null)
-            {
-                m_rescuee.Rescue();
-            }
         }
         #endregion
         void Start()
@@ -49,15 +44,6 @@ namespace Curry.Explore
             // Ping once at start
             CharacterInfo info = new CharacterInfo(this);
             m_onScout?.TriggerEvent(info);
-        }
-
-        protected override void OnTriggerEnter2D(Collider2D collider)
-        {
-            base.OnTriggerEnter2D(collider);
-            if (collider.gameObject.TryGetComponent(out IRescue rescue))
-            {
-                m_rescuee = rescue;
-            }
         }
     }
 }

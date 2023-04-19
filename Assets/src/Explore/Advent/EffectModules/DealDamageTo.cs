@@ -16,7 +16,16 @@ namespace Curry.Explore
 
         public void ApplyEffect(ICharacter target, ICharacter user)
         {
-            target.TakeHit(m_baseDamage + AddDamage);
+            int result = m_baseDamage + AddDamage;
+            if (user is IModifiable modify) 
+            {
+                var modifiers = modify.CurrentStats.Modifiers;
+                foreach(IAttackModifier mod in modifiers) 
+                {
+                    result = mod.Apply(result);
+                }
+            }
+            target.TakeHit(result);
         }
         public void ApplyEffect(ICharacter target)
         {

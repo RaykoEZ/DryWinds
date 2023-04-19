@@ -94,7 +94,7 @@ namespace Curry.Explore
         }
         public void TakeHit(int hitVal) 
         {
-            int result = m_statManager.CalculateDamage(hitVal);
+            int result = m_statManager.CalculateDamageToTake(hitVal);
             m_statManager.TakeDamage(result);
             TakeHit_Internal(result);
             TakeDamage?.Invoke(result, CurrentHp);

@@ -23,9 +23,15 @@ namespace Curry.Explore
     }
     public abstract class TacticalModifier : IStatModifier<TacticalStats>
     {
+        [SerializeField] protected Sprite m_modIcon = default;
         public abstract ModifierContent Content { get; }
         public event OnModifierExpire<TacticalStats> OnExpire;
         public event OnModifierTrigger<TacticalStats> OnTrigger;
+        public TacticalModifier() { }
+        public TacticalModifier(TacticalModifier copy) 
+        {
+            m_modIcon = copy.m_modIcon;
+        }
         public TacticalStats Apply(TacticalStats baseVal) 
         {
             return Apply_Internal(baseVal);

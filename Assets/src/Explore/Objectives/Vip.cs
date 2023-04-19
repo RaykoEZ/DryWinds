@@ -17,21 +17,18 @@ namespace Curry.Explore
             Debug.Log("tyty");
             m_objective.OnRescue();
         }
-        public virtual void Capture() 
-        {
-            Debug.Log("oof");
-            m_objective.OnFailure();
-        }
-
         public void Trigger(ICharacter overlapping)
         {
             if(overlapping is IPlayer) 
             {
                 Rescue();
             }
-            else if (overlapping is IEnemy) 
+        }
+        protected void OnTriggerEnter2D(Collider2D collision)
+        {
+            if (collision.TryGetComponent(out ICharacter character))
             {
-                Capture();
+                Trigger(character);
             }
         }
     }

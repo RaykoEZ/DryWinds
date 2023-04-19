@@ -46,7 +46,7 @@ namespace Curry.Explore
             UpdateModifierState();
         }
 
-        public int CalculateDamage(int hitVal) 
+        public int CalculateDamageToTake(int hitVal) 
         {
             int ret = hitVal;
             foreach(var mod in m_mods) 

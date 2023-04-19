@@ -9,18 +9,16 @@ namespace Curry.Explore
     {
         [SerializeField] int m_numBeforeExpiry = default;
         [SerializeField] int m_rangeDecrease = default;
-        [SerializeField] Sprite m_modIcon = default;
         public override ModifierContent Content => new ModifierContent
         {
             Name = "Impediment",
             Description = $"Reduce Movement Range by {m_rangeDecrease}. ({m_numBeforeExpiry} times left)",
             Icon = m_modIcon
         };
-        public Impediment(Impediment source) 
+        public Impediment(Impediment source): base(source)
         {
             m_numBeforeExpiry = source.m_numBeforeExpiry;
             m_rangeDecrease = source.m_rangeDecrease;
-            m_modIcon = source.m_modIcon;
         }
         public Impediment() 
         {
