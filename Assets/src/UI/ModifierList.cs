@@ -29,19 +29,22 @@ namespace Curry.UI
         }
         void OnModifierAdd(ModifierContent content) 
         {
+            ModifierIcon use;
             //if we have icons not in use, use idle icons
             if (m_idleIcons.Count > 0) 
             {
-                ModifierIcon use = m_idleIcons[0];
+                use = m_idleIcons[0];
                 SetupIdleIcon(use, content);
             } 
             else 
             {
                 // instantiate new icon if we don't have idle icon
-                ModifierIcon instance = Instantiate(m_iconRef, transform);
-                instance.SetupIcon(content);
-                m_iconsInUse.Add(instance);
+                use = Instantiate(m_iconRef, transform);
+                use.SetupIcon(content);
+                m_iconsInUse.Add(use);
             }
+            use.gameObject.transform.SetAsFirstSibling();
+
         }
         void SetupIdleIcon(ModifierIcon use, ModifierContent content) 
         {
