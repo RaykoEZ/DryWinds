@@ -11,6 +11,7 @@ namespace Curry.Explore
     public interface IModifiable
     {
         IModifierContainer<TacticalStats> CurrentStats { get; }
+        void Refresh();
     }
     public abstract class TacticalCharacter : PoolableBehaviour, ICharacter, IModifiable
     {
@@ -146,6 +147,11 @@ namespace Curry.Explore
         public void OnTimeElapsed(int dt) 
         {
             m_statManager.OnTimeElapsed(dt);
+        }
+
+        public void Refresh()
+        {
+            CurrentStats.Refresh();
         }
     }
 

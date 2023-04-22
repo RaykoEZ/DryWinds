@@ -9838,7 +9838,6 @@ MonoBehaviour:
       m_pool:
         m_numToPool: 1
         m_defaultParent: {fileID: 1968542685}
-  m_camera: {fileID: 765189990}
   m_fog: {fileID: 2017579930}
 --- !u!1 &2127039954
 GameObject:

@@ -5,46 +5,57 @@ using UnityEngine;
 namespace Curry.Explore
 {
     [Serializable]
-    public class PatientHunter : BaseAbility, IAbility, IStackableEffect
+    public class PatientHunter : BaseAbility, IAbility, IStackableEffect, IEnemyReaction
     {
         [SerializeField] Prepared m_prep = default;
         [SerializeField] BaseAbility m_abilityRangeRef = default;
         bool m_activated = false;
-        Prepared m_instace;
+        Prepared m_instance;
         public override RangeMap Range => m_abilityRangeRef.Range;
         public override AbilityContent GetContent()
         {
             var ret = base.GetContent();
             ret.Name = "Patient Hunter";
-            ret.Description = $"Reaction: Gain [Prepared] stack when target is inside detection range " +
-                $"(max. {m_prep.MaxStack} times), " +
-                $"Stacks reset upon first attack.";
+            ret.Description = $"Reaction: Gain [Prepared] stack when target is inside detection range. " +
+            $"Stacks reset upon first attack [OR] Target leaves line of sight.";
             return ret;
         }
         public void AddStack(int addVal = 1) 
         {
-            m_instace?.AddStack(addVal);
+            m_instance?.AddStack(addVal);
         }
         public void SubtractStack(int subVal = 1)
         {
-            m_instace?.SubtractStack(subVal);
+            m_instance?.SubtractStack(subVal);
         }
         public void ResetStack() 
         {
-            m_instace?.ResetStack();
+            m_instance?.ResetStack();
         }
         // Activate this once on spawn
-        public void Activate(IModifiable applyTo)
+        protected void Activate(IModifiable applyTo, bool activate)
         {
-            if (!m_activated) 
+            if (!m_activated && activate) 
             {
-                m_instace = new Prepared(m_prep);
-                applyTo?.CurrentStats.ApplyModifier(m_instace);
+                m_instance = new Prepared(m_prep);
+                applyTo?.CurrentStats.ApplyModifier(m_instance);
                 m_activated = true;
             }
-            else 
+            else if (m_activated && activate)
             {
-                Debug.Log($"{nameof(PatientHunter)} is already active");
+                m_instance.AddStack();
+            }
+            else if(m_activated && !activate)
+            {
+                applyTo.CurrentStats.RemoveModifier(m_instance);
+                m_activated = false;
+            }
+        }
+        public void OnPlayerAction(IEnemy enemy)
+        {
+            if(enemy is IModifiable mod) 
+            {
+                Activate(mod, enemy.SpotsTarget);
             }
         }
     }

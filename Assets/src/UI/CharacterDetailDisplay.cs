@@ -31,6 +31,7 @@ namespace Curry.UI
             m_abilities.Setup(character, abilities);
             if (character is IModifiable modify) 
             {
+                modify.Refresh();
                 IReadOnlyList<ModifierContent> mods = modify.CurrentStats.GetCurrentModifierDetails();
                 m_modifiers.Setup(character, mods);
             }

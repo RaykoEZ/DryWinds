@@ -143,6 +143,7 @@ GameObject:
   - component: {fileID: 4109295170073636609}
   - component: {fileID: 149072329227652584}
   - component: {fileID: 1390615627}
+  - component: {fileID: 4560052167075255862}
   m_Layer: 9
   m_Name: P_Sharpshooter
   m_TagString: Untagged
@@ -215,6 +216,7 @@ MonoBehaviour:
   m_detect: {fileID: 5032173810866119701}
   m_stormAmmo: {fileID: 1210613774268447844, guid: e2d4209ebe1a5894ba92c5883f0d5bc7, type: 3}
   m_deadEye: {fileID: 1390615627}
+  m_patient: {fileID: 4560052167075255862}
 --- !u!50 &1189805475367096099
 Rigidbody2D:
   serializedVersion: 4
@@ -348,9 +350,28 @@ MonoBehaviour:
       - {x: -1, y: -2, z: 0}
   m_damageUp: 1
   m_impediment:
+    m_modIcon: {fileID: 21300000, guid: 9e808b60c98a5214bba2296984fefb04, type: 3}
     m_numBeforeExpiry: 1
     m_rangeDecrease: 1
-    m_modIcon: {fileID: 21300000, guid: 9e808b60c98a5214bba2296984fefb04, type: 3}
+--- !u!114 &4560052167075255862
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6716249637858086047}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 820b4c365f71afe48930c9e45bb00441, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_abilityIcon: {fileID: 21300000, guid: 3a9961a111e6aa5438fee4250c5f5c47, type: 3}
+  m_prep:
+    m_modIcon: {fileID: 21300000, guid: 487d29cbebfcc644892e243904556b2b, type: 3}
+    m_maxStack: 3
+    m_currentStack: 1
+    m_value: 1
+  m_abilityRangeRef: {fileID: 1210613774268447844, guid: e2d4209ebe1a5894ba92c5883f0d5bc7, type: 3}
 --- !u!1 &7303457875198025425
 GameObject:
   m_ObjectHideFlags: 0

@@ -12,7 +12,8 @@ namespace Curry.Explore
         [SerializeField] protected CharacterDetector m_detect = default;
         protected IReadOnlyCollection<IPlayer> TargetsInSight => m_detect.TargetsInSight;
         protected IReadOnlyCollection<IEnemy> EnemiesInSight => m_detect.Enemies;
-
+        protected virtual List<IEnemyReaction> m_reactions { get; } = 
+            new List<IEnemyReaction>();
         #region ICharacter & IEnemy interface 
         public bool SpotsTarget => TargetsInSight.Count > 0;
         public virtual EnemyId Id { get; protected set; }
@@ -27,7 +28,6 @@ namespace Curry.Explore
             m_statManager.SetVisibility(ObjectVisibility.Hidden);
             m_anim.SetBool("hidden", true);
             base.Hide();
-
         }
         public override void Recover(int val)
         {
@@ -63,7 +63,7 @@ namespace Curry.Explore
         protected virtual bool ChooseReaction_Internal(int dt, out IEnumerator reaction) 
         {
             reaction = Reaction_Internal();
-            return false;
+            return m_reactions.Count > 0;
         }
         protected virtual IEnumerator ExecuteAction_Internal()
         {
@@ -73,6 +73,10 @@ namespace Curry.Explore
         }
         protected virtual IEnumerator Reaction_Internal()
         {
+            foreach(IEnemyReaction onAction in m_reactions )
+            {
+                onAction?.OnPlayerAction(this);
+            }
             yield return new WaitForEndOfFrame();
         }
         #endregion

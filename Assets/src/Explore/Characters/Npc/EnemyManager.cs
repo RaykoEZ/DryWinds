@@ -69,7 +69,6 @@ namespace Curry.Explore
 
         #region Serialize Fields & Members
         [SerializeField] TacticalSpawnProperties m_spawnProperties = default;
-        [SerializeField] CameraManager m_camera = default;
         [SerializeField] FogOfWar m_fog = default;
         List<IEnemy> m_activeEnemies = new List<IEnemy>();
         HashSet<IEnemy> m_toRemove = new HashSet<IEnemy>();
@@ -205,7 +204,6 @@ namespace Curry.Explore
                 // returns true if countdown reached, add to execution list
                 if (enemy.OnAction(dt, reaction, out IEnumerator chosenAction) && chosenAction != null)
                 {
-                    calls.Add(PresentActingEnemy(enemy));
                     calls.Add(chosenAction);
                 }
             }
@@ -221,12 +219,6 @@ namespace Curry.Explore
         {
             OnActionFinish?.Invoke();
             yield return null;
-        }
-        IEnumerator PresentActingEnemy(ICharacter e) 
-        {
-            StartInterrupt();
-            m_camera.FocusCamera(e.WorldPosition);
-            yield return new WaitForSeconds(m_camera.AnimationTime);
         }
         #endregion
     }

@@ -172,5 +172,15 @@ namespace Curry.Explore
                 }
             }
         }
+
+        public void RemoveModifier(IStatModifier<TacticalStats> modRef)
+        {
+            RemoveExpiredModifier(modRef);
+        }
+
+        public void Refresh()
+        {
+            UpdateModifierState();
+        }
     }
 }
