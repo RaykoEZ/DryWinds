@@ -4882,6 +4882,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_displayName: Turn Start
+  m_player: {fileID: 1488958116}
 --- !u!1 &1015169475
 GameObject:
   m_ObjectHideFlags: 0
@@ -7822,6 +7823,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16faa19e76a9b574ca233d3926bc6a4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_player: {fileID: 1488958116}
   m_adventureInput: {fileID: 1773398998}
   m_selectInput: {fileID: 1334039897}
   m_cardPlay: {fileID: 615583783}

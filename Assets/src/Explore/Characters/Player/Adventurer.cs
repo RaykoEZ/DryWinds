@@ -15,6 +15,8 @@ namespace Curry.Explore
         [SerializeField] CurryGameEventTrigger m_onPlayerPing = default;
         [SerializeField] CurryGameEventTrigger m_onScout = default;
         #endregion
+        bool canMove;
+        public bool CanMove { get => canMove; set => canMove = value; }
         public override IReadOnlyList<AbilityContent> AbilityDetails => new List<AbilityContent>();
         #region IPlayer interface impl
         protected override void TakeHit_Internal(int hitVal)
@@ -37,6 +39,7 @@ namespace Curry.Explore
             CharacterInfo info = new CharacterInfo(this);
             m_onPlayerPing?.TriggerEvent(info);
             m_onScout?.TriggerEvent(info);
+            CanMove = false;
         }
         #endregion
         void Start()
