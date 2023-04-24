@@ -6,9 +6,8 @@ namespace Curry.Explore
     // Enables/disables player input (movement, card play) when the game is resolving scene effects (e.g. card effects)
     public class PlayerInputController : MonoBehaviour
     {
-        [SerializeField] Adventurer m_player = default;
         // Scripts to disable/enable upon interrupting the scene
-        [SerializeField] AdventButton m_adventureInput = default;
+        [SerializeField] MovementManager m_movement = default;
         [SerializeField] SelectionManager m_selectInput = default;
         [SerializeField] HandManager m_cardPlay = default;
 
@@ -25,7 +24,7 @@ namespace Curry.Explore
         protected virtual void EnableScene()
         {
             if (!m_sceneInterrupted) return;
-            m_adventureInput.Interactable = m_player.CanMove;
+            m_movement.EnablePlay();
             m_selectInput?.EnableSelection();
             m_cardPlay?.EnablePlay();
             m_sceneInterrupted = false;
@@ -34,7 +33,7 @@ namespace Curry.Explore
         {
             // Don't disable if already disabled
             if (m_sceneInterrupted) return;
-            m_adventureInput.Interactable = false;
+            m_movement.DisablePlay();
             m_selectInput?.DisableSelection();
             m_cardPlay?.DisablePlay();
             m_sceneInterrupted = true;

@@ -4,10 +4,7 @@ using UnityEngine.Tilemaps;
 using Curry.Events;
 using System.Collections.Generic;
 using Curry.Game;
-using System;
-using System.Runtime.InteropServices.ComTypes;
-using UnityEngine.WSA;
-using static UnityEngine.GraphicsBuffer;
+using TMPro;
 
 namespace Curry.Explore
 {
@@ -15,13 +12,18 @@ namespace Curry.Explore
     public class MovementManager: SceneInterruptBehaviour 
     {
         [SerializeField] protected Adventurer m_player = default;
+        [SerializeField] protected AdventButton m_moveButton = default;
         [SerializeField] protected EncounterManager m_encounter = default;
         [SerializeField] protected TimeManager m_time = default;
+
         [SerializeField] protected Tilemap m_terrain = default;
         [SerializeField] protected Tilemap m_locations = default;
         [SerializeField] protected FogOfWar m_fog = default;
+
         [SerializeField] protected CurryGameEventListener m_onAdventure = default;
         [SerializeField] protected CurryGameEventListener m_onPlayerMoved = default;
+
+        [SerializeField] protected MovementCounter m_movementCounter = default;
         public event OnActionStart OnStart;
         public event OnAdventureFinish OnFinish;
         bool m_movementInProgress = false;
@@ -68,6 +70,7 @@ namespace Curry.Explore
             // Trigger player to move to selected tile
             Vector3Int cell = m_terrain.WorldToCell(worldPos);
             Vector3 cellCenter = m_terrain.GetCellCenterWorld(cell);
+            // Check for visible obstructions and time
             if (tile != null && !IsPathObstructed(cellCenter) && m_time.TrySpendTime(tile.Difficulty))
             {
                 List<IEnumerator> action = new List<IEnumerator>
@@ -93,6 +96,18 @@ namespace Curry.Explore
                 SpecialEvents(player.Character.WorldPosition);
                 OnFinish?.Invoke();
             }
+        }
+        public void AddMoveCounter(int add = 1) 
+        {
+            m_movementCounter.AddCount(add);
+        }
+        public void EnablePlay()
+        {
+            m_moveButton.Interactable = m_movementCounter.Current > 0;
+        }
+        public void DisablePlay()
+        {
+            m_moveButton.Interactable = false;
         }
         // Do a collision check for direct path ahead, if there are hidden obstaclesm we allow the move
         bool IsPathObstructed(Vector3 targetCellCenter) 
@@ -128,7 +143,6 @@ namespace Curry.Explore
                     }
                 }
             }
-
             return hit.Length > 1 && !allObstaclesAreUnKnown;
         }
 
@@ -137,10 +151,12 @@ namespace Curry.Explore
             StartInterrupt();
             m_movementInProgress = true;          
             m_player.Move(targetPos);
+            m_movementCounter.SpendCount();
             yield return new WaitUntil(() => !m_movementInProgress);
             bool trigger = false;
             OnEncounterFinish encounterFinishTrigger = () => trigger = true;
             m_encounter.OnEncounterFinished += encounterFinishTrigger;
+            // after movement, trigger any events
             if (SpecialEvents(m_player.WorldPosition))
             {
                 yield return new WaitUntil(() => trigger);
