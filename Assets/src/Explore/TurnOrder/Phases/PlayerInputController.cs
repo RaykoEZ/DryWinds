@@ -3,8 +3,8 @@ using Curry.Util;
 namespace Curry.Explore
 {
 
-    // Enables/disables player input for turn orders and scene effects (e.g. card effects)
-    public class SceneInterruptController : MonoBehaviour
+    // Enables/disables player input (movement, card play) when the game is resolving scene effects (e.g. card effects)
+    public class PlayerInputController : MonoBehaviour
     {
         [SerializeField] Adventurer m_player = default;
         // Scripts to disable/enable upon interrupting the scene

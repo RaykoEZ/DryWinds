@@ -2,11 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Curry.Util
 {
     public static class GameUtil
-    { 
+    {
         public static void HighlightGameplayObject(GameObject highlight) 
         {
             if (highlight == null) return;

@@ -1,6 +1,7 @@
 ﻿using Curry.Explore;
 using Curry.Game;
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -22,6 +23,7 @@ namespace Curry.UI
     {
         public delegate void OnCardInspect(RectTransform cardTranform);
         AdventCard m_card = default;
+        UITransitionBuffer m_buffer = new UITransitionBuffer();
         protected bool m_selected = false;
         public event OnChoose OnChosen;
         public event OnChoose OnUnchoose;
@@ -109,6 +111,7 @@ namespace Curry.UI
         }
         public void OnPointerEnter(PointerEventData eventData)
         {
+            if (m_buffer.Buffering) return;
             Animator anim = GetComponent<Animator>();
             anim?.SetBool("selected", Choosable);
             if ((InteractMode & CardInteractMode.Inspect) != 0) 
@@ -117,6 +120,7 @@ namespace Curry.UI
                 anim?.SetBool("detail", true);
                 OnInspect?.Invoke(GetComponent<RectTransform>());
             }
+            StartCoroutine(m_buffer.Buffer());
         }
         public void OnPointerExit(PointerEventData eventData)
         {
@@ -125,6 +129,5 @@ namespace Curry.UI
             anim?.SetBool("inspecting", false);
             anim?.SetBool("detail", false);
         }
-
     }
 }
