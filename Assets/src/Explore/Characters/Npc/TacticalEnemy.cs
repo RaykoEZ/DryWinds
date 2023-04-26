@@ -36,7 +36,6 @@ namespace Curry.Explore
         protected override void TakeHit_Internal(int hitVal)
         {
             m_anim?.SetTrigger("takeHit");
-            Defeat();
         }
         // returns true if we decide to act,
         // BasicAction & Reaction fields need to not be null before returning

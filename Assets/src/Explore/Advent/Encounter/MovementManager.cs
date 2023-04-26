@@ -127,7 +127,8 @@ namespace Curry.Explore
             foreach (var obstacle in hit)
             {
                 // If even one obstacle is visible, we prevent movement
-                if (obstacle.transform.TryGetComponent(out IPlayer _))
+                if (obstacle.transform.TryGetComponent(out IPlayer _) || 
+                    obstacle.transform.TryGetComponent(out IStepOnTrigger _))
                 {
                     continue;
                 }

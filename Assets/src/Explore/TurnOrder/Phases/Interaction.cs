@@ -12,7 +12,7 @@ namespace Curry.Explore
     // Handles AI actions and reactions
     public class Interaction : Phase
     {
-        protected struct PlayerActionItem 
+        protected class PlayerActionItem 
         {
             public int TimeSpent;
             public List<IEnumerator> Actions;
@@ -48,17 +48,22 @@ namespace Curry.Explore
         protected IEnumerator PlayerAction_Internal() 
         {
             yield return CallActions(m_currentPlayerAction.Actions);
+            yield return new WaitForEndOfFrame();
             // Check if there are enemy responses for this player action
             if (m_enemy.OnEnemyInterrupt(m_currentPlayerAction.TimeSpent, out List<IEnumerator> resp))
             {
                 m_interruptBuffer?.Push(resp);
-            }
+            }                 
         }
         protected override IEnumerator Evaluate_Internal()
         {
-            // Player goes first
-            yield return StartCoroutine(PlayerAction_Internal());
-            yield return new WaitForEndOfFrame();
+            if (m_currentPlayerAction != null)
+            {
+                // Player goes first
+                yield return StartCoroutine(PlayerAction_Internal());
+                m_currentPlayerAction = null;
+                yield return new WaitForEndOfFrame();
+            }
             // If we need to resolve interrupts from activated enemies, do it first
             while (m_interruptBuffer.Count > 0)
             {

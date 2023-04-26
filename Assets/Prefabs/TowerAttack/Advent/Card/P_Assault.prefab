@@ -1596,7 +1596,7 @@ MonoBehaviour:
   m_resourceModules:
   - {fileID: 5258714694495575149}
   m_dealDamage:
-    m_damage: 1
+    m_baseDamage: 3
   m_cooldown: {fileID: 5258714694495575149}
   m_targeting:
     m_targetLayer:

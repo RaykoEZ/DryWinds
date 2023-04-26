@@ -14,6 +14,7 @@ namespace Curry.UI
         List<ModifierIcon> m_iconsInUse = new List<ModifierIcon>();
         public void Setup(ICharacter displayTarget, IReadOnlyList<ModifierContent> content) 
         {
+            ResetIcons();
             foreach (var item in content) 
             {
                 OnModifierAdd(item);
