@@ -36,7 +36,7 @@ namespace Curry.Explore
         public event OnHpUpdate TakeDamage;
         public event OnHpUpdate RecoverHp;
         public event OnMovementBlocked OnBlocked;
-
+        public event OnEnemyMove OnMove;
         public bool SpotsTarget => false;
         public EnemyId Id { get { return new EnemyId(gameObject.name); } }
         public IEnumerator BasicAction => OnSpawnReinforcement();

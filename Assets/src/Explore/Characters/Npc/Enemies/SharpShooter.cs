@@ -75,7 +75,6 @@ namespace Curry.Explore
                     Debug.Log("Dead Eye activate");
                     m_deadEye.Activate(instance);
                 }
-                Reveal();
                 yield return StartCoroutine(instance.FireAt(target.WorldPosition));
                 break;
             }

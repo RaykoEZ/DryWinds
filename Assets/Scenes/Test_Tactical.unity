@@ -3203,7 +3203,7 @@ LineRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1316518543
-  m_SortingLayer: 6
+  m_SortingLayer: 5
   m_SortingOrder: 0
   m_Positions: []
   m_Parameters:
@@ -5301,9 +5301,17 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1020797060}
     m_Modifications:
+    - target: {fileID: 2157364731633473950, guid: 77d0a3c1bf5be1e459ad1a6b003c0ca6, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2157364731633473950, guid: 77d0a3c1bf5be1e459ad1a6b003c0ca6, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7868120987811555033, guid: 77d0a3c1bf5be1e459ad1a6b003c0ca6, type: 3}
       propertyPath: m_SortingLayer
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8479235164050219458, guid: 77d0a3c1bf5be1e459ad1a6b003c0ca6, type: 3}
       propertyPath: m_Pivot.x
@@ -5428,7 +5436,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6175265371599182551, guid: 80d8f0c6732715c4c9298055a44fffdd, type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6175265371599182551, guid: 80d8f0c6732715c4c9298055a44fffdd, type: 3}
       propertyPath: m_AnchorMax.x
@@ -7240,7 +7248,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6175265371599182551, guid: 80d8f0c6732715c4c9298055a44fffdd, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 4.5
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 6175265371599182551, guid: 80d8f0c6732715c4c9298055a44fffdd, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -9252,8 +9260,8 @@ RectTransform:
   m_Children:
   - {fileID: 1289016760}
   - {fileID: 466416084}
-  - {fileID: 669700489}
   - {fileID: 1053199928}
+  - {fileID: 669700489}
   m_Father: {fileID: 1020797060}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -9812,6 +9820,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 302892f51e777a34dac6c6fedd9c893d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_movement: {fileID: 1190344612}
   m_spawnProperties:
     DoNotSpawnOn:
       serializedVersion: 2

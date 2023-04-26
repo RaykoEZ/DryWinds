@@ -53,9 +53,6 @@ TagManager:
   - name: MapOverlay
     uniqueID: 1235874715
     locked: 0
-  - name: GameplayObjects_Highlight
-    uniqueID: 958478491
-    locked: 0
   - name: CardPlay
     uniqueID: 2978448753
     locked: 0

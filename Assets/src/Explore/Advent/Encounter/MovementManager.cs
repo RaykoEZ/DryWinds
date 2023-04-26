@@ -27,7 +27,8 @@ namespace Curry.Explore
         public event OnActionStart OnStart;
         public event OnAdventureFinish OnFinish;
         bool m_movementInProgress = false;
-        public static readonly string[] s_gameplayCollisionFilters = new string[] { "Player", "Enemies", "Obstacles" };
+        public static readonly string[] s_gameplayCollisionFilters = new string[] 
+        { "Player", "Enemies", "Obstacles" };
         void Start()
         {
             m_onAdventure?.Init();
@@ -71,7 +72,7 @@ namespace Curry.Explore
             Vector3Int cell = m_terrain.WorldToCell(worldPos);
             Vector3 cellCenter = m_terrain.GetCellCenterWorld(cell);
             // Check for visible obstructions and time
-            if (tile != null && !IsPathObstructed(cellCenter) && m_time.TrySpendTime(tile.Difficulty))
+            if (tile != null && !IsPathObstructed(cellCenter, m_player.WorldPosition) && m_time.TrySpendTime(tile.Difficulty))
             {
                 List<IEnumerator> action = new List<IEnumerator>
                 {
@@ -110,15 +111,15 @@ namespace Curry.Explore
             m_moveButton.Interactable = false;
         }
         // Do a collision check for direct path ahead, if there are hidden obstaclesm we allow the move
-        bool IsPathObstructed(Vector3 targetCellCenter) 
+        public bool IsPathObstructed(Vector3 targetCellCenter, Vector3 origin) 
         {
             // Trigger player to move to selected tile
-            Vector3 diff = targetCellCenter - m_player.WorldPosition;
+            Vector3 diff = targetCellCenter - origin;
             var hit = Physics2D.CircleCastAll
-                (m_player.WorldPosition, 
+                (origin, 
                 0.5f, 
                 diff.normalized, 
-                Vector2.Distance(m_player.WorldPosition, 
+                Vector2.Distance(origin, 
                 targetCellCenter), 
                 LayerMask.GetMask(s_gameplayCollisionFilters));
             bool allObstaclesAreUnKnown = true;
@@ -146,7 +147,6 @@ namespace Curry.Explore
             }
             return hit.Length > 1 && !allObstaclesAreUnKnown;
         }
-
         IEnumerator StartAdventure(Vector3 targetPos, WorldTile tile)
         {
             StartInterrupt();
@@ -165,7 +165,6 @@ namespace Curry.Explore
             }           
             EndInterrupt();
         }
-
         // one time events in locations
         bool SpecialEvents(Vector3 worldPosition)
         {
@@ -183,5 +182,4 @@ namespace Curry.Explore
             }
         }
     }
-
 }

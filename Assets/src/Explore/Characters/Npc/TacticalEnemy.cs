@@ -1,4 +1,5 @@
 ﻿using Curry.Game;
+using Curry.Util;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -10,6 +11,7 @@ namespace Curry.Explore
     {
         [SerializeField] protected Animator m_anim = default;
         [SerializeField] protected CharacterDetector m_detect = default;
+        public event OnEnemyMove OnMove;
         protected IReadOnlyCollection<IPlayer> TargetsInSight => m_detect.TargetsInSight;
         protected IReadOnlyCollection<IEnemy> EnemiesInSight => m_detect.Enemies;
         protected virtual List<IEnemyReaction> m_reactions { get; } = 
@@ -17,6 +19,10 @@ namespace Curry.Explore
         #region ICharacter & IEnemy interface 
         public bool SpotsTarget => TargetsInSight.Count > 0;
         public virtual EnemyId Id { get; protected set; }
+        public override void Move(Vector3 target)
+        {
+            OnMove?.Invoke(this, target, base.Move);
+        }
         public override void Reveal()
         {
             m_statManager.SetVisibility(ObjectVisibility.Visible);
@@ -66,13 +72,15 @@ namespace Curry.Explore
         }
         protected virtual IEnumerator ExecuteAction_Internal()
         {
-            Reveal();
+            CurrentStats.Refresh();
+            // Update any modifier changes before action
             m_anim?.SetTrigger("strike");
             yield return null;
         }
         protected virtual IEnumerator Reaction_Internal()
         {
-            foreach(IEnemyReaction onAction in m_reactions )
+            CurrentStats.Refresh();
+            foreach (IEnemyReaction onAction in m_reactions )
             {
                 onAction?.OnPlayerAction(this);
             }
