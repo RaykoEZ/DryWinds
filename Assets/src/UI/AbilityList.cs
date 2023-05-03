@@ -23,6 +23,7 @@ namespace Curry.UI
         ICharacter m_target;
         public void Setup(ICharacter displayTarget, IReadOnlyList<AbilityContent> contentList) 
         {
+            m_currentIndex = 0;
             m_target = displayTarget;
             m_currentContent = new List<AbilityContent>(contentList);
             Show();

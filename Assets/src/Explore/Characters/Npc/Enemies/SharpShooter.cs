@@ -9,17 +9,24 @@ namespace Curry.Explore
     {
         [SerializeField] protected StormMarrowRound m_stormAmmo = default;
         [SerializeField] protected Deadeye m_deadEye = default;
+        [SerializeField] protected PatientHunter m_patient = default;
         bool m_deadEyeMode = false;
+        protected override List<IEnemyReaction> m_reactions => new List<IEnemyReaction> 
+        { 
+            m_patient
+        };
         public override IReadOnlyList<AbilityContent> AbilityDetails => new List<AbilityContent> 
         {
             m_stormAmmo.GetContent(),
-            m_deadEye.GetContent(), 
+            m_deadEye.GetContent(),
+            m_patient.GetContent()
         };
         protected event FireWeapon Fire;
         protected void FiringWeapon() 
         {
             Fire?.Invoke();
         }
+
         protected override bool ChooseAction_Internal(int dt, out IEnumerator action)
         {
             // if we see target, do basic action
@@ -61,6 +68,7 @@ namespace Curry.Explore
                 Vector3 dir = target.WorldPosition - transform.position;
                 Quaternion rot = Quaternion.LookRotation(dir, Vector3.forward);
                 StormMarrowRound instance = Instantiate(m_stormAmmo, transform.position, rot, transform.parent);
+                instance.Setup(this);
                 // OnAttack, if target in deadEye range, upgrade attack instance
                 if (m_deadEyeMode) 
                 {

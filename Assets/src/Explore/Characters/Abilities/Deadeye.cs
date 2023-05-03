@@ -1,6 +1,7 @@
 ﻿using Curry.Util;
 using System;
 using System.Collections.Generic;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 
 namespace Curry.Explore
@@ -14,7 +15,7 @@ namespace Curry.Explore
         public int DamageUp => m_damageUp;
         public TacticalModifier AppyOnHit => m_impediment;
 
-        protected override RangeMap Range => m_deadEyeCheck.Range;
+        public override RangeMap Range => m_deadEyeCheck.Range;
 
         public override AbilityContent GetContent()
         {
@@ -34,7 +35,7 @@ namespace Curry.Explore
             {
                 damage.AddDamage(m_damageUp);
             }
-            applyTo.AddOnHitEffect(m_impediment as ITargetEffectModule);
+            applyTo.AddOnHitEffect(m_impediment);
         }
     }
 }

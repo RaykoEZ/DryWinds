@@ -17,7 +17,9 @@ namespace Curry.Game
         event OnModifierTrigger<T> OnModTrigger;
         T Current { get; }
         IReadOnlyList<IStatModifier<T>> Modifiers { get; }
+        void Refresh();
         void ApplyModifier(IStatModifier<T> mod);
+        void RemoveModifier(IStatModifier<T> modRef);
         IReadOnlyList<ModifierContent> GetCurrentModifierDetails();
     }
 }

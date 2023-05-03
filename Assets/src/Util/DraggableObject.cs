@@ -12,7 +12,7 @@ namespace Curry.Util
         int m_originIndex;
         public virtual bool Droppable { get { return true; } }
         // Move one above original parent when dragging the object 
-        protected virtual Transform OnDragParent => transform.parent.parent;
+        protected virtual Transform OnDragParent => transform.root;
         void OnEnable() 
         {
             GetComponent<CanvasGroup>().blocksRaycasts = true;

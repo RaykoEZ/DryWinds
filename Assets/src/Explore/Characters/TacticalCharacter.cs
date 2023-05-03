@@ -1,4 +1,5 @@
 ﻿using Curry.Game;
+using Curry.Util;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices.ComTypes;
@@ -10,6 +11,7 @@ namespace Curry.Explore
     public interface IModifiable
     {
         IModifierContainer<TacticalStats> CurrentStats { get; }
+        void Refresh();
     }
     public abstract class TacticalCharacter : PoolableBehaviour, ICharacter, IModifiable
     {
@@ -58,10 +60,12 @@ namespace Curry.Explore
         }
         public virtual void OnDefeated()
         {
+            GameUtil.LowlightGameplayObject(gameObject);
             OnDefeat?.Invoke(this);
         }
         public virtual void Reveal()
         {
+            GameUtil.HighlightGameplayObject(gameObject);
             OnReveal?.Invoke(this);
         }
         public void Despawn()
@@ -91,7 +95,7 @@ namespace Curry.Explore
         }
         public void TakeHit(int hitVal) 
         {
-            int result = m_statManager.CalculateDamage(hitVal);
+            int result = m_statManager.CalculateDamageToTake(hitVal);
             m_statManager.TakeDamage(result);
             TakeHit_Internal(result);
             TakeDamage?.Invoke(result, CurrentHp);
@@ -143,6 +147,11 @@ namespace Curry.Explore
         public void OnTimeElapsed(int dt) 
         {
             m_statManager.OnTimeElapsed(dt);
+        }
+
+        public void Refresh()
+        {
+            CurrentStats.Refresh();
         }
     }
 

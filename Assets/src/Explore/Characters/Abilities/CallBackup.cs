@@ -16,7 +16,7 @@ namespace Curry.Explore
         int m_useLeft = 0;
         public int UsesLeft { get { return m_useLeft; } protected set { m_useLeft = value; } }
         public bool Usable => UsesLeft > 0;
-        protected override RangeMap Range => RangeMap.Adjacent;
+        public override RangeMap Range => RangeMap.Adjacent;
 
         public override AbilityContent GetContent()
         {

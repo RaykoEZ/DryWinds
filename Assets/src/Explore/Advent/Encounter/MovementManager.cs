@@ -4,10 +4,7 @@ using UnityEngine.Tilemaps;
 using Curry.Events;
 using System.Collections.Generic;
 using Curry.Game;
-using System;
-using System.Runtime.InteropServices.ComTypes;
-using UnityEngine.WSA;
-using static UnityEngine.GraphicsBuffer;
+using TMPro;
 
 namespace Curry.Explore
 {
@@ -15,17 +12,23 @@ namespace Curry.Explore
     public class MovementManager: SceneInterruptBehaviour 
     {
         [SerializeField] protected Adventurer m_player = default;
+        [SerializeField] protected AdventButton m_moveButton = default;
         [SerializeField] protected EncounterManager m_encounter = default;
         [SerializeField] protected TimeManager m_time = default;
+
         [SerializeField] protected Tilemap m_terrain = default;
         [SerializeField] protected Tilemap m_locations = default;
         [SerializeField] protected FogOfWar m_fog = default;
+
         [SerializeField] protected CurryGameEventListener m_onAdventure = default;
         [SerializeField] protected CurryGameEventListener m_onPlayerMoved = default;
+
+        [SerializeField] protected MovementCounter m_movementCounter = default;
         public event OnActionStart OnStart;
         public event OnAdventureFinish OnFinish;
         bool m_movementInProgress = false;
-        public static readonly string[] s_gameplayCollisionFilters = new string[] { "Player", "Enemies", "Obstacles" };
+        public static readonly string[] s_gameplayCollisionFilters = new string[] 
+        { "Player", "Enemies", "Obstacles" };
         void Start()
         {
             m_onAdventure?.Init();
@@ -68,8 +71,8 @@ namespace Curry.Explore
             // Trigger player to move to selected tile
             Vector3Int cell = m_terrain.WorldToCell(worldPos);
             Vector3 cellCenter = m_terrain.GetCellCenterWorld(cell);
-
-            if (tile != null && !IsPathObstructed(cellCenter) && m_time.TrySpendTime(tile.Difficulty))
+            // Check for visible obstructions and time
+            if (tile != null && !IsPathObstructed(cellCenter, m_player.WorldPosition) && m_time.TrySpendTime(tile.Difficulty))
             {
                 List<IEnumerator> action = new List<IEnumerator>
                 {
@@ -95,16 +98,28 @@ namespace Curry.Explore
                 OnFinish?.Invoke();
             }
         }
+        public void AddMoveCounter(int add = 1) 
+        {
+            m_movementCounter.AddCount(add);
+        }
+        public void EnablePlay()
+        {
+            m_moveButton.Interactable = m_movementCounter.Current > 0;
+        }
+        public void DisablePlay()
+        {
+            m_moveButton.Interactable = false;
+        }
         // Do a collision check for direct path ahead, if there are hidden obstaclesm we allow the move
-        bool IsPathObstructed(Vector3 targetCellCenter) 
+        public bool IsPathObstructed(Vector3 targetCellCenter, Vector3 origin) 
         {
             // Trigger player to move to selected tile
-            Vector3 diff = targetCellCenter - m_player.WorldPosition;
+            Vector3 diff = targetCellCenter - origin;
             var hit = Physics2D.CircleCastAll
-                (m_player.WorldPosition, 
+                (origin, 
                 0.5f, 
                 diff.normalized, 
-                Vector2.Distance(m_player.WorldPosition, 
+                Vector2.Distance(origin, 
                 targetCellCenter), 
                 LayerMask.GetMask(s_gameplayCollisionFilters));
             bool allObstaclesAreUnKnown = true;
@@ -113,7 +128,8 @@ namespace Curry.Explore
             foreach (var obstacle in hit)
             {
                 // If even one obstacle is visible, we prevent movement
-                if (obstacle.transform.TryGetComponent(out IPlayer _))
+                if (obstacle.transform.TryGetComponent(out IPlayer _) || 
+                    obstacle.transform.TryGetComponent(out IStepOnTrigger _))
                 {
                     continue;
                 }
@@ -129,19 +145,19 @@ namespace Curry.Explore
                     }
                 }
             }
-
             return hit.Length > 1 && !allObstaclesAreUnKnown;
         }
-
         IEnumerator StartAdventure(Vector3 targetPos, WorldTile tile)
         {
             StartInterrupt();
             m_movementInProgress = true;          
             m_player.Move(targetPos);
+            m_movementCounter.SpendCount();
             yield return new WaitUntil(() => !m_movementInProgress);
             bool trigger = false;
             OnEncounterFinish encounterFinishTrigger = () => trigger = true;
             m_encounter.OnEncounterFinished += encounterFinishTrigger;
+            // after movement, trigger any events
             if (SpecialEvents(m_player.WorldPosition))
             {
                 yield return new WaitUntil(() => trigger);
@@ -149,8 +165,6 @@ namespace Curry.Explore
             }           
             EndInterrupt();
         }
-
-
         // one time events in locations
         bool SpecialEvents(Vector3 worldPosition)
         {
@@ -168,5 +182,4 @@ namespace Curry.Explore
             }
         }
     }
-
 }

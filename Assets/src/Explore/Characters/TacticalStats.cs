@@ -36,4 +36,8 @@ namespace Curry.Explore
     {
         int Apply(int hitVal);
     }
+    public interface IAttackModifier
+    {
+        int Apply(int hitVal);
+    }
 }

@@ -112,5 +112,15 @@ namespace Curry.Game
         {
             throw new System.NotImplementedException();
         }
+
+        public void RemoveModifier(IStatModifier<CharacterModifierProperty> modRef)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void Refresh()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

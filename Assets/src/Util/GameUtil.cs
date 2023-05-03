@@ -2,11 +2,24 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Curry.Util
 {
     public static class GameUtil
-    { 
+    {
+        public static void HighlightGameplayObject(GameObject highlight) 
+        {
+            if (highlight == null) return;
+
+            highlight.GetComponent<Renderer>().sortingLayerName = "GameplayObjects_Highlight";
+        }
+        public static void LowlightGameplayObject(GameObject lowlight)
+        {
+            if (lowlight == null) return;
+
+            lowlight.GetComponent<Renderer>().sortingLayerName = "GameplayObjects";
+        }
         public static List<int> RandomRangeUnique(int min, int max, int numToGet) 
         {
             List<int> ret = new List<int>();

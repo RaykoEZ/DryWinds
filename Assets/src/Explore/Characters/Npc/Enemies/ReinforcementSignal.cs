@@ -3,6 +3,7 @@ using UnityEngine;
 using Curry.Game;
 using System;
 using System.Collections.Generic;
+using TMPro;
 
 namespace Curry.Explore
 {
@@ -25,6 +26,7 @@ namespace Curry.Explore
     public class ReinforcementSignal : PoolableBehaviour, IEnemy, IStepOnTrigger
     {
         [SerializeField] protected Reinforcement m_spawn = default;
+        [SerializeField] protected TextMeshPro m_countdownDisplay = default;
         int m_countdownTimer = 0;
         int m_countdown = 0;
         PoolableBehaviour m_spawnRef;
@@ -34,7 +36,7 @@ namespace Curry.Explore
         public event OnHpUpdate TakeDamage;
         public event OnHpUpdate RecoverHp;
         public event OnMovementBlocked OnBlocked;
-
+        public event OnEnemyMove OnMove;
         public bool SpotsTarget => false;
         public EnemyId Id { get { return new EnemyId(gameObject.name); } }
         public IEnumerator BasicAction => OnSpawnReinforcement();
@@ -47,7 +49,7 @@ namespace Curry.Explore
         public Vector3 WorldPosition => transform.position;
         public ObjectVisibility Visibility => ObjectVisibility.Visible;
         protected virtual bool CanSpawn => m_countdownTimer >= CountdownDuration;
-        public int CountdownTimer => m_countdownTimer;
+        public int CountdownTimer => CountdownDuration - m_countdownTimer;
         public int CountdownDuration { get { return m_countdown; } protected set { m_countdown = value; } }
         public PoolableBehaviour SpawnRef { get { return m_spawnRef; } protected set { m_spawnRef = value; } }
         public IReadOnlyList<AbilityContent> AbilityDetails => new List<AbilityContent> 
@@ -55,7 +57,7 @@ namespace Curry.Explore
             new AbilityContent { 
                 Name = "Reinforcement", 
                 Description = 
-                $"Reinforce inbound in: {CountdownDuration - CountdownTimer} dt. (Occupy this position in time to stop this!)",
+                $"Reinforce inbound in: {CountdownTimer} dt. (Occupy this position in time to stop this!)",
                 RangePattern = default,
                 Icon = default
             } 
@@ -64,6 +66,7 @@ namespace Curry.Explore
         {
             CountdownDuration = spawnTarget.Countdown;
             SpawnRef = spawnTarget.ReinforcementUnit;
+            m_countdownDisplay.text = CountdownTimer.ToString();
         }
         public override void Prepare()
         {
@@ -73,6 +76,7 @@ namespace Curry.Explore
         {
             m_countdownTimer += dt;
             action = CanSpawn ? OnSpawnReinforcement() : null;
+            m_countdownDisplay.text = CountdownTimer.ToString();
             return CanSpawn;
         }
         protected virtual IEnumerator OnSpawnReinforcement()
@@ -88,7 +92,6 @@ namespace Curry.Explore
                 Debug.LogWarning("reinforcement failed, spawn reference object is null.");
                 return;
             }
-
             Debug.Log("Spawn reinforcement");
             m_countdownTimer = 0;
             m_spawn.ApplyEffect(transform.position, SpawnRef);
@@ -97,8 +100,7 @@ namespace Curry.Explore
         // When a character steps on this object before reinforcement arrives,
         // destrpy this signal (canceling the reinforcement).
         public void Trigger(ICharacter overlapping)
-        {
-            m_countdownTimer = 0;
+        {        
             OnDefeated();
         }
         protected void OnTriggerEnter2D(Collider2D collision)
@@ -114,6 +116,8 @@ namespace Curry.Explore
         }
         public void Despawn()
         {
+            m_countdownTimer = 0;
+            m_countdownDisplay.text = "";
             ReturnToPool();
         }
 

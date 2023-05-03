@@ -18,7 +18,8 @@ namespace Curry.Explore
         [SerializeField] Tilemap m_terrain = default;
         [SerializeField] TargetGuideHandler m_targetGuide = default;
         [SerializeField] TileManager m_tileHighlightManager = default;
-        [SerializeField] CharacterDetailDisplay m_characterDetail = default;
+        [SerializeField] CharacterDetailDisplay m_playerDetail = default;
+        [SerializeField] CharacterDetailDisplay m_enemyDetail = default;
         [SerializeField] CameraManager m_cam = default;
         [SerializeField] RangeDisplayHandler m_rangeDisplay = default;
         [SerializeField] CurryGameEventListener m_onAdventurePrompt = default;
@@ -82,7 +83,8 @@ namespace Curry.Explore
             }
             else 
             {
-                m_characterDetail?.EndDisplay();
+                m_playerDetail?.EndDisplay();
+                m_enemyDetail?.EndDisplay();
             }
         }
         void OnSelectCharacter(ICharacter character, TileSelectionMode mode) 
@@ -93,7 +95,7 @@ namespace Curry.Explore
             }
             else 
             {
-                m_characterDetail?.Display(character);
+                m_enemyDetail?.Display(character);
             }
         }
         void HighlightTileInternal(Vector3Int newCoord, bool focusCamera = true)
@@ -115,7 +117,7 @@ namespace Curry.Explore
             {
                 case TileSelectionMode.Preview:
                     rangeTile = m_previewRangeTile;
-                    m_characterDetail?.Display(player);
+                    m_playerDetail?.Display(player);
                     break;
                 case TileSelectionMode.Adventure:
                     rangeTile = m_selectionTile;

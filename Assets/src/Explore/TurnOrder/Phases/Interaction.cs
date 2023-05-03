@@ -12,11 +12,16 @@ namespace Curry.Explore
     // Handles AI actions and reactions
     public class Interaction : Phase
     {
+        protected class PlayerActionItem 
+        {
+            public int TimeSpent;
+            public List<IEnumerator> Actions;
+        }
         [SerializeField] MovementManager m_playerMovement = default;
         [SerializeField] EnemyManager m_enemy = default;
         [SerializeField] HandManager m_cardPlay = default;
         Stack<List<IEnumerator>> m_interruptBuffer = new Stack<List<IEnumerator>>();
-
+        PlayerActionItem m_currentPlayerAction;
         protected override Type NextState { get; set; } = typeof(PlayerAction);
 
         public override void Init()
@@ -27,14 +32,12 @@ namespace Curry.Explore
         }
         void OnPlayerAction(int timeSpent = 0, List<IEnumerator> actions = null)
         {
-            m_interruptBuffer?.Push(actions);
-            // Check if there are enemy responses for this player action
-            if (m_enemy.OnEnemyInterrupt(timeSpent, out List<IEnumerator> resp)) 
+            if (actions != null) 
             {
-                m_interruptBuffer?.Push(resp);
+                m_currentPlayerAction = new PlayerActionItem { TimeSpent = timeSpent, Actions = actions};
+                NextState = typeof(PlayerAction);
+                Interrupt();
             }
-            NextState = typeof(PlayerAction);
-            Interrupt();
         }
         void OnEnemyAction(List<IEnumerator> actions) 
         {
@@ -42,9 +45,25 @@ namespace Curry.Explore
             NextState = typeof(EnemyAction);
             Interrupt();
         }
-
+        protected IEnumerator PlayerAction_Internal() 
+        {
+            yield return CallActions(m_currentPlayerAction.Actions);
+            yield return new WaitForEndOfFrame();
+            // Check if there are enemy responses for this player action
+            if (m_enemy.OnEnemyInterrupt(m_currentPlayerAction.TimeSpent, out List<IEnumerator> resp))
+            {
+                m_interruptBuffer?.Push(resp);
+            }                 
+        }
         protected override IEnumerator Evaluate_Internal()
         {
+            if (m_currentPlayerAction != null)
+            {
+                // Player goes first
+                yield return StartCoroutine(PlayerAction_Internal());
+                m_currentPlayerAction = null;
+                yield return new WaitForEndOfFrame();
+            }
             // If we need to resolve interrupts from activated enemies, do it first
             while (m_interruptBuffer.Count > 0)
             {

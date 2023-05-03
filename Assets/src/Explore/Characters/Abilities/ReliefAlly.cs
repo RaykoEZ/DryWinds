@@ -9,7 +9,7 @@ namespace Curry.Explore
     {
         [SerializeField] SwapPosition m_relief = default;
 
-        protected override RangeMap Range => RangeMap.Adjacent;
+        public override RangeMap Range => RangeMap.Adjacent;
 
         public override AbilityContent GetContent()
         {

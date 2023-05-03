@@ -20,14 +20,18 @@ namespace Curry.Explore
         public int Damage => m_damage.AddDamage + m_damage.BaseDamage;
         public IReadOnlyList<ITargetEffectModule> OnHitEffects => m_onHit;
 
-        protected override RangeMap Range => m_rangedb.GetSquareRadiusMap(m_rangeRadius);
-
+        public override RangeMap Range => m_rangedb.GetSquareRadiusMap(m_rangeRadius);
+        protected ICharacter m_user;
         protected bool upgraded = false;
+        public void Setup(ICharacter user) 
+        {
+            m_user = user;
+        }
         public override AbilityContent GetContent()
         {
             var ret = base.GetContent();
             ret.Name = "StormMarrow Strike";
-            ret.Description = $"Deal {Damage} (+{m_damage.AddDamage}) damage to target.";   
+            ret.Description = $"Deal {m_damage.BaseDamage} damage to target.";   
             return ret;
         }
         public void AddOnHitEffect(ITargetEffectModule mod)
@@ -44,15 +48,6 @@ namespace Curry.Explore
         public void Deflect(Vector3 deflectDirection)
         {
             Stop();
-        }
-        // Upgrade attack
-        public void Upgrade()
-        {
-            if (upgraded) return;
-            upgraded = true;
-            m_damage.AddDamage += 1;
-            Impediment effect = new Impediment(m_impedeEffect);
-            m_onHit.Add(effect);
         }
         public virtual IEnumerator FireAt(Vector3 targetPos)
         {
@@ -91,7 +86,7 @@ namespace Curry.Explore
         }
         protected virtual void OnHit(ICharacter hit) 
         {
-            m_onHit.Add(m_damage);
+            m_damage.ApplyEffect(hit, m_user);
             foreach (ITargetEffectModule module in OnHitEffects)  
             {
                 module?.ApplyEffect(hit);

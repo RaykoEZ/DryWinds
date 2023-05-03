@@ -17,8 +17,7 @@ MonoBehaviour:
     Description: Recover 2 HP
     TimeCost: 1
     Type: 2
-  m_resourceModules:
-  - {fileID: 0}
+  m_resourceModules: []
   m_healing:
     m_healAmount: 2
 --- !u!1001 &8988240515545042952

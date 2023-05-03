@@ -68,8 +68,8 @@ namespace Curry.Explore
         #endregion
 
         #region Serialize Fields & Members
+        [SerializeField] MovementManager m_movement = default;
         [SerializeField] TacticalSpawnProperties m_spawnProperties = default;
-        [SerializeField] CameraManager m_camera = default;
         [SerializeField] FogOfWar m_fog = default;
         List<IEnemy> m_activeEnemies = new List<IEnemy>();
         HashSet<IEnemy> m_toRemove = new HashSet<IEnemy>();
@@ -119,22 +119,37 @@ namespace Curry.Explore
             setup?.Invoke(newBehaviour);
             InitInstance(newBehaviour, cellCenter);
         }
-
         void InitInstance(PoolableBehaviour newBehaviour, Vector3 cellCenterWorld) 
         {
             // setup new spawn instance
-            cellCenterWorld.z = -1f;
             newBehaviour.gameObject.transform.position = cellCenterWorld;
             newBehaviour.TryGetComponent(out IEnemy spawn);
+            spawn.OnMove += OnEnemyMovement;
             spawn.OnDefeat += OnEnemyRemove;
             spawn.OnReveal += OnEnemyReveal;
             spawn.OnHide += OnEnemyHide;
             spawn.OnBlocked += OnMovementBlocked;
             m_toAdd.Add(spawn);
         }
+        void OnEnemyRemove(ICharacter remove)
+        {
+            (remove as IEnemy).OnMove -= OnEnemyMovement;
+            remove.OnDefeat -= OnEnemyRemove;
+            remove.OnReveal -= OnEnemyReveal;
+            remove.OnHide -= OnEnemyHide;
+            remove.OnBlocked -= OnMovementBlocked;
+            m_toRemove.Add(remove as IEnemy);
+            remove.Despawn();
+        }
         #endregion
-
         #region IEnemy event handlers
+        void OnEnemyMovement(IEnemy move, Vector3 destination, Action<Vector3> call) 
+        { 
+            if(!m_movement.IsPathObstructed(destination, move.WorldPosition)) 
+            {
+                call?.Invoke(destination);
+            }          
+        }
         void OnEnemyReveal(ICharacter reveal)
         {
             m_fog.SetFogOfWar(reveal.WorldPosition, clearFog: true);
@@ -143,15 +158,7 @@ namespace Curry.Explore
         {
             m_fog.SetFogOfWar(hide.WorldPosition, clearFog: false);
         }
-        void OnEnemyRemove(ICharacter remove)
-        {
-            remove.OnDefeat -= OnEnemyRemove;
-            remove.OnReveal -= OnEnemyReveal;
-            remove.OnHide -= OnEnemyHide;
-            remove.OnBlocked -= OnMovementBlocked;
-            m_toRemove.Add(remove as IEnemy);
-            remove.Despawn();       
-        }
+
         void OnMovementBlocked(Vector3 pos) 
         {
             m_fog.SetFogOfWar(pos);
@@ -206,7 +213,6 @@ namespace Curry.Explore
                 // returns true if countdown reached, add to execution list
                 if (enemy.OnAction(dt, reaction, out IEnumerator chosenAction) && chosenAction != null)
                 {
-                    calls.Add(PresentActingEnemy(enemy));
                     calls.Add(chosenAction);
                 }
             }
@@ -222,12 +228,6 @@ namespace Curry.Explore
         {
             OnActionFinish?.Invoke();
             yield return null;
-        }
-        IEnumerator PresentActingEnemy(ICharacter e) 
-        {
-            StartInterrupt();
-            m_camera.FocusCamera(e.WorldPosition);
-            yield return new WaitForSeconds(m_camera.AnimationTime);
         }
         #endregion
     }

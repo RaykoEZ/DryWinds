@@ -40,16 +40,16 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
-    locked: 0
+    locked: 1
   - name: Terrain
     uniqueID: 4187708643
-    locked: 0
-  - name: GameplayObjects
-    uniqueID: 3442302439
-    locked: 0
+    locked: 1
   - name: MapWalls
     uniqueID: 1122130893
-    locked: 0
+    locked: 1
+  - name: GameplayObjects
+    uniqueID: 3442302439
+    locked: 1
   - name: MapOverlay
     uniqueID: 1235874715
     locked: 0
