@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Curry.Events;
+using System;
 using UnityEngine;
 
 namespace Curry.Explore

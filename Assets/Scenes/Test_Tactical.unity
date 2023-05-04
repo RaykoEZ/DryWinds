@@ -5884,9 +5884,7 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-  m_movementCounter:
-    m_maxMoveCount: 3
-    m_moveCountText: {fileID: 871656575}
+  m_moveCountText: {fileID: 871656575}
 --- !u!1 &1252504614
 GameObject:
   m_ObjectHideFlags: 0
@@ -10059,7 +10057,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2571672766922976634, guid: 7eb8b9e0778509a4d97901db87f5ce46, type: 3}
       propertyPath: m_SortingLayer
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2571672766922976638, guid: 7eb8b9e0778509a4d97901db87f5ce46, type: 3}
       propertyPath: m_moveRange

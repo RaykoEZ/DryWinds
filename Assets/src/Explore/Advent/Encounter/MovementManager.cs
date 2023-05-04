@@ -22,8 +22,8 @@ namespace Curry.Explore
 
         [SerializeField] protected CurryGameEventListener m_onAdventure = default;
         [SerializeField] protected CurryGameEventListener m_onPlayerMoved = default;
+        [SerializeField] protected TextMeshProUGUI m_moveCountText = default;
 
-        [SerializeField] protected MovementCounter m_movementCounter = default;
         public event OnActionStart OnStart;
         public event OnAdventureFinish OnFinish;
         bool m_movementInProgress = false;
@@ -35,6 +35,7 @@ namespace Curry.Explore
             m_onPlayerMoved?.Init();
             m_player.OnMoveFinished += OnPlayerMovementFinish;
             m_player.OnBlocked += OnPlayerBlocked;
+            UpdateMoveCountDisplay();
         }
         void OnPlayerBlocked(Vector3 blocked) 
         {
@@ -98,13 +99,18 @@ namespace Curry.Explore
                 OnFinish?.Invoke();
             }
         }
-        public void AddMoveCounter(int add = 1) 
+        public void UpdateMoveCounter(int change = 1) 
         {
-            m_movementCounter.AddCount(add);
+            m_player.UpdateMoveLimit(change);
+            UpdateMoveCountDisplay();
+        }
+        void UpdateMoveCountDisplay() 
+        {
+            m_moveCountText.text = $" {m_player.CurrentMoveCount} / {m_player.MaxMoveCount}";
         }
         public void EnablePlay()
         {
-            m_moveButton.Interactable = m_movementCounter.Current > 0;
+            m_moveButton.Interactable = m_player.CanMove;
         }
         public void DisablePlay()
         {
@@ -152,7 +158,7 @@ namespace Curry.Explore
             StartInterrupt();
             m_movementInProgress = true;          
             m_player.Move(targetPos);
-            m_movementCounter.SpendCount();
+            UpdateMoveCounter(-1);
             yield return new WaitUntil(() => !m_movementInProgress);
             bool trigger = false;
             OnEncounterFinish encounterFinishTrigger = () => trigger = true;
