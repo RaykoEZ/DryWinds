@@ -13,7 +13,7 @@ namespace Curry.Explore
         IModifierContainer<TacticalStats> CurrentStats { get; }
         void Refresh();
     }
-    public abstract class TacticalCharacter : PoolableBehaviour, ICharacter, IModifiable
+    public abstract class TacticalCharacter : PoolableBehaviour, ICharacter, IModifiable, IMovable
     {
         [SerializeField] protected string m_name = default;
         [SerializeField] TacticalStats m_initStats = default;

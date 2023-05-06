@@ -17,7 +17,6 @@ namespace Curry.Explore
     }
     public delegate void OnCharacterUpdate(ICharacter character);
     public delegate void OnHpUpdate(int deltaVal, int newHP);
-    public delegate void OnMovementBlocked(Vector3 blockedWorldPos);
     public interface ICharacter
     {
         event OnHpUpdate TakeDamage;
@@ -33,7 +32,6 @@ namespace Curry.Explore
         Vector3 WorldPosition { get; }
         ObjectVisibility Visibility { get; }
         IReadOnlyList<AbilityContent> AbilityDetails { get; }
-        event OnMovementBlocked OnBlocked;
         Transform GetTransform();
         void Reveal();
         void Hide();
@@ -41,7 +39,6 @@ namespace Curry.Explore
         void TakeHit(int hitVal);
         void OnDefeated();
         void Despawn();
-        void Move(Vector3 target);
         // returns if warp was successful
         bool Warp(Vector3 to);
     }

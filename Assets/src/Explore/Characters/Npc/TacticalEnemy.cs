@@ -7,7 +7,7 @@ using UnityEngine;
 namespace Curry.Explore
 {
     // Base enemy class
-    public abstract class TacticalEnemy : TacticalCharacter, IEnemy, IPoolable
+    public abstract class TacticalEnemy : TacticalCharacter, IEnemy, IMovableEnemy, IPoolable
     {
         [SerializeField] protected Animator m_anim = default;
         [SerializeField] protected CharacterDetector m_detect = default;

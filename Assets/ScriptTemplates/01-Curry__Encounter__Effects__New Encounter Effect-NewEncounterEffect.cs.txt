@@ -1,0 +1,20 @@
+using System;
+using System.Collections;
+using UnityEngine;
+
+namespace Curry.Explore
+{
+    #NOTRIM#
+    [Serializable]
+    [CreateAssetMenu(fileName = "#SCRIPTNAME#", menuName = "Curry/Encounter/Effects/#SCRIPTNAME#", order = 1)]
+    public class #SCRIPTNAME# : BaseEncounterEffect, IEncounterModule
+    {
+        #NOTRIM#
+        public override string[] SerializePropertyNames => new string[]{};
+        public override IEnumerator Activate(GameStateContext context) 
+        { 
+            #NOTRIM#
+            yield return null; 
+        }
+    }
+}
