@@ -18,25 +18,19 @@ MonoBehaviour:
       stomping a helpless individual. Maybe you should do something about this? '
     m_coverImage: {fileID: 21300000, guid: ef7176437244ac04aaf179fca4e7e2b9, type: 3}
     m_options:
-    - m_description: '"It''s too dangerous. Stay out of it."'
-      m_summary: End this encounter.
+    - m_description: 
+      m_summary: 
       m_encounterResult:
         m_milestoneAchieved:
           m_flag: 0
-          m_conditionRef: {fileID: 11400000, guid: 6b95668079e228d4db5bb15399d66766, type: 2}
-        m_dialogue:
-        - You left immediately.
-        - Maybe you could have helped?
-      m_effect: {fileID: 11400000, guid: 60a1c46c1bc68e248be0333caf2f1635, type: 2}
-    - m_description: '"Maybe they need some help."'
-      m_summary: Bonk the victim.
+          m_conditionRef: {fileID: 0}
+        m_dialogue: []
+      m_effect: {fileID: 6499323852774280049, guid: 83545245624694d4ea8ab12fd9e1b602, type: 3}
+    - m_description: 
+      m_summary: 
       m_encounterResult:
         m_milestoneAchieved:
           m_flag: 0
-          m_conditionRef: {fileID: 11400000, guid: 6b95668079e228d4db5bb15399d66766, type: 2}
-        m_dialogue:
-        - ... ...
-        - You approached the gang and proceed to join the punting of the poor man's
-          buttocks.
-        - Was that really necessary?
-      m_effect: {fileID: 11400000, guid: 176c068c17157fa4385e1911f1257b69, type: 2}
+          m_conditionRef: {fileID: 0}
+        m_dialogue: []
+      m_effect: {fileID: 0}

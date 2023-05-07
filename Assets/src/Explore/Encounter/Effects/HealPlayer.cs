@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Curry.Explore
 {
     [Serializable]
-    [CreateAssetMenu(fileName = "HealPlayer", menuName = "Curry/Encounter/Effects/HealPlayer", order = 3)]
+    //[CreateAssetMenu(fileName = "HealPlayer", menuName = "Curry/Encounter/Effects/HealPlayer", order = 3)]
     public class HealPlayer : BaseEncounterEffect, IEncounterModule
     {
         [SerializeField] HealingModule m_healAmount = default;

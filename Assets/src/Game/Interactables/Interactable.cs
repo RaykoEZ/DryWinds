@@ -56,8 +56,6 @@ namespace Curry.Game
 
         protected virtual void UpdatePathfinder()
         {
-            Bounds bounds = GetComponent<Collider2D>().bounds;
-            AstarPath.active.UpdateGraphs(bounds);
         }
 
         protected virtual void Despawn() 

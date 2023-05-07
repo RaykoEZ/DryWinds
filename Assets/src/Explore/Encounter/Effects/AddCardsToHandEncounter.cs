@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Curry.Explore
 {
     [Serializable]
-    [CreateAssetMenu(fileName = "AddToHand_", menuName = "Curry/Encounter/Effects/Add Card(s)/To Hand", order = 3)]
+    //[CreateAssetMenu(fileName = "AddToHand_", menuName = "Curry/Encounter/Effects/Add Card(s)/To Hand", order = 3)]
     public class AddCardsToHandEncounter : BaseEncounterEffect, IEncounterModule
     {
         [SerializeField] AddCardToHand m_cardsToAdd = default;

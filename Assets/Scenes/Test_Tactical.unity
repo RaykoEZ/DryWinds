@@ -8131,7 +8131,7 @@ MonoBehaviour:
     m_preLoadInterrupt:
     - {fileID: 1052790750}
     - {fileID: 1086930282}
-    - {fileID: 1190344612}
+    - {fileID: 0}
 --- !u!1 &1759132668
 GameObject:
   m_ObjectHideFlags: 0

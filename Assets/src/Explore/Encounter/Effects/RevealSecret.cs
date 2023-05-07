@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Curry.Explore
 {  
     [Serializable]
-    [CreateAssetMenu(fileName = "RevealSecret", menuName = "Curry/Encounter/Effects/RevealSecret", order = 3)]
+    //[CreateAssetMenu(fileName = "RevealSecret", menuName = "Curry/Encounter/Effects/RevealSecret", order = 3)]
     public class RevealSecret : BaseEncounterEffect, IEncounterModule
     {
         

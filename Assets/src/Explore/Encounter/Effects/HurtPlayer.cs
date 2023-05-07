@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Curry.Explore
 {
     [Serializable]
-    [CreateAssetMenu(fileName = "HurtPlayer", menuName = "Curry/Encounter/Effects/HurtPlayer", order = 3)]
+    //[CreateAssetMenu(fileName = "HurtPlayer", menuName = "Curry/Encounter/Effects/HurtPlayer", order = 3)]
     public class HurtPlayer : BaseEncounterEffect, IEncounterModule
     {
         [SerializeField] DealDamageTo m_damageToPlayer = default;
