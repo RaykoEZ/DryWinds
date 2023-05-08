@@ -155,7 +155,7 @@ namespace Curry.Explore
             if (m_pendingCardRef != null && m_pendingCardRef.DoesCardNeedTarget)
             {
                 ITargetsPosition targetCard = m_pendingCardRef.Card as ITargetsPosition;
-                m_selection.SelectDropZoneTile(m_pendingCardRef.Card.Name, targetCard.Range, m_player.transform);
+                m_selection.SelectDropZoneTile(m_pendingCardRef.Card.Name, targetCard.TargetingRange, m_player.transform);
             }
             else
             {

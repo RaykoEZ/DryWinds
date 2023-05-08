@@ -9,7 +9,7 @@ namespace Curry.Explore
     [Serializable]
     [RequireComponent(typeof(CardInteractionController))]
     [RequireComponent(typeof(CooldownAnimationHandler))]
-    public class CooldownModule : CardResourceModule, ICooldown
+    public class CooldownModule : CardStartupModules, ICooldown
     {
         [SerializeField] protected int m_cooldownTime = default;
         [SerializeField] protected bool m_isInitiallyOnCooldown = default;
@@ -19,13 +19,14 @@ namespace Curry.Explore
         public bool IsOnCooldown { get; protected set; }
         public int CooldownTime { get => m_cooldownTime; set => m_cooldownTime = value; }
         public int Current { get => m_current; set => m_current = value; }
-        public override void Init()
+        public override void Init(CardAttribute card)
         {
-            IsOnCooldown = m_isInitiallyOnCooldown;
+            IsOnCooldown = card.IsInitiallyOnCooldown;
+            m_cooldownTime = card.Cooldown;
             AnimateCooldown();
             m_current = 0;
         }
-        public void TrggerCooldown()
+        public void TriggerCooldown()
         {
             m_current = m_cooldownTime;
             IsOnCooldown = true;

@@ -11,9 +11,9 @@ namespace Curry.Explore
     public interface ICooldown
     { 
         bool IsOnCooldown { get; }
-        int CooldownTime { get; set; }
-        int Current { get; set; }
-        void TrggerCooldown();
+        int CooldownTime { get;}
+        int Current { get;}
+        void TriggerCooldown();
         void Tick(int dt, out bool isOnCoolDown);
     }
 }

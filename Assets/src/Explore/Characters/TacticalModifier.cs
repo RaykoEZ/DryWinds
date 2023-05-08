@@ -32,9 +32,9 @@ namespace Curry.Explore
         {
             m_modIcon = copy.m_modIcon;
         }
-        public TacticalStats Apply(TacticalStats baseVal) 
+        public TacticalStats Process(TacticalStats baseVal) 
         {
-            return Apply_Internal(baseVal);
+            return Process_Internal(baseVal);
         }
         protected void Trigger()
         {
@@ -44,6 +44,6 @@ namespace Curry.Explore
         {
             OnExpire?.Invoke(this);
         }
-        protected abstract TacticalStats Apply_Internal(TacticalStats baseVal);
+        protected abstract TacticalStats Process_Internal(TacticalStats baseVal);
     }
 }

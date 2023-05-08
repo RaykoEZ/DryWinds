@@ -3,12 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 namespace Curry.Explore
 {
-    public interface ICardEconomyModule
-    {
-        void ApplyEffect(DeckManager deck);
-    }
+
     [Serializable]
-    public class AddCardToHand : PropertyAttribute, ICardEconomyModule 
+    public class AddCardToHand : PropertyAttribute 
     {
         [SerializeField] List<AdventCard> m_cardsToAdd = default;
         public virtual void ApplyEffect(DeckManager deck)

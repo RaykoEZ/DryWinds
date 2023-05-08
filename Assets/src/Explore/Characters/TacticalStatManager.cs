@@ -168,7 +168,7 @@ namespace Curry.Explore
                 // Apply all modifiera to base
                 foreach (var mod in m_mods)
                 {
-                    Current = mod.Apply(Current);
+                    Current = mod.Process(Current);
                 }
             }
         }

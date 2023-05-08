@@ -7,17 +7,15 @@ using UnityEngine;
 namespace Curry.Explore
 {
     [Serializable]
-    public class PositionTargetingModule : ITargetsPosition
+    public class PositionTargetingModule
     {
         [SerializeField] protected LayerMask m_targetLayer = default;
-        [SerializeField] protected RangeMap m_range = default;
-        public RangeMap Range => m_range;
         public bool Satisfied { get; protected set; }
         public Vector3 Target { get; protected set; }
-        public bool HasValidTarget<T_Target>(Vector3 userOrigin, out List<T_Target> validTargets)
+        public bool HasValidTarget<T_Target>(Vector3 userOrigin, RangeMap range, out List<T_Target> validTargets)
         {
             validTargets = new List<T_Target>();
-            List<Vector3> validWorldPos = m_range.ApplyRangeOffsets(userOrigin);
+            List<Vector3> validWorldPos = range.ApplyRangeOffsets(userOrigin);
             foreach (Vector3 pos in validWorldPos)
             {
                 if (GameUtil.TrySearchTarget(pos, m_targetLayer, out T_Target found))

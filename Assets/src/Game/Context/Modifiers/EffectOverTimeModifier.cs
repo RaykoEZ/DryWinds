@@ -34,7 +34,7 @@ namespace Curry.Game
             base.OnTimeElapsed(dt);
         }
 
-        public override CharacterModifierProperty Apply(CharacterModifierProperty baseVal)
+        public override CharacterModifierProperty Process(CharacterModifierProperty baseVal)
         {
             return baseVal;
         }

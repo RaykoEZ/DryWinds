@@ -5,7 +5,7 @@ namespace Curry.Explore
 {
     [Serializable]
     // A modifier to decrease movement range 
-    public class Impediment : TacticalModifier, IMovementElement<TacticalStats>, ITargetEffectModule
+    public class Impediment : TacticalModifier, IStatusAilment, IMovementElement<TacticalStats>
     {
         [SerializeField] int m_numBeforeExpiry = default;
         [SerializeField] int m_rangeDecrease = default;
@@ -26,7 +26,7 @@ namespace Curry.Explore
             m_rangeDecrease = 1;
             m_modIcon = null;
         }
-        public void ApplyEffect(ICharacter target)
+        public void Inflict(ICharacter target)
         {
             if(target is IModifiable modifiable) 
             {
@@ -41,7 +41,7 @@ namespace Curry.Explore
                 Expire();
             }
         }
-        protected override TacticalStats Apply_Internal(TacticalStats baseVal)
+        protected override TacticalStats Process_Internal(TacticalStats baseVal)
         {
             baseVal.MoveRange -= m_rangeDecrease;
             return baseVal;

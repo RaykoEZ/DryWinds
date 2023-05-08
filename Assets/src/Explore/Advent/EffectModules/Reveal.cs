@@ -7,7 +7,7 @@ using System;
 namespace Curry.Explore
 {
     [Serializable]
-    public class Defog : ICharacterEffectModule
+    public class Reveal
     {
         [SerializeField] int m_scoutRange = default;
         [SerializeField] CurryGameEventTrigger m_defog = default;

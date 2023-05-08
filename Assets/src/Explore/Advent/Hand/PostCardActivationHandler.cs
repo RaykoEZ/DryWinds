@@ -56,7 +56,7 @@ namespace Curry.Explore
         protected virtual IEnumerator HandleCooldown(ICooldown cd, AdventCard card) 
         {
             m_cooldowns.Add(card);
-            cd?.TrggerCooldown();
+            cd?.TriggerCooldown();
             yield return null;
         }
         protected virtual IEnumerator HandleConsumable(AdventCard used, IConsumable consume)

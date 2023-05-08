@@ -14,7 +14,7 @@ namespace Curry.Game
         {
         }
 
-        public override CharacterModifierProperty Apply(CharacterModifierProperty baseVal)
+        public override CharacterModifierProperty Process(CharacterModifierProperty baseVal)
         {
             return baseVal + m_value;
         }
@@ -35,7 +35,7 @@ namespace Curry.Game
         }
 
 
-        public override CharacterModifierProperty Apply(CharacterModifierProperty baseVal)
+        public override CharacterModifierProperty Process(CharacterModifierProperty baseVal)
         {
             return baseVal * m_value;
         }

@@ -16,9 +16,9 @@ namespace Curry.Explore
         [SerializeField] protected RangeMapDatabase m_rangedb = default;
         [Range(1, 5)]
         [SerializeField] protected int m_rangeRadius = default;
-        protected List<ITargetEffectModule> m_onHit = new List<ITargetEffectModule> {};
+        protected List<IStatusAilment> m_onHit = new List<IStatusAilment> {};
         public int Damage => m_damage.AddDamage + m_damage.BaseDamage;
-        public IReadOnlyList<ITargetEffectModule> OnHitEffects => m_onHit;
+        public IReadOnlyList<IStatusAilment> OnHitEffects => m_onHit;
 
         public override RangeMap Range => m_rangedb.GetSquareRadiusMap(m_rangeRadius);
         protected ICharacter m_user;
@@ -34,7 +34,7 @@ namespace Curry.Explore
             ret.Description = $"Deal {m_damage.BaseDamage} damage to target.";   
             return ret;
         }
-        public void AddOnHitEffect(ITargetEffectModule mod)
+        public void AddOnHitEffect(IStatusAilment mod)
         {
             if (mod == null) return;
 
@@ -87,9 +87,9 @@ namespace Curry.Explore
         protected virtual void OnHit(ICharacter hit) 
         {
             m_damage.ApplyEffect(hit, m_user);
-            foreach (ITargetEffectModule module in OnHitEffects)  
+            foreach (IStatusAilment module in OnHitEffects)  
             {
-                module?.ApplyEffect(hit);
+                module?.Inflict(hit);
             }
         }
     }

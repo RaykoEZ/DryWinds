@@ -15,7 +15,7 @@ namespace Curry.Explore
         public int DamageUp => m_damageUp;
         public TacticalModifier AppyOnHit => m_impediment;
 
-        public override RangeMap Range => m_deadEyeCheck.Range;
+        public override RangeMap Range => RangeMap.Adjacent;
 
         public override AbilityContent GetContent()
         {
@@ -26,7 +26,7 @@ namespace Curry.Explore
         }
         public bool CheckConditions<T>(ICharacter user, out List<T> validTargets)
         {
-             return m_deadEyeCheck.HasValidTarget(user.WorldPosition, out validTargets);
+             return m_deadEyeCheck.HasValidTarget(user.WorldPosition, Range, out validTargets);
         }
 
         public void Activate(IProjectile applyTo)

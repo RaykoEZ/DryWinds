@@ -54,7 +54,7 @@ namespace Curry.Explore
         {
             m_currentStack = 0;
         }
-        protected override TacticalStats Apply_Internal(TacticalStats baseVal)
+        protected override TacticalStats Process_Internal(TacticalStats baseVal)
         {
             return baseVal;
         }

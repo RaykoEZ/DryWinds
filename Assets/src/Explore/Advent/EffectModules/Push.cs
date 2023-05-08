@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Curry.Explore
 {
     [Serializable]
-    public class Push : PropertyAttribute, ICharacterEffectModule
+    public class Push : PropertyAttribute
     {
         [Range(1, 3)]
         [SerializeField] protected int m_pushPower = default;
