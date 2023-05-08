@@ -5,7 +5,7 @@ using System.Collections;
 namespace Curry.Explore
 {
     [Serializable]
-    public abstract class BaseCardResourceContainer : ScriptableObject 
+    public abstract class BaseCardResource : ScriptableObject 
     {
         [SerializeField] CardAttribute m_attribute = default;
         public CardAttribute Attribute => m_attribute;

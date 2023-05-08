@@ -11,8 +11,8 @@ namespace Curry.Explore
         [SerializeField] CallBackup m_backup = default;
         public override IReadOnlyList<AbilityContent> AbilityDetails => new List<AbilityContent> 
         {
-            m_standardAttack.GetContent(),
-            m_backup.GetContent()
+            m_standardAttack.Content,
+            m_backup.Content
         };
         public override void Prepare()
         {

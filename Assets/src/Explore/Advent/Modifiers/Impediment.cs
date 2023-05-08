@@ -11,9 +11,9 @@ namespace Curry.Explore
         [SerializeField] int m_rangeDecrease = default;
         public override ModifierContent Content => new ModifierContent
         {
-            Name = "Impediment",
-            Description = $"Reduce Movement Range by {m_rangeDecrease}. ({m_numBeforeExpiry} times left)",
-            Icon = m_modIcon
+            Name = m_resource.Content.Name,
+            Description = $"{m_resource.Content.Description} by {m_rangeDecrease}. ({m_numBeforeExpiry} times left)",
+            Icon = m_resource.Content.Icon
         };
         public Impediment(Impediment source): base(source)
         {
@@ -24,7 +24,6 @@ namespace Curry.Explore
         {
             m_numBeforeExpiry = 1;
             m_rangeDecrease = 1;
-            m_modIcon = null;
         }
         public void Inflict(ICharacter target)
         {

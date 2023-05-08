@@ -56,7 +56,7 @@ namespace Curry.Explore
                 Name = "Reinforcement", 
                 Description = 
                 $"Reinforce inbound in: {CountdownTimer} dt. (Occupy this position in time to stop this!)",
-                RangePattern = default,
+                TargetingRange = default,
                 Icon = default
             } 
         };

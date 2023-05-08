@@ -4,36 +4,38 @@ using UnityEngine;
 
 namespace Curry.Explore
 {
+    public interface IRangedUnit 
+    {
+        IProjectile RangedAttack { get; }
+    }
     public delegate void FireWeapon();
-    public class SharpShooter : TacticalEnemy
+    public class SharpShooter : TacticalEnemy, IRangedUnit
     {
         [SerializeField] protected StormMarrowRound m_stormAmmo = default;
         [SerializeField] protected Deadeye m_deadEye = default;
         [SerializeField] protected PatientHunter m_patient = default;
-        bool m_deadEyeMode = false;
+        StormMarrowRound m_currentProjectileInstance;
+        protected event FireWeapon Fire;
         protected override List<IEnemyReaction> m_reactions => new List<IEnemyReaction> 
         { 
             m_patient
         };
         public override IReadOnlyList<AbilityContent> AbilityDetails => new List<AbilityContent> 
         {
-            m_stormAmmo.GetContent(),
-            m_deadEye.GetContent(),
-            m_patient.GetContent()
+            m_stormAmmo.Content,
+            m_deadEye.Content,
+            m_patient.Content
         };
-        protected event FireWeapon Fire;
+        public IProjectile RangedAttack => m_currentProjectileInstance;
         protected void FiringWeapon() 
         {
             Fire?.Invoke();
         }
-
         protected override bool ChooseAction_Internal(int dt, out IEnumerator action)
         {
             // if we see target, do basic action
             if (SpotsTarget)
             {
-                // Check for dead Eye
-                m_deadEyeMode = DeadEyeCheck();
                 action = ExecuteAction_Internal();
             }
             else
@@ -67,23 +69,14 @@ namespace Curry.Explore
             {
                 Vector3 dir = target.WorldPosition - transform.position;
                 Quaternion rot = Quaternion.LookRotation(dir, Vector3.forward);
-                StormMarrowRound instance = Instantiate(m_stormAmmo, transform.position, rot, transform.parent);
-                instance.Setup(this);
-                // OnAttack, if target in deadEye range, upgrade attack instance
-                if (m_deadEyeMode) 
-                {
-                    Debug.Log("Dead Eye activate");
-                    m_deadEye.Activate(instance);
-                }
-                yield return StartCoroutine(instance.FireAt(target.WorldPosition));
+                m_currentProjectileInstance = Instantiate(m_stormAmmo, transform.position, rot, transform.parent);
+                m_currentProjectileInstance.Setup(this);
+                // Check for Dead Eye activation condition, activate if we can activate
+                m_deadEye.TryActivate<IPlayer>(this, out _);
+                yield return StartCoroutine(m_currentProjectileInstance.FireAt(target.WorldPosition));
                 break;
             }
             yield return null;
-        }
-
-        protected virtual bool DeadEyeCheck() 
-        {
-            return m_deadEye.CheckConditions<IPlayer>(this, out _);
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Curry.Game;
+using Curry.Util;
 using UnityEngine;
 
 namespace Curry.Explore
@@ -15,6 +16,7 @@ namespace Curry.Explore
         [TextArea]
         [SerializeField] public string Description;
     }
+
     // We need to display and interact with modifier in UI
     public interface IModifierDetailList
     {
@@ -23,14 +25,14 @@ namespace Curry.Explore
     }
     public abstract class TacticalModifier : IStatModifier<TacticalStats>
     {
-        [SerializeField] protected Sprite m_modIcon = default;
-        public abstract ModifierContent Content { get; }
+        [SerializeField] protected BaseModifierResource m_resource = default;
+        public virtual ModifierContent Content => m_resource.Content;
         public event OnModifierExpire<TacticalStats> OnExpire;
         public event OnModifierTrigger<TacticalStats> OnTrigger;
         public TacticalModifier() { }
         public TacticalModifier(TacticalModifier copy) 
         {
-            m_modIcon = copy.m_modIcon;
+            m_resource = copy.m_resource;
         }
         public TacticalStats Process(TacticalStats baseVal) 
         {

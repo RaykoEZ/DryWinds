@@ -6,44 +6,37 @@ using UnityEngine;
 
 namespace Curry.Explore
 {
-
-    public class StormMarrowRound : BaseAbility, IProjectile, IAbility, IDamageAbility
+    public class StormMarrowRound : BaseAbility, IProjectile
     {
-        [SerializeField] protected DealDamageTo m_damage = default;
+        [SerializeField] protected DealDamage_EffectResource m_damage = default;
         [SerializeField] protected Animator m_anim = default;
         [SerializeField] protected AnimationClip m_onImpact = default;
-        [SerializeField] protected Impediment m_impedeEffect = default;
-        [SerializeField] protected RangeMapDatabase m_rangedb = default;
-        [Range(1, 5)]
-        [SerializeField] protected int m_rangeRadius = default;
-        protected List<IStatusAilment> m_onHit = new List<IStatusAilment> {};
-        public int Damage => m_damage.AddDamage + m_damage.BaseDamage;
-        public IReadOnlyList<IStatusAilment> OnHitEffects => m_onHit;
-
-        public override RangeMap Range => m_rangedb.GetSquareRadiusMap(m_rangeRadius);
         protected ICharacter m_user;
-        protected bool upgraded = false;
+        protected List<IStatusAilment> m_onHit = new List<IStatusAilment> {};
+        public int BaseDamage => m_damage.DamageModule.BaseDamage;
+        public IReadOnlyList<IStatusAilment> OnHitEffects => m_onHit;
         public void Setup(ICharacter user) 
         {
             m_user = user;
         }
-        public override AbilityContent GetContent()
+        public override AbilityContent Content
         {
-            var ret = base.GetContent();
-            ret.Name = "StormMarrow Strike";
-            ret.Description = $"Deal {m_damage.BaseDamage} damage to target.";   
-            return ret;
+            get
+            {
+                var ret = base.Content;
+                ret.Description = $"Deal {m_damage.DamageModule.BaseDamage} damage to target.";
+                return ret;
+            }
         }
         public void AddOnHitEffect(IStatusAilment mod)
         {
             if (mod == null) return;
-
             m_onHit.Add(mod);
         }
-
-        public void AddDamage(int val)
+        public void RemoveOnHitEffect(IStatusAilment mod)
         {
-            m_damage.AddDamage += val;
+            if (mod == null) return;
+            m_onHit.Remove(mod);
         }
         public void Deflect(Vector3 deflectDirection)
         {
@@ -86,7 +79,7 @@ namespace Curry.Explore
         }
         protected virtual void OnHit(ICharacter hit) 
         {
-            m_damage.ApplyEffect(hit, m_user);
+            m_damage.DamageModule.ApplyEffect(hit, m_user);
             foreach (IStatusAilment module in OnHitEffects)  
             {
                 module?.Inflict(hit);

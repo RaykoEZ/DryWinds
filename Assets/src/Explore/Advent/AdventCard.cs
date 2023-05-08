@@ -10,7 +10,7 @@ namespace Curry.Explore
     // Base class for all playable cards
     public abstract class AdventCard : PoolableBehaviour, IPoolable
     {
-        [SerializeField] protected BaseCardResourceContainer m_resources = default;
+        [SerializeField] protected BaseCardResource m_resources = default;
         [SerializeField] protected CooldownModule m_cooldown = default;
         [SerializeField] protected PositionTargetingModule m_targeting = default;
         [SerializeField] List<CardStartupModules> m_startupModulesModules = default;

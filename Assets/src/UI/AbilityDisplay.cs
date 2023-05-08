@@ -27,7 +27,7 @@ namespace Curry.UI
             m_rangeDisplay.ShowRange(
                 name,
                 m_rangePreview,
-                content.RangePattern);
+                content.TargetingRange);
             if (!m_abilityNamesInPreview.Contains(name)) 
             {
                 m_rangeDisplay.MoveRangeTile(name, m_rangePreview, offset);

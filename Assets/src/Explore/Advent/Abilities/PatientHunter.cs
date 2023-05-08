@@ -5,20 +5,21 @@ using UnityEngine;
 namespace Curry.Explore
 {
     [Serializable]
-    public class PatientHunter : BaseAbility, IAbility, IStackableEffect, IEnemyReaction
+    public class PatientHunter : BaseAbility, IStackableEffect, IEnemyReaction
     {
         [SerializeField] Prepared m_prep = default;
-        [SerializeField] BaseAbility m_abilityRangeRef = default;
         bool m_activated = false;
         Prepared m_instance;
-        public override RangeMap Range => m_abilityRangeRef.Range;
-        public override AbilityContent GetContent()
+        public override AbilityContent Content
         {
-            var ret = base.GetContent();
-            ret.Name = "Patient Hunter";
-            ret.Description = $"Reaction: Gain [Prepared] stack when target is inside detection range. " +
-            $"Stacks reset upon first attack [OR] Target leaves line of sight.";
-            return ret;
+            get
+            {
+                var ret = base.Content;
+                ret.Name = "Patient Hunter";
+                ret.Description = $"Reaction: Gain [Prepared] stack when target is inside detection range. " +
+                $"Stacks reset upon first attack [OR] Target leaves line of sight.";
+                return ret;
+            }
         }
         public void AddStack(int addVal = 1) 
         {
