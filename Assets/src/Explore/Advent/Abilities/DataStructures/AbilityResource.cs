@@ -4,7 +4,8 @@ using UnityEngine;
 namespace Curry.Explore
 {
     [Serializable]
-    public abstract class BaseAbilityResource : ScriptableObject 
+    [CreateAssetMenu(fileName = "Ability_", menuName = "Curry/Ability/Resource/New Ability Resource", order = 1)]
+    public class AbilityResource : ScriptableObject 
     {
         [SerializeField] protected AbilityContent m_content = default;
         public AbilityContent Content => m_content;

@@ -1,0 +1,12 @@
+using System;
+using UnityEngine;
+
+namespace Curry.Explore
+{
+    #NOTRIM#
+    [Serializable]
+    public class #SCRIPTNAME# : BaseAbility
+    {
+        #NOTRIM#
+    }
+}

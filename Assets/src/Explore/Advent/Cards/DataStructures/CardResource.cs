@@ -5,7 +5,8 @@ using System.Collections;
 namespace Curry.Explore
 {
     [Serializable]
-    public abstract class BaseCardResource : ScriptableObject 
+    [CreateAssetMenu(fileName = "Card_", menuName = "Curry/Card/New Card Resource", order = 1)]
+    public class CardResource : ScriptableObject 
     {
         [SerializeField] CardAttribute m_attribute = default;
         public CardAttribute Attribute => m_attribute;

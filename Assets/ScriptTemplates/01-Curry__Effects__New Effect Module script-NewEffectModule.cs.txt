@@ -1,0 +1,28 @@
+using System;
+using UnityEngine;
+namespace Curry.Explore
+{   
+    #NOTRIM#
+    // Scriptable object to store an instance of Effect Module(s) for any use (cards, abilities, encounters)
+    [Serializable]
+    public class #SCRIPTNAME#_EffectResource : BaseEffectResource
+    {
+        #NOTRIM#
+        [SerializeField] #SCRIPTNAME# m_effect = default;
+        public #SCRIPTNAME# Effect => m_effect;
+
+    }
+    [Serializable]
+    public class #SCRIPTNAME# : PropertyAttribute
+    {
+        #NOTRIM#
+        public void ApplyEffect(ICharacter target, ICharacter user)
+        {
+            #NOTRIM#
+        }
+        public void ApplyEffect(ICharacter target)
+        {
+            #NOTRIM#
+        }
+    }
+}

@@ -6,6 +6,7 @@ using Curry.Util;
 namespace Curry.Explore
 {
     [Serializable]
+    [CreateAssetMenu(fileName = "Reinforcement_", menuName = "Curry/Misc/Reinforcement Pool", order = 1)]
     public class ReinforcementPool : ScriptableObject 
     {
         [SerializeField] ReinforcementList m_reinforcementPool = default;

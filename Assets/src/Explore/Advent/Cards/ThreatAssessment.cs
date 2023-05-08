@@ -5,10 +5,10 @@ namespace Curry.Explore
 {
     public class ThreatAssessment : AdventCard, ICooldown
     {
+        [SerializeField] Scan_EffectResource m_scan = default;
         public override IEnumerator ActivateEffect(ICharacter user)
         {
-            Scan scan = (m_resources as Scan_CardResource).ScanModule;
-            scan?.ApplyEffect(user, user);
+            m_scan?.ScanModule?.ApplyEffect(user, user);
             yield return new WaitForEndOfFrame();
         }
     }
