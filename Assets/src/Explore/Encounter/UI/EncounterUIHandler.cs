@@ -45,7 +45,7 @@ namespace Curry.Explore
             m_dialogue.DisplaySingle(detail.Description);
         }
 
-        void OnOptionChosen(EncounterResultAttribute chosen, BaseEncounterEffect effect) 
+        void OnOptionChosen(EncounterResultAttribute chosen, EncounterEffect effect) 
         {
             foreach (EncounterOption option in m_currentOptions)
             {
@@ -58,7 +58,7 @@ namespace Curry.Explore
             StartCoroutine(OnChosen_Internal(chosen, effect));
         }
         // Do dialogues
-        IEnumerator OnChosen_Internal(EncounterResultAttribute chosen, BaseEncounterEffect effect) 
+        IEnumerator OnChosen_Internal(EncounterResultAttribute chosen, EncounterEffect effect) 
         {
             m_dialogue.OpenDialogue(chosen.Dialogue, "");
             yield return new WaitForEndOfFrame();

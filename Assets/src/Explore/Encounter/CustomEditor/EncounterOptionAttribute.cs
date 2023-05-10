@@ -14,12 +14,12 @@ namespace Curry.Explore
         [TextArea]
         [SerializeField] string m_summary = default;
         [SerializeField] EncounterResultAttribute m_encounterResult = default;
-        [SerializeField] BaseEncounterEffect m_effect = default;
+        [SerializeField] EncounterEffect m_effect = default;
         public string Description => m_description;
         public string Summary => m_summary;
         public EncounterResultAttribute Result => m_encounterResult;
-        public BaseEncounterEffect Effect => m_effect;
-        public EncounterOptionAttribute(string description, string detail, EncounterResultAttribute result, BaseEncounterEffect effect) 
+        public EncounterEffect Effect => m_effect;
+        public EncounterOptionAttribute(string description, string detail, EncounterResultAttribute result, EncounterEffect effect) 
         {
             m_description = description;
             m_summary = detail;

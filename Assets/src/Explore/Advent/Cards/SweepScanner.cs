@@ -6,9 +6,9 @@ namespace Curry.Explore
     public class SweepScanner : AdventCard, ICooldown
     {
         [SerializeField] Reveal_EffectResource m_reveal = default;
-        public override IEnumerator ActivateEffect(ICharacter user)
+        public override IEnumerator ActivateEffect(ICharacter target)
         {
-            m_reveal?.RevealModule?.ApplyEffect(user, user);
+            m_reveal?.RevealModule?.ApplyEffect(target);
             yield return new WaitForEndOfFrame();
         }
     }

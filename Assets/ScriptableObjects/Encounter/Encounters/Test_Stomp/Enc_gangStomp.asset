@@ -25,7 +25,7 @@ MonoBehaviour:
           m_flag: 0
           m_conditionRef: {fileID: 0}
         m_dialogue: []
-      m_effect: {fileID: 6499323852774280049, guid: 83545245624694d4ea8ab12fd9e1b602, type: 3}
+      m_effect: {fileID: 11400000, guid: 7e957d13eb45a224cb140f8af2e51f57, type: 2}
     - m_description: 
       m_summary: 
       m_encounterResult:

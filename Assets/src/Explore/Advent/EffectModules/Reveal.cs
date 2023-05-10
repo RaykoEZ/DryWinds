@@ -12,7 +12,7 @@ namespace Curry.Explore
         [SerializeField] int m_scoutRange = default;
         [SerializeField] CurryGameEventTrigger m_defog = default;
        
-        public void ApplyEffect(ICharacter target, ICharacter user)
+        public void ApplyEffect(ICharacter target)
         {
             List<Vector3> worldPositions = RangeMapping.GetRangePositions(m_scoutRange, target.WorldPosition);
             RangeInfo info = new RangeInfo(worldPositions);

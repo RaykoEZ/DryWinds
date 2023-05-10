@@ -15,7 +15,7 @@ namespace Curry.Explore
         [SerializeField] Button m_button = default;
         [SerializeField] TextMeshProUGUI m_descriptionText = default;
         protected EncounterOptionAttribute m_details;
-        public delegate void OnEncounterChosen(EncounterResultAttribute result, BaseEncounterEffect effect);
+        public delegate void OnEncounterChosen(EncounterResultAttribute result, EncounterEffect effect);
         public event OnEncounterChosen OnChosen;
         protected GameStateContext m_context;
         public virtual bool IsOptionAvailable { get; protected set; } = true;

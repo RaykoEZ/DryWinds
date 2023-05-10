@@ -5,11 +5,16 @@ namespace Curry.Explore
     #NOTRIM#
     // Scriptable object to store an instance of Effect Module(s) for any use (cards, abilities, encounters)
     [Serializable]
+    [CreateAssetMenu(fileName = "#SCRIPTNAME#_", menuName = "Curry/Effects/#SCRIPTNAME#", order = 1)]
     public class #SCRIPTNAME#_EffectResource : BaseEffectResource
     {
         #NOTRIM#
         [SerializeField] #SCRIPTNAME# m_effect = default;
         public #SCRIPTNAME# Effect => m_effect;
+        public override void Activate(GameStateContext context)
+        {
+            #NOTRIM#
+        }
 
     }
     [Serializable]
