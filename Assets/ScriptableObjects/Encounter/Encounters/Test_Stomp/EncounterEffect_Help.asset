@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5d1556d503bc03346ac6bfa05461b9b5, type: 3}
-  m_Name: EncounterEffect_
+  m_Name: EncounterEffect_Help
   m_EditorClassIdentifier: 
   m_effects:
-  - {fileID: 11400000, guid: bbb390eb3b0b12d4db748d0ef76405bd, type: 2}
+  - {fileID: 11400000, guid: a1b1d400d3c3b3b4e8197167e529bcb7, type: 2}

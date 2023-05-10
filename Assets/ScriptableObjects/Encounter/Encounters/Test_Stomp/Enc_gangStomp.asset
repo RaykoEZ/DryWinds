@@ -18,19 +18,35 @@ MonoBehaviour:
       stomping a helpless individual. Maybe you should do something about this? '
     m_coverImage: {fileID: 21300000, guid: ef7176437244ac04aaf179fca4e7e2b9, type: 3}
     m_options:
-    - m_description: 
+    - m_description: We must help!
       m_summary: 
       m_encounterResult:
         m_milestoneAchieved:
           m_flag: 0
-          m_conditionRef: {fileID: 0}
-        m_dialogue: []
+          m_conditionRef: {fileID: 11400000, guid: 6b95668079e228d4db5bb15399d66766, type: 2}
+        m_dialogue:
+        - After a few seconds of processing the situation, you are 100% sure that
+          this atrocity cannot be ignored...
+        - ' You charged into the onslaught ahead.'
+        - '*intense melee SFXs*'
+        - ... ... ...
+        - You stamd before the doormat that which you helped to create, with your
+          "collaborators".
+        - To have attracted such violent acts, this ex-person must have been an enemy.
+        - ' Enemies must be eliminated...'
+        - The gang approves you of your keen insight and offers some of their supplies
+          as a token of thanks.
+        - ... ...
+        - What was that all about anyways?
+      m_effect: {fileID: 11400000, guid: d47f4e2efd381c6418c80537f5b96ea3, type: 2}
+    - m_description: This is sus, we must leave now!
+      m_summary: +1 Move Pt
+      m_encounterResult:
+        m_milestoneAchieved:
+          m_flag: 0
+          m_conditionRef: {fileID: 11400000, guid: 6b95668079e228d4db5bb15399d66766, type: 2}
+        m_dialogue:
+        - Sensing the gang's dubious aura, you swiftly exit the scene.
+        - Did that guy deserve it? Maybe you should have helped?
+        - ' Alas, it''s too late for that now...'
       m_effect: {fileID: 11400000, guid: 7e957d13eb45a224cb140f8af2e51f57, type: 2}
-    - m_description: 
-      m_summary: 
-      m_encounterResult:
-        m_milestoneAchieved:
-          m_flag: 0
-          m_conditionRef: {fileID: 0}
-        m_dialogue: []
-      m_effect: {fileID: 0}
