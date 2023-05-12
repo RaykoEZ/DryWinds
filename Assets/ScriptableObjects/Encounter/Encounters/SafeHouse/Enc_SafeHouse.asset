@@ -1,0 +1,49 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e267a431444ab442b6bbb4b23cb2e56, type: 3}
+  m_Name: Enc_SafeHouse
+  m_EditorClassIdentifier: 
+  m_detail:
+    m_title: Shelter
+    m_description: Though the unforgiving dunes drain your resources by the hour,
+      you take sanctuary in the remnants of an era bygone.
+    m_coverImage: {fileID: 0}
+    m_options:
+    - m_description: Request additional assistance from the Armory.
+      m_summary: 
+      m_encounterResult:
+        m_milestoneAchieved:
+          m_flag: 0
+          m_conditionRef: {fileID: 11400000, guid: 6b95668079e228d4db5bb15399d66766, type: 2}
+        m_dialogue:
+        - Request recieved, your package with be with you in a moments notice.
+        - May I interest you with a user experience survey for this conversation?
+      m_effect: {fileID: 11400000, guid: d7f7c19f9214827499191b3d542ae20d, type: 2}
+    - m_description: Rest and recuperate.
+      m_summary: 'Recover Hp and '
+      m_encounterResult:
+        m_milestoneAchieved:
+          m_flag: 0
+          m_conditionRef: {fileID: 11400000, guid: 6b95668079e228d4db5bb15399d66766, type: 2}
+        m_dialogue:
+        - zzz
+      m_effect: {fileID: 11400000, guid: cb66496281d419349a165de42f7fe84b, type: 2}
+    - m_description: Scout the surrounding perimeter.
+      m_summary: Reveals nearby threats and points of interest...
+      m_encounterResult:
+        m_milestoneAchieved:
+          m_flag: 0
+          m_conditionRef: {fileID: 11400000, guid: 6b95668079e228d4db5bb15399d66766, type: 2}
+        m_dialogue:
+        - Protocol. In. Survival. Situation 101 -
+        - Look around before private-time.
+      m_effect: {fileID: 11400000, guid: ad4e8daa97ed0614899826846b4c6504, type: 2}

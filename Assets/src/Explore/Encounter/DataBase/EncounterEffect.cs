@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Curry.Explore
 {
     [Serializable]
-    [CreateAssetMenu(fileName = "EncounterEffect_", menuName = "Curry/Encounter/Effects/New Encounter Effect for Encounter Option(s)", order = 3)]
+    [CreateAssetMenu(fileName = "EncOpt_", menuName = "Curry/Encounter/Options/New Encounter Effect for Encounter Option(s)", order = 3)]
     public class EncounterEffect : ScriptableObject, IEncounterModule
     {
         [SerializeField] List<BaseEffectResource> m_effects = default;

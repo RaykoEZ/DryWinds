@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e267a431444ab442b6bbb4b23cb2e56, type: 3}
+  m_Name: Enc_Mirage
+  m_EditorClassIdentifier: 
+  m_detail:
+    m_title: Illusions or a trap?
+    m_description: You gradually make progress in the sea of sands... As you survey
+      the lands ahead, blurry silhouette resembling a city of an unknown culture
+      emerges across the horizon. It'd be nice if you arrive there for some R'n'R
+    m_coverImage: {fileID: 0}
+    m_options:
+    - m_description: Agree with your visual receptors and head for the city.
+      m_summary: 
+      m_encounterResult:
+        m_milestoneAchieved:
+          m_flag: 0
+          m_conditionRef: {fileID: 0}
+        m_dialogue: []
+      m_effect: {fileID: 11400000, guid: 5b343af825a11974c97564a752587500, type: 2}
+    - m_description: '"It''s a trap!"'
+      m_summary: End encounter
+      m_encounterResult:
+        m_milestoneAchieved:
+          m_flag: 0
+          m_conditionRef: {fileID: 0}
+        m_dialogue: []
+      m_effect: {fileID: 11400000, guid: 39d5ed2e7e0db3145bd9b15b0bd4e147, type: 2}
+    - m_description: '"Maybe we need a second opinion for this."'
+      m_summary: 
+      m_encounterResult:
+        m_milestoneAchieved:
+          m_flag: 0
+          m_conditionRef: {fileID: 0}
+        m_dialogue: []
+      m_effect: {fileID: 11400000, guid: 0d1745c42758f8c4cb091904a67c2742, type: 2}
