@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: GainMove_rest
   m_EditorClassIdentifier: 
   m_movePointChange:
-    m_changeValue: 0
+    m_changeValue: 1

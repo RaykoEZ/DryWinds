@@ -16,7 +16,7 @@ MonoBehaviour:
     m_title: Shelter
     m_description: Though the unforgiving dunes drain your resources by the hour,
       you take sanctuary in the remnants of an era bygone.
-    m_coverImage: {fileID: 0}
+    m_coverImage: {fileID: 21300000, guid: 631734eb5dc5b334c8a7ac2a72023f67, type: 3}
     m_options:
     - m_description: Request additional assistance from the Armory.
       m_summary: 
@@ -26,7 +26,8 @@ MonoBehaviour:
           m_conditionRef: {fileID: 11400000, guid: 6b95668079e228d4db5bb15399d66766, type: 2}
         m_dialogue:
         - Request recieved, your package with be with you in a moments notice.
-        - May I interest you with a user experience survey for this conversation?
+        - Thank you for choosing this option!
+        - May I interest you with a 5ms user experience survey for this conversation?
       m_effect: {fileID: 11400000, guid: d7f7c19f9214827499191b3d542ae20d, type: 2}
     - m_description: Rest and recuperate.
       m_summary: 'Recover Hp and '

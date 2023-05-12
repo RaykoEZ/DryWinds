@@ -17,14 +17,14 @@ MonoBehaviour:
     m_description: You gradually make progress in the sea of sands... As you survey
       the lands ahead, blurry silhouette resembling a city of an unknown culture
       emerges across the horizon. It'd be nice if you arrive there for some R'n'R
-    m_coverImage: {fileID: 0}
+    m_coverImage: {fileID: 21300000, guid: 73d46f13b6f7ac6458d1645b3c37c957, type: 3}
     m_options:
     - m_description: Agree with your visual receptors and head for the city.
       m_summary: 
       m_encounterResult:
         m_milestoneAchieved:
           m_flag: 0
-          m_conditionRef: {fileID: 0}
+          m_conditionRef: {fileID: 11400000, guid: 6b95668079e228d4db5bb15399d66766, type: 2}
         m_dialogue: []
       m_effect: {fileID: 11400000, guid: 5b343af825a11974c97564a752587500, type: 2}
     - m_description: '"It''s a trap!"'
@@ -32,7 +32,7 @@ MonoBehaviour:
       m_encounterResult:
         m_milestoneAchieved:
           m_flag: 0
-          m_conditionRef: {fileID: 0}
+          m_conditionRef: {fileID: 11400000, guid: 6b95668079e228d4db5bb15399d66766, type: 2}
         m_dialogue: []
       m_effect: {fileID: 11400000, guid: 39d5ed2e7e0db3145bd9b15b0bd4e147, type: 2}
     - m_description: '"Maybe we need a second opinion for this."'
@@ -40,6 +40,6 @@ MonoBehaviour:
       m_encounterResult:
         m_milestoneAchieved:
           m_flag: 0
-          m_conditionRef: {fileID: 0}
+          m_conditionRef: {fileID: 11400000, guid: 6b95668079e228d4db5bb15399d66766, type: 2}
         m_dialogue: []
       m_effect: {fileID: 11400000, guid: 0d1745c42758f8c4cb091904a67c2742, type: 2}
