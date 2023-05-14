@@ -92,55 +92,5 @@ namespace Curry.Util
             line.positionCount = pos.Length;
             line.SetPositions(pos);
         }
-        public static List<T> SampleFromList<T>(List<T> pool, int numToSample, bool uniqueResults = true)
-        {
-            // Redirect to random index selection
-            if (!uniqueResults) return RandomSelectFromList(pool, numToSample);
-
-            List<T> ret = new List<T>();
-            if (numToSample < 1) { return ret; }
-            //Sample probability variables
-            float p;
-            float sample;
-            int numToGet = numToSample;
-            int numLeftInRange = pool.Count;
-            foreach (T v in pool)
-            {
-                p = numToGet / numLeftInRange;
-                sample = UnityEngine.Random.Range(0f, 1f);
-                // Sample probability to pick this position for spawning
-                if (sample < p)
-                {
-                    ret.Add(v);
-                    --numToGet;
-                }
-                --numLeftInRange;
-                // finish early if we got enough this iteration
-                if (numToGet == 0)
-                {
-                    return ret;
-                }
-            }
-            return ret;
-        }
-        static List<T> RandomSelectFromList<T>(List<T> pool, int numToSample) 
-        {
-            List<T> ret = new List<T>();
-            int n = pool.Count;
-            if(numToSample < 1 || n < 1) 
-            {
-                return ret;
-            }
-            List<int> getAt = new List<int>(numToSample);
-            for(int i = 0; i < numToSample; ++i) 
-            {
-                getAt[i] = UnityEngine.Random.Range(0, n);
-            }
-            foreach(int i in getAt) 
-            {
-                ret.Add(pool[i]);
-            }
-            return ret;
-        }
     }
 }

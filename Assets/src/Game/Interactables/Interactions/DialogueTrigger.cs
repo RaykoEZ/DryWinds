@@ -8,7 +8,7 @@ namespace Curry.Game
     public class DialogueTrigger : MonoBehaviour
     {
         [SerializeField] CurryGameEventSource m_onDialogue = default;
-        public void TriggerDialogue(EncounterResultAttribute dialogue, bool displayName = true)
+        public void TriggerDialogue(List<string> dialogue, bool displayName = true)
         {
             Dictionary<string, object> payload = new Dictionary<string, object>
             {

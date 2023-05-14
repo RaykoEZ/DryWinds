@@ -8,4 +8,5 @@ namespace Curry.Explore
     {
         public abstract void Activate(GameStateContext context);
     }
+
 }

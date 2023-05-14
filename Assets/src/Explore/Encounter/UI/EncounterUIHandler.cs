@@ -44,8 +44,7 @@ namespace Curry.Explore
             yield return new WaitForSeconds(0.5f);
             m_dialogue.DisplaySingle(detail.Description);
         }
-
-        void OnOptionChosen(EncounterResultAttribute chosen, EncounterEffect effect) 
+        void OnOptionChosen(EncounterOptionAttribute chosen) 
         {
             foreach (EncounterOption option in m_currentOptions)
             {
@@ -55,17 +54,16 @@ namespace Curry.Explore
             m_currentOptions.Clear();
             // Options give text to display in dialogues
             // When dialogues finishes, trigger encounter effect
-            StartCoroutine(OnChosen_Internal(chosen, effect));
+            StartCoroutine(OnChosen_Internal(chosen.OutcomeDetail));
         }
         // Do dialogues
-        IEnumerator OnChosen_Internal(EncounterResultAttribute chosen, EncounterEffect effect) 
+        IEnumerator OnChosen_Internal(EncounterOutcome outcome) 
         {
-            m_dialogue.OpenDialogue(chosen.Dialogue, "");
-            yield return new WaitForEndOfFrame();
+            var content = outcome.GetOutcomeContent();
+            m_dialogue.OpenDialogue(content.Dialogue, "");
             // call option effect when we finish dialogue
             yield return new WaitUntil(() => !m_dialogue.InProgress);
-            yield return StartCoroutine(effect.Activate(m_contextRef));
-            yield return new WaitForEndOfFrame();           
+            yield return StartCoroutine(EncounterOutcome.Activate(m_contextRef, content.Effects));
             // finish after we yield from encounter effect
             OnFinish();
             yield return new WaitForEndOfFrame();

@@ -11,8 +11,7 @@ namespace Curry.Explore
         public TriggerProvision Effect => m_effect;
         public override void Activate(GameStateContext context)
         {
-            
+            Effect?.ApplyEffect();
         }
-
     }
 }

@@ -11,20 +11,13 @@ namespace Curry.Explore
     {
         [TextArea]
         [SerializeField] string m_description = default;
-        [TextArea]
-        [SerializeField] string m_summary = default;
-        [SerializeField] EncounterResultAttribute m_encounterResult = default;
-        [SerializeField] EncounterEffect m_effect = default;
+        [SerializeField] EncounterOutcome m_outcomeDetail = default;
         public string Description => m_description;
-        public string Summary => m_summary;
-        public EncounterResultAttribute Result => m_encounterResult;
-        public EncounterEffect Effect => m_effect;
-        public EncounterOptionAttribute(string description, string detail, EncounterResultAttribute result, EncounterEffect effect) 
+        public EncounterOutcome OutcomeDetail => m_outcomeDetail;
+        public EncounterOptionAttribute(string description, string detail, EncounterOutcome outcome) 
         {
             m_description = description;
-            m_summary = detail;
-            m_encounterResult = result;
-            m_effect = effect;
+            m_outcomeDetail = outcome;
         }
     }
 }

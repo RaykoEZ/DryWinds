@@ -2,6 +2,7 @@
 using UnityEngine;
 using Curry.Game;
 using Curry.UI;
+using System.Collections.Generic;
 
 namespace Curry.Events
 {
@@ -10,7 +11,8 @@ namespace Curry.Events
         [SerializeField] protected ItemObtained m_condition = default;
         [SerializeField] protected DialogueTrigger m_dialogueTrigger = default;
         [SerializeField] protected CurryGameEventListener m_onItemObtain = default;
-        [SerializeField] protected EncounterResultAttribute m_dialogue = default;
+        [TextArea]
+        [SerializeField] protected List<string> m_dialogue = default;
 
         public override string Title { get { return "Get Title."; } }
 

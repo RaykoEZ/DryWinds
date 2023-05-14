@@ -13,7 +13,7 @@ namespace Curry.Explore
         public IReadOnlyList<ReinforcementTarget> Pool => m_reinforcementPool.Targets;
         public List<ReinforcementTarget> GetRandomTargets(int numToGet, bool uniqueResults = true) 
         {
-            return GameUtil.SampleFromList(m_reinforcementPool.Targets, numToGet, uniqueResults);
+            return SamplingUtil.SampleFromList(m_reinforcementPool.Targets, numToGet, uniqueResults);
         }
     }
 }
