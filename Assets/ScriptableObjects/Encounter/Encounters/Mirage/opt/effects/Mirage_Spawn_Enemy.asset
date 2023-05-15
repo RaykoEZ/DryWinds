@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc6c1aab48f00764ab2d2b16b501fd03, type: 3}
+  m_Name: Mirage_Spawn_Enemy
+  m_EditorClassIdentifier: 
+  m_spawn:
+    m_doNotSpawnOn:
+      serializedVersion: 2
+      m_Bits: 3584
+    m_spawner:
+      m_spawnTrigger:
+        m_eventToTrigger: {fileID: 0}
+    m_numToSpawn: 2
+    m_spawnRange:
+      m_offsetList:
+      - {x: 1, y: 0, z: 0}
+      - {x: 0, y: 1, z: 0}
+      - {x: -1, y: 0, z: 0}
+      - {x: 0, y: -1, z: 0}
+  m_toSpawn:
+  - {fileID: 1037856119560118966, guid: 49d85925633149a45a5f62b7b50bda59, type: 3}
+  - {fileID: 5633357285924559840, guid: 80d8f0c6732715c4c9298055a44fffdd, type: 3}

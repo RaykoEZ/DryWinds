@@ -12,4 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d1556d503bc03346ac6bfa05461b9b5, type: 3}
   m_Name: EncOpt_TryIgnore
   m_EditorClassIdentifier: 
-  m_effects: []
+  m_outcome:
+    m_effects: []
+    m_dialogue:
+    - Such obvious tricks cannot fool you.

@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_outcome:
     m_effects:
-    - {fileID: 0}
+    - {fileID: 11400000, guid: 4630406b06db10a46a049db9f3645734, type: 2}
     m_dialogue:
-    - 
-    - 
-    - 
+    - Request received, your package should arrive within the next few seconds.
+    - Thank you for choosing this service.
+    - Out of 5, how was your experience with this conversation?

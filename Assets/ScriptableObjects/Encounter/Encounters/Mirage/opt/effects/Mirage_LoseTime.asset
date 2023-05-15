@@ -9,11 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5d1556d503bc03346ac6bfa05461b9b5, type: 3}
-  m_Name: EncOpt_rest
+  m_Script: {fileID: 11500000, guid: 055ff7711b133c440929a1cc33091e50, type: 3}
+  m_Name: Mirage_LoseTime
   m_EditorClassIdentifier: 
-  m_outcome:
-    m_effects:
-    - {fileID: 11400000, guid: 4bc38434974068c4589ecf0c139f6fc7, type: 2}
-    m_dialogue:
-    - zzz...zzz
+  m_effect:
+    m_timeLoss: 5
+    m_onLoseTime:
+      m_eventToTrigger: {fileID: 11400000, guid: 2178acb1d6855d044b6b15bf74dac0d6, type: 2}

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using JetBrains.Annotations;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 namespace Curry.Explore
@@ -12,9 +13,14 @@ namespace Curry.Explore
         {
             deck.AddToHand(m_cardsToAdd);
         }
-        public static void ApplyEffect(GameStateContext c, List<AdventCard> toAdd)
-        {
-            c.Deck.AddToHand(toAdd);
-        }
+    }
+
+    [Serializable]
+    public struct LootDrop : IWeightedItem
+    {
+        [SerializeField] int m_oddsWeight;
+        [SerializeField] List<MonoBehaviour> m_lootItems;
+        public int Weight => m_oddsWeight;
+        public List<MonoBehaviour> LootItems => m_lootItems;
     }
 }

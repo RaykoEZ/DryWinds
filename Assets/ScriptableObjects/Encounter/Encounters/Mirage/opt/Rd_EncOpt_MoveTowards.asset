@@ -13,15 +13,30 @@ MonoBehaviour:
   m_Name: Rd_EncOpt_MoveTowards
   m_EditorClassIdentifier: 
   m_potentialOutcomes:
-  - m_probabilityWeight: 0
+  - m_probabilityWeight: 30
     m_content:
-      m_effects: []
-      m_dialogue: []
-  - m_probabilityWeight: 0
+      m_effects:
+      - {fileID: 11400000, guid: 08092c9ce2147024c9a98b9a16a36b62, type: 2}
+      m_dialogue:
+      - Step by step, you inch towards the strange structure...
+      - Yet the skylines never seem to change in size.
+      - Just as you reverse your course...
+      - A harsh breeze uncovers something underground...
+      - An abandoned shelter.
+      - Though the entrance is blocked by a complex mechanism, you are able to obtain
+        tools left by the previous visitors.
+  - m_probabilityWeight: 50
     m_content:
-      m_effects: []
-      m_dialogue: []
-  - m_probabilityWeight: 0
+      m_effects:
+      - {fileID: 11400000, guid: 32a1c6451eb24ae4f8ebaaf3a94a6162, type: 2}
+      m_dialogue:
+      - After a considerable amount of detour, you see absolutely no progress towards
+        the promised land.
+      - To avoid further waste of time, you return to your previous position, empty-handed.
+  - m_probabilityWeight: 20
     m_content:
-      m_effects: []
-      m_dialogue: []
+      m_effects:
+      - {fileID: 11400000, guid: 3d5b3c1bca0188a40812875f4049ac63, type: 2}
+      m_dialogue:
+      - Before you could react, a squad of parolling hostiles reveals their position.
+      - They are probably not here for afternoon tea.
