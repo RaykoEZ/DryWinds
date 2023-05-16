@@ -6,13 +6,12 @@ using UnityEngine;
 
 namespace Curry.Explore
 {
-    [Serializable]
     [RequireComponent(typeof(CardInteractionController))]
     [RequireComponent(typeof(CooldownAnimationHandler))]
     public class CooldownModule : CardStartupModules, ICooldown
     {
-        [SerializeField] protected int m_cooldownTime = default;
-        [SerializeField] protected bool m_isInitiallyOnCooldown = default;
+        protected int m_cooldownTime = default;
+        protected bool m_isInitiallyOnCooldown = default;
         protected CooldownAnimationHandler CooldownAnim => GetComponent<CooldownAnimationHandler>();
         protected CardInteractionController Interaction => GetComponent<CardInteractionController>();
         protected int m_current = 0;

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Curry.Util;
+using System;
 using System.Collections.Generic;
 using UnityEditor.Timeline.Actions;
 using UnityEngine;
@@ -10,7 +11,7 @@ namespace Curry.Explore
     {
         [SerializeField] protected PositionTargetingModule m_deadEyeCheck = default;
         [SerializeField] protected Impediment m_impediment = default;
-        [SerializeField] protected Enhancement m_enhance = default;
+        [SerializeField] protected Enhancement m_enhancedBuff = default;
         public override AbilityContent Content
         {
             get
@@ -40,8 +41,8 @@ namespace Curry.Explore
                 // apply impede on projectile impact
                 ranged.RangedAttack?.AddOnHitEffect(m_impediment);
                 // apply damage up
-                modify?.CurrentStats.ApplyModifier(m_enhance);
-            } 
+                modify?.CurrentStats.ApplyModifier(m_enhancedBuff);
+            }
             return rangeCheck;
         }
     }

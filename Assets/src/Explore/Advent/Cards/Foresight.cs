@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Curry.Explore
 {
-    public class SweepScanner : AdventCard, ICooldown
+    public class Foresight : AdventCard, ICooldown
     {
         [SerializeField] Reveal_EffectResource m_reveal = default;
         public override IEnumerator ActivateEffect(ICharacter target)

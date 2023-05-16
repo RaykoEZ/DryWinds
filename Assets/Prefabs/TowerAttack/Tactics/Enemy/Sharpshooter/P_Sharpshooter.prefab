@@ -283,26 +283,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e515c803300de6f459f23fa2cd488421, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_abilityIcon: {fileID: 21300000, guid: eb07a65253503574e8a80ca43811259a, type: 3}
+  m_resource: {fileID: 11400000, guid: ff2d89b6157bec44d946853e597430c4, type: 2}
   m_deadEyeCheck:
     m_targetLayer:
       serializedVersion: 2
       m_Bits: 1024
-    m_range:
-      m_offsetList:
-      - {x: 2, y: 1, z: 0}
-      - {x: -2, y: 1, z: 0}
-      - {x: 1, y: -2, z: 0}
-      - {x: -2, y: -1, z: 0}
-      - {x: 1, y: 2, z: 0}
-      - {x: -1, y: 2, z: 0}
-      - {x: 2, y: -1, z: 0}
-      - {x: -1, y: -2, z: 0}
-  m_damageUp: 1
   m_impediment:
-    m_modIcon: {fileID: 21300000, guid: 9e808b60c98a5214bba2296984fefb04, type: 3}
+    m_resource: {fileID: 11400000, guid: 693eca59faf8b6548b88c5aa8829af1b, type: 2}
     m_numBeforeExpiry: 1
     m_rangeDecrease: 1
+  m_enhancedBuff:
+    m_resource: {fileID: 11400000, guid: 0fe6e35b3ea54a14da83bedad654a752, type: 2}
+    m_damageUp: 1
 --- !u!114 &4560052167075255862
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -315,13 +307,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 820b4c365f71afe48930c9e45bb00441, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_abilityIcon: {fileID: 21300000, guid: 3a9961a111e6aa5438fee4250c5f5c47, type: 3}
-  m_prep:
-    m_modIcon: {fileID: 21300000, guid: 487d29cbebfcc644892e243904556b2b, type: 3}
+  m_resource: {fileID: 11400000, guid: 1cef420186ba1364e966a20c7d032b48, type: 2}
+  m_preparedBuff:
+    m_resource: {fileID: 11400000, guid: d35ad2a242aed6045a7bd685e1b75599, type: 2}
     m_maxStack: 3
-    m_currentStack: 1
-    m_value: 1
-  m_abilityRangeRef: {fileID: 1210613774268447844, guid: e2d4209ebe1a5894ba92c5883f0d5bc7, type: 3}
+    m_damageUpPerStack: 1
 --- !u!1 &7303457875198025425
 GameObject:
   m_ObjectHideFlags: 0

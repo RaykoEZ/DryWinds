@@ -7,20 +7,16 @@ namespace Curry.Explore
     [Serializable]
     public class PatientHunter : BaseAbility, IStackableEffect, IEnemyReaction
     {
-        [SerializeField] Prepared m_prep = default;
+        [SerializeField] Prepared m_preparedBuff = default;
         bool m_activated = false;
         Prepared m_instance;
-        public override AbilityContent Content
-        {
-            get
-            {
-                var ret = base.Content;
-                ret.Name = "Patient Hunter";
-                ret.Description = $"Reaction: Gain [Prepared] stack when target is inside detection range. " +
-                $"Stacks reset upon first attack [OR] Target leaves line of sight.";
-                return ret;
-            }
-        }
+        public override AbilityContent Content => new AbilityContent
+        { 
+            Name = m_resource.Content.Name,
+            Description = m_resource.Content.Description,
+            TargetingRange =RangeMapping.GetRangeMap(3),
+            Icon = m_resource.Content.Icon
+        };
         public void AddStack(int addVal = 1) 
         {
             m_instance?.AddStack(addVal);
@@ -38,7 +34,7 @@ namespace Curry.Explore
         {
             if (!m_activated && activate) 
             {
-                m_instance = new Prepared(m_prep);
+                m_instance = new Prepared(m_preparedBuff);
                 applyTo?.CurrentStats.ApplyModifier(m_instance);
                 m_activated = true;
             }

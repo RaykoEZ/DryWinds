@@ -24,7 +24,7 @@ namespace Curry.Explore
         public virtual void AddStack(int addVal = 1)
         {
             int result = m_currentStack + addVal;
-            m_currentStack = Mathf.Clamp(result, 0, m_currentStack);
+            m_currentStack = Mathf.Clamp(result, 0, m_maxStack);
             Debug.Log("Prepared Stack x " + m_currentStack);
         }
         public virtual void ResetStack()

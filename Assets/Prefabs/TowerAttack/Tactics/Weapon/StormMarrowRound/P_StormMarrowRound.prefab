@@ -69,17 +69,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1005dddc71014df4cbbb53d8d7f52cdc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_abilityIcon: {fileID: 21300000, guid: b1a82d0c7d5d0e54ea1dbbcd6c2e47af, type: 3}
-  m_damage:
-    m_baseDamage: 2
+  m_resource: {fileID: 11400000, guid: b7798a00d5e324348bfd8ee52c49d5e3, type: 2}
+  m_damage: {fileID: 11400000, guid: 5683e0ba6c257f04b971a0823d021cb1, type: 2}
   m_anim: {fileID: 8563760736699786092}
   m_onImpact: {fileID: 7400000, guid: 43ca2c7b22cb2584194bc5a55c0900ce, type: 2}
-  m_impedeEffect:
-    m_numBeforeExpiry: 1
-    m_rangeDecrease: 1
-    m_modIcon: {fileID: 21300000, guid: 664488f981a837845a5ae2bb4711a078, type: 3}
-  m_rangedb: {fileID: 11400000, guid: 72c959da387b00442b82e0424d224c39, type: 2}
-  m_rangeRadius: 3
 --- !u!212 &3635696051094604863
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -118,7 +111,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -852664857
-  m_SortingLayer: 2
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: b1a82d0c7d5d0e54ea1dbbcd6c2e47af, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

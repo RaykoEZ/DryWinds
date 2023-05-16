@@ -9,10 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 44bc30d5d6089414e8655a6b2cbf9e0b, type: 3}
-  m_Name: Deck0
+  m_Script: {fileID: 11500000, guid: ab06a9a3706533b4bbd03df9fb6f105f, type: 3}
+  m_Name: Mod_Impede
   m_EditorClassIdentifier: 
-  m_deckId: 0
-  m_cardsInDeck:
-  - {fileID: 5636301306242561433, guid: ef1d3ab221ea8e440a5fa517863a4114, type: 3}
-  - {fileID: 6340036389574794449, guid: 5a2a7ebf41978774983f432c3005cb73, type: 3}
+  m_content:
+    Icon: {fileID: 21300000, guid: 9e808b60c98a5214bba2296984fefb04, type: 3}
+    Name: Impediment
+    Description: Decrease movement range

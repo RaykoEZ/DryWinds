@@ -25,7 +25,7 @@ namespace Curry.Explore
     }
     public abstract class TacticalModifier : IStatModifier<TacticalStats>
     {
-        [SerializeField] protected BaseModifierResource m_resource = default;
+        [SerializeField] protected ModifierResource m_resource = default;
         public virtual ModifierContent Content => m_resource.Content;
         public event OnModifierExpire<TacticalStats> OnExpire;
         public event OnModifierTrigger<TacticalStats> OnTrigger;

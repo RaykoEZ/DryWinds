@@ -16,6 +16,7 @@ namespace Curry.Explore
     {
         [SerializeField] CardType m_type;
         [SerializeField] string m_name;
+        [TextArea]
         [SerializeField] string m_description;
         [SerializeField] RangeMap m_targetingRange;
         [Range(0, 1000)]

@@ -25,6 +25,7 @@ namespace Curry.Explore
             {
                 var ret = base.Content;
                 ret.Description = $"Deal {m_damage.DamageModule.BaseDamage} damage to target.";
+                ret.TargetingRange = ret.TargetingRange = RangeMapping.GetRangeMap(3);
                 return ret;
             }
         }

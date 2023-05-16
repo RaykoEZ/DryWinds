@@ -11,9 +11,9 @@ namespace Curry.Explore
     public delegate void FireWeapon();
     public class SharpShooter : TacticalEnemy, IRangedUnit
     {
-        [SerializeField] protected StormMarrowRound m_stormAmmo = default;
-        [SerializeField] protected Deadeye m_deadEye = default;
-        [SerializeField] protected PatientHunter m_patient = default;
+        [SerializeField] protected StormMarrowRound m_stormAmmo;
+        [SerializeField] protected Deadeye m_deadEye;
+        [SerializeField] protected PatientHunter m_patient;
         StormMarrowRound m_currentProjectileInstance;
         protected event FireWeapon Fire;
         protected override List<IEnemyReaction> m_reactions => new List<IEnemyReaction> 

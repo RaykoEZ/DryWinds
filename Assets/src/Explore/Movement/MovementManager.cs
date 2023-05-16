@@ -3,7 +3,6 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 using Curry.Events;
 using System.Collections.Generic;
-using Curry.Game;
 using TMPro;
 
 namespace Curry.Explore

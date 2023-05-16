@@ -28,7 +28,6 @@ namespace Curry.Explore
         {
             foreach (IPlayer player in TargetsInSight) 
             {
-                Reveal();
                 m_anim?.SetTrigger("strike");
                 m_standardAttack.Activate(player);
                 yield break;

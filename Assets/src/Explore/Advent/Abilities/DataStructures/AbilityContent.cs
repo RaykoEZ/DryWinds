@@ -8,6 +8,7 @@ namespace Curry.Explore
     public struct AbilityContent
     {
         [SerializeField] public string Name;
+        [TextArea]
         [SerializeField] public string Description;
         // This sprite will be a grid pattern
         [SerializeField] public RangeMap TargetingRange;

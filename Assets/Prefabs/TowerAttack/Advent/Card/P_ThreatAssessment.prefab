@@ -12,18 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 88f5102e475c1cf4eb3b4bba9046dda8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_attribute:
-    Name: Threat Assessment
-    Description: Scanning...
-    TimeCost: 5
-    Type: 0
-  m_resourceModules:
-  - {fileID: 475080280616173808}
-  m_scan:
-    m_detectionLevel: 1
-    m_onScan:
-      m_eventToTrigger: {fileID: 11400000, guid: a674b44ebbb4330479457ac8b0404c40, type: 2}
+  m_resources: {fileID: 11400000, guid: d79b5d9a6f0742f4c862784cb90cabfc, type: 2}
   m_cooldown: {fileID: 475080280616173808}
+  m_targeting:
+    m_targetLayer:
+      serializedVersion: 2
+      m_Bits: 512
+  m_startupModulesModules:
+  - {fileID: 475080280616173808}
+  m_scan: {fileID: 11400000, guid: 94a1daac1fd471541aebe8e6f06573e0, type: 2}
 --- !u!1001 &5651287287403814045
 PrefabInstance:
   m_ObjectHideFlags: 0

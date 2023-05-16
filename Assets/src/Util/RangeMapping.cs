@@ -70,6 +70,10 @@ namespace Curry.Util
             RangeMap rangeMap = GetNeighbourRangeMap(range);
             return rangeMap.ApplyRangeOffsets(origin);
         }
+        public static RangeMap GetRangeMap(int range)
+        {
+            return GetNeighbourRangeMap(range);
+        }
         public static List<Vector3> GetRangePositions(RangeMap range, Vector3 origin)
         {
             return range.ApplyRangeOffsets(origin);

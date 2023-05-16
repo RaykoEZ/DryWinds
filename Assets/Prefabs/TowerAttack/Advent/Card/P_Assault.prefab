@@ -1526,7 +1526,6 @@ GameObject:
   - component: {fileID: 5636301306242561435}
   - component: {fileID: 5636301306242561431}
   - component: {fileID: 4663118178239010786}
-  - component: {fileID: 2704646758632120893}
   - component: {fileID: 8413242486741973287}
   - component: {fileID: 5258714694495575149}
   - component: {fileID: 2049310599098075856}
@@ -1588,26 +1587,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eda1ace193f892c4297b9244a056ccc1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_attribute:
-    Name: Assault
-    Description: Deal heavy damage on target position.
-    TimeCost: 5
-    Type: 0
-  m_resourceModules:
-  - {fileID: 5258714694495575149}
-  m_dealDamage:
-    m_baseDamage: 3
+  m_resources: {fileID: 11400000, guid: 54a5e86dc6d49554e8a5136519222622, type: 2}
   m_cooldown: {fileID: 5258714694495575149}
   m_targeting:
     m_targetLayer:
       serializedVersion: 2
       m_Bits: 512
-    m_range:
-      m_offsetList:
-      - {x: 1, y: 0, z: 0}
-      - {x: 0, y: 1, z: 0}
-      - {x: -1, y: 0, z: 0}
-      - {x: 0, y: -1, z: 0}
+  m_startupModulesModules:
+  - {fileID: 5258714694495575149}
+  m_dealDamage: {fileID: 11400000, guid: 1ea5ea2e670d33643bec9b97b58623fd, type: 2}
 --- !u!225 &5636301306242561432
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -1665,28 +1653,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1eb965c598cf1a4ea8e8cac003cafd5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &2704646758632120893
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5636301306242561429}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0ef1efab32379e246844e944452cfb74, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_nameField: {fileID: 7667841512140501863}
-  m_descriptionField: {fileID: 2900093472947822728}
-  m_cost: {fileID: 6120513833643702801}
-  m_cooldown: {fileID: 1620556467515658324}
-  m_cardTypeSprites:
-    Skill: {fileID: 21300000, guid: e06e822680422a64fb156374a6f48d6f, type: 3}
-    Equipment: {fileID: 21300000, guid: e9594cb88953d5040a6715b3d393b2a3, type: 3}
-    Item: {fileID: 21300000, guid: 8df974f120704b643902b2d26b58faa4, type: 3}
-  m_cardTypeIcon: {fileID: 4942700512950192532}
-  m_consumableIcon: {fileID: 5510822565091349630}
 --- !u!114 &8413242486741973287
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1719,8 +1685,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 919f5f6ba28c0324aa2adae32af97f54, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_cooldownTime: 3
-  m_isInitiallyOnCooldown: 0
 --- !u!114 &2049310599098075856
 MonoBehaviour:
   m_ObjectHideFlags: 0

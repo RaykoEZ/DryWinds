@@ -9,9 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 44bc30d5d6089414e8655a6b2cbf9e0b, type: 3}
-  m_Name: Deck1
+  m_Script: {fileID: 11500000, guid: 1bb401296a9bced4194b585dce78e4eb, type: 3}
+  m_Name: DealDamage_projectile
   m_EditorClassIdentifier: 
-  m_deckId: 1
-  m_cardsInDeck:
-  - {fileID: 1717730041097802572, guid: 0afe34ab51c25e64ba9c21a89feafe34, type: 3}
+  m_dealDamage:
+    m_baseDamage: 1

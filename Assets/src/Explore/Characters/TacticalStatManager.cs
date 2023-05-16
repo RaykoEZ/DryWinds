@@ -102,6 +102,7 @@ namespace Curry.Explore
         public virtual void ApplyModifier(IStatModifier<TacticalStats> mod)
         {
             m_toAdd.Add(mod);
+            Refresh();
         }
         protected virtual void OnModifierExpire(IStatModifier<TacticalStats> mod)
         {
@@ -142,7 +143,6 @@ namespace Curry.Explore
                 RemoveExpiredModifier(expired);
             }
             m_toRemove.Clear();
-
             //Add all new modifiers
             foreach (IStatModifier<TacticalStats> newMod in m_toAdd)
             {

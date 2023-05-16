@@ -445,19 +445,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c97f899a36d608c4caa90d5285c51d05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_abilityIcon: {fileID: 21300000, guid: a20b1d59f6127eb408dedc9e6c694608, type: 3}
+  m_resource: {fileID: 11400000, guid: 7f446f919d13e2241924537dfac651a4, type: 2}
   m_signal: {fileID: 7365727130124127263, guid: 8e01471e2c522a4449af9ef1ac38054e, type: 3}
-  m_reinforcement:
-    m_doNotSpawnOn:
-      serializedVersion: 2
-      m_Bits: 3072
-    m_spawner:
-      m_spawnTrigger:
-        m_eventToTrigger: {fileID: 11400000, guid: 27a13d8605e44b14a97ee9f2c806cf0c, type: 2}
-  m_unitsToSpawn:
-    m_targets:
-    - Countdown: 3
-      ReinforcementUnit: {fileID: 1037856119560118966, guid: 49d85925633149a45a5f62b7b50bda59, type: 3}
+  m_spawnCountdown: {fileID: 11400000, guid: 1af61f82327a5f64c96c99af8d0f7bbb, type: 2}
+  m_spawnFromReinforcement: {fileID: 11400000, guid: 6a1a1ff561016774f94d28d5eace9934, type: 2}
   m_maxUses: 1
 --- !u!114 &7394046197572877155
 MonoBehaviour:
@@ -487,9 +478,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93416aeda62209147a58a3fe05c66d8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_abilityIcon: {fileID: 21300000, guid: 7a69614fc630d8a48968c8826b5796f0, type: 3}
-  m_basicAttack:
-    m_baseDamage: 1
+  m_resource: {fileID: 11400000, guid: f8e385357822a9f48a406ad58643b94c, type: 2}
+  m_basicAttack: {fileID: 11400000, guid: 1ea5ea2e670d33643bec9b97b58623fd, type: 2}
 --- !u!1 &8671641298351939189
 GameObject:
   m_ObjectHideFlags: 0

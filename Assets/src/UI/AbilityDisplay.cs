@@ -16,13 +16,13 @@ namespace Curry.UI
         [SerializeField] RangeDisplayHandler m_rangeDisplay = default;
         [SerializeField] GameObject m_rangePreview = default;
         List<string> m_abilityNamesInPreview = new List<string>();
-        public void Setup(Vector3 offset, AbilityContent content) 
+        public void Setup(ICharacter target, Vector3 offset, AbilityContent content) 
         {
             m_rangeDisplay.HidePrompt();
             m_name.text = content.Name;
             m_description.text = content.Description;
             m_icon.sprite = content.Icon;
-            string name = $"Detail/Range/{content.Name}";
+            string name = $"Detail/Range/{target.WorldPosition}/{content.Name}";
             // Display range preview on range Display
             m_rangeDisplay.ShowRange(
                 name,

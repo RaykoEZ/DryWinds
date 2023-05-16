@@ -11,8 +11,7 @@ namespace Curry.Explore
     [Serializable]
     public class Prepared : StackableModifier, IAttackModifier, IStackableEffect
     {
-        [SerializeField] protected int m_damageUpPerStack = default;
-        public int DamageUpPerStack => m_damageUpPerStack = default;
+        [SerializeField] protected int m_damageUpPerStack;
         protected override string ValuePerStackDisplay => $"{m_damageUpPerStack} Damage Up";
         public Prepared(Prepared toCopy) : base(toCopy)
         {
@@ -24,7 +23,7 @@ namespace Curry.Explore
             Trigger();
             int stack = m_currentStack;
             ResetStack();
-            return hitVal + (stack * DamageUpPerStack);
+            return hitVal + (stack * m_damageUpPerStack);
         }
         protected override TacticalStats Process_Internal(TacticalStats baseVal)
         {
