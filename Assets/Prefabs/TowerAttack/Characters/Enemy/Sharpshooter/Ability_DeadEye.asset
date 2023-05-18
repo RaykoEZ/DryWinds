@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e13ba65c0867a4d4dacc1376a312b15b, type: 3}
+  m_Name: Ability_DeadEye
+  m_EditorClassIdentifier: 
+  m_content:
+    Name: Deadeye
+    Description: Increases damage dealt to target in range.
+    TargetingRange:
+      m_offsetList:
+      - {x: 2, y: 1, z: 0}
+      - {x: 1, y: 2, z: 0}
+      - {x: -1, y: 2, z: 0}
+      - {x: -2, y: 1, z: 0}
+      - {x: 1, y: -2, z: 0}
+      - {x: 2, y: -1, z: 0}
+      - {x: -2, y: -1, z: 0}
+      - {x: -1, y: -2, z: 0}
+    Icon: {fileID: 21300000, guid: eb07a65253503574e8a80ca43811259a, type: 3}

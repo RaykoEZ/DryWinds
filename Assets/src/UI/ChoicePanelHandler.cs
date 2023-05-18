@@ -18,17 +18,14 @@ namespace Curry.UI
         [SerializeField] int m_maxChoice;
         [Range(0, 10)]
         [SerializeField] int m_minChoice;
-        [SerializeField] string m_description;
         public bool CanCancel { get { return m_canCancel; } }
         public int MaxChoiceCount { get { return Mathf.Max(m_maxChoice, 0); } }
         public int MinChoiceCount { get { return Mathf.Clamp(m_minChoice, 0, MaxChoiceCount); } }
-        public string Description { get { return m_description; } }
-        public ChoiceConditions(bool canCnacel, int max, int min, string description)
+        public ChoiceConditions(bool canCnacel, int max, int min)
         {
             m_canCancel = canCnacel;
             m_maxChoice = max;
             m_minChoice = min;
-            m_description = description;
         }
     }
     // The fields to fill the choice panel
@@ -80,6 +77,7 @@ namespace Curry.UI
         protected HashSet<IChoice> m_chosen = new HashSet<IChoice>();
         bool CanConfirm => m_chosen?.Count >= m_currentContext.Conditons.MinChoiceCount;
         bool CanChoose => m_chosen?.Count < m_currentContext.Conditons.MaxChoiceCount;
+        string ChoiceDisplay => $"Choose: {m_chosen.Count}/{m_currentContext.Conditons.MaxChoiceCount}";
         public virtual void BeginChoicePanel(ChoiceContext context, OnChoiceFinish onFinish) 
         {
             if (!m_inProgress) 
@@ -99,7 +97,7 @@ namespace Curry.UI
                 m_inProgress = true;
                 OnChoiceComplete += onFinish;
                 m_currentContext = context;
-                m_title.text = context.Conditons.Description;
+                m_title.text = ChoiceDisplay;
                 m_confirm.interactable = false;
                 m_cancel.interactable = context.Conditons.CanCancel;
                 PrepareChoices();
@@ -154,6 +152,7 @@ namespace Curry.UI
                     SetChoiceChoosability(false);
                 }
             }
+            m_title.text = ChoiceDisplay;
             // Set confirm button if we chose 
             m_confirm.interactable = CanConfirm;
         }
@@ -164,6 +163,7 @@ namespace Curry.UI
                 SetChoiceChoosability(true);
                 m_confirm.interactable = CanConfirm;
             }
+            m_title.text = ChoiceDisplay;
         }
 
         protected virtual void SetChoiceChoosability(bool value) 

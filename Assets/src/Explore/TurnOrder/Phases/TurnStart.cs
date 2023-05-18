@@ -12,7 +12,7 @@ namespace Curry.Explore
         protected override Type NextState { get; set; } = typeof(PlayerAction);
         protected override IEnumerator Evaluate_Internal()
         {
-            m_movementManager.AddMoveCounter();
+            m_movementManager.UpdateMoveCounter();
             TransitionTo();
             yield return null;
         }

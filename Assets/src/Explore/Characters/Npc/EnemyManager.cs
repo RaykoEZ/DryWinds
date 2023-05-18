@@ -124,20 +124,26 @@ namespace Curry.Explore
             // setup new spawn instance
             newBehaviour.gameObject.transform.position = cellCenterWorld;
             newBehaviour.TryGetComponent(out IEnemy spawn);
-            spawn.OnMove += OnEnemyMovement;
+            if (spawn is IMovableEnemy movable) 
+            {
+                movable.OnMove += OnEnemyMovement;
+                movable.OnBlocked += OnMovementBlocked;
+            }
             spawn.OnDefeat += OnEnemyRemove;
             spawn.OnReveal += OnEnemyReveal;
             spawn.OnHide += OnEnemyHide;
-            spawn.OnBlocked += OnMovementBlocked;
             m_toAdd.Add(spawn);
         }
         void OnEnemyRemove(ICharacter remove)
         {
-            (remove as IEnemy).OnMove -= OnEnemyMovement;
+            if(remove is IMovableEnemy movable) 
+            {
+                movable.OnMove -= OnEnemyMovement;
+                movable.OnBlocked -= OnMovementBlocked;
+            }
             remove.OnDefeat -= OnEnemyRemove;
             remove.OnReveal -= OnEnemyReveal;
             remove.OnHide -= OnEnemyHide;
-            remove.OnBlocked -= OnMovementBlocked;
             m_toRemove.Add(remove as IEnemy);
             remove.Despawn();
         }
@@ -215,8 +221,7 @@ namespace Curry.Explore
                 {
                     calls.Add(chosenAction);
                 }
-            }
-            
+            }      
             if(calls.Count > 0) 
             {
                 calls.Add(FinishActionPhase());

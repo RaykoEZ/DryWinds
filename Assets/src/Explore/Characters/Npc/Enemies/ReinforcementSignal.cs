@@ -4,6 +4,7 @@ using Curry.Game;
 using System;
 using System.Collections.Generic;
 using TMPro;
+using Curry.Util;
 
 namespace Curry.Explore
 {
@@ -25,18 +26,16 @@ namespace Curry.Explore
     }
     public class ReinforcementSignal : PoolableBehaviour, IEnemy, IStepOnTrigger
     {
-        [SerializeField] protected Reinforcement m_spawn = default;
         [SerializeField] protected TextMeshPro m_countdownDisplay = default;
         int m_countdownTimer = 0;
         int m_countdown = 0;
+        protected Reinforcement m_spawn = default;
         PoolableBehaviour m_spawnRef;
         public event OnCharacterUpdate OnDefeat;
         public event OnCharacterUpdate OnReveal;
         public event OnCharacterUpdate OnHide;
         public event OnHpUpdate TakeDamage;
         public event OnHpUpdate RecoverHp;
-        public event OnMovementBlocked OnBlocked;
-        public event OnEnemyMove OnMove;
         public bool SpotsTarget => false;
         public EnemyId Id { get { return new EnemyId(gameObject.name); } }
         public IEnumerator BasicAction => OnSpawnReinforcement();
@@ -58,14 +57,17 @@ namespace Curry.Explore
                 Name = "Reinforcement", 
                 Description = 
                 $"Reinforce inbound in: {CountdownTimer} dt. (Occupy this position in time to stop this!)",
-                RangePattern = default,
+                TargetingRange = default,
                 Icon = default
             } 
         };
-        public void Setup(ReinforcementTarget spawnTarget)
+        public void Setup(Reinforcement_EffectResource reinforce)
         {
-            CountdownDuration = spawnTarget.Countdown;
-            SpawnRef = spawnTarget.ReinforcementUnit;
+            m_spawn = reinforce.ReinforcementModule;
+            ReinforcementList pool = reinforce.TargetPool;
+            ReinforcementTarget target = SamplingUtil.SampleFromList(pool.Targets, 1)[0];
+            CountdownDuration = target.Countdown;
+            SpawnRef = target.ReinforcementUnit;
             m_countdownDisplay.text = CountdownTimer.ToString();
         }
         public override void Prepare()
@@ -147,8 +149,7 @@ namespace Curry.Explore
         }
 
         public void Move(Vector3 target)
-        {
-            OnBlocked?.Invoke(WorldPosition);
+        {     
         }
         public bool Warp(Vector3 to)
         {

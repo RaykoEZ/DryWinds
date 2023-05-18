@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24190962eb4cb5746a59a386b8675991, type: 3}
+  m_Name: Enc_Charity
+  m_EditorClassIdentifier: 
+  m_detail:
+    m_title: Finally, an Oasis!
+    m_description: You reach an oasis, yay!
+    m_coverImage: {fileID: 0}
+    m_options:
+    - m_description: Look around for supplies.
+      m_outcomeDetail: {fileID: 11400000, guid: 02e4935c73dc6f140ab3483b41b7cb9e, type: 2}

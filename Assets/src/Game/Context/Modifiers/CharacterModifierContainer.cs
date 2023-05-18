@@ -59,7 +59,7 @@ namespace Curry.Game
             mod.OnExpire += OnModifierExpire;
             mod.OnTrigger += OnModifierEffectTrigger;
             m_modifiers.Add(mod);
-            m_overallValue = mod.Apply(m_overallValue);
+            m_overallValue = mod.Process(m_overallValue);
         }
 
         protected virtual void RemoveExpiredModifier(CharacterModifier mod)
@@ -103,7 +103,7 @@ namespace Curry.Game
                 // Apply all modifiera to base
                 for (int i = 1; i < m_modifiers.Count; ++i)
                 {
-                    m_overallValue = m_modifiers[i].Apply(m_overallValue);
+                    m_overallValue = m_modifiers[i].Process(m_overallValue);
                 }
             }
         }

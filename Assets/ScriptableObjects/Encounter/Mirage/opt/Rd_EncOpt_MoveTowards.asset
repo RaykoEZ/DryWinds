@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d258a3574d4fc6841ae0008a1dbf0cce, type: 3}
+  m_Name: Rd_EncOpt_MoveTowards
+  m_EditorClassIdentifier: 
+  m_potentialOutcomes:
+  - m_probabilityWeight: 45
+    m_content:
+      m_effects:
+      - {fileID: 11400000, guid: 08092c9ce2147024c9a98b9a16a36b62, type: 2}
+      m_dialogue:
+      - Step by step, you inch towards the strange structure...
+      - Yet the skylines never seem to change in size.
+      - Just as you reverse your course...
+      - A harsh breeze uncovers something underground...
+      - An abandoned shelter.
+      - Though the entrance is blocked by a complex mechanism, you are able to obtain
+        tools left by the previous visitors.
+  - m_probabilityWeight: 10
+    m_content:
+      m_effects:
+      - {fileID: 11400000, guid: 32a1c6451eb24ae4f8ebaaf3a94a6162, type: 2}
+      m_dialogue:
+      - After a considerable amount of detour, you see absolutely no progress towards
+        the promised land.
+      - To avoid further waste of time, you return to your previous position, empty-handed.
+  - m_probabilityWeight: 45
+    m_content:
+      m_effects:
+      - {fileID: 11400000, guid: 3d5b3c1bca0188a40812875f4049ac63, type: 2}
+      m_dialogue:
+      - Before you could react, a squad of parolling hostiles reveals their position.
+      - They are probably not here for afternoon tea.

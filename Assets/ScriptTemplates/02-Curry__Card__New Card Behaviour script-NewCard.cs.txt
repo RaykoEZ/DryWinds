@@ -1,0 +1,17 @@
+using System;
+using System.Collections;
+using UnityEngine;
+
+namespace Curry.Explore
+{
+    #NOTRIM#
+    public class #SCRIPTNAME# : AdventCard, IEncounterModule
+    {
+        #NOTRIM#
+        public override IEnumerator ActivateEffect(IPlayer user)
+        {
+            #NOTRIM#
+            yield return new WaitForEndOfFrame();
+        }
+    }
+}

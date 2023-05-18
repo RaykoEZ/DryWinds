@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d1556d503bc03346ac6bfa05461b9b5, type: 3}
+  m_Name: EncOpt_CheckGPS
+  m_EditorClassIdentifier: 
+  m_outcome:
+    m_effects:
+    - {fileID: 11400000, guid: 32a1c6451eb24ae4f8ebaaf3a94a6162, type: 2}
+    - {fileID: 11400000, guid: 6546434e9008eb243a0d12d863a1fb4c, type: 2}
+    - {fileID: 11400000, guid: 94a1daac1fd471541aebe8e6f06573e0, type: 2}
+    m_dialogue:
+    - After requesting a thorough scan of the perimeter, you found no matches to
+      your visual.
+    - Well, at least you didn't waste more time.

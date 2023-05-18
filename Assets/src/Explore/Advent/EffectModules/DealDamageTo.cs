@@ -3,20 +3,13 @@ using UnityEngine;
 namespace Curry.Explore
 {
     [Serializable]
-    public class DealDamageTo : PropertyAttribute, ICharacterEffectModule, ITargetEffectModule
+    public class DealDamageTo : PropertyAttribute
     {
         [SerializeField] int m_baseDamage = default;
-        int m_addDamage = 0;
         public int BaseDamage => m_baseDamage;
-        public int AddDamage
-        {
-            get { return m_addDamage; }
-            set { m_addDamage = value; }
-        }
-
         public void ApplyEffect(ICharacter target, ICharacter user)
         {
-            int result = m_baseDamage + AddDamage;
+            int result = m_baseDamage;
             if (user is IModifiable modify) 
             {
                 var modifiers = modify.CurrentStats.Modifiers;
@@ -29,7 +22,7 @@ namespace Curry.Explore
         }
         public void ApplyEffect(ICharacter target)
         {
-            target.TakeHit(m_baseDamage + AddDamage);
+            target.TakeHit(m_baseDamage);
         }
     }
 }
