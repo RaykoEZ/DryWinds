@@ -18,7 +18,6 @@ namespace Curry.Explore
     public delegate void OnEncounterFinish();
     public class EncounterManager : MonoBehaviour
     {
-        [SerializeField] protected EncounterDataBase m_db = default;
         [SerializeField] protected EncounterUIHandler m_ui = default;
         [SerializeField] protected GameStateManager m_gameState = default;
         public event OnEncounterFinish OnEncounterFinished;
@@ -30,13 +29,9 @@ namespace Curry.Explore
         {
             OnEncounterFinished?.Invoke();
         }
-        public void OnEncounter(int encounterId)
+        public void OnEncounter(EncounterDetail enc)
         {
-            if (m_db.TryGetDetail(encounterId, out EncounterDetail detail))
-            {
-                m_ui.BeginEncounter(detail, m_gameState.GetCurrent());
-            }
+            m_ui.BeginEncounter(enc, m_gameState.GetCurrent());            
         }
     }
-
 }

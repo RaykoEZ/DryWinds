@@ -6,7 +6,7 @@ using Curry.Explore;
 
 namespace Curry.Util
 {
-    [CustomEditor(typeof(EncounterItem))]
+    [CustomEditor(typeof(EncounterEntry))]
     public class EncounterItem_Editor : Editor 
     {
         SerializedProperty detail;

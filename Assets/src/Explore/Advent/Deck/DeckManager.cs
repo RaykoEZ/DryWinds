@@ -36,7 +36,7 @@ namespace Curry.Explore
             m_prompter.MakeChoice(conditions, choices, onChosenCallback);
         }
         // Instantiate a clone of cards for selection and inspection
-        List<IChoice> CloneCardChoice(List<AdventCard> cardSource) 
+        public List<IChoice> CloneCardChoice(List<AdventCard> cardSource) 
         {
             List<AdventCard> copies = new List<AdventCard>();
             // Instantiate copies
@@ -104,7 +104,7 @@ namespace Curry.Explore
         {
             m_inventory.Add(move);
         }
-        // Instantiate cards and trigger game events OnCardDraw
+        // Instantiate cards and add to hand
         public void AddToHand(List<AdventCard> cardsToDraw)
         { 
             List<AdventCard> cardInstances = InstantiateCards(cardsToDraw);

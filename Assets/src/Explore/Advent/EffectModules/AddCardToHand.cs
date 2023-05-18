@@ -19,8 +19,8 @@ namespace Curry.Explore
     public struct LootDrop : IWeightedItem
     {
         [SerializeField] int m_oddsWeight;
-        [SerializeField] List<MonoBehaviour> m_lootItems;
+        [SerializeField] List<AdventCard> m_lootItems;
         public int Weight => m_oddsWeight;
-        public List<MonoBehaviour> LootItems => m_lootItems;
+        public List<AdventCard> LootItems => m_lootItems;
     }
 }

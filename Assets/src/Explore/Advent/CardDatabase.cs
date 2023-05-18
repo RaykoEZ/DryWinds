@@ -15,8 +15,6 @@ namespace Curry.Explore
     {
         // Contains all card prefab refs for loading
         [SerializeField] protected List<AssetReference> m_cardAssets = default;
-        // include all decks to load
-        [SerializeField] List<Deck> m_decks = default;
         // includes all advent cards to load (listed from each advent collection)
         // These are for advent card prefab instantiations, 
         Dictionary<int, AdventCard> m_advents = new Dictionary<int, AdventCard>();
@@ -33,11 +31,6 @@ namespace Curry.Explore
             // Load all cards
             m_cardLoader = new CardLoader(m_cardAssets, OnLoaded);
             m_cardLoader.LoadAssets();
-            // Put all decks into a dictionary
-            foreach(Deck deck in m_decks) 
-            {
-                m_deckDictionary.Add(deck.DeckId, deck);
-            }
         }
 
         // Randomly draw card from a deck
@@ -62,18 +55,7 @@ namespace Curry.Explore
                     m_advents.Add(deploy.Id, deploy);
                 }
             }
-            // when all asset loaded, init all collections
-            InitCollections();
             onLoadFinish?.Invoke();
-        }
-
-        // Initialize all advent collections' assets
-        protected void InitCollections() 
-        {
-            foreach (Deck c in m_decks)
-            {
-                c.Init(AdventList);
-            }
         }
     }
 

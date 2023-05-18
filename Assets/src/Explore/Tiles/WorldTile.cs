@@ -11,10 +11,11 @@ namespace Curry.Explore
         // Randomly draw from a deck with this ID
         public int Difficulty { get { return m_diffculty; } }
 
-        public static T GetTile<T>(Tilemap map, Vector2 worldPos) where T : WorldTile
+        public static bool TryGetTile<T>(Tilemap map, Vector2 worldPos, out T tile) where T : WorldTile
         {
             Vector3Int p = map.WorldToCell(worldPos);
-            return map.GetTile<T>(p);
+            tile = map.GetTile<T>(p);
+            return tile != null;
         }
         public static bool TryGetTileComponent<T>(Tilemap map, Vector3 worldPos, out T component) where T : MonoBehaviour
         {

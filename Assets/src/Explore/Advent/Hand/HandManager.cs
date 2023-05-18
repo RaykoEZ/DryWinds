@@ -77,7 +77,9 @@ namespace Curry.Explore
                 drag = card.GetComponent<DraggableCard>();
                 card.GetComponent<CardInteractionController>()?.
                     SetInteractionMode(CardInteractMode.Play | CardInteractMode.Inspect);
+
                 cardsToAdd.Add(drag);
+                card.transform.SetParent(transform, false);
                 PrepareCard(drag);
             }
             m_cardsInHand.AddRange(cardsToAdd);

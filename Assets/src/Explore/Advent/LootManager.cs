@@ -1,24 +1,20 @@
-﻿using System.Collections.Generic;
+﻿using Curry.UI;
+using System.Collections.Generic;
 using UnityEngine;
 namespace Curry.Explore
 {
     public class LootManager : MonoBehaviour 
     {
         [SerializeField] DeckManager m_deck = default;
-
-        public void ReceiveLoot(List<MonoBehaviour> items) 
+        [SerializeField] ChoicePrompter m_prompter = default;
+        public void ReceiveLoot(List<AdventCard> items) 
         {
-            List<AdventCard> cardsToAdd = new List<AdventCard>();
-            foreach(var item in items) 
-            { 
-                // If item is a card, wee add it to the card list to add outside the loop
-                if(item is AdventCard card) 
-                {
-                    cardsToAdd.Add(card);
-                }
-                // If we have other items of different types, catch them here in the future
-            }
-            m_deck.AddToHand(cardsToAdd);
+            if (items == null || items.Count == 0) return;
+            m_deck.AddToHand(items);
+        }
+        public void ChooseLoot(List<IChoice> items, ChoiceConditions conditions, OnChoiceFinish onFinish) 
+        {
+            m_prompter.MakeChoice(conditions, items, onFinish);
         }
     }
 }

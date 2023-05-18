@@ -67,12 +67,12 @@ namespace Curry.Explore
                 return;
             }
             StartInterrupt();
-            WorldTile tile = WorldTile.GetTile<WorldTile>(m_terrain, worldPos);
+            bool tileExist = WorldTile.TryGetTile(m_terrain, worldPos, out WorldTile tile);
             // Trigger player to move to selected tile
             Vector3Int cell = m_terrain.WorldToCell(worldPos);
             Vector3 cellCenter = m_terrain.GetCellCenterWorld(cell);
             // Check for visible obstructions and time
-            if (tile != null && !IsPathObstructed(cellCenter, m_player.WorldPosition) && m_time.TrySpendTime(tile.Difficulty))
+            if (tileExist && !IsPathObstructed(cellCenter, m_player.WorldPosition) && m_time.TrySpendTime(tile.Difficulty))
             {
                 List<IEnumerator> action = new List<IEnumerator>
                 {
@@ -94,7 +94,7 @@ namespace Curry.Explore
 
             if (info is CharacterInfo player)
             {
-                SpecialEvents(player.Character.WorldPosition);
+                HandleEncounterEvent(player.Character.WorldPosition);
                 OnFinish?.Invoke();
             }
         }
@@ -163,7 +163,7 @@ namespace Curry.Explore
             OnEncounterFinish encounterFinishTrigger = () => trigger = true;
             m_encounter.OnEncounterFinished += encounterFinishTrigger;
             // after movement, trigger any events
-            if (SpecialEvents(m_player.WorldPosition))
+            if (HandleEncounterEvent(m_player.WorldPosition))
             {
                 yield return new WaitUntil(() => trigger);
                 m_encounter.OnEncounterFinished -= encounterFinishTrigger;
@@ -171,13 +171,13 @@ namespace Curry.Explore
             EndInterrupt();
         }
         // one time events in locations
-        bool SpecialEvents(Vector3 worldPosition)
+        bool HandleEncounterEvent(Vector3 worldPosition)
         {
             // If there are special events in this location, trigger them
-            if (WorldTile.TryGetTileComponent(m_locations, worldPosition, out SpecialEventHandler e))
+            if (WorldTile.TryGetTile(m_locations, worldPosition, out LocationTile e))
             {
                 // Remove events after drawing those special event cards
-                int encounterId = e.EncounterId;
+                var encounterId = e.GetEncounter();
                 m_encounter.OnEncounter(encounterId);
                 return true;
             }
