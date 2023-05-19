@@ -37,6 +37,7 @@ namespace Curry.Explore
         }
         void Start()
         {
+            // Wait until assets are loaded, then we start the game
             StartGame();
         }
         void StartGame()
