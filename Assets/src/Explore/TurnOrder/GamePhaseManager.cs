@@ -14,6 +14,7 @@ namespace Curry.Explore
         [SerializeField] Phase m_initPhase = default;
         [SerializeField] List<Phase> m_allPhases = default;
         Phase m_previous;
+        bool m_gameStarted = false;
         public event OnTurnPhaseTransition OnPhaseChange = default;
         // For Interrupting current phases
         Stack<Phase> m_phaseStack = new Stack<Phase>();
@@ -35,13 +36,11 @@ namespace Curry.Explore
                 m_turnStateCollection.Add(m_initPhase.GetType(), m_initPhase);
             }
         }
-        void Start()
+        public void StartGame()
         {
-            // Wait until assets are loaded, then we start the game
-            StartGame();
-        }
-        void StartGame()
-        {
+            if (m_gameStarted) return;
+
+            m_gameStarted = true;
             SetCurrentState(m_initPhase.GetType());
         }
         void HandleInterrupt(Phase interrupt) 

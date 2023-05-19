@@ -10,11 +10,9 @@ namespace Curry.Util
         event OnAssetLoadSuccess OnLoadSuccess;
         void LoadAsset();
     }
-
     public interface IAssetBatch<T> where T : Object 
     {
         delegate void OnAssetLoadSuccess(ICollection<T> asset);
-        event OnAssetLoadSuccess OnLoadSuccess;
-        void LoadAssets();
+        void LoadAssets(OnAssetLoadSuccess callback = null);
     }
 }
