@@ -29,9 +29,6 @@ MonoBehaviour:
   m_GroupAssets:
   - {fileID: 11400000, guid: f242ec8fb8723a14eb56b387b850a795, type: 2}
   - {fileID: 11400000, guid: 80ae1825cae485c42a3fad645b51438e, type: 2}
-  - {fileID: 11400000, guid: 411c174546c6c314295e81027d649435, type: 2}
-  - {fileID: 11400000, guid: f4f973c2075558640b05f390b7bb1e5c, type: 2}
-  - {fileID: 11400000, guid: 375fc96e6fff0544dbf631913c5c6e9b, type: 2}
   m_BuildSettings:
     m_CompileScriptsInVirtualMode: 0
     m_CleanupStreamingAssetsAfterBuilds: 1
@@ -73,6 +70,7 @@ MonoBehaviour:
   m_LabelTable:
     m_LabelNames:
     - default
+    - CardPack0
   m_SchemaTemplates: []
   m_GroupTemplateObjects:
   - {fileID: 11400000, guid: fbd173ae0a549e0409ef30363f5e2d80, type: 2}

@@ -3,7 +3,7 @@ using TMPro;
 using Curry.Game;
 using Curry.Events;
 using Curry.Util;
-using System.Collections.Generic;
+using System.Collections;
 
 namespace Curry.Explore
 {
@@ -50,10 +50,11 @@ namespace Curry.Explore
         [SerializeField] TimeManager m_time = default;
         [SerializeField] DeckManager m_deck = default;
         [SerializeField] LootManager m_loot = default;
+        [SerializeField] GamePhaseManager m_gamePhase = default;
         [SerializeField] TextMeshProUGUI m_resultText = default;
         [SerializeField] GameConditionAttribute m_mileStones = default;
         [SerializeField] CurryGameEventListener m_onConditionAchieved = default;
-
+        bool GameReadyToStart => m_deck.IsReady;
         public GameStateContext GetCurrent() 
         {
             int timeLeft = m_time.TimeLeftToClear;
@@ -68,7 +69,14 @@ namespace Curry.Explore
             m_player.OnDefeat += OnPlayerDefeat;
             m_objectives.OnCriticalFailure += OnCriticalFail;
             m_objectives.AllCriticalComplete += OnGameCleared;
+            StartCoroutine(StartGame_Interal());
         }
+        IEnumerator StartGame_Interal() 
+        {
+            yield return new WaitUntil(() => GameReadyToStart);
+            m_gamePhase.StartGame();
+        }
+
         public void OnGameConditionFulfilled(EventInfo info) 
         {
             if (info == null) 

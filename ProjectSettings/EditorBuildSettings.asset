@@ -6,8 +6,11 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/Test_0.unity
-    guid: 2cda990e2423bbf4892e6590ba056729
+    path: Assets/Scenes/TitleScreen.unity
+    guid: 681644092d9452145b25c99d8dbde37e
+  - enabled: 1
+    path: Assets/Scenes/Test_Tactical.unity
+    guid: d1264ec3504504b438b9d0c7b109d67d
   m_configObjects:
     com.unity.addressableassets: {fileID: 11400000, guid: 6609eef3974eb6d4b97ee0228782aa9f, type: 2}
     com.unity.input.settings: {fileID: 11400000, guid: be06aff241b873449a3debc0dc8f3e9a, type: 2}
