@@ -14,15 +14,11 @@ namespace Curry.Explore
         [SerializeField] protected AdventButton m_moveButton = default;
         [SerializeField] protected EncounterManager m_encounter = default;
         [SerializeField] protected TimeManager m_time = default;
-
         [SerializeField] protected Tilemap m_terrain = default;
-        [SerializeField] protected Tilemap m_locations = default;
         [SerializeField] protected FogOfWar m_fog = default;
-
         [SerializeField] protected CurryGameEventListener m_onAdventure = default;
         [SerializeField] protected CurryGameEventListener m_onPlayerMoved = default;
         [SerializeField] protected TextMeshProUGUI m_moveCountText = default;
-
         public event OnActionStart OnStart;
         public event OnAdventureFinish OnFinish;
         bool m_movementInProgress = false;
@@ -174,17 +170,7 @@ namespace Curry.Explore
         bool HandleEncounterEvent(Vector3 worldPosition)
         {
             // If there are special events in this location, trigger them
-            if (WorldTile.TryGetTile(m_locations, worldPosition, out LocationTile e))
-            {
-                // Remove events after drawing those special event cards
-                var encounterId = e.GetEncounter();
-                m_encounter.OnEncounter(encounterId);
-                return true;
-            }
-            else 
-            {
-                return false;
-            }
+            return m_encounter.OnEncounter(worldPosition);
         }
     }
 }

@@ -15,3 +15,7 @@ MonoBehaviour:
   m_effect:
     m_provisionEvent:
       m_eventToTrigger: {fileID: 11400000, guid: cd4ef8671ea808e4fa2a9ab0efb0c032, type: 2}
+    m_provisionConditions:
+      m_canCancel: 1
+      m_maxChoice: 1
+      m_minChoice: 0

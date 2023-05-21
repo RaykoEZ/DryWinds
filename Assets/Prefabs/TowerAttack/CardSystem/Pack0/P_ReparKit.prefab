@@ -19,7 +19,7 @@ MonoBehaviour:
       serializedVersion: 2
       m_Bits: 0
   m_startupModulesModules: []
-  m_healing: {fileID: 11400000, guid: 4bc38434974068c4589ecf0c139f6fc7, type: 2}
+  m_healing: {fileID: 11400000, guid: eeed7c9f618660041a1709b2b4618191, type: 2}
 --- !u!1001 &8988240515545042952
 PrefabInstance:
   m_ObjectHideFlags: 0

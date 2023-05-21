@@ -5,6 +5,15 @@ using System.Collections;
 using UnityEngine;
 namespace Curry.Explore
 {
+    public class ProvisionInfo : EventInfo 
+    {
+        protected ChoiceConditions m_conditions;
+        public ChoiceConditions Conditions => m_conditions;
+        public ProvisionInfo(ChoiceConditions cond) 
+        {
+            m_conditions = cond;
+        }
+    }
     [Serializable]
     public class Provision : Phase
     {
@@ -19,17 +28,27 @@ namespace Curry.Explore
         }
         protected override IEnumerator Evaluate_Internal()
         {
+            yield return StartCoroutine(Provision_Internal(m_condition));
+        }
+        protected IEnumerator Provision_Internal(ChoiceConditions conditions) 
+        {
             yield return new WaitForEndOfFrame();
             m_deck.ChooseToAddFromInventory(
-                m_condition,
+                conditions,
                 cardPoolFilter: null,
                 onChosen: TransitionTo);
             yield return null;
         }
-
-        public void OnProvisionTrigger() 
+        public void OnProvisionTrigger(EventInfo info) 
         {
-            StartCoroutine(Evaluate_Internal());
+            if (info is ProvisionInfo p) 
+            {
+                StartCoroutine(Provision_Internal(p.Conditions));
+            }
+            else 
+            {
+                StartCoroutine(Provision_Internal(m_condition));
+            }
         }
     }
 }

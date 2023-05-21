@@ -12,6 +12,7 @@ namespace Curry.Explore
     {
         [SerializeField] Button m_button = default;
         [SerializeField] TextMeshProUGUI m_descriptionText = default;
+        [SerializeField] TextMeshProUGUI m_detailText = default;
         protected EncounterOptionAttribute m_details;
         public delegate void OnEncounterChosen(EncounterOptionAttribute chosen);
         public event OnEncounterChosen OnChosen;
@@ -32,6 +33,7 @@ namespace Curry.Explore
         protected virtual void ShowDescription() 
         {
             m_descriptionText.text = m_details.Description;
+            m_detailText.text = m_details.OutcomeDetail.DetailText;
         }
     }
 }

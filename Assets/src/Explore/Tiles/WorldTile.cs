@@ -3,7 +3,7 @@ using UnityEngine.Tilemaps;
 
 namespace Curry.Explore
 {
-    [CreateAssetMenu(fileName = "BaseTerrain_", menuName = "Curry/Tiles", order = 1)]
+    [CreateAssetMenu(fileName = "Tile_", menuName = "Curry/Tiles/New WorldTile", order = 1)]
     public class WorldTile : Tile
     {
         [Range(0, 10)]
