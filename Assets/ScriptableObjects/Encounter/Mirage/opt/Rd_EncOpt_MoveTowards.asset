@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d258a3574d4fc6841ae0008a1dbf0cce, type: 3}
   m_Name: Rd_EncOpt_MoveTowards
   m_EditorClassIdentifier: 
+  m_detail: .............
   m_potentialOutcomes:
   - m_probabilityWeight: 45
     m_content:

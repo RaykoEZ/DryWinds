@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d1556d503bc03346ac6bfa05461b9b5, type: 3}
   m_Name: EncOpt_rest
   m_EditorClassIdentifier: 
+  m_detail: ...
   m_outcome:
     m_effects:
     - {fileID: 11400000, guid: 4bc38434974068c4589ecf0c139f6fc7, type: 2}
