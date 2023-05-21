@@ -9,10 +9,10 @@ namespace Curry.Explore
     {    
         public void ApplyEffect(ICharacter target, ICharacter user)
         {
-            Vector3 old = target.WorldPosition;
-            if (target.Warp(user.WorldPosition))
+            Vector3 old = user.WorldPosition;
+            if (user.Warp(target.WorldPosition))
             {
-                user.Warp(old);
+                target.Warp(old);
             }
         }
     }

@@ -78,6 +78,7 @@ namespace Curry.Explore
         EnemyPriorityComparer m_priorityComparer = new EnemyPriorityComparer();
         public event OnEnemyActionFinish OnActionFinish;
         public event OnEnemyActionStart OnActionBegin;
+        public bool AreEnemiesActive => m_activeEnemies.Count > 0;
         #endregion
         #region Class Body
         void Awake()
