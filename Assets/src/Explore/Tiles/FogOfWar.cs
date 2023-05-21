@@ -13,7 +13,6 @@ namespace Curry.Explore
         [SerializeField] TileBase m_fogTile = default;
         [SerializeField] CurryGameEventListener m_onTileReveal = default;
         [SerializeField] CurryGameEventListener m_onTileFog = default;
-
         void Awake()
         {
             m_onTileReveal?.Init();

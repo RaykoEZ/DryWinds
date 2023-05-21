@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Curry.UI;
 using System.Collections.Generic;
+using System;
 
 namespace Curry.Explore
 {
