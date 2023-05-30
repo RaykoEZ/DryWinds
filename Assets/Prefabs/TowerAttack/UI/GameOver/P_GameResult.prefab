@@ -147,7 +147,6 @@ GameObject:
   - component: {fileID: 482587161298103060}
   - component: {fileID: 482587161298103062}
   - component: {fileID: 5376539363815420956}
-  - component: {fileID: 3126832027995809987}
   m_Layer: 5
   m_Name: P_GameResult
   m_TagString: Untagged
@@ -246,18 +245,6 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
---- !u!114 &3126832027995809987
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 482587161298103058}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa9dc25e5e616c14d9a18a2c76f2c96e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &3841587359189377130
 GameObject:
   m_ObjectHideFlags: 0
@@ -379,7 +366,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3126832027995809987}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: Assets.src.UI.LevelLoader, Assembly-CSharp
         m_MethodName: LoadScene
         m_Mode: 3
@@ -780,7 +767,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3126832027995809987}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: Assets.src.UI.LevelLoader, Assembly-CSharp
         m_MethodName: LoadScene
         m_Mode: 3
