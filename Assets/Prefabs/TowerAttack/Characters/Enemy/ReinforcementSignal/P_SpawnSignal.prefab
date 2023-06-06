@@ -26,7 +26,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2713882489488314029}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 3850355355490003955}
@@ -75,7 +75,7 @@ MeshRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1235874715
-  m_SortingLayer: 4
+  m_SortingLayer: 5
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!114 &6254313582630558541
@@ -243,13 +243,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0546fca1a94605489aadd0df21302f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_spawn:
-    m_doNotSpawnOn:
-      serializedVersion: 2
-      m_Bits: 3584
-    m_spawner:
-      m_spawnTrigger:
-        m_eventToTrigger: {fileID: 11400000, guid: 27a13d8605e44b14a97ee9f2c806cf0c, type: 2}
   m_countdownDisplay: {fileID: 6254313582630558541}
 --- !u!58 &6307581243402107613
 CircleCollider2D:
@@ -341,7 +334,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1235874715
-  m_SortingLayer: 4
+  m_SortingLayer: 5
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 664488f981a837845a5ae2bb4711a078, type: 3}
   m_Color: {r: 0.13501246, g: 0.6467466, b: 0.7735849, a: 0.47843137}

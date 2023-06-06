@@ -11,7 +11,7 @@ namespace Curry.Explore
     public class MovementManager: SceneInterruptBehaviour 
     {
         [SerializeField] protected Adventurer m_player = default;
-        [SerializeField] protected AdventButton m_moveButton = default;
+        [SerializeField] protected MoveToggle m_moveButton = default;
         [SerializeField] protected EncounterManager m_encounter = default;
         [SerializeField] protected TimeManager m_time = default;
         [SerializeField] protected Tilemap m_terrain = default;
@@ -105,11 +105,11 @@ namespace Curry.Explore
         }
         public void EnablePlay()
         {
-            m_moveButton.Interactable = m_player.CanMove;
+            m_moveButton.SetInteractable(m_player.CanMove);
         }
         public void DisablePlay()
         {
-            m_moveButton.Interactable = false;
+            m_moveButton.SetInteractable(false);
         }
         // Do a collision check for direct path ahead, if there are hidden obstaclesm we allow the move
         public bool IsPathObstructed(Vector3 targetCellCenter, Vector3 origin) 

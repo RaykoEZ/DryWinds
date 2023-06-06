@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ec8b3b72157fa444bc97466f0a61b68, type: 3}
   m_Name: Loc_MirageDunes
   m_EditorClassIdentifier: 
-  m_Sprite: {fileID: 21300000, guid: 6fb314b5b0e1a3b4e8bf312b27fecadf, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 26fbc94eb23a7334e8a39aec98d02c04, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Transform:
     e00: 1

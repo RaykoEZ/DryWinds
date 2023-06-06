@@ -11,21 +11,18 @@ namespace Curry.Explore
     public struct GameStateContext
     {
         public int TimeLeft { get; private set; }
-        public GameClock.TimeOfDay TimeOfDay { get; private set; }
         public IPlayer Player { get; private set; }
         public DeckManager Deck { get; private set; }
         public LootManager LootManager { get; private set; }
         public GameConditionAttribute Milestones { get; private set; }
         public GameStateContext(
             int timeLeft, 
-            GameClock.TimeOfDay timeOfDay, 
             IPlayer player,
             DeckManager deck,
             LootManager loot,
             GameConditionAttribute milestones) 
         {
             TimeLeft = timeLeft;
-            TimeOfDay = timeOfDay;
             Player = player;
             Deck = deck;
             LootManager = loot;
@@ -58,8 +55,7 @@ namespace Curry.Explore
         public GameStateContext GetCurrent() 
         {
             int timeLeft = m_time.TimeLeftToClear;
-            GameClock.TimeOfDay timeOfDay = m_time.Clock.CurrentTimeOfDay;
-            GameStateContext ret = new GameStateContext(timeLeft, timeOfDay, m_player, m_deck, m_loot, m_mileStones);
+            GameStateContext ret = new GameStateContext(timeLeft, m_player, m_deck, m_loot, m_mileStones);
             return ret;
         }
         void Start() 

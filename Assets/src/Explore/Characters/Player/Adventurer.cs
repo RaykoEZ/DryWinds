@@ -38,8 +38,8 @@ namespace Curry.Explore
         protected override void TakeHit_Internal(int hitVal)
         {
             Debug.Log("Player takes " + hitVal + " damage.");
-            m_anim.ResetTrigger("TakeDamage");
-            m_anim.SetTrigger("TakeDamage");
+            m_anim.ResetTrigger("takeHit");
+            m_anim.SetTrigger("takeHit");
         }
         public override void OnDefeated()
         {
