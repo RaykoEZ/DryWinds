@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 using UnityEngine.UI;
 
 namespace Curry.Util
@@ -91,6 +92,11 @@ namespace Curry.Util
             Vector3[] pos = VectorExtension.ToVector3Array(verts.ToArray());
             line.positionCount = pos.Length;
             line.SetPositions(pos);
+        }
+        public static Vector3 CellCenterWorldFromRawWorldPosition(Vector3 worldPos, Tilemap map)
+        {
+            if (map == null) return Vector3.zero;
+            return map.GetCellCenterWorld(map.WorldToCell(worldPos));
         }
     }
 }

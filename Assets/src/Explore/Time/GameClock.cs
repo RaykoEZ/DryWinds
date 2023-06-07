@@ -17,40 +17,19 @@ namespace Curry.Explore
         public int DayBreakAt { get { return m_dayBreakAt; } set { m_dayBreakAt = Mathf.Clamp(value, 0, 23); } }
         public int NightfallAt { get { return m_nightfallAt; } set { m_nightfallAt = Mathf.Clamp(value, 0, 23); } }
     }
-    public delegate void OnTimeUpdate(int dayCount, int Hour, GameClock.TimeOfDay timeOfDay);
+    public delegate void OnTimeUpdate(int dayCount, int Hour);
     public class GameClock : MonoBehaviour 
     {
-        public enum TimeOfDay 
-        { 
-            Day,
-            Night
-        }
         [SerializeField] TextMeshProUGUI m_dayCountLabel = default;
         [SerializeField] TextMeshProUGUI m_timeLabel = default;
-        [SerializeField] TextMeshProUGUI m_dayNightLabel = default;
         [SerializeField] TimeSettings m_setting = default;
         public event OnTimeUpdate OnTimeElapsed;
-
         public int DayCount { get; protected set; } = 0;
         public int CurrentTime => m_setting.Hour;
-        public TimeOfDay CurrentTimeOfDay { 
-            get 
-            {
-                int time = m_setting.Hour;
-                if (time >= m_setting.NightfallAt || time < m_setting.DayBreakAt) 
-                {
-                    return TimeOfDay.Night;
-                }
-                else
-                {
-                    return TimeOfDay.Day;
-                }
-            }
-        }
+
         void Start()
         {
             UpdateClockDisplay();
-            HandleDayNightDisplay();
         }
         public void Increment()
         {
@@ -64,22 +43,9 @@ namespace Curry.Explore
             {
                 m_setting.Hour++;
             }
-            OnTimeElapsed?.Invoke(DayCount, CurrentTime, CurrentTimeOfDay);
-            HandleDayNightDisplay();
+            OnTimeElapsed?.Invoke(DayCount, CurrentTime);
             UpdateClockDisplay();
         }
-        void HandleDayNightDisplay()
-        {
-            if (CurrentTimeOfDay == TimeOfDay.Night)
-            {
-                m_dayNightLabel.text = "Nighttime";
-            }
-            else
-            {
-                m_dayNightLabel.text = "Daytime";
-            }
-        }
-
         // Future: add animation?
         void UpdateDayCountDisplay()
         {

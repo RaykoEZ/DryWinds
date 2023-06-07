@@ -6,6 +6,7 @@ using UnityEngine.Tilemaps;
 
 namespace Curry.Explore
 {
+    public delegate void OnSelectionCancel();
     // For displaying tiles a player selects/previews OR a selection prompt.  
     public class SelectionManager : MonoBehaviour
     {
@@ -25,6 +26,7 @@ namespace Curry.Explore
         [SerializeField] CurryGameEventListener m_onAdventurePrompt = default;
         [SerializeField] CurryGameEventListener m_onCardActivate = default;
         public event OnTileSelect OnTileSelected = default;
+        public event OnSelectionCancel OnCancel = default;
         protected ObjectId m_previewTileId;
 
         void Start()
@@ -53,35 +55,34 @@ namespace Curry.Explore
             m_tileHighlightManager?.HideAll();
             m_rangeDisplay?.HidePrompt();
         }
-
         public void SelectDropZoneTile(string dropName, RangeMap range, Transform parent)
         {
             CancelSelection();
             m_rangeDisplay.ShowRange(dropName, m_tileDropRef, range, parent);
         }
-
         public void OnSelectTile(EventInfo info)
+        {
+            if (info != null && info is TileSelectionInfo select)
+            {
+                OnSelectTile(select);
+            }
+        }
+        public void OnSelectTile(TileSelectionInfo info) 
         {
             if (info == null)
             {
                 return;
             }
-            TileSelectionInfo select = info as TileSelectionInfo;
-            if (select == null)
-            {
-                return;
-            }
-            Vector3 worldPos = Camera.main.ScreenToWorldPoint(select.ClickScreenPosition);
-            Vector3Int gridCoord = m_terrain.WorldToCell(worldPos);
+            Vector3Int gridCoord = m_terrain.WorldToCell(info.ClickWorldPos);
             OnTileSelected?.Invoke(gridCoord);
             HighlightTileInternal(gridCoord);
             bool isCoordClear = m_fogOfWar.IsCellClear(gridCoord);
-            if(isCoordClear && select.SelectedObject != null && 
-                select.SelectedObject.TryGetComponent(out ICharacter character)) 
+            if (isCoordClear && info.SelectedObject != null &&
+                info.SelectedObject.TryGetComponent(out ICharacter character))
             {
-                OnSelectCharacter(character, select.SelectionMode);
+                OnSelectCharacter(character, info.SelectionMode);
             }
-            else 
+            else
             {
                 m_playerDetail?.EndDisplay();
                 m_enemyDetail?.EndDisplay();
@@ -101,6 +102,7 @@ namespace Curry.Explore
         void HighlightTileInternal(Vector3Int newCoord, bool focusCamera = true)
         {
             m_rangeDisplay?.HidePrompt();
+            OnCancel?.Invoke();
             Vector3 centerWorld = m_terrain.GetCellCenterWorld(newCoord);
             centerWorld.z = 0f;
             if (focusCamera)

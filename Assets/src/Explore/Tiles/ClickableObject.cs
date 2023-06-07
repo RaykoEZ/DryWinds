@@ -19,7 +19,7 @@ namespace Curry.Explore
     {
         public TileSelectionMode SelectionMode { get; protected set; }
         public GameObject SelectedObject { get; protected set; }
-        public Vector3 ClickScreenPosition { get; protected set; }
+        public Vector3 ClickWorldPos { get; protected set; }
 
         public TileSelectionInfo(
             TileSelectionMode mode,
@@ -30,10 +30,10 @@ namespace Curry.Explore
         {
             SelectionMode = mode;
             SelectedObject = selected;
-            ClickScreenPosition = clickedPos;
+            ClickWorldPos = clickedPos;
         }
     }
-    
+
     public class ClickableObject : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IPointerDownHandler
     {
         // Choose which mouse button click is detected
@@ -71,17 +71,15 @@ namespace Curry.Explore
                         TileSelectionInfo info = new TileSelectionInfo(
                             m_selectionMode,
                             eventData.pointerEnter,
-                            eventData.pressPosition);
+                            Camera.main.ScreenToWorldPoint(eventData.pressPosition));
                         m_onPointerClick?.TriggerEvent(info);
                         break;
                     }
             }
         }
-
         public void OnPointerDown(PointerEventData eventData)
         {
         }
-
         public void OnPointerUp(PointerEventData eventData)
         {
         }

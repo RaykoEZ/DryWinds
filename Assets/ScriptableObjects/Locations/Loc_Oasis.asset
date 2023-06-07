@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ec8b3b72157fa444bc97466f0a61b68, type: 3}
   m_Name: Loc_Oasis
   m_EditorClassIdentifier: 
-  m_Sprite: {fileID: 21300000, guid: 1ed6e57c2c8eb1f4b9a18ed8e0b39191, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 0f4ee215db4b58546a1d0c5d7ecf3907, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Transform:
     e00: 1
