@@ -16,6 +16,7 @@ namespace Curry.Explore
         [SerializeField] protected TimeManager m_time = default;
         [SerializeField] protected Tilemap m_terrain = default;
         [SerializeField] protected FogOfWar m_fog = default;
+
         [SerializeField] protected CurryGameEventListener m_onAdventure = default;
         [SerializeField] protected CurryGameEventListener m_onPlayerMoved = default;
         [SerializeField] protected TextMeshProUGUI m_moveCountText = default;
@@ -56,7 +57,7 @@ namespace Curry.Explore
             }
             else if (info is TileSelectionInfo select)
             {
-                worldPos = Camera.main.ScreenToWorldPoint(select.ClickScreenPosition);
+                worldPos = select.ClickWorldPos;
             }
             else
             {
@@ -110,6 +111,7 @@ namespace Curry.Explore
         public void DisablePlay()
         {
             m_moveButton.SetInteractable(false);
+            m_moveButton.Cancel();
         }
         // Do a collision check for direct path ahead, if there are hidden obstaclesm we allow the move
         public bool IsPathObstructed(Vector3 targetCellCenter, Vector3 origin) 

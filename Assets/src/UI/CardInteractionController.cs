@@ -55,7 +55,7 @@ namespace Curry.UI
         {
             InteractMode = mode;
             DraggableCard drag = GetComponent<DraggableCard>();
-            drag.enabled = (InteractMode & CardInteractMode.Play | CardInteractMode.Inspect) != 0;
+            drag.enabled = (InteractMode & CardInteractMode.Play) != 0;
             drag.Draggable =
                 (InteractMode & CardInteractMode.Play) != 0;
         }

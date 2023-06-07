@@ -104,7 +104,6 @@ namespace Curry.Explore
                 m_clock.Increment();
                 yield return new WaitForSeconds(0.02f);
             }
-
         }
     }
 }

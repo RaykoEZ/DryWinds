@@ -96,7 +96,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df3da0cb7f8929a489591f8cdf6b1d6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_onActive: {r: 1, g: 0.7812411, b: 0, a: 0.2509804}
+  m_onActive: {r: 1, g: 0.037985973, b: 0, a: 0.5019608}
   m_onPointerEnter: {r: 1, g: 0.01900063, b: 0, a: 0.2509804}
   m_sprite: {fileID: 3083747471163134153}
   m_onDrop:

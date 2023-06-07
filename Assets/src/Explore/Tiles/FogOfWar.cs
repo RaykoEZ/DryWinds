@@ -42,8 +42,7 @@ namespace Curry.Explore
 
             if (info is TileSelectionInfo select)
             {
-                Vector3 worldPos = Camera.main.ScreenToWorldPoint(select.ClickScreenPosition);
-                SetFogOfWar(worldPos, clearFog: false);
+                SetFogOfWar(select.ClickWorldPos, clearFog: false);
             }
             else if(info is CharacterInfo player) 
             {
@@ -57,8 +56,7 @@ namespace Curry.Explore
 
             if (info is TileSelectionInfo select)
             {
-                Vector3 worldPos = Camera.main.ScreenToWorldPoint(select.ClickScreenPosition);
-                SetFogOfWar(worldPos);
+                SetFogOfWar(select.ClickWorldPos);
             }
             else if (info is CharacterInfo player)
             {

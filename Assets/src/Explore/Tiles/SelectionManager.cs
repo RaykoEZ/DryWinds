@@ -73,8 +73,7 @@ namespace Curry.Explore
             {
                 return;
             }
-            Vector3 worldPos = Camera.main.ScreenToWorldPoint(info.ClickScreenPosition);
-            Vector3Int gridCoord = m_terrain.WorldToCell(worldPos);
+            Vector3Int gridCoord = m_terrain.WorldToCell(info.ClickWorldPos);
             OnTileSelected?.Invoke(gridCoord);
             HighlightTileInternal(gridCoord);
             bool isCoordClear = m_fogOfWar.IsCellClear(gridCoord);

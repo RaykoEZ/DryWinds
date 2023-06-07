@@ -2,8 +2,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEditor.U2D.Path;
+using Curry.Events;
 
-namespace Curry.Explore 
+namespace Curry.Explore
 {
     public class MoveToggle : MonoBehaviour
     {
@@ -11,13 +12,8 @@ namespace Curry.Explore
         [SerializeField] Toggle m_toggle = default;
         [SerializeField] TextMeshProUGUI m_label = default;
         [SerializeField] SelectionManager m_selector = default;
+        [SerializeField] PositionConfirmDisplay m_confirm = default;
         public bool Interactable { get; protected set; } = true;
-        void Start()
-        {
-        }
-        void OnDestroy()
-        {
-        }
         public void SetInteractable(bool interactable) 
         {
             Interactable = interactable;
@@ -36,11 +32,12 @@ namespace Curry.Explore
                 Cancel();
             }
         }
-        void Cancel() 
+        public void Cancel()
         {
             m_selector.OnCancel -= Cancel;
             m_toggle.isOn = false;
             m_label.text = "Move";
+            m_confirm.Hide();
             m_selector?.CancelSelection();
         }
         void PromptMovementPosition() 
@@ -49,7 +46,7 @@ namespace Curry.Explore
             TileSelectionInfo info = new TileSelectionInfo(
                 TileSelectionMode.Adventure,
                 m_player,
-                Camera.main.WorldToScreenPoint(m_player.transform.position));
+                m_player.transform.position);
             m_selector.OnSelectTile(info);
             m_selector.OnCancel += Cancel;
         }
