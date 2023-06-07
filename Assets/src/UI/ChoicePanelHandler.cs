@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -9,60 +8,6 @@ using Curry.Game;
 
 namespace Curry.UI
 {
-    #region structs for making choices
-    [Serializable]
-    public struct ChoiceConditions
-    {
-        [SerializeField] bool m_canCancel;
-        [Range(0, 10)]
-        [SerializeField] int m_maxChoice;
-        [Range(0, 10)]
-        [SerializeField] int m_minChoice;
-        public bool CanCancel { get { return m_canCancel; } }
-        public int MaxChoiceCount { get { return Mathf.Max(m_maxChoice, 0); } }
-        public int MinChoiceCount { get { return Mathf.Clamp(m_minChoice, 0, MaxChoiceCount); } }
-        public ChoiceConditions(bool canCnacel, int max, int min)
-        {
-            m_canCancel = canCnacel;
-            m_maxChoice = max;
-            m_minChoice = min;
-        }
-    }
-    // The fields to fill the choice panel
-    // (e.g: the pool of items to choose from, title, max/min to choose...etc)
-    public struct ChoiceContext
-    {
-        ChoiceConditions m_conditions;
-        List<IChoice> m_availableChoices;
-        public ChoiceConditions Conditons { get { return m_conditions; } }
-        public List<IChoice> ChooseFrom {
-            get { return m_availableChoices; }
-            set { m_availableChoices = value; } }
-        public ChoiceContext(ChoiceConditions conditions, List<IChoice> availableChoices)
-        {
-            m_conditions = conditions;
-            m_availableChoices = availableChoices;
-        }
-    }
-    public struct ChoiceResult
-    {
-        public ChoiceStatus Status { get; set; }
-        public IReadOnlyList<IChoice> Chosen { get; set; }
-        public IReadOnlyList<IChoice> ChoseFrom { get; set; }
-        public ChoiceResult(ChoiceStatus status, List<IChoice> choices, List<IChoice> chosen)
-        {
-            Status = status;
-            Chosen = chosen;
-            ChoseFrom = choices;
-        }
-        public enum ChoiceStatus
-        {
-            Confirmed,
-            Cancelled
-        }
-    }
-#endregion
-
     public delegate void OnChoiceFinish(ChoiceResult result);
     public class ChoicePanelHandler : MonoBehaviour
     {
@@ -77,7 +22,7 @@ namespace Curry.UI
         protected HashSet<IChoice> m_chosen = new HashSet<IChoice>();
         bool CanConfirm => m_chosen?.Count >= m_currentContext.Conditons.MinChoiceCount;
         bool CanChoose => m_chosen?.Count < m_currentContext.Conditons.MaxChoiceCount;
-        string ChoiceDisplay => $"Choose: {m_chosen.Count}/{m_currentContext.Conditons.MaxChoiceCount}";
+        string ChoiceDisplay => $"Choose to gain: {m_chosen.Count}/{m_currentContext.Conditons.MaxChoiceCount}";
         public virtual void BeginChoicePanel(ChoiceContext context, OnChoiceFinish onFinish) 
         {
             if (!m_inProgress) 
@@ -140,7 +85,6 @@ namespace Curry.UI
             OnChoiceComplete?.Invoke(result);
             Clear();
         }
-
         protected virtual void OnChoose(IChoice chosen) 
         {
             if (CanChoose)
@@ -165,7 +109,6 @@ namespace Curry.UI
             }
             m_title.text = ChoiceDisplay;
         }
-
         protected virtual void SetChoiceChoosability(bool value) 
         {
             foreach (IChoice choice in m_currentContext.ChooseFrom)

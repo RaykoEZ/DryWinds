@@ -56,9 +56,12 @@ TagManager:
   - name: MapOverlay
     uniqueID: 1235874715
     locked: 0
+  - name: GeneralUI
+    uniqueID: 579837007
+    locked: 0
   - name: CardPlay
     uniqueID: 2978448753
     locked: 0
-  - name: GeneralUI
-    uniqueID: 579837007
+  - name: UIOverlay
+    uniqueID: 4278181599
     locked: 0
