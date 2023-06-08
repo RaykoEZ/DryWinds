@@ -129,7 +129,6 @@ namespace Curry.Explore
         }
         protected virtual void Defeat()
         {
-            m_anim.SetBool("isInActive", false);
             StartCoroutine(HandleDefeat());
         }
         #endregion
