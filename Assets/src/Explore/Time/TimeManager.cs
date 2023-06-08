@@ -41,6 +41,7 @@ namespace Curry.Explore
             m_onSpendTime?.Init();
             m_gauge.SetMaxValue(TimeLeftToClear);
             m_gauge.SetBarValue(TimeToClear, forceInstantChange: true);
+            UpdateTurnTimer();
         }
         public void ResetTime()
         {

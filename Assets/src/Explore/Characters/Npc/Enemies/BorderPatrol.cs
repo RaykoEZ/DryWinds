@@ -23,6 +23,7 @@ namespace Curry.Explore
         protected override void OnDetect()
         {
             m_backup.Try(transform.position, out bool _);
+            base.OnDetect();
         }
         protected override IEnumerator ExecuteAction_Internal()
         {
