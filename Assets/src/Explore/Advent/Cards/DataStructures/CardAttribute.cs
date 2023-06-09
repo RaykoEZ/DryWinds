@@ -22,6 +22,8 @@ namespace Curry.Explore
         [Range(0, 1000)]
         [SerializeField] int m_timeCost;
         [SerializeField] int m_cooldown;
+        // How much room a card takes in hand, hand has a holding capacity (int)
+        [SerializeField] int m_holdingValue;
         [SerializeField] bool m_isInitiallyOnCooldown;
         public CardType Type => m_type;
         public string Name => m_name;

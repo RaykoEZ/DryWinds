@@ -6,6 +6,14 @@ using UnityEngine;
 
 namespace Curry.Explore
 {
+    public class CardAttributeFieldSetter : CardStartupModules
+    {
+        public override void Init(CardAttribute card)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
     [RequireComponent(typeof(CardInteractionController))]
     [RequireComponent(typeof(CooldownAnimationHandler))]
     public class CooldownModule : CardStartupModules, ICooldown
