@@ -16,7 +16,6 @@ namespace Curry.Explore
         [SerializeField] List<CardStartupModules> m_startupModulesModules = default;
         bool m_activatable = true;
         public int Id => $"{m_resources.Attribute.Name}/{gameObject.name}".GetHashCode();
-        public CardType Type => m_resources.Attribute.Type;
         public string Name => m_resources.Attribute.Name;
         public string Description => m_resources.Attribute.Description;
         public RangeMap TargetingRange => m_resources.Attribute.TargetingRange;
@@ -33,10 +32,8 @@ namespace Curry.Explore
         {
             Activatable = true;
             var content = GetComponent<CardContentSetter>();
-            content?.SetCardName(Name);
-            content?.SetCardText(Description);
-            content?.SetCost(TimeCost.ToString());
-            content?.SetCardType(Type);
+            content?.Setup(m_resources.Attribute);
+
             if (this is ICooldown cd) 
             {
                 content?.SetCooldown(cd.CooldownTime.ToString());

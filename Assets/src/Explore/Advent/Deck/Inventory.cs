@@ -13,25 +13,16 @@ namespace Curry.Explore
             return string.Compare(x.Name, y.Name);
         }
     }
-    public class CompareCardByType : IComparer<AdventCard>
-    {
-        public int Compare(AdventCard x, AdventCard y)
-        {
-            return x.Type.CompareTo(y.Type);
-        }
-    }
     public class Inventory : MonoBehaviour
     {
         [SerializeField] PanelUIHandler m_anim = default;
         protected List<AdventCard> m_cardsInStock;
         public IReadOnlyList<AdventCard> CardsInStock => m_cardsInStock;
         CompareCardByName m_sortByCardName;
-        CompareCardByType m_sortByCardType;
         void Awake() 
         {
             m_cardsInStock = new List<AdventCard>();
             m_sortByCardName = new CompareCardByName();
-            m_sortByCardType = new CompareCardByType();
         }
         public void ToggleDisplay(bool isOn) 
         {
@@ -90,22 +81,18 @@ namespace Curry.Explore
                 card.GetComponent<CardInteractionController>()?.SetInteractionMode(CardInteractMode.Inspect);
             }
             m_cardsInStock?.AddRange(add);
-            SortCardByType();
+            SortCardsByName();
         }
         public void Add(AdventCard add) 
         {
             add.transform.SetParent(transform, false);
             add.GetComponent<CardInteractionController>()?.SetInteractionMode(CardInteractMode.Inspect);
             m_cardsInStock?.Add(add);
-            SortCardByType();
+            SortCardsByName();
         }
         public void SortCardsByName() 
         {
             m_cardsInStock?.Sort(m_sortByCardName);
-        }
-        public void SortCardByType() 
-        {
-            m_cardsInStock?.Sort(m_sortByCardType);
         }
     }
 

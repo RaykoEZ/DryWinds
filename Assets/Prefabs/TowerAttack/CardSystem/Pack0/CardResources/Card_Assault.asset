@@ -13,7 +13,6 @@ MonoBehaviour:
   m_Name: Card_Assault
   m_EditorClassIdentifier: 
   m_attribute:
-    m_type: 0
     m_name: Assault
     m_description: 'Deal damage to an adjacent enemy. '
     m_targetingRange:
@@ -24,4 +23,5 @@ MonoBehaviour:
       - {x: 0, y: -1, z: 0}
     m_timeCost: 3
     m_cooldown: 3
+    m_holdingValue: 1
     m_isInitiallyOnCooldown: 0

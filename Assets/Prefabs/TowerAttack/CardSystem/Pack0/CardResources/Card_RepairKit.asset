@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: Card_RepairKit
   m_EditorClassIdentifier: 
   m_attribute:
-    m_type: 2
     m_name: RepairKit
     m_description: Recover Hp
     m_targetingRange:
       m_offsetList: []
     m_timeCost: 0
     m_cooldown: 0
+    m_holdingValue: 1
     m_isInitiallyOnCooldown: 0

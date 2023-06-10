@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: Card_Foresight
   m_EditorClassIdentifier: 
   m_attribute:
-    m_type: 0
     m_name: Sweep Scan
     m_description: Clear nearby uncertainties.
     m_targetingRange:
       m_offsetList: []
     m_timeCost: 10
     m_cooldown: 20
+    m_holdingValue: 2
     m_isInitiallyOnCooldown: 0
