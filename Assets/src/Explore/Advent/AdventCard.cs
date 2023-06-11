@@ -21,6 +21,7 @@ namespace Curry.Explore
         public RangeMap TargetingRange => m_resources.Attribute.TargetingRange;
         public int TimeCost => m_resources.Attribute.TimeCost;
         public int CooldownTime => m_resources.Attribute.Cooldown;
+        public int HoldingValaue => m_resources.Attribute.HoldingValue;
         public bool IsInitiallyOnCooldown => m_resources.Attribute.IsInitiallyOnCooldown;
         public bool IsOnCooldown => m_cooldown.IsOnCooldown;
         public int Current { get => m_cooldown.Current;}

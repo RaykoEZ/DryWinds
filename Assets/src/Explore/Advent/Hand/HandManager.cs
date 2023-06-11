@@ -14,6 +14,7 @@ namespace Curry.Explore
     // Handles card activations
     public partial class HandManager : CardDropZone
     {
+        [SerializeField] int m_maxHandCapacity = default;
         [SerializeField] Adventurer m_player = default;
         [SerializeField] TimeManager m_time = default;
         [SerializeField] CardDropZone m_playZone = default;
@@ -27,23 +28,27 @@ namespace Curry.Explore
         [SerializeField] LayoutSpaceSetting m_spacing = default;
         // The card we are dragging into a play zone
         DraggableCard m_pendingCardRef;
-        protected Hand m_cardsInHand = new Hand();
+        protected Hand m_hand;
         // When a card, that targets a position, finishes targeting...
         protected event OnCardDrop OnCardTargetResolve;
         public event OnActionStart OnActivate;
+        protected void Awake()
+        {
+            m_hand = new Hand(m_maxHandCapacity);
+        }
         protected void Start()
         {
             m_onDropTileSelected?.Init();
             m_onCardDraw?.Init();
             m_onDiscardHand?.Init();
-            m_postActivation.Init(m_time);
+            m_postActivation.Init(m_time, m_hand);
             m_postActivation.OnCardReturn += AddCardsToHand;
             // get starting hand
             DraggableCard[] cards = m_cardHolderRoot.GetComponentsInChildren<DraggableCard>();
             foreach (DraggableCard card in cards)
             {
                 PrepareCard(card);
-                m_cardsInHand.Add(card);
+                m_hand.Add(card);
             }
             m_spacing.UpdateSpacing();
         }
@@ -62,7 +67,7 @@ namespace Curry.Explore
                 card.transform.SetParent(transform, false);
                 PrepareCard(drag);
             }
-            m_cardsInHand.AddRange(cardsToAdd);
+            m_hand.AddRange(cardsToAdd);
             m_spacing.UpdateSpacing();
         }
         protected virtual void PrepareCard(DraggableCard draggable)
@@ -74,7 +79,6 @@ namespace Curry.Explore
             draggable.OnReturn += OnCardReturn;
             draggable.OnDragBegin += TargetGuide;
         }
-
         public void OnCardDrawn(EventInfo info)
         {
             if (info == null) return;
@@ -92,7 +96,7 @@ namespace Curry.Explore
             DraggableCard draggable = card.GetComponent<DraggableCard>();
             OnCardLeavesHand(draggable);
             HidePlayZone();
-            yield return StartCoroutine(m_cardsInHand.PlayCard(draggable, m_player));
+            yield return StartCoroutine(m_hand.PlayCard(draggable, m_player));
             // after effect activation, we spend the card
             yield return StartCoroutine(m_postActivation.OnCardUse(card));
         }
@@ -122,13 +126,13 @@ namespace Curry.Explore
         #region for displaying/disabling UI for playing cards
         public void EnablePlay()
         {
-            m_cardsInHand.EnablePlay();
+            m_hand.EnablePlay();
             m_playZone.OnDropped += OnCardPlay;
             OnCardTargetResolve += OnCardPlay;
         }
         public void DisablePlay()
         {
-            m_cardsInHand.DisablePlay();
+            m_hand.DisablePlay();
             m_playZone.OnDropped -= OnCardPlay;
             OnCardTargetResolve -= OnCardPlay;
         }
@@ -158,15 +162,6 @@ namespace Curry.Explore
             // If card is dragged out of hand, we re calculate spacing
             m_spacing.UpdateSpacing();
         }
-        public void DiscardHand()
-        {
-            foreach (DraggableCard c in m_cardsInHand.CardsInHand)
-            {
-                OnCardLeavesHand(c);
-            }
-            HidePlayZone();
-            m_cardsInHand.DiscardCards();
-        }
         void OnCardReturn(DraggableCard card)
         {
             m_pendingCardRef = null;
@@ -195,7 +190,6 @@ namespace Curry.Explore
                 m_selection?.TargetGuide(m_pendingCardRef.transform);
             }
             ShowPlayZone();
-
         }
         #endregion
     }
