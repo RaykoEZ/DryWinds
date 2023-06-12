@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-
 namespace Curry.Explore
 {
     public class CompareCardByName : IComparer<AdventCard>
@@ -16,6 +15,7 @@ namespace Curry.Explore
     public class Inventory : MonoBehaviour
     {
         [SerializeField] PanelUIHandler m_anim = default;
+        [SerializeField] HandManager m_hand = default;
         protected List<AdventCard> m_cardsInStock;
         public IReadOnlyList<AdventCard> CardsInStock => m_cardsInStock;
         CompareCardByName m_sortByCardName;
@@ -23,6 +23,10 @@ namespace Curry.Explore
         {
             m_cardsInStock = new List<AdventCard>();
             m_sortByCardName = new CompareCardByName();
+        }
+        void Start() 
+        {
+            m_hand.OnReturnToInventory += AddRange;
         }
         public void ToggleDisplay(bool isOn) 
         {

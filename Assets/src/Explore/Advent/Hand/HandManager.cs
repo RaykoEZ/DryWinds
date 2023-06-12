@@ -32,6 +32,7 @@ namespace Curry.Explore
         // When a card, that targets a position, finishes targeting...
         protected event OnCardDrop OnCardTargetResolve;
         public event OnActionStart OnActivate;
+        public event OnCardReturn OnReturnToInventory;
         protected void Awake()
         {
             m_hand = new Hand(m_maxHandCapacity);
@@ -42,14 +43,15 @@ namespace Curry.Explore
             m_onCardDraw?.Init();
             m_onDiscardHand?.Init();
             m_postActivation.Init(m_time, m_hand);
-            m_postActivation.OnCardReturn += AddCardsToHand;
+            m_postActivation.OnReturnToHand += AddCardsToHand;
+            m_postActivation.OnReturnToInventory += ReturnCardsToInventory;
             // get starting hand
             DraggableCard[] cards = m_cardHolderRoot.GetComponentsInChildren<DraggableCard>();
             foreach (DraggableCard card in cards)
             {
                 PrepareCard(card);
-                m_hand.Add(card);
             }
+            m_hand.AddRange(cards);
             m_spacing.UpdateSpacing();
         }
         #region Adding cards to hand
@@ -60,15 +62,20 @@ namespace Curry.Explore
             foreach (AdventCard card in cards)
             {
                 drag = card.GetComponent<DraggableCard>();
-                card.GetComponent<CardInteractionController>()?.
-                    SetInteractionMode(CardInteractMode.Play | CardInteractMode.Inspect);
-
                 cardsToAdd.Add(drag);
                 card.transform.SetParent(transform, false);
                 PrepareCard(drag);
             }
             m_hand.AddRange(cardsToAdd);
             m_spacing.UpdateSpacing();
+        }
+        public void ReturnCardsToInventory(List<AdventCard> cards) 
+        {
+            foreach(var card in cards) 
+            {
+                OnCardLeavesHand(card.GetComponent<DraggableCard>());
+            }
+            OnReturnToInventory?.Invoke(cards);
         }
         protected virtual void PrepareCard(DraggableCard draggable)
         {
@@ -157,6 +164,7 @@ namespace Curry.Explore
         #region Cards leaves hand/ return to hand 
         protected virtual void OnCardLeavesHand(DraggableCard draggable)
         {
+            if (draggable == null) return;
             draggable.OnDragBegin -= TargetGuide;
             draggable.OnReturn -= OnCardReturn;
             // If card is dragged out of hand, we re calculate spacing

@@ -11,7 +11,8 @@ namespace Curry.Explore
         protected TimeManager m_time;
         protected HandManager.Hand m_handRef; 
         protected List<AdventCard> m_cooldowns = new List<AdventCard>();
-        public event OnCardReturn OnCardReturn;
+        public event OnCardReturn OnReturnToHand;
+        public event OnCardReturn OnReturnToInventory;
         public void Init(TimeManager time, HandManager.Hand hand)
         {
             m_time = time;
@@ -35,6 +36,10 @@ namespace Curry.Explore
             }
             yield return new WaitForEndOfFrame();
         }
+        protected void ReturnToInventory(List<AdventCard> toReturn) 
+        {
+            OnReturnToInventory?.Invoke(toReturn);
+        }
         protected void OnCooldownTick(int spent, int timeLeft) 
         {
             List<AdventCard> cardsToReturn = new List<AdventCard>();
@@ -53,7 +58,7 @@ namespace Curry.Explore
             {
                 m_cooldowns.Remove(card);
             }
-            OnCardReturn?.Invoke(cardsToReturn);
+            OnReturnToHand?.Invoke(cardsToReturn);
         }
         protected virtual IEnumerator HandleCooldown(ICooldown cd, AdventCard card) 
         {
