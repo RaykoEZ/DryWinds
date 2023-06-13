@@ -9,6 +9,22 @@ using Curry.UI;
 
 namespace Curry.Explore
 {
+    public delegate void OnReformulateFinish(List<AdventCard> handResult, List<AdventCard> inventoryResult);
+    public class ReformulateUIHandler : MonoBehaviour 
+    {
+        [SerializeField] CardDropZone m_invcntoryZone = default;
+        [SerializeField] CardDropZone m_handZone = default;
+
+        public void Show(int maxHandCapacity, List<AdventCard> cardsInHand, List<AdventCard> inventoryCards) 
+        { 
+        
+        }
+        public void Hide() 
+        { 
+        
+        }
+    }
+
     public delegate void OnActionStart(int timeSpent, List<IEnumerator> onActivate = null);
     // Intermediary between cards-in-hand and main play zone
     // Handles card activations
@@ -20,7 +36,6 @@ namespace Curry.Explore
         [SerializeField] CardDropZone m_playZone = default;
         [SerializeField] Transform m_cardHolderRoot = default;
         [SerializeField] CurryGameEventListener m_onCardDraw = default;
-        [SerializeField] CurryGameEventListener m_onDiscardHand = default;
         [SerializeField] CurryGameEventListener m_onDropTileSelected = default;
         [SerializeField] Image m_playPanel = default;
         [SerializeField] SelectionManager m_selection = default;
@@ -41,7 +56,6 @@ namespace Curry.Explore
         {
             m_onDropTileSelected?.Init();
             m_onCardDraw?.Init();
-            m_onDiscardHand?.Init();
             m_postActivation.Init(m_time, m_hand);
             m_postActivation.OnReturnToHand += AddCardsToHand;
             m_postActivation.OnReturnToInventory += ReturnCardsToInventory;

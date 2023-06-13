@@ -2,7 +2,6 @@
 using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using static Curry.Explore.DraggableCard;
 
 namespace Curry.Util
 {
