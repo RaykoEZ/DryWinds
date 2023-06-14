@@ -2,7 +2,6 @@
 using UnityEngine;
 using Curry.Util;
 using TMPro;
-using System;
 
 namespace Curry.Explore
 {
@@ -10,19 +9,18 @@ namespace Curry.Explore
     {
         [SerializeField] Inventory m_inventory = default;
         [SerializeField] HandManager m_hand = default;
+        [SerializeField] ReformulateUIHandler m_ui = default;
+
     }
     public delegate void OnReformulateFinish(List<AdventCard> handResult, List<AdventCard> inventoryResult);
     public class ReformulateUIHandler : MonoBehaviour 
     {
+        [SerializeField] Animator m_anim = default;
         [SerializeField] TextMeshProUGUI m_handMaxCapacity = default;
         [SerializeField] TextMeshProUGUI m_handHoldingValue = default;
 
-        [SerializeField] CardDropZone m_invcntoryZone = default;
-        [SerializeField] CardDropZone m_handZone = default;
-
-        public void Show(HandManager.Hand hand, List<AdventCard> inventoryCards) 
+        public void Show(Hand hand, List<AdventCard> inventoryCards) 
         { 
-        
         }
         public void Hide() 
         { 

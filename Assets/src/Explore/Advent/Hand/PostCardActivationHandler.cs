@@ -9,11 +9,11 @@ namespace Curry.Explore
     public class PostCardActivationHandler : MonoBehaviour 
     {
         protected TimeManager m_time;
-        protected HandManager.Hand m_handRef; 
+        protected Hand m_handRef; 
         protected List<AdventCard> m_cooldowns = new List<AdventCard>();
         public event OnCardReturn OnReturnToHand;
         public event OnCardReturn OnReturnToInventory;
-        public void Init(TimeManager time, HandManager.Hand hand)
+        public void Init(TimeManager time, Hand hand)
         {
             m_time = time;
             m_handRef = hand;

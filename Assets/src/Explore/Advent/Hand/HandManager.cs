@@ -26,6 +26,11 @@ namespace Curry.Explore
         protected Hand m_hand;
         public event OnActionStart OnActivate;
         public event OnCardReturn OnReturnToInventory;
+        public IReadOnlyList<DraggableCard> CardsInHand => m_hand.CardsInHand;
+        public bool IsHandOverloaded => m_hand.IsHandOverloaded;
+        public int TotalHoldingValueInHand => m_hand.TotalHoldingValueInHand;
+        public int MaxCapacity => m_hand.MaxCapacity;
+
         protected void Awake()
         {
             m_hand = new Hand(m_maxHandCapacity);
