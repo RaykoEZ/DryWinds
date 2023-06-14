@@ -16,6 +16,8 @@ GameObject:
   - component: {fileID: 3945677919952748296}
   - component: {fileID: 3945677919952748299}
   - component: {fileID: 3945677919952748294}
+  - component: {fileID: 1204246923637035409}
+  - component: {fileID: 5415707417686882081}
   m_Layer: 5
   m_Name: AdventHandPanel
   m_TagString: Untagged
@@ -124,42 +126,6 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-  m_onDiscardHand:
-    m_eventToListen: {fileID: 11400000, guid: a53b758f71322444f9f948da82c4bd21, type: 2}
-    m_responses:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 3945677919952748297}
-          m_TargetAssemblyTypeName: Curry.Explore.HandManager, Assembly-CSharp
-          m_MethodName: DiscardHand
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-  m_onDropTileSelected:
-    m_eventToListen: {fileID: 11400000, guid: 856b99b46ebcaee409c7fb6d66575bcd, type: 2}
-    m_responses:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 3945677919952748297}
-          m_TargetAssemblyTypeName: Curry.Explore.HandManager, Assembly-CSharp
-          m_MethodName: OnTargetDropZoneSelected
-          m_Mode: 0
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-  m_playPanel: {fileID: 0}
-  m_selection: {fileID: 0}
   m_postActivation: {fileID: 3945677919952748294}
   m_spacing:
     m_minSpacing: -150
@@ -167,6 +133,7 @@ MonoBehaviour:
     itemWidth: 220
     m_layout: {fileID: 3945677919952748298}
     m_layoutLimit: {fileID: 3945677920594794699}
+  m_drag: {fileID: 5415707417686882081}
 --- !u!114 &3945677919952748296
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -297,6 +264,50 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2271663a07a50874eb0b81294f6068b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1204246923637035409
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3945677919952748302}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6ad22e500afb034b8dac78ad0dcc614, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &5415707417686882081
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3945677919952748302}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 225af2186a12a9f49970699a070d2cd6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_playerTransform: {fileID: 0}
+  m_playZone: {fileID: 0}
+  m_selection: {fileID: 0}
+  m_onDropTileSelected:
+    m_eventToListen: {fileID: 0}
+    m_responses:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 5415707417686882081}
+          m_TargetAssemblyTypeName: Curry.Explore.CardDragHandler, Assembly-CSharp
+          m_MethodName: OnTargetDropZoneSelected
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &3945677920594794698
 GameObject:
   m_ObjectHideFlags: 0
@@ -311,8 +322,8 @@ GameObject:
   - component: {fileID: 3945677920594794695}
   - component: {fileID: 3945677920594794697}
   - component: {fileID: 3945677920594794693}
-  - component: {fileID: 3945677920594794692}
   - component: {fileID: 3945677920594794691}
+  - component: {fileID: 9134995346131824954}
   m_Layer: 0
   m_Name: P_Hand
   m_TagString: Untagged
@@ -415,23 +426,6 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
---- !u!114 &3945677920594794692
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3945677920594794698}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 0
-  m_BlockingMask:
-    serializedVersion: 2
-    m_Bits: 4096
 --- !u!114 &3945677920594794691
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -462,3 +456,20 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &9134995346131824954
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3945677920594794698}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreReversedGraphics: 0
+  m_BlockingObjects: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4128

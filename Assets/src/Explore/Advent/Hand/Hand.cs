@@ -1,4 +1,5 @@
-﻿using Curry.UI;
+﻿using Curry.Game;
+using Curry.UI;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,7 +13,7 @@ namespace Curry.Explore
         {
             protected int m_maxCapacity = 0;
             protected int m_totalHoldingValueInHand = 0;
-            public int MaxCapacity { get => m_maxCapacity; set { m_maxCapacity = Mathf.Max(0, value); } }
+            public int MaxCapacity { get => m_maxCapacity; protected set { m_maxCapacity = Mathf.Max(0, value); } }
             public int TotalHoldingValueInHand => m_totalHoldingValueInHand;
             // Does player have higher card holding value than hand max capacity?
             public bool IsHandOverloaded => m_totalHoldingValueInHand > m_maxCapacity;
@@ -22,6 +23,10 @@ namespace Curry.Explore
             internal Hand(int maxCapacity) 
             {
                 MaxCapacity = Mathf.Max(0, maxCapacity);
+            }
+            internal void SetMaxCapacity(int newCapacity) 
+            {
+                MaxCapacity = newCapacity;
             }
             internal void AddRange(IReadOnlyList<DraggableCard> cards)
             {

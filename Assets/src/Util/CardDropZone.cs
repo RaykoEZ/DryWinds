@@ -10,7 +10,7 @@ namespace Curry.Util
     // For deploying any interactable from hand to play zone 
     public class CardDropZone : MonoBehaviour, IDropHandler
     {
-        public OnCardDrop OnDropped;
+        public event OnCardDrop OnDropped;
         // Called before the dropped card invokes its OnDragEnd,
         // trigger drop event when drag finishes (drop starts)
         public virtual void OnDrop(PointerEventData eventData)

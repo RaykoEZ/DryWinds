@@ -52,7 +52,6 @@ MonoBehaviour:
   m_nameDisplay: {fileID: 5165141348125630409}
   m_dialogueDisplay: {fileID: 5165141348800992116}
   m_anim: {fileID: 1203931665824785292}
-  m_continueAction: {fileID: 8691947511843523401, guid: 82b300ceb3c136247a87054a5fd03e4f, type: 3}
 --- !u!1001 &5142534787803460086
 PrefabInstance:
   m_ObjectHideFlags: 0

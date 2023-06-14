@@ -9,43 +9,21 @@ using Curry.UI;
 
 namespace Curry.Explore
 {
-    public delegate void OnReformulateFinish(List<AdventCard> handResult, List<AdventCard> inventoryResult);
-    public class ReformulateUIHandler : MonoBehaviour 
-    {
-        [SerializeField] CardDropZone m_invcntoryZone = default;
-        [SerializeField] CardDropZone m_handZone = default;
-
-        public void Show(int maxHandCapacity, List<AdventCard> cardsInHand, List<AdventCard> inventoryCards) 
-        { 
-        
-        }
-        public void Hide() 
-        { 
-        
-        }
-    }
-
     public delegate void OnActionStart(int timeSpent, List<IEnumerator> onActivate = null);
     // Intermediary between cards-in-hand and main play zone
     // Handles card activations
-    public partial class HandManager : CardDropZone
+    public partial class HandManager : MonoBehaviour
     {
         [SerializeField] int m_maxHandCapacity = default;
         [SerializeField] Adventurer m_player = default;
         [SerializeField] TimeManager m_time = default;
-        [SerializeField] CardDropZone m_playZone = default;
+        [SerializeField] PlayZone m_playZone = default;
         [SerializeField] Transform m_cardHolderRoot = default;
         [SerializeField] CurryGameEventListener m_onCardDraw = default;
-        [SerializeField] CurryGameEventListener m_onDropTileSelected = default;
-        [SerializeField] Image m_playPanel = default;
-        [SerializeField] SelectionManager m_selection = default;
         [SerializeField] PostCardActivationHandler m_postActivation = default;
         [SerializeField] LayoutSpaceSetting m_spacing = default;
-        // The card we are dragging into a play zone
-        DraggableCard m_pendingCardRef;
+        [SerializeField] CardDragHandler m_drag = default;
         protected Hand m_hand;
-        // When a card, that targets a position, finishes targeting...
-        protected event OnCardDrop OnCardTargetResolve;
         public event OnActionStart OnActivate;
         public event OnCardReturn OnReturnToInventory;
         protected void Awake()
@@ -54,7 +32,6 @@ namespace Curry.Explore
         }
         protected void Start()
         {
-            m_onDropTileSelected?.Init();
             m_onCardDraw?.Init();
             m_postActivation.Init(m_time, m_hand);
             m_postActivation.OnReturnToHand += AddCardsToHand;
@@ -83,6 +60,15 @@ namespace Curry.Explore
             m_hand.AddRange(cardsToAdd);
             m_spacing.UpdateSpacing();
         }
+        protected virtual void PrepareCard(DraggableCard draggable)
+        {
+            if (draggable == null)
+            {
+                return;
+            }
+            draggable.OnReturn += m_drag.OnCardReturn;
+            draggable.OnDragBegin += m_drag.TargetGuide;
+        }
         public void ReturnCardsToInventory(List<AdventCard> cards) 
         {
             foreach(var card in cards) 
@@ -90,15 +76,6 @@ namespace Curry.Explore
                 OnCardLeavesHand(card.GetComponent<DraggableCard>());
             }
             OnReturnToInventory?.Invoke(cards);
-        }
-        protected virtual void PrepareCard(DraggableCard draggable)
-        {
-            if (draggable == null)
-            {
-                return;
-            }
-            draggable.OnReturn += OnCardReturn;
-            draggable.OnDragBegin += TargetGuide;
         }
         public void OnCardDrawn(EventInfo info)
         {
@@ -108,15 +85,23 @@ namespace Curry.Explore
                 AddCardsToHand(draw.CardsDrawn as List<AdventCard>);
             }
         }
+        protected virtual void OnCardLeavesHand(DraggableCard draggable)
+        {
+            if (draggable == null) return;
+            draggable.OnDragBegin -= m_drag.TargetGuide;
+            draggable.OnReturn -= m_drag.OnCardReturn;
+            // If card is dragged out of hand, we re calculate spacing
+            m_spacing.UpdateSpacing();
+        }
         #endregion
         #region Playing a card
         IEnumerator PlayCard(AdventCard card)
         {
             // Reset pending card
-            m_pendingCardRef = null;
+            m_drag.ResetDragTarget();
             DraggableCard draggable = card.GetComponent<DraggableCard>();
             OnCardLeavesHand(draggable);
-            HidePlayZone();
+            m_drag.HideDropZone();
             yield return StartCoroutine(m_hand.PlayCard(draggable, m_player));
             // after effect activation, we spend the card
             yield return StartCoroutine(m_postActivation.OnCardUse(card));
@@ -128,7 +113,7 @@ namespace Curry.Explore
             //Try Spending Time/Resource, if not able, cancel
             if (!card.Activatable || !enoughTime)
             {
-                HidePlayZone();
+                m_drag.HideDropZone();
                 onCancel?.Invoke();
             }else
             {
@@ -143,75 +128,18 @@ namespace Curry.Explore
             }
         }
         #endregion
-
         #region for displaying/disabling UI for playing cards
         public void EnablePlay()
         {
             m_hand.EnablePlay();
             m_playZone.OnDropped += OnCardPlay;
-            OnCardTargetResolve += OnCardPlay;
+            m_drag.OnCardTargetResolve += OnCardPlay;
         }
         public void DisablePlay()
         {
             m_hand.DisablePlay();
             m_playZone.OnDropped -= OnCardPlay;
-            OnCardTargetResolve -= OnCardPlay;
-        }
-        protected void ShowPlayZone()
-        {
-            if (m_pendingCardRef != null && m_pendingCardRef.DoesCardNeedTarget)
-            {
-                ITargetsPosition targetCard = m_pendingCardRef.Card as ITargetsPosition;
-                m_selection.SelectDropZoneTile(m_pendingCardRef.Card.Name, targetCard.TargetingRange, m_player.transform);
-            }
-            else
-            {
-                m_playPanel.enabled = true;
-            }
-        }
-        protected void HidePlayZone()
-        {
-            m_selection.CancelSelection();
-            m_playPanel.enabled = false;
-        }
-        #endregion
-        #region Cards leaves hand/ return to hand 
-        protected virtual void OnCardLeavesHand(DraggableCard draggable)
-        {
-            if (draggable == null) return;
-            draggable.OnDragBegin -= TargetGuide;
-            draggable.OnReturn -= OnCardReturn;
-            // If card is dragged out of hand, we re calculate spacing
-            m_spacing.UpdateSpacing();
-        }
-        void OnCardReturn(DraggableCard card)
-        {
-            m_pendingCardRef = null;
-            HidePlayZone();
-        }
-        #endregion
-        #region Handles targeting UI when plating a card
-        public void OnTargetDropZoneSelected(EventInfo info)
-        {
-            if (m_pendingCardRef == null) return;
-
-            if (info is PositionInfo pos)
-            {
-                // Activate card effect with target
-                ITargetsPosition handler = m_pendingCardRef.Card as ITargetsPosition;
-                handler.SetTarget(pos.WorldPosition);
-            }
-            // do activation validation
-            OnCardTargetResolve?.Invoke(m_pendingCardRef.Card, onDrop: null, onCancel: m_pendingCardRef.OnCancel);
-        }
-        protected virtual void TargetGuide(DraggableCard draggable)
-        {
-            if (draggable.DoesCardNeedTarget)
-            {
-                m_pendingCardRef = draggable;
-                m_selection?.TargetGuide(m_pendingCardRef.transform);
-            }
-            ShowPlayZone();
+            m_drag.OnCardTargetResolve -= OnCardPlay;
         }
         #endregion
     }
