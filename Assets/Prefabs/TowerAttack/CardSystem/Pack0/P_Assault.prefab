@@ -1586,7 +1586,7 @@ MonoBehaviour:
     m_cardDragTrigger:
       m_eventToTrigger: {fileID: 11400000, guid: 3a30f108650ad9e4ab7dd4f9d5c6b221, type: 2}
     m_cardDropTrigger:
-      m_eventToTrigger: {fileID: 11400000, guid: 71ca7ab39e0cad445ac92f5f563f8eef, type: 2}
+      m_eventToTrigger: {fileID: 0}
   m_fx:
     m_cardDragTrigger:
       m_PersistentCalls:
@@ -1606,6 +1606,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1eb965c598cf1a4ea8e8cac003cafd5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_interactionMode: 2
 --- !u!114 &8413242486741973287
 MonoBehaviour:
   m_ObjectHideFlags: 0

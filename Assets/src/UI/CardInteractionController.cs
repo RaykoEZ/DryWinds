@@ -21,6 +21,7 @@ namespace Curry.UI
         IPointerClickHandler, IPointerUpHandler, IPointerDownHandler, 
         IPointerEnterHandler, IPointerExitHandler
     {
+        [SerializeField] CardInteractMode m_interactionMode = default;
         public delegate void OnCardInspect(RectTransform cardTranform);
         AdventCard m_card = default;
         UITransitionBuffer m_buffer = new UITransitionBuffer();
@@ -28,7 +29,7 @@ namespace Curry.UI
         public event OnChoose OnChosen;
         public event OnChoose OnUnchoose;
         public event OnCardInspect OnInspect;
-        public CardInteractMode InteractMode { get; protected set; }
+        public CardInteractMode InteractMode { get { return m_interactionMode; } protected set { m_interactionMode = value; } }
         public object Value { get => m_card; protected set => m_card = value as AdventCard; }
         public bool Choosable { get; set; } = true;
         protected virtual void Start()
