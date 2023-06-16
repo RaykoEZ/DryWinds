@@ -26,10 +26,7 @@ namespace Curry.Explore
         protected Hand m_hand;
         public event OnActionStart OnActivate;
         public event OnCardReturn OnReturnToInventory;
-        public IReadOnlyList<DraggableCard> CardsInHand => m_hand.CardsInHand;
-        public bool IsHandOverloaded => m_hand.IsHandOverloaded;
-        public int TotalHoldingValueInHand => m_hand.TotalHoldingValueInHand;
-        public int MaxCapacity => m_hand.MaxCapacity;
+        public Hand HandContent => m_hand;
 
         protected void Awake()
         {
@@ -47,7 +44,7 @@ namespace Curry.Explore
             {
                 PrepareCard(card);
             }
-            m_hand.AddRange(cards);
+            m_hand.AddCards(cards);
             m_spacing.UpdateSpacing();
         }
         #region Adding cards to hand
@@ -62,7 +59,7 @@ namespace Curry.Explore
                 card.transform.SetParent(transform, false);
                 PrepareCard(drag);
             }
-            m_hand.AddRange(cardsToAdd);
+            m_hand.AddCards(cardsToAdd);
             m_spacing.UpdateSpacing();
         }
         protected virtual void PrepareCard(DraggableCard draggable)

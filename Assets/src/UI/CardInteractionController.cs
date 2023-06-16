@@ -14,21 +14,22 @@ namespace Curry.UI
     {
         Play = 1 << 0,
         Inspect = 1 << 1,
-        Select = 1 << 2
+        Select = 1 << 2,
     }
+    public delegate void OnCardInspect(RectTransform cardTranform);
     // Allows a card to be dragged/pointer hover/selected/inspected
     public class CardInteractionController : MonoBehaviour, IChoice,
         IPointerClickHandler, IPointerUpHandler, IPointerDownHandler, 
         IPointerEnterHandler, IPointerExitHandler
     {
         [SerializeField] CardInteractMode m_interactionMode = default;
-        public delegate void OnCardInspect(RectTransform cardTranform);
         AdventCard m_card = default;
         UITransitionBuffer m_buffer = new UITransitionBuffer();
         protected bool m_selected = false;
         public event OnChoose OnChosen;
         public event OnChoose OnUnchoose;
         public event OnCardInspect OnInspect;
+
         public CardInteractMode InteractMode { get { return m_interactionMode; } protected set { m_interactionMode = value; } }
         public object Value { get => m_card; protected set => m_card = value as AdventCard; }
         public bool Choosable { get; set; } = true;

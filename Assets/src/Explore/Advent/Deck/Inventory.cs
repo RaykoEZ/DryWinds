@@ -28,6 +28,10 @@ namespace Curry.Explore
         {
             m_hand.OnReturnToInventory += AddRange;
         }
+        public bool ContainsCard(AdventCard card)
+        {
+            return m_cardsInStock.Contains(card);
+        }
         public void ToggleDisplay(bool isOn) 
         {
             if (isOn) 

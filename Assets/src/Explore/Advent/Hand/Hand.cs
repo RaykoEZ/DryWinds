@@ -11,7 +11,7 @@ namespace Curry.Explore
         protected int m_maxCapacity = 0;
         protected int m_totalHoldingValueInHand = 0;
         public int MaxCapacity { get => m_maxCapacity; protected set { m_maxCapacity = Mathf.Max(0, value); } }
-        public int TotalHoldingValueInHand => m_totalHoldingValueInHand;
+        public int TotalHandHoldingValue => m_totalHoldingValueInHand;
         // Does player have higher card holding value than hand max capacity?
         public bool IsHandOverloaded => m_totalHoldingValueInHand > m_maxCapacity;
         public IReadOnlyList<DraggableCard> CardsInHand { get { return m_cardsInHand; } }
@@ -21,27 +21,27 @@ namespace Curry.Explore
         {
             MaxCapacity = Mathf.Max(0, maxCapacity);
         }
+        public bool ContainsCard(AdventCard card) 
+        {
+            return m_cardsInHand.Contains(card.GetComponent<DraggableCard>());
+        }
+        public void TakeCards(List<AdventCard> cards) 
+        { 
+        
+        }
         internal void SetMaxCapacity(int newCapacity) 
         {
             MaxCapacity = newCapacity;
         }
-        internal void AddRange(IReadOnlyList<DraggableCard> cards)
+        internal void AddCards(IReadOnlyList<DraggableCard> cards)
         {
             m_cardsInHand.AddRange(cards);
             foreach(var card in cards) 
             {
-                SetInteraction(card, CardInteractMode.Play | CardInteractMode.Inspect);
+                card.GetComponent<CardInteractionController>()?.SetInteractionMode(
+                    CardInteractMode.Play | CardInteractMode.Inspect);
+                m_totalHoldingValueInHand += card.Card.HoldingValaue;
             }
-        }
-        internal void Add(DraggableCard card)
-        {
-            SetInteraction(card, CardInteractMode.Play | CardInteractMode.Inspect);
-            m_cardsInHand.Add(card);
-        }
-        protected void SetInteraction(DraggableCard card, CardInteractMode interaction) 
-        {
-            card.GetComponent<CardInteractionController>()?.SetInteractionMode(interaction);
-            m_totalHoldingValueInHand += card.Card.HoldingValaue;
         }
         internal void EnablePlay() 
         { 
