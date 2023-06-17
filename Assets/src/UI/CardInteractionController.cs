@@ -37,7 +37,7 @@ namespace Curry.UI
         {
             if (m_card == null && TryGetComponent(out AdventCard card)) 
             {
-                Init(card);
+                Init(card, m_interactionMode);
             }
         }
         // Add an instantiated CardChoice to a instance of card,

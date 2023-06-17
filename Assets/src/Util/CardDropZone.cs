@@ -5,6 +5,7 @@ using UnityEngine.EventSystems;
 
 namespace Curry.Util
 {
+
     // onCancel: action to invoke when card activation is cancelled
     public delegate void OnCardDrop(AdventCard card, Action onDrop, Action onCancel);
     // For deploying any interactable from hand to play zone 
@@ -28,7 +29,7 @@ namespace Curry.Util
             Action drop = () => { DropCard(draggable); };
             OnDropped?.Invoke(draggable.Card, drop, draggable.OnCancel);
         }
-        void DropCard(DraggableCard draggable) 
+        protected virtual void DropCard(DraggableCard draggable) 
         {
             int dropIdx = GetDropPosition(draggable.transform.position.x);
             draggable?.DropObject(transform, dropIdx);

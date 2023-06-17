@@ -1,11 +1,8 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-using Curry.Util;
 using TMPro;
-using UnityEngine.Rendering;
 using System;
 using Curry.UI;
-using System.Linq;
 
 namespace Curry.Explore
 {
@@ -14,9 +11,10 @@ namespace Curry.Explore
     {
         [SerializeField] Animator m_anim = default;
         [SerializeField] TextMeshProUGUI m_handCapacityField = default;
-        [SerializeField] CardDropZone m_inventoryZone = default;
-        [SerializeField] CardDropZone m_handZone = default;
+        [SerializeField] PlayZone m_inventoryZone = default;
+        [SerializeField] PlayZone m_handZone = default;
         public bool IsDisplaying { get; protected set; }
+        public bool IsHandOverloaded => m_handHoldingValue <= m_handCapacity;
         HashSet<AdventCard> m_inventoryToHand = new HashSet<AdventCard>();
         HashSet<AdventCard> m_handToInventory = new HashSet<AdventCard>();
         Hand m_handRef;
@@ -29,6 +27,8 @@ namespace Curry.Explore
             m_handZone.OnDropped += DropToHand;
             AdventCard[] inv = m_inventoryZone.transform.GetComponentsInChildren<AdventCard>();
             AdventCard[] hand = m_handZone.transform.GetComponentsInChildren<AdventCard>();
+            m_handToInventory.UnionWith(inv);
+            m_inventoryToHand.UnionWith(hand);
             PrepareCards(new List<AdventCard>(inv));
             PrepareCards(new List<AdventCard>(hand));
         }
@@ -68,29 +68,65 @@ namespace Curry.Explore
         }
         void UpdateCapacityDisplay() 
         {
-            m_handCapacityField.text = $"{m_handHoldingValue} / {m_handCapacity}"; 
+            m_handCapacityField.text = IsHandOverloaded? 
+                $" <color=red>{m_handHoldingValue} / {m_handCapacity}</color>" :
+                $"{m_handHoldingValue} / {m_handCapacity}"; 
         }
         void PrepareCards(List<AdventCard> cards) 
         { 
             foreach(AdventCard card in cards) 
             {
-                card?.GetComponent<CardInteractionController>()?.
+                card.GetComponent<CardInteractionController>()?.
                     SetInteractionMode(CardInteractMode.Play | CardInteractMode.Inspect);
-            //TODO: Add on drag begin handles to show drop zones (hand/inventory)
+                card.GetComponent<DraggableCard>().OnDragBegin += OnCardDrag;
+                card.GetComponent<DraggableCard>().OnDragFinish += OnDragEnd;
+
             }
+        }
+        void OnDragEnd(DraggableCard card)
+        {
+            m_inventoryZone.SetPlayZonrActive(false);
+            m_handZone.SetPlayZonrActive(false);
+
+        }
+        void OnCardDrag(DraggableCard drag) 
+        {
+            AdventCard card = drag.GetComponent<AdventCard>();
+            if (ExistInHand(card)) 
+            {
+                m_inventoryZone.SetPlayZonrActive();
+            }
+            else if (ExistInInventory(card)) 
+            {
+                m_handZone.SetPlayZonrActive();
+            }
+        }
+        bool ExistInHand(AdventCard card) 
+        {
+            // Check if the dropped card exists in starting hand [OR] edited hand
+            bool doesDropExistInHand = m_inventoryToHand.Contains(card) ||
+                (m_handRef != null && m_handRef.ContainsCard(card) && !m_handToInventory.Contains(card));
+            return doesDropExistInHand;
+        }
+        bool ExistInInventory(AdventCard card) 
+        {
+            // Check if the dropped card exists in starting inventory [OR] edited inventory
+            bool doesDropExistInInventory = m_handToInventory.Contains(card) ||
+                (m_inventoryRef != null && m_inventoryRef.ContainsCard(card) && !m_inventoryToHand.Contains(card));
+            return doesDropExistInInventory;
         }
         void DropToInventory(AdventCard drop, Action onDrop, Action onCancel) 
         {
             // Check if the dropped card exists in starting hand [OR] edited hand
-            bool doesDropExistInHand = m_inventoryToHand.Contains(drop) ||
-                (m_handRef.ContainsCard(drop) && !m_handToInventory.Contains(drop));
             // don't add duplicate card when cancelling drag and drop
-            if (doesDropExistInHand &&
-                !m_inventoryRef.ContainsCard(drop)) 
+            if (ExistInHand(drop) ||
+                (m_inventoryRef != null && !m_inventoryRef.ContainsCard(drop))) 
             {
                 m_inventoryToHand.Remove(drop);
                 m_handToInventory.Add(drop);
+                m_handHoldingValue -= drop.HoldingValue;
                 onDrop?.Invoke();
+                UpdateCapacityDisplay();
             }
             else 
             {
@@ -100,15 +136,15 @@ namespace Curry.Explore
         void DropToHand(AdventCard drop, Action onDrop, Action onCancel) 
         {
             // Check if the dropped card exists in starting inventory [OR] edited inventory
-            bool doesDropExistInInventory = m_handToInventory.Contains(drop) ||
-                (m_inventoryRef.ContainsCard(drop) && !m_inventoryToHand.Contains(drop));
             // don't add duplicate card into addList when cancelling drag and drop
-            if (doesDropExistInInventory && 
-                !m_handRef.ContainsCard(drop)) 
+            if (ExistInInventory(drop) || 
+                (m_handRef != null && !m_handRef.ContainsCard(drop))) 
             {
                 m_handToInventory.Remove(drop);
                 m_inventoryToHand.Add(drop);
+                m_handHoldingValue += drop.HoldingValue;
                 onDrop?.Invoke();
+                UpdateCapacityDisplay();
             }
             else 
             {

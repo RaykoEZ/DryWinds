@@ -40,7 +40,7 @@ namespace Curry.Explore
             {
                 card.GetComponent<CardInteractionController>()?.SetInteractionMode(
                     CardInteractMode.Play | CardInteractMode.Inspect);
-                m_totalHoldingValueInHand += card.Card.HoldingValaue;
+                m_totalHoldingValueInHand += card.Card.HoldingValue;
             }
         }
         internal void EnablePlay() 
@@ -62,7 +62,7 @@ namespace Curry.Explore
             if (m_cardsInHand.Remove(card))
             {
                 yield return card.StartCoroutine(card.Card.ActivateEffect(player));
-                m_totalHoldingValueInHand -= card.Card.HoldingValaue;
+                m_totalHoldingValueInHand -= card.Card.HoldingValue;
             }
         }        
     }
