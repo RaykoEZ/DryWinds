@@ -24,7 +24,7 @@ namespace Curry.Explore
         public int HoldingValue => m_resources.Attribute.HoldingValue;
         public bool IsInitiallyOnCooldown => m_resources.Attribute.IsInitiallyOnCooldown;
         public bool IsOnCooldown => m_cooldown.IsOnCooldown;
-        public int Current { get => m_cooldown.Current;}
+        public int CurrentCooldown { get => m_cooldown.CurrentCooldown;}
         // Whether this card has satisfied activation conditions, if the card has any
         public virtual bool ConditionsSatisfied => true;
         // Whether keep card upon moving to a new tile

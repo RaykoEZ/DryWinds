@@ -12,7 +12,7 @@ namespace Curry.Explore
     { 
         bool IsOnCooldown { get; }
         int CooldownTime { get;}
-        int Current { get;}
+        int CurrentCooldown { get;}
         void TriggerCooldown();
         void Tick(int dt, out bool isOnCoolDown);
     }

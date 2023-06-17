@@ -77,7 +77,7 @@ namespace Curry.Explore
             foreach(AdventCard card in cards) 
             {
                 card.GetComponent<CardInteractionController>()?.
-                    SetInteractionMode(CardInteractMode.Play | CardInteractMode.Inspect);
+                    SetInteractionMode(CardInteractMode.Move | CardInteractMode.Inspect);
                 card.GetComponent<DraggableCard>().OnDragBegin += OnCardDrag;
                 card.GetComponent<DraggableCard>().OnDragFinish += OnDragEnd;
 

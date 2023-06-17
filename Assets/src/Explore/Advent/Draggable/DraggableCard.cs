@@ -31,12 +31,10 @@ namespace Curry.Explore
         [SerializeField] AdventCard m_card = default;
         [SerializeField] protected UITriggers m_ui = default;
         [SerializeField] protected FXTriggers m_fx = default;
-
         public delegate void OnCardDragUpdate(DraggableCard card);
         public event OnCardDragUpdate OnDragFinish;
         public event OnCardDragUpdate OnDragBegin;
         public event OnCardDragUpdate OnReturn;
-
         public override bool Droppable
         {
             get
@@ -44,14 +42,7 @@ namespace Curry.Explore
                 return m_card.Activatable;
             }
         }
-        public bool DoesCardNeedTarget { get { return Card is ITargetsPosition; } }
-        public bool Draggable { get; set; } = true;
-        protected override Transform OnDragParent
-        {
-            get { return DoesCardNeedTarget ? transform.parent : base.OnDragParent; }
-        }
-        public AdventCard Card { get { return m_card; } }
-        
+        public AdventCard Card { get { return m_card; } }     
         public override void OnBeginDrag(PointerEventData eventData)
         {
             if (Draggable) 
@@ -63,7 +54,6 @@ namespace Curry.Explore
                 OnDragBegin?.Invoke(this);
             }
         }
-
         public override void OnEndDrag(PointerEventData eventData)
         {
             if (Droppable)
@@ -75,24 +65,14 @@ namespace Curry.Explore
             base.OnEndDrag(eventData);
             OnDragFinish?.Invoke(this);
         }
-        public override void OnDrag(PointerEventData eventData)
-        {
-            // Do not move when drag is held, if the card needs to use a target guide
-            if (!DoesCardNeedTarget && Draggable) 
-            {
-                base.OnDrag(eventData);
-            }
-        }
         public virtual void OnCancel()
         {
             ReturnToBeforeDrag();
         }
-
         public override void ReturnToBeforeDrag()
         {
             base.ReturnToBeforeDrag();
             OnReturn?.Invoke(this);
         }
     }
-
 }

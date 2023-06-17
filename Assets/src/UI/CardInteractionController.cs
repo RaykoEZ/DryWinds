@@ -15,6 +15,7 @@ namespace Curry.UI
         Play = 1 << 0,
         Inspect = 1 << 1,
         Select = 1 << 2,
+        Move = 1 << 3
     }
     public delegate void OnCardInspect(RectTransform cardTranform);
     // Allows a card to be dragged/pointer hover/selected/inspected
@@ -57,9 +58,13 @@ namespace Curry.UI
         {
             InteractMode = mode;
             DraggableCard drag = GetComponent<DraggableCard>();
-            drag.enabled = (InteractMode & CardInteractMode.Play) != 0;
-            drag.Draggable =
-                (InteractMode & CardInteractMode.Play) != 0;
+            bool dragAllowed;
+            dragAllowed = (InteractMode & (CardInteractMode.Play | CardInteractMode.Move)) != 0;
+            drag.enabled = dragAllowed;
+            drag.Draggable = dragAllowed;
+            bool targets = m_card is ITargetsPosition;
+            bool moveAllowed = (dragAllowed && !targets) || (targets && (InteractMode & CardInteractMode.Move) != 0);
+            drag.Movable = moveAllowed;
         }
         public virtual void Init(AdventCard card, CardInteractMode mode = CardInteractMode.Inspect) 
         {
@@ -79,7 +84,6 @@ namespace Curry.UI
             m_selected = true;
             Animator anim = GetComponent<Animator>();
             anim?.SetBool("selected", Choosable);
-
             OnChosen?.Invoke(this);
         }
         public void UnChoose()

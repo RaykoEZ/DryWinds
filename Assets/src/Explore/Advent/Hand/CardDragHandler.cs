@@ -37,7 +37,7 @@ namespace Curry.Explore
         }
         public void TargetGuide(DraggableCard draggable)
         {
-            if (draggable.DoesCardNeedTarget)
+            if (draggable.Card is ITargetsPosition)
             {
                 m_pendingCardRef = draggable;
                 m_selection?.TargetGuide(m_pendingCardRef.transform);
@@ -51,10 +51,9 @@ namespace Curry.Explore
         }
         public void ShowDropZones() 
         {
-            if (m_pendingCardRef != null && m_pendingCardRef.DoesCardNeedTarget)
+            if (m_pendingCardRef != null && m_pendingCardRef.Card is ITargetsPosition target)
             {
-                ITargetsPosition targetCard = m_pendingCardRef.Card as ITargetsPosition;
-                m_selection.SelectDropZoneTile(m_pendingCardRef.Card.Name, targetCard.TargetingRange, m_playerTransform);
+                m_selection.SelectDropZoneTile(m_pendingCardRef.Card.Name, target.TargetingRange, m_playerTransform);
             }
             else 
             {

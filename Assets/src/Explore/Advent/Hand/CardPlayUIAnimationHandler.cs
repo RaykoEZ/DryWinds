@@ -8,7 +8,7 @@ namespace Curry.Explore
     // at edges of UI triggers 
     public class UITransitionBuffer 
     {
-        const float c_transitionBufferTime = 0.1f;
+        const float c_transitionBufferTime = 0.2f;
         bool transitionBuffering = false;
         public bool Buffering => transitionBuffering;
         public IEnumerator Buffer()
