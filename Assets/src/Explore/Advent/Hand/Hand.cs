@@ -37,6 +37,7 @@ namespace Curry.Explore
                 {
                     ret.Add(card);
                     OnCardLeaveHand(card.GetComponent<DraggableCard>());
+                    m_totalHoldingValueInHand -= card.HoldingValue;
                 }
             }
             return ret;
