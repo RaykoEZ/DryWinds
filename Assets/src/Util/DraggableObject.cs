@@ -16,10 +16,6 @@ namespace Curry.Util
         public virtual bool Droppable { get { return true; } }
         public virtual bool Draggable { get; set; } = true;
         protected Transform DragParent { get => m_onDragParent; set { m_onDragParent = value; } }
-        void Awake() 
-        {
-            DragParent = transform.root;
-        }
         // Move one above original parent when dragging the object 
         void OnEnable()
         {
@@ -33,6 +29,7 @@ namespace Curry.Util
 
         public virtual void OnBeginDrag(PointerEventData eventData)
         {
+            DragParent = transform.root;
             LeaveOrigin(eventData);
         }
         protected virtual void LeaveOrigin(PointerEventData eventData)

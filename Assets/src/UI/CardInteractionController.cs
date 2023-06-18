@@ -1,11 +1,7 @@
 ﻿using Curry.Explore;
-using Curry.Game;
 using System;
-using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
-
 namespace Curry.UI
 {
     [Flags]

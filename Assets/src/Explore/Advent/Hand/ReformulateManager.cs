@@ -11,7 +11,7 @@ namespace Curry.Explore
         {
             if (m_ui.IsDisplaying) return;
 
-            m_ui?.Show(m_hand.HandContent, m_inventory);
+            m_ui?.Show(m_hand, m_inventory);
         }
     }
 }

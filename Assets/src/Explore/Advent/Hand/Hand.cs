@@ -10,59 +10,87 @@ namespace Curry.Explore
     {
         protected int m_maxCapacity = 0;
         protected int m_totalHoldingValueInHand = 0;
+        List<AdventCard> m_cardsInHand = new List<AdventCard>();
+        CardDragHandler m_dragRef;
         public int MaxCapacity { get => m_maxCapacity; protected set { m_maxCapacity = Mathf.Max(0, value); } }
         public int TotalHandHoldingValue => m_totalHoldingValueInHand;
         // Does player have higher card holding value than hand max capacity?
         public bool IsHandOverloaded => m_totalHoldingValueInHand > m_maxCapacity;
-        public IReadOnlyList<DraggableCard> CardsInHand { get { return m_cardsInHand; } }
+        public IReadOnlyList<AdventCard> CardsInHand { get { return m_cardsInHand; } }
 
-        List<DraggableCard> m_cardsInHand = new List<DraggableCard>();
-        internal Hand(int maxCapacity) 
+
+        internal Hand(int maxCapacity, CardDragHandler drag) 
         {
             MaxCapacity = Mathf.Max(0, maxCapacity);
+            m_dragRef = drag;
         }
         public bool ContainsCard(AdventCard card) 
         {
-            return m_cardsInHand.Contains(card.GetComponent<DraggableCard>());
+            return m_cardsInHand.Contains(card);
         }
-        public void TakeCards(List<AdventCard> cards) 
-        { 
-        
+        public List<AdventCard> TakeCards(List<AdventCard> cards) 
+        {
+            List<AdventCard> ret = new List<AdventCard>();
+            foreach(AdventCard card in cards) 
+            {
+                if (m_cardsInHand.Remove(card)) 
+                {
+                    ret.Add(card);
+                    OnCardLeaveHand(card.GetComponent<DraggableCard>());
+                }
+            }
+            return ret;
         }
         internal void SetMaxCapacity(int newCapacity) 
         {
             MaxCapacity = newCapacity;
         }
-        internal void AddCards(IReadOnlyList<DraggableCard> cards)
+        internal void AddCards(IReadOnlyList<AdventCard> cards)
         {
             m_cardsInHand.AddRange(cards);
             foreach(var card in cards) 
             {
                 card.GetComponent<CardInteractionController>()?.SetInteractionMode(
                     CardInteractMode.Play | CardInteractMode.Inspect);
-                m_totalHoldingValueInHand += card.Card.HoldingValue;
+                PrepareCard(card);
+                m_totalHoldingValueInHand += card.HoldingValue;
             }
+        }
+        internal virtual void PrepareCard(AdventCard card)
+        {
+            if (card == null)
+            {
+                return;
+            }
+            card.GetComponent<DraggableCard>().OnReturn += m_dragRef.OnCardReturn;
+            card.GetComponent<DraggableCard>().OnDragBegin += m_dragRef.TargetGuide;
+        }
+        internal virtual void OnCardLeaveHand(DraggableCard drag) 
+        {
+            if (drag == null) return;
+            drag.OnDragBegin -= m_dragRef.TargetGuide;
+            drag.OnReturn -= m_dragRef.OnCardReturn;
         }
         internal void EnablePlay() 
         { 
-            foreach(DraggableCard card in CardsInHand) 
+            foreach(AdventCard card in CardsInHand) 
             {
                 card.enabled = true;
             }
         }
         internal void DisablePlay() 
         {
-            foreach (DraggableCard card in CardsInHand)
+            foreach (AdventCard card in CardsInHand)
             {
                 card.enabled = false;
             }
         }
-        internal IEnumerator PlayCard(DraggableCard card, IPlayer player)
+        internal IEnumerator PlayCard(AdventCard card, IPlayer player)
         {
             if (m_cardsInHand.Remove(card))
             {
-                yield return card.StartCoroutine(card.Card.ActivateEffect(player));
-                m_totalHoldingValueInHand -= card.Card.HoldingValue;
+                yield return card.StartCoroutine(card.ActivateEffect(player));
+                m_totalHoldingValueInHand -= card.HoldingValue;
             }
         }        
     }

@@ -14,10 +14,10 @@ namespace Curry.Explore
         [SerializeField] PlayZone m_inventoryZone = default;
         [SerializeField] PlayZone m_handZone = default;
         public bool IsDisplaying { get; protected set; }
-        public bool IsHandOverloaded => m_handHoldingValue <= m_handCapacity;
-        HashSet<AdventCard> m_inventoryToHand = new HashSet<AdventCard>();
-        HashSet<AdventCard> m_handToInventory = new HashSet<AdventCard>();
-        Hand m_handRef;
+        public bool IsHandOverloaded => m_handHoldingValue > m_handCapacity;
+        List<AdventCard> m_handCards = new List<AdventCard>();
+        List<AdventCard> m_inventoryCards = new List<AdventCard>();
+        HandManager m_handRef;
         Inventory m_inventoryRef;
         int m_handCapacity = 0;
         int m_handHoldingValue = 0;
@@ -27,23 +27,36 @@ namespace Curry.Explore
             m_handZone.OnDropped += DropToHand;
             AdventCard[] inv = m_inventoryZone.transform.GetComponentsInChildren<AdventCard>();
             AdventCard[] hand = m_handZone.transform.GetComponentsInChildren<AdventCard>();
-            m_handToInventory.UnionWith(inv);
-            m_inventoryToHand.UnionWith(hand);
+            m_inventoryCards.AddRange(inv);
+            m_handCards.AddRange(hand);
             PrepareCards(new List<AdventCard>(inv));
             PrepareCards(new List<AdventCard>(hand));
         }
-        public void Show(Hand hand, Inventory inventory) 
+        public void Show(HandManager hand, Inventory inventory) 
         {
             IsDisplaying = true;
             ResetHandler();
             m_inventoryRef = inventory;
             m_handRef = hand;
-            m_handCapacity = m_handRef.MaxCapacity;
-            m_handHoldingValue = m_handRef.TotalHandHoldingValue;
+            m_handCapacity = m_handRef.HandContent.MaxCapacity;
+            m_handHoldingValue = m_handRef.HandContent.TotalHandHoldingValue;
             UpdateCapacityDisplay();
-            PrepareCards(hand.CardsInHand as List<AdventCard>);
-            PrepareCards(inventory.CardsInStock as List<AdventCard>);
+            var hands = hand.HandContent.TakeCards(new List<AdventCard>(hand.HandContent.CardsInHand));
+            PrepareCards(hands);
+            CardToViewer(m_handZone, hands);
+            var inv = inventory.TakeCards(new List<AdventCard>(inventory.CardsInStock));
+            PrepareCards(inv);
+            m_inventoryCards.AddRange(inv);
+            m_handCards.AddRange(hands);
+            CardToViewer(m_inventoryZone, inv);
             m_anim?.SetBool("show", true);
+        }
+        void CardToViewer(PlayZone zone, List<AdventCard> cards) 
+        { 
+            foreach(var card in cards) 
+            {
+                card.transform.SetParent(zone.transform, false);
+            }
         }
         public void Hide()
         {
@@ -53,34 +66,64 @@ namespace Curry.Explore
         public void Finish()
         {
             // Move cards between hand and inventory according to lists of additions
-            ResetHandler();
-            Hide();
+            // Show error if player tries to finish when result hand capacity is overloaded
+            if (IsHandOverloaded) 
+            {
+                Debug.LogWarning($"Hand Capacity overloaded ({m_handHoldingValue} / {m_handCapacity})");
+            }
+            else 
+            {
+                ResolveHand();
+                ResolveInventory();
+                ResetHandler();
+                Hide();
+            }
         }
-        public void Cancel()
+        void ResolveHand() 
         {
+            foreach (AdventCard card in m_handCards)
+            {
+                card.GetComponent<DraggableCard>().OnDragBegin -= OnCardDrag;
+                card.GetComponent<DraggableCard>().OnDragFinish -= OnDragEnd;
+            }
+            m_handRef.AddCardsToHand(m_handCards);
+        }
+        void ResolveInventory() 
+        {
+            foreach (AdventCard card in m_inventoryCards)
+            {
+                card.GetComponent<DraggableCard>().OnDragBegin -= OnCardDrag;
+                card.GetComponent<DraggableCard>().OnDragFinish -= OnDragEnd;
+            }
+            m_inventoryRef.AddRange(m_inventoryCards);
+        }
+        public void End()
+        {
+            //TODO: need to reset to original hand & inventory state
             ResetHandler();
             Hide();
         }
         void ResetHandler() 
         {
-            m_inventoryToHand.Clear();
-            m_handToInventory.Clear();
+            m_handCards.Clear();
+            m_inventoryCards.Clear();
         }
         void UpdateCapacityDisplay() 
         {
-            m_handCapacityField.text = IsHandOverloaded? 
-                $" <color=red>{m_handHoldingValue} / {m_handCapacity}</color>" :
-                $"{m_handHoldingValue} / {m_handCapacity}"; 
+            m_handCapacityField.text = IsHandOverloaded?
+            $" <color=red>{m_handHoldingValue} / {m_handCapacity}</color>" :
+            $"{m_handHoldingValue} / {m_handCapacity}";
         }
         void PrepareCards(List<AdventCard> cards) 
-        { 
+        {
+            if (cards == null) return;
             foreach(AdventCard card in cards) 
             {
                 card.GetComponent<CardInteractionController>()?.
                     SetInteractionMode(CardInteractMode.Move | CardInteractMode.Inspect);
-                card.GetComponent<DraggableCard>().OnDragBegin += OnCardDrag;
-                card.GetComponent<DraggableCard>().OnDragFinish += OnDragEnd;
-
+                var drag = card.GetComponent<DraggableCard>();
+                drag.OnDragBegin += OnCardDrag;
+                drag.OnDragFinish += OnDragEnd;
             }
         }
         void OnDragEnd(DraggableCard card)
@@ -92,38 +135,23 @@ namespace Curry.Explore
         void OnCardDrag(DraggableCard drag) 
         {
             AdventCard card = drag.GetComponent<AdventCard>();
-            if (ExistInHand(card)) 
+            if (m_handCards.Contains(card)) 
             {
                 m_inventoryZone.SetPlayZonrActive();
             }
-            else if (ExistInInventory(card)) 
+            else if (m_inventoryCards.Contains(card)) 
             {
                 m_handZone.SetPlayZonrActive();
             }
-        }
-        bool ExistInHand(AdventCard card) 
-        {
-            // Check if the dropped card exists in starting hand [OR] edited hand
-            bool doesDropExistInHand = m_inventoryToHand.Contains(card) ||
-                (m_handRef != null && m_handRef.ContainsCard(card) && !m_handToInventory.Contains(card));
-            return doesDropExistInHand;
-        }
-        bool ExistInInventory(AdventCard card) 
-        {
-            // Check if the dropped card exists in starting inventory [OR] edited inventory
-            bool doesDropExistInInventory = m_handToInventory.Contains(card) ||
-                (m_inventoryRef != null && m_inventoryRef.ContainsCard(card) && !m_inventoryToHand.Contains(card));
-            return doesDropExistInInventory;
         }
         void DropToInventory(AdventCard drop, Action onDrop, Action onCancel) 
         {
             // Check if the dropped card exists in starting hand [OR] edited hand
             // don't add duplicate card when cancelling drag and drop
-            if (ExistInHand(drop) ||
-                (m_inventoryRef != null && !m_inventoryRef.ContainsCard(drop))) 
+            if (m_handCards.Contains(drop)) 
             {
-                m_inventoryToHand.Remove(drop);
-                m_handToInventory.Add(drop);
+                m_handCards.Remove(drop);
+                m_inventoryCards.Add(drop);
                 m_handHoldingValue -= drop.HoldingValue;
                 onDrop?.Invoke();
                 UpdateCapacityDisplay();
@@ -137,11 +165,10 @@ namespace Curry.Explore
         {
             // Check if the dropped card exists in starting inventory [OR] edited inventory
             // don't add duplicate card into addList when cancelling drag and drop
-            if (ExistInInventory(drop) || 
-                (m_handRef != null && !m_handRef.ContainsCard(drop))) 
+            if (m_inventoryCards.Contains(drop)) 
             {
-                m_handToInventory.Remove(drop);
-                m_inventoryToHand.Add(drop);
+                m_inventoryCards.Remove(drop);
+                m_handCards.Add(drop);
                 m_handHoldingValue += drop.HoldingValue;
                 onDrop?.Invoke();
                 UpdateCapacityDisplay();

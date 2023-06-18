@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 6568621835003319198}
   - component: {fileID: 6568621835003319199}
   m_Layer: 5
-  m_Name: P_InventoryUI
+  m_Name: P_InventoryCardDisplay
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

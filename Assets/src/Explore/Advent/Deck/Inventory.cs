@@ -68,10 +68,7 @@ namespace Curry.Explore
             foreach (AdventCard toTake in take)
             {
                 AdventCard taken = TakeCard(toTake);
-                if (taken != null)
-                {
-                    ret.Add(taken);
-                }
+                ret.Add(taken);           
             }
             return ret;
         }

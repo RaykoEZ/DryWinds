@@ -27,10 +27,9 @@ namespace Curry.Explore
         public event OnActionStart OnActivate;
         public event OnCardReturn OnReturnToInventory;
         public Hand HandContent => m_hand;
-
         protected void Awake()
         {
-            m_hand = new Hand(m_maxHandCapacity);
+            m_hand = new Hand(m_maxHandCapacity, m_drag);
         }
         protected void Start()
         {
@@ -39,39 +38,23 @@ namespace Curry.Explore
             m_postActivation.OnReturnToHand += AddCardsToHand;
             m_postActivation.OnReturnToInventory += ReturnCardsToInventory;
             // get starting hand
-            DraggableCard[] cards = m_cardHolderRoot.GetComponentsInChildren<DraggableCard>();
-            foreach (DraggableCard card in cards)
-            {
-                PrepareCard(card);
-            }
+            AdventCard[] cards = m_cardHolderRoot.GetComponentsInChildren<AdventCard>();
             m_hand.AddCards(cards);
             m_spacing.UpdateSpacing();
         }
         #region Adding cards to hand
         public void AddCardsToHand(List<AdventCard> cards) 
         {
-            List<DraggableCard> cardsToAdd = new List<DraggableCard>();
-            DraggableCard drag;
+            List<AdventCard> cardsToAdd = new List<AdventCard>();
             foreach (AdventCard card in cards)
             {
-                drag = card.GetComponent<DraggableCard>();
-                cardsToAdd.Add(drag);
+                cardsToAdd.Add(card);
                 card.transform.SetParent(transform, false);
-                PrepareCard(drag);
             }
             m_hand.AddCards(cardsToAdd);
             m_spacing.UpdateSpacing();
         }
-        protected virtual void PrepareCard(DraggableCard draggable)
-        {
-            if (draggable == null)
-            {
-                return;
-            }
-            draggable.OnReturn += m_drag.OnCardReturn;
-            draggable.OnDragBegin += m_drag.TargetGuide;
-        }
-        public void ReturnCardsToInventory(List<AdventCard> cards) 
+        protected void ReturnCardsToInventory(List<AdventCard> cards) 
         {
             foreach(var card in cards) 
             {
@@ -89,9 +72,7 @@ namespace Curry.Explore
         }
         protected virtual void OnCardLeavesHand(DraggableCard draggable)
         {
-            if (draggable == null) return;
-            draggable.OnDragBegin -= m_drag.TargetGuide;
-            draggable.OnReturn -= m_drag.OnCardReturn;
+            m_hand.OnCardLeaveHand(draggable);
             // If card is dragged out of hand, we re calculate spacing
             m_spacing.UpdateSpacing();
         }
@@ -104,7 +85,7 @@ namespace Curry.Explore
             DraggableCard draggable = card.GetComponent<DraggableCard>();
             OnCardLeavesHand(draggable);
             m_drag.HideDropZone();
-            yield return StartCoroutine(m_hand.PlayCard(draggable, m_player));
+            yield return StartCoroutine(m_hand.PlayCard(card, m_player));
             // after effect activation, we spend the card
             yield return StartCoroutine(m_postActivation.OnCardUse(card));
         }
