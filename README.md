@@ -1,2 +1,7 @@
-# Curry
-It's curry.
+# Project Curry
+
+This is a Unity project for a 2D turn-based strategy game with card-based interactions and grid-based movement.
+
+The player character needs to reach specific locations on the map while enemies and encounters await them. 
+
+The player can play cards to engage in combat or recon at the cost of time. As time passes, events on the map will trigger and increase the difficulty/add special conditions to the level.
