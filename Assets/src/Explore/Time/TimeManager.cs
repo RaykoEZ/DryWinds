@@ -39,8 +39,8 @@ namespace Curry.Explore
         {
             ResetTime();
             m_onSpendTime?.Init();
-            m_gauge.SetMaxValue(TimeLeftToClear);
-            m_gauge.SetBarValue(TimeToClear, forceInstantChange: true);
+            m_gauge?.SetMaxValue(TimeLeftToClear);
+            m_gauge?.SetBarValue(TimeToClear, forceInstantChange: true);
             UpdateTurnTimer();
         }
         public void ResetTime()
@@ -84,6 +84,7 @@ namespace Curry.Explore
 
         void UpdateTurnTimer()
         {
+            if (m_clearTimer == null) return;
             m_clearTimer.text = TimeLeftToClear.ToString();
         }
         IEnumerator OnSpendTime(int toSpend)

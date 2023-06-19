@@ -6,6 +6,7 @@ using UnityEngine;
 
 namespace Curry.Explore
 {
+
     [RequireComponent(typeof(CardInteractionController))]
     [RequireComponent(typeof(CooldownAnimationHandler))]
     public class CooldownModule : CardStartupModules, ICooldown
@@ -17,7 +18,7 @@ namespace Curry.Explore
         protected int m_current = 0;
         public bool IsOnCooldown { get; protected set; }
         public int CooldownTime { get => m_cooldownTime; set => m_cooldownTime = value; }
-        public int Current { get => m_current; set => m_current = value; }
+        public int CurrentCooldown { get => m_current; set => m_current = value; }
         public override void Init(CardAttribute card)
         {
             IsOnCooldown = card.IsInitiallyOnCooldown;
@@ -50,7 +51,7 @@ namespace Curry.Explore
         }
         protected virtual void AnimateCooldown() 
         {
-            CooldownAnim?.OnCooldown(Current, IsOnCooldown);
+            CooldownAnim?.OnCooldown(CurrentCooldown, IsOnCooldown);
         }
     }
 }

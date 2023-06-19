@@ -41,6 +41,11 @@ namespace Curry.UI
             m_availableChoices = availableChoices;
         }
     }
+    public enum ChoiceStatus
+    {
+        Confirmed,
+        Cancelled
+    }
     public struct ChoiceResult
     {
         public ChoiceStatus Status { get; set; }
@@ -51,11 +56,6 @@ namespace Curry.UI
             Status = status;
             Chosen = chosen;
             ChoseFrom = choices;
-        }
-        public enum ChoiceStatus
-        {
-            Confirmed,
-            Cancelled
         }
     }
     #endregion

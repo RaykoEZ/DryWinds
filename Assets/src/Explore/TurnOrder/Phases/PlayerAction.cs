@@ -13,37 +13,15 @@ namespace Curry.Explore
     {
         [SerializeField] CurryGameEventTrigger m_onTurnStart = default;
         [SerializeField] EndTurnTrigger m_turnEnd = default;
-
         protected override Type NextState { get; set; } = typeof(EnemyAction);
-
         public override void Init()
         {
             m_turnEnd.OnTurnEnd += TransitionTo;
         }
-        public override void OnEnter(Phase incomingState)
-        {
-            Evaluate();
-        }
-        public override void Pause()
-        {
-            m_turnEnd.SetInteractable(false);
-        }
-        public override void Resume()
-        {
-            m_turnEnd.SetInteractable(true);
-        }
-
         protected override IEnumerator Evaluate_Internal()
         {
             m_onTurnStart?.TriggerEvent(new EventInfo());
-            m_turnEnd.SetInteractable(true);
             yield return null;
-        }
-
-        protected override void TransitionTo()
-        {
-            m_turnEnd.SetInteractable(false);
-            base.TransitionTo();
         }
     }
 }

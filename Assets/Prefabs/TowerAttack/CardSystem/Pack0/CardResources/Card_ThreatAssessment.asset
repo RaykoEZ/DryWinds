@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: Card_ThreatAssessment
   m_EditorClassIdentifier: 
   m_attribute:
-    m_type: 0
     m_name: Threat Assessment
     m_description: Show potential hostiles nearby
     m_targetingRange:
       m_offsetList: []
     m_timeCost: 10
     m_cooldown: 20
+    m_holdingValue: 2
     m_isInitiallyOnCooldown: 0

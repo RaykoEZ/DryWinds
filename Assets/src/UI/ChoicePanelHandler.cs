@@ -2,8 +2,6 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using static Curry.UI.ChoiceResult;
-using Curry.Explore;
 using Curry.Game;
 
 namespace Curry.UI
@@ -11,6 +9,7 @@ namespace Curry.UI
     public delegate void OnChoiceFinish(ChoiceResult result);
     public class ChoicePanelHandler : MonoBehaviour
     {
+        [SerializeField] CanvasGroup m_viewToggle = default;
         [SerializeField] PanelUIHandler m_panelAnim = default;
         [SerializeField] TextMeshProUGUI m_title = default;
         [SerializeField] Transform m_content = default;
@@ -47,6 +46,8 @@ namespace Curry.UI
                 m_cancel.interactable = context.Conditons.CanCancel;
                 PrepareChoices();
                 m_panelAnim.Show();
+                m_viewToggle.alpha = 1f;
+                m_viewToggle.blocksRaycasts = true;
             }
         }
         protected virtual void PrepareChoices() 
@@ -60,9 +61,10 @@ namespace Curry.UI
         }
         protected virtual void Clear() 
         {
-            m_confirm.interactable = false;
-            m_cancel.interactable = false;
             m_panelAnim.Hide();
+            // Hide view toggle
+            m_viewToggle.alpha = 0f;
+            m_viewToggle.blocksRaycasts = false;
             foreach (IChoice choice in m_currentContext.ChooseFrom)
             {
                 choice.OnChosen -= OnChoose;

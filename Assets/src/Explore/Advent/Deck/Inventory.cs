@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-
 namespace Curry.Explore
 {
     public class CompareCardByName : IComparer<AdventCard>
@@ -13,30 +12,30 @@ namespace Curry.Explore
             return string.Compare(x.Name, y.Name);
         }
     }
-    public class CompareCardByType : IComparer<AdventCard>
-    {
-        public int Compare(AdventCard x, AdventCard y)
-        {
-            return x.Type.CompareTo(y.Type);
-        }
-    }
     public class Inventory : MonoBehaviour
     {
         [SerializeField] PanelUIHandler m_anim = default;
+        [SerializeField] HandManager m_hand = default;
         protected List<AdventCard> m_cardsInStock;
         public IReadOnlyList<AdventCard> CardsInStock => m_cardsInStock;
         CompareCardByName m_sortByCardName;
-        CompareCardByType m_sortByCardType;
         void Awake() 
         {
             m_cardsInStock = new List<AdventCard>();
             m_sortByCardName = new CompareCardByName();
-            m_sortByCardType = new CompareCardByType();
+        }
+        void Start() 
+        {
+            m_hand.OnReturnToInventory += AddRange;
+        }
+        public bool ContainsCard(AdventCard card)
+        {
+            return m_cardsInStock.Contains(card);
         }
         public void ToggleDisplay(bool isOn) 
         {
             if (isOn) 
-            { 
+            {
                 Show(); 
             } 
             else 
@@ -69,10 +68,7 @@ namespace Curry.Explore
             foreach (AdventCard toTake in take)
             {
                 AdventCard taken = TakeCard(toTake);
-                if (taken != null)
-                {
-                    ret.Add(taken);
-                }
+                ret.Add(taken);           
             }
             return ret;
         }
@@ -90,23 +86,11 @@ namespace Curry.Explore
                 card.GetComponent<CardInteractionController>()?.SetInteractionMode(CardInteractMode.Inspect);
             }
             m_cardsInStock?.AddRange(add);
-            SortCardByType();
-        }
-        public void Add(AdventCard add) 
-        {
-            add.transform.SetParent(transform, false);
-            add.GetComponent<CardInteractionController>()?.SetInteractionMode(CardInteractMode.Inspect);
-            m_cardsInStock?.Add(add);
-            SortCardByType();
+            SortCardsByName();
         }
         public void SortCardsByName() 
         {
             m_cardsInStock?.Sort(m_sortByCardName);
         }
-        public void SortCardByType() 
-        {
-            m_cardsInStock?.Sort(m_sortByCardType);
-        }
     }
-
 }

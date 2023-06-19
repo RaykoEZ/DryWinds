@@ -16,15 +16,15 @@ namespace Curry.Explore
         [SerializeField] List<CardStartupModules> m_startupModulesModules = default;
         bool m_activatable = true;
         public int Id => $"{m_resources.Attribute.Name}/{gameObject.name}".GetHashCode();
-        public CardType Type => m_resources.Attribute.Type;
         public string Name => m_resources.Attribute.Name;
         public string Description => m_resources.Attribute.Description;
         public RangeMap TargetingRange => m_resources.Attribute.TargetingRange;
         public int TimeCost => m_resources.Attribute.TimeCost;
         public int CooldownTime => m_resources.Attribute.Cooldown;
+        public int HoldingValue => m_resources.Attribute.HoldingValue;
         public bool IsInitiallyOnCooldown => m_resources.Attribute.IsInitiallyOnCooldown;
         public bool IsOnCooldown => m_cooldown.IsOnCooldown;
-        public int Current { get => m_cooldown.Current;}
+        public int CurrentCooldown { get => m_cooldown.CurrentCooldown;}
         // Whether this card has satisfied activation conditions, if the card has any
         public virtual bool ConditionsSatisfied => true;
         // Whether keep card upon moving to a new tile
@@ -33,10 +33,8 @@ namespace Curry.Explore
         {
             Activatable = true;
             var content = GetComponent<CardContentSetter>();
-            content?.SetCardName(Name);
-            content?.SetCardText(Description);
-            content?.SetCost(TimeCost.ToString());
-            content?.SetCardType(Type);
+            content?.Setup(m_resources.Attribute);
+
             if (this is ICooldown cd) 
             {
                 content?.SetCooldown(cd.CooldownTime.ToString());
