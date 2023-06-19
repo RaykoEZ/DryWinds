@@ -42,7 +42,7 @@ namespace Curry.Explore
                 return m_card.Activatable;
             }
         }
-        public AdventCard Card { get { return m_card; } }     
+        public AdventCard Card { get { return m_card; } }
         public override void OnBeginDrag(PointerEventData eventData)
         {
             if (Draggable) 

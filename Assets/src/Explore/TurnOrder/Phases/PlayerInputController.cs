@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using Curry.Util;
+using System.Collections.Generic;
 namespace Curry.Explore
 {
 
@@ -10,6 +10,7 @@ namespace Curry.Explore
         [SerializeField] MovementManager m_movement = default;
         [SerializeField] SelectionManager m_selectInput = default;
         [SerializeField] HandManager m_cardPlay = default;
+        [SerializeField] List<CanvasGroup> m_toControl = default;
 
         // Collection of interruptors
         [SerializeField] SceneInterruptCollection m_interruptors = default;
@@ -28,6 +29,11 @@ namespace Curry.Explore
             m_selectInput?.EnableSelection();
             m_cardPlay?.EnablePlay();
             m_sceneInterrupted = false;
+            foreach(var item in m_toControl) 
+            {
+                item.alpha = 1f;
+                item.interactable = true;
+            }
         }
         protected virtual void DisableScene()
         {
@@ -37,6 +43,11 @@ namespace Curry.Explore
             m_selectInput?.DisableSelection();
             m_cardPlay?.DisablePlay();
             m_sceneInterrupted = true;
+            foreach (var item in m_toControl)
+            {
+                item.alpha = 0.2f;
+                item.interactable = false;
+            }
         }
     }
 }

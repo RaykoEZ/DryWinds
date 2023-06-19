@@ -29,7 +29,7 @@ namespace Curry.Explore
             if (info is PositionInfo pos)
             {
                 // Activate card effect with target
-                ITargetsPosition handler = m_pendingCardRef as ITargetsPosition;
+                ITargetsPosition handler = m_pendingCardRef.Card as ITargetsPosition;
                 handler.SetTarget(pos.WorldPosition);
             }
             // do activation validation
@@ -37,7 +37,7 @@ namespace Curry.Explore
         }
         public void TargetGuide(DraggableCard draggable)
         {
-            if (draggable is ITargetsPosition)
+            if (draggable.Card is ITargetsPosition)
             {
                 m_pendingCardRef = draggable;
                 m_selection?.TargetGuide(m_pendingCardRef.transform);

@@ -35,7 +35,7 @@ namespace Curry.Explore
         public void ToggleDisplay(bool isOn) 
         {
             if (isOn) 
-            { 
+            {
                 Show(); 
             } 
             else 
@@ -88,17 +88,9 @@ namespace Curry.Explore
             m_cardsInStock?.AddRange(add);
             SortCardsByName();
         }
-        public void Add(AdventCard add) 
-        {
-            add.transform.SetParent(transform, false);
-            add.GetComponent<CardInteractionController>()?.SetInteractionMode(CardInteractMode.Inspect);
-            m_cardsInStock?.Add(add);
-            SortCardsByName();
-        }
         public void SortCardsByName() 
         {
             m_cardsInStock?.Sort(m_sortByCardName);
         }
     }
-
 }

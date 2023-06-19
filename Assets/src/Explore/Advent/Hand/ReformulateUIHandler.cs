@@ -3,43 +3,25 @@ using UnityEngine;
 using TMPro;
 using System;
 using Curry.UI;
+using Assets.src.UI;
 
 namespace Curry.Explore
 {
-    public class ReformulateState 
-    {
-        public List<AdventCard> HandCards;
-        public List<AdventCard> InventoryCards;
-        public void Clear() 
-        {
-            HandCards.Clear();
-            InventoryCards.Clear();
-        }
-        public ReformulateState() 
-        {
-            HandCards = new List<AdventCard>();
-            InventoryCards = new List<AdventCard>();
-        }
-        public ReformulateState(ReformulateState copy) 
-        {
-            HandCards = new List<AdventCard>(copy.HandCards);
-            InventoryCards = new List<AdventCard>(copy.InventoryCards);
-        }
-    }
-
+    // Updates UI when organizing cards in reformulate mode
     public delegate void OnReformulateFinish(List<AdventCard> inventoryToHand, List<AdventCard> handToInventory);
     public class ReformulateUIHandler : MonoBehaviour 
     {
         [SerializeField] Animator m_anim = default;
-        [SerializeField] TextMeshProUGUI m_handCapacityField = default;
         [SerializeField] PlayZone m_inventoryZone = default;
         [SerializeField] PlayZone m_handZone = default;
+        [SerializeField] HandCapacityDisplay m_capacity = default;
         public bool IsDisplaying { get; protected set; }
         public bool IsHandOverloaded => m_handHoldingValue > m_handCapacity;
         ReformulateState m_original = new ReformulateState();
         ReformulateState m_current;
         HandManager m_handRef;
         Inventory m_inventoryRef;
+        // hand capacity state in reformulate UI, must not be overloaded when finishing Reformulate
         int m_handCapacity = 0;
         int m_handHoldingValue = 0;
         void Start()
@@ -53,10 +35,10 @@ namespace Curry.Explore
             ResetHandler();
             m_inventoryRef = inventory;
             m_handRef = hand;
-            m_handCapacity = m_handRef.HandContent.MaxCapacity;
-            m_handHoldingValue = m_handRef.HandContent.TotalHandHoldingValue;
+            m_handCapacity = m_handRef.MaxCapacity;
+            m_handHoldingValue = m_handRef.TotalHandHoldingValue;
             UpdateCapacityDisplay();
-            var hands = hand.HandContent.TakeCards(new List<AdventCard>(hand.HandContent.CardsInHand));
+            var hands = hand.TakeCards(new List<AdventCard>(hand.CardsInHand));
             PrepareCards(hands);
             CardToViewer(m_handZone, hands);
             var inv = inventory.TakeCards(new List<AdventCard>(inventory.CardsInStock));
@@ -128,9 +110,7 @@ namespace Curry.Explore
         }
         void UpdateCapacityDisplay() 
         {
-            m_handCapacityField.text = IsHandOverloaded?
-            $" <color=red>{m_handHoldingValue} / {m_handCapacity}</color>" :
-            $"{m_handHoldingValue} / {m_handCapacity}";
+            m_capacity.UpdateDisplay(m_handCapacity, m_handHoldingValue);
         }
         void PrepareCards(List<AdventCard> cards) 
         {
@@ -148,7 +128,6 @@ namespace Curry.Explore
         {
             m_inventoryZone.SetPlayZonrActive(false);
             m_handZone.SetPlayZonrActive(false);
-
         }
         void OnCardDrag(DraggableCard drag) 
         {

@@ -17,34 +17,35 @@ namespace Curry.Explore
         // Does player have higher card holding value than hand max capacity?
         public bool IsHandOverloaded => m_totalHoldingValueInHand > m_maxCapacity;
         public IReadOnlyList<AdventCard> CardsInHand { get { return m_cardsInHand; } }
-
-
         internal Hand(int maxCapacity, CardDragHandler drag) 
         {
             MaxCapacity = Mathf.Max(0, maxCapacity);
             m_dragRef = drag;
-        }
-        public bool ContainsCard(AdventCard card) 
-        {
-            return m_cardsInHand.Contains(card);
         }
         public List<AdventCard> TakeCards(List<AdventCard> cards) 
         {
             List<AdventCard> ret = new List<AdventCard>();
             foreach(AdventCard card in cards) 
             {
-                if (m_cardsInHand.Remove(card)) 
+                if (TakeCard(card)) 
                 {
                     ret.Add(card);
-                    OnCardLeaveHand(card.GetComponent<DraggableCard>());
-                    m_totalHoldingValueInHand -= card.HoldingValue;
                 }
             }
             return ret;
         }
-        internal void SetMaxCapacity(int newCapacity) 
+        public bool TakeCard(AdventCard card) 
         {
-            MaxCapacity = newCapacity;
+            if (m_cardsInHand.Remove(card))
+            {
+                OnCardLeaveHand(card.GetComponent<DraggableCard>());
+                m_totalHoldingValueInHand -= card.HoldingValue;                       
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
         internal void AddCards(IReadOnlyList<AdventCard> cards)
         {
@@ -76,22 +77,23 @@ namespace Curry.Explore
         { 
             foreach(AdventCard card in CardsInHand) 
             {
-                card.enabled = true;
+                card.GetComponent<CardInteractionController>()?.SetInteractionMode(
+                    CardInteractMode.Play | CardInteractMode.Inspect);
             }
         }
         internal void DisablePlay() 
         {
             foreach (AdventCard card in CardsInHand)
             {
-                card.enabled = false;
+                card.GetComponent<CardInteractionController>()?.
+                    SetInteractionMode(CardInteractMode.Inspect);
             }
         }
         internal IEnumerator PlayCard(AdventCard card, IPlayer player)
         {
-            if (m_cardsInHand.Remove(card))
+            if (m_cardsInHand.Contains(card))
             {
                 yield return card.StartCoroutine(card.ActivateEffect(player));
-                m_totalHoldingValueInHand -= card.HoldingValue;
             }
         }        
     }

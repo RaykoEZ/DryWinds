@@ -53,7 +53,7 @@ namespace Curry.Explore
         // When player chose cards to add...
         void OnCardChosen(ChoiceResult result)
         {
-            if (result.Status == ChoiceResult.ChoiceStatus.Confirmed)
+            if (result.Status == ChoiceStatus.Confirmed)
             {
                 // Process all chosen cards before the choice components are destroyed 
                 List<AdventCard> cards = new List<AdventCard>();
@@ -91,10 +91,6 @@ namespace Curry.Explore
         {
             List<AdventCard> cardInstances = InstantiateCards(add);
             m_inventory.AddRange(cardInstances);
-        }
-        public void MoveToInventory(AdventCard move)
-        {
-            m_inventory.Add(move);
         }
         // Instantiate cards and add to hand
         public void AddToHand(List<AdventCard> cardsToDraw)
