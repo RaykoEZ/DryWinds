@@ -1,12 +1,14 @@
 ﻿using UnityEngine;
 using Curry.Explore;
 using Curry.Events;
+using UnityEngine.Events;
+using Curry.Util;
+
 namespace Curry.UI
 {
     public class TacticalCameraManager : CameraManager 
     {
         [SerializeField] CurryGameEventListener m_onCamFollow = default;
-
         void Awake()
         {
             m_onCamFollow?.Init();
