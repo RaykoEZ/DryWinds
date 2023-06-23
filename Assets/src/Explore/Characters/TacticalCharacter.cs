@@ -2,9 +2,8 @@
 using Curry.Util;
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.InteropServices.ComTypes;
 using UnityEngine;
-using UnityEngine.AI;
+using Curry.UI;
 
 namespace Curry.Explore
 {
