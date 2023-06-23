@@ -13,19 +13,19 @@ namespace Curry.UI
         [SerializeField] CoroutineManager m_coroutineManager = default;
         Vector3 m_currentFocalPoint = Vector3.zero;
         public float AnimationTime => m_animTime;
-        public void FocusCamera(Vector3 dest)
+        public virtual void FocusCamera(Vector3 dest)
         {
             m_currentFocalPoint = dest;
             m_coroutineManager.ScheduleCoroutine(OnCameraFocus(dest, m_zoomOrthographSize), interruptNow: true);
         }
 
-        public void MoveCamera(Vector3 dest)
+        public virtual void MoveCamera(Vector3 dest)
         {
             m_currentFocalPoint = dest;
             m_coroutineManager.ScheduleCoroutine(OnCameraFocus(dest, m_defaultOrthographSize), interruptNow: true);       
         }
 
-        public void UnFocusCamera()
+        public virtual void UnFocusCamera()
         {
             if (!Mathf.Approximately(m_camera.orthographicSize, m_defaultOrthographSize))
             {

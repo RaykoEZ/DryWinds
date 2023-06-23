@@ -11,7 +11,7 @@
                     "id": "a8b346cf-4092-4dca-88f8-8e0653fabdd2",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "Press"
                 },
                 {
                     "name": "Options",
