@@ -17,6 +17,7 @@ namespace Curry.Explore
     {
         [SerializeField] protected string m_name = default;
         [SerializeField] TacticalStats m_initStats = default;
+        [SerializeField] AudioManager m_audio = default;
         protected TacticalStatManager m_statManager;
         protected bool m_blocked = false;
         protected bool m_moving = false;
@@ -91,6 +92,7 @@ namespace Curry.Explore
         {
             Debug.Log("Player recovers " + val + " HP.");
             m_statManager.RecoverHp(val);
+            m_audio.Play("heal");
             RecoverHp?.Invoke(val, CurrentHp);
         }
         public void TakeHit(int hitVal) 
@@ -102,6 +104,10 @@ namespace Curry.Explore
             if (CurrentHp <= 0)
             {
                 OnDefeated();
+            }
+            else 
+            {
+                m_audio.Play("takeDamage");
             }
         }
         protected abstract void TakeHit_Internal(int hitVal);
