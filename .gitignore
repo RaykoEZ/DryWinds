@@ -11,6 +11,7 @@
 *.csproj
 *.cache
 *.log
+*.wav
 Assets/TextMesh Pro*
 Assets/Samples/*
 Assets/StreamingAssets/aa/*
