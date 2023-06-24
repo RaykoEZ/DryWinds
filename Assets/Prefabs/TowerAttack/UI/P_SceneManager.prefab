@@ -47,11 +47,11 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: 2e8869b6c35c8ee4eb3687a538b6fc43, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 0
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -146,22 +146,31 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_bgmSource: {fileID: 374327867}
-  m_fadeDuration: 10
+  m_fadeDuration: 5
   m_fadeInCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0.0044898987
       value: 0.020975113
-      inSlope: 0.022991436
-      outSlope: 0.022991436
+      inSlope: 0.016518055
+      outSlope: 0.016518055
       tangentMode: 34
       weightedMode: 0
       inWeight: 0
       outWeight: 0.33333334
     - serializedVersion: 3
-      time: 0.50783837
-      value: 0.032547817
+      time: 0.24365869
+      value: 0.024925716
+      inSlope: 0.04057119
+      outSlope: 0.04057119
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.49737084
+      value: 0.03756796
       inSlope: 0.036106072
       outSlope: 0.036106072
       tangentMode: 0
@@ -170,9 +179,9 @@ MonoBehaviour:
       outWeight: 0.2614959
     - serializedVersion: 3
       time: 1
-      value: 0.05
-      inSlope: 0.03546027
-      outSlope: 0.03546027
+      value: 0.06
+      inSlope: 0.044629406
+      outSlope: 0.044629406
       tangentMode: 34
       weightedMode: 0
       inWeight: 0.33333334
@@ -185,18 +194,18 @@ MonoBehaviour:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0.05
-      inSlope: -0.037702765
-      outSlope: -0.037702765
+      value: 0.06
+      inSlope: -0.04879479
+      outSlope: -0.04879479
       tangentMode: 34
       weightedMode: 0
       inWeight: 0
       outWeight: 0.33333334
     - serializedVersion: 3
-      time: 0.4986626
-      value: 0.031199042
-      inSlope: -0.049967196
-      outSlope: -0.049967196
+      time: 0.5015923
+      value: 0.03552491
+      inSlope: -0.060035795
+      outSlope: -0.060035795
       tangentMode: 34
       weightedMode: 0
       inWeight: 0.33333334
@@ -204,8 +213,8 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 1
       value: 0
-      inSlope: -0.062231626
-      outSlope: -0.062231626
+      inSlope: -0.0712768
+      outSlope: -0.0712768
       tangentMode: 34
       weightedMode: 0
       inWeight: 0.33333334
