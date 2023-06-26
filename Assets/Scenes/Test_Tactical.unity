@@ -7758,6 +7758,12 @@ MonoBehaviour:
     Volume: 1
     Pitch: 1
     Source: {fileID: 0}
+  - Name: cardConsume
+    Clip: {fileID: 8300000, guid: 320672636f53593438de079bc01f500a, type: 3}
+    Loop: 0
+    Volume: 1
+    Pitch: 1
+    Source: {fileID: 0}
 --- !u!82 &1736801562
 AudioSource:
   m_ObjectHideFlags: 0

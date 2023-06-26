@@ -103,6 +103,10 @@ namespace Curry.Explore
             m_drag.HideDropZone();
             yield return StartCoroutine(m_hand.PlayCard(card, m_player));
             // after effect activation, we spend the card
+            if(card is IConsumable) 
+            {
+                m_audio?.OnCardConsume();
+            }
             yield return StartCoroutine(m_postActivation.OnCardUse(card));
         }
         // When card is trying to actvated after it is dropped...
@@ -114,7 +118,8 @@ namespace Curry.Explore
             {
                 m_drag.HideDropZone();
                 onCancel?.Invoke();
-            }else
+            }
+            else
             {
                 m_time.TrySpendTime(card.TimeCost);
                 onPlay?.Invoke();
@@ -124,6 +129,7 @@ namespace Curry.Explore
                     PlayCard(card)
                 };
                 OnActivate?.Invoke(card.TimeCost, actions);
+                m_audio?.OnCardPlay();
             }
         }
         #endregion
