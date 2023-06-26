@@ -164,7 +164,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4580596304816161233}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -598,13 +598,13 @@ RectTransform:
   m_Children:
   - {fileID: 8507623189104917606}
   m_Father: {fileID: 4580596304816161233}
-  m_RootOrder: 3
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 1}
-  m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 1, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: -110}
   m_SizeDelta: {x: 200, y: 110}
-  m_Pivot: {x: 0.5, y: 0}
+  m_Pivot: {x: 0, y: 0}
 --- !u!222 &3040618460936928510
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -676,7 +676,7 @@ RectTransform:
   - {fileID: 3451590441922159936}
   - {fileID: 5896872068047233514}
   m_Father: {fileID: 4580596304816161233}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
@@ -1034,7 +1034,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 0
+    rgba: 4278190080
   m_fontColor: {r: 0, g: 0, b: 0, a: 0}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -1260,11 +1260,11 @@ RectTransform:
   - {fileID: 8046673709561883980}
   - {fileID: 5636301304751964452}
   - {fileID: 818380866698386188}
-  - {fileID: 2388399508466280763}
-  - {fileID: 6214922857566348740}
   - {fileID: 3610285067821897347}
+  - {fileID: 6214922857566348740}
   - {fileID: 8889394090415607622}
   - {fileID: 1767202649267322599}
+  - {fileID: 2388399508466280763}
   - {fileID: 3868289358715760985}
   m_Father: {fileID: 5636301306242561430}
   m_RootOrder: 0
@@ -1343,7 +1343,7 @@ RectTransform:
   m_Children:
   - {fileID: 3099645125461732969}
   m_Father: {fileID: 4580596304816161233}
-  m_RootOrder: 5
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
@@ -1587,13 +1587,6 @@ MonoBehaviour:
       m_eventToTrigger: {fileID: 11400000, guid: 3a30f108650ad9e4ab7dd4f9d5c6b221, type: 2}
     m_cardDropTrigger:
       m_eventToTrigger: {fileID: 0}
-  m_fx:
-    m_cardDragTrigger:
-      m_PersistentCalls:
-        m_Calls: []
-    m_cardDropTrigger:
-      m_PersistentCalls:
-        m_Calls: []
 --- !u!114 &4663118178239010786
 MonoBehaviour:
   m_ObjectHideFlags: 0

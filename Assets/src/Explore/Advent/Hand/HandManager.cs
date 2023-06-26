@@ -2,12 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using Curry.Events;
-using Curry.Util;
-using Curry.UI;
 using Assets.src.UI;
-using static UnityEngine.UIElements.UxmlAttributeDescription;
 
 namespace Curry.Explore
 {
@@ -26,6 +22,7 @@ namespace Curry.Explore
         [SerializeField] LayoutSpaceSetting m_spacing = default;
         [SerializeField] CardDragHandler m_drag = default;
         [SerializeField] HandCapacityDisplay m_capacity = default;
+        [SerializeField] CardAudioHandler m_audio = default;
         protected Hand m_hand;
         public int TotalHandHoldingValue => m_hand.TotalHandHoldingValue;
         public int MaxCapacity => m_hand.MaxCapacity;
@@ -61,6 +58,7 @@ namespace Curry.Explore
                 card.transform.SetParent(transform, false);
             }
             m_hand.AddCards(cardsToAdd);
+            m_audio?.OnCardDraw(cardsToAdd.Count);
             m_spacing.UpdateSpacing();
             m_capacity.UpdateDisplay(m_hand.MaxCapacity, m_hand.TotalHandHoldingValue);
         }

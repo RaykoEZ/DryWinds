@@ -7698,6 +7698,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1736801560}
   - component: {fileID: 1736801561}
+  - component: {fileID: 1736801563}
   - component: {fileID: 1736801562}
   m_Layer: 0
   m_Name: Audio
@@ -7741,6 +7742,18 @@ MonoBehaviour:
     Source: {fileID: 0}
   - Name: takeDamage
     Clip: {fileID: 8300000, guid: e9c468196ace1bf4fb5c9968fcd88246, type: 3}
+    Loop: 0
+    Volume: 1
+    Pitch: 1
+    Source: {fileID: 0}
+  - Name: cardDraw
+    Clip: {fileID: 8300000, guid: 1b5a8d8109ee00e4198086b11faf1695, type: 3}
+    Loop: 0
+    Volume: 1
+    Pitch: 1
+    Source: {fileID: 0}
+  - Name: cardPlay
+    Clip: {fileID: 8300000, guid: 97600507529918b43bddfbc350260ec6, type: 3}
     Loop: 0
     Volume: 1
     Pitch: 1
@@ -7841,6 +7854,19 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1736801563
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1736801559}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c67468d9cf368d42b12615c8c0ed194, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_audio: {fileID: 1736801561}
 --- !u!1 &1745942910
 GameObject:
   m_ObjectHideFlags: 0
@@ -10621,6 +10647,10 @@ PrefabInstance:
       propertyPath: m_time
       value: 
       objectReference: {fileID: 81830746}
+    - target: {fileID: 3945677919952748297, guid: 750af7f6d4fdfe44fb559603f07edcd9, type: 3}
+      propertyPath: m_audio
+      value: 
+      objectReference: {fileID: 1736801563}
     - target: {fileID: 3945677919952748297, guid: 750af7f6d4fdfe44fb559603f07edcd9, type: 3}
       propertyPath: m_player
       value: 

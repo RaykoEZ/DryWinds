@@ -26,7 +26,6 @@ namespace Curry.UI
         public event OnChoose OnChosen;
         public event OnChoose OnUnchoose;
         public event OnCardInspect OnInspect;
-
         public CardInteractMode InteractMode { get { return m_interactionMode; } protected set { m_interactionMode = value; } }
         public object Value { get => m_card; protected set => m_card = value as AdventCard; }
         public bool Choosable { get; set; } = true;

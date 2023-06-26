@@ -19,18 +19,10 @@ namespace Curry.Explore
             public CurryGameEventTrigger DragTrigger { get { return m_cardDragTrigger; } }
             public CurryGameEventTrigger DropTrigger { get { return m_cardDropTrigger; } }
         }
-        [Serializable]
-        protected struct FXTriggers
-        {
-            [SerializeField] UnityEvent m_cardDragTrigger;
-            [SerializeField] UnityEvent m_cardDropTrigger;
-            public UnityEvent DragTrigger { get { return m_cardDragTrigger; } }
-            public UnityEvent DropTrigger { get { return m_cardDropTrigger; } }
-        }
+
 
         [SerializeField] AdventCard m_card = default;
         [SerializeField] protected UITriggers m_ui = default;
-        [SerializeField] protected FXTriggers m_fx = default;
         public delegate void OnCardDragUpdate(DraggableCard card);
         public event OnCardDragUpdate OnDragFinish;
         public event OnCardDragUpdate OnDragBegin;
@@ -50,7 +42,6 @@ namespace Curry.Explore
                 base.OnBeginDrag(eventData);
                 EventInfo info = new EventInfo();
                 m_ui.DragTrigger?.TriggerEvent(info);
-                m_fx.DragTrigger?.Invoke();
                 OnDragBegin?.Invoke(this);
             }
         }
@@ -60,7 +51,6 @@ namespace Curry.Explore
             {
                 EventInfo info = new EventInfo();
                 m_ui.DropTrigger?.TriggerEvent(info);
-                m_fx.DropTrigger?.Invoke();
             }
             base.OnEndDrag(eventData);
             OnDragFinish?.Invoke(this);
