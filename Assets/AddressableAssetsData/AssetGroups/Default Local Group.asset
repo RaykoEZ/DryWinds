@@ -22,8 +22,145 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - CardPack0
-    m_MainAsset: {fileID: 0}
-    m_TargetAsset: {fileID: 0}
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8679abcae1cff1740bb9bb53ca4759c8
+    m_Address: Assets/Prefabs/TowerAttack/CardSystem/Pack0/AC_Card.controller
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - CardPack0
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 130f1972cbfa5c34aa6625680f0b256a
+    m_Address: Assets/Prefabs/TowerAttack/CardSystem/Pack0/Card_Detail.anim
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - CardPack0
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9c67a2c4446b1bc48966133eb94d64ff
+    m_Address: Assets/Prefabs/TowerAttack/CardSystem/Pack0/Card_HideDetail.anim
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - CardPack0
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0cda53694ace8ef4faa3cffe8be84328
+    m_Address: Assets/Prefabs/TowerAttack/CardSystem/Pack0/Card_Highlight.anim
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - CardPack0
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 40bb35b6f1ce6754fa228199f72be2a8
+    m_Address: Assets/Prefabs/TowerAttack/CardSystem/Pack0/Card_Inspecting.anim
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - CardPack0
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7bbacc53bebd2e94e82c63272ee099a6
+    m_Address: Assets/Prefabs/TowerAttack/CardSystem/Pack0/Card_NoHighlight.anim
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - CardPack0
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a3d3a0fefe8ded842a4da863342fb7b4
+    m_Address: Assets/Prefabs/TowerAttack/CardSystem/Pack0/Card_NoInspect.anim
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - CardPack0
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 961a0b8e070c49541a2715aa557eba06
+    m_Address: Assets/Prefabs/TowerAttack/CardSystem/Pack0/Card_OffCooldown.anim
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - CardPack0
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 26ba49ae79118d94383c34e99caebb2c
+    m_Address: Assets/Prefabs/TowerAttack/CardSystem/Pack0/Card_OnCooldown.anim
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - CardPack0
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: eeed7c9f618660041a1709b2b4618191
+    m_Address: Assets/Prefabs/TowerAttack/CardSystem/Pack0/Heal_repair.asset
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - CardPack0
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ef1d3ab221ea8e440a5fa517863a4114
+    m_Address: Assets/Prefabs/TowerAttack/CardSystem/Pack0/P_Assault.prefab
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - CardPack0
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 47095641c3f2ef547baa609f27f503fb
+    m_Address: Assets/Prefabs/TowerAttack/CardSystem/Pack0/P_Dummy_Card.prefab
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - CardPack0
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5a2a7ebf41978774983f432c3005cb73
+    m_Address: Assets/Prefabs/TowerAttack/CardSystem/Pack0/P_Exile.prefab
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - CardPack0
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0afe34ab51c25e64ba9c21a89feafe34
+    m_Address: Assets/Prefabs/TowerAttack/CardSystem/Pack0/P_Foresight.prefab
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - CardPack0
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 06703e5bca5015748b793e74e0f43e5a
+    m_Address: Assets/Prefabs/TowerAttack/CardSystem/Pack0/P_ReparKit.prefab
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - CardPack0
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9c001e81f6b3943469e0d99d2d350573
+    m_Address: Assets/Prefabs/TowerAttack/CardSystem/Pack0/P_ThreatAssessment.prefab
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - CardPack0
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 081ddebba565f1a4886ce4cba70e927e
+    m_Address: Assets/Prefabs/TowerAttack/CardSystem/Pack0/Push_.asset
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - CardPack0
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 94a1daac1fd471541aebe8e6f06573e0
+    m_Address: Assets/Prefabs/TowerAttack/CardSystem/Pack0/Scan_.asset
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - CardPack0
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 54a5e86dc6d49554e8a5136519222622
+    m_Address: Assets/Prefabs/TowerAttack/CardSystem/Pack0/CardResources/Card_Assault.asset
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - CardPack0
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e03a27ec03e462e43bbdf5a149670858
+    m_Address: Assets/Prefabs/TowerAttack/CardSystem/Pack0/CardResources/Card_Exile.asset
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - CardPack0
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: aed5d6eb51da5e44396684d1ff7c02f4
+    m_Address: Assets/Prefabs/TowerAttack/CardSystem/Pack0/CardResources/Card_Foresight.asset
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - CardPack0
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1deeb36c6436fa342a9a46306253bd5e
+    m_Address: Assets/Prefabs/TowerAttack/CardSystem/Pack0/CardResources/Card_RepairKit.asset
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - CardPack0
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d79b5d9a6f0742f4c862784cb90cabfc
+    m_Address: Assets/Prefabs/TowerAttack/CardSystem/Pack0/CardResources/Card_ThreatAssessment.asset
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - CardPack0
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: b7f44c639b5eac6459efa6d347a60ca1, type: 2}
   m_SchemaSet:
