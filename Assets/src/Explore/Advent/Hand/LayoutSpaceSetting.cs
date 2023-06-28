@@ -13,7 +13,6 @@ namespace Curry.Explore
         [SerializeField] float itemWidth = default;
         [SerializeField] HorizontalLayoutGroup m_layout = default;
         [SerializeField] RectTransform m_layoutLimit = default;
-
         // Used to calculate the ideal spacing for cards in a horizontal list of cards
         public void UpdateSpacing()
         {

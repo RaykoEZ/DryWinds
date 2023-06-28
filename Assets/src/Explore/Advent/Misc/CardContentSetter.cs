@@ -1,11 +1,5 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
-using System;
-using System.Threading;
-using System.Xml.Linq;
-using UnityEditor.Rendering.LookDev;
-
 namespace Curry.Explore
 {
     public class CardContentSetter : MonoBehaviour 

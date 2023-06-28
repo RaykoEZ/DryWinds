@@ -3,7 +3,6 @@ using Curry.Game;
 using System;
 using System.Collections.Generic;
 using Curry.Util;
-using static UnityEditor.PlayerSettings;
 
 namespace Curry.Explore
 {

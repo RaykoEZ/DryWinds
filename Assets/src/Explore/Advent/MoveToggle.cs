@@ -1,8 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using UnityEditor.U2D.Path;
-using Curry.Events;
 
 namespace Curry.Explore
 {

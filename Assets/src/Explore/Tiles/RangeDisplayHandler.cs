@@ -1,8 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.Tilemaps;
 using Curry.Util;
-using UnityEditor.iOS.Xcode;
-
 namespace Curry.Explore
 {
     public class RangeDisplayHandler : MonoBehaviour
@@ -152,5 +150,4 @@ namespace Curry.Explore
         }
         #endregion
     }
-
 }

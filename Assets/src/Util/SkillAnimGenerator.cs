@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using System.IO;
 using UnityEngine;
 using UnityEditor;
@@ -25,7 +26,6 @@ namespace Curry.Util
                 }
             }
         }
-
         // Add menu item named "My Window" to the Window menu
         [MenuItem("Curry/Skill/Anim Controller Generator")]
         public static void ShowWindow()
@@ -33,7 +33,6 @@ namespace Curry.Util
             //Show existing window instance. If one doesn't exist, make one.
             GetWindow(typeof(SkillAnimGenerator));
         }
-
         void CreateSkillAnimController(string saveAddress)
         {
             // Creates the controller
@@ -66,8 +65,6 @@ namespace Curry.Util
             startToIdle.duration = 0f;
 
         }
-
-
-
     }
 }
+#endif

@@ -1,12 +1,12 @@
 ﻿using System.Collections;
 using UnityEngine;
-using UnityEngine.Experimental.Rendering.Universal;
+
 
 namespace Curry.UI
 {
     public class LightGradientHandler : MonoBehaviour
     {
-        [SerializeField] Light2D m_light = default;
+        [SerializeField] UnityEngine.Rendering.Universal.Light2D m_light = default;
         [SerializeField] Gradient m_colourTransition = default;
         [SerializeField] float m_cycleLength = default;
         [SerializeField] float m_waitAfterCycle = default;

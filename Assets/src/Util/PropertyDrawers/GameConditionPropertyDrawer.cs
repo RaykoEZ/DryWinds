@@ -1,6 +1,6 @@
-﻿using System.Linq;
+﻿#if UNITY_EDITOR
+using System.Linq;
 using UnityEngine;
-#if UNITY_EDITOR
 using UnityEditor;
 
 namespace Curry.Util
@@ -50,5 +50,5 @@ namespace Curry.Util
                 attribute.ExistingFlags.ToArray()));
         }
     }
-#endif
 }
+#endif

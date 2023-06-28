@@ -13,7 +13,7 @@ TagManager:
   - UI
   - Environment
   - Attack
-  - Drawing
+  - PlayerTargeting
   - Enemies
   - Player
   - Obstacles
