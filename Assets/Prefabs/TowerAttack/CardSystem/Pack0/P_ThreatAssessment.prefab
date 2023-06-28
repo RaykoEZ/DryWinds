@@ -1,31 +1,11 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &1458675905969362800
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 24011085213001992}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 88f5102e475c1cf4eb3b4bba9046dda8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_resources: {fileID: 11400000, guid: d79b5d9a6f0742f4c862784cb90cabfc, type: 2}
-  m_cooldown: {fileID: 475080280616173808}
-  m_targeting:
-    m_targetLayer:
-      serializedVersion: 2
-      m_Bits: 512
-  m_startupModulesModules:
-  - {fileID: 475080280616173808}
-  m_scan: {fileID: 11400000, guid: 94a1daac1fd471541aebe8e6f06573e0, type: 2}
 --- !u!1001 &5651287287403814045
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 2
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 5258714694495575149, guid: ef1d3ab221ea8e440a5fa517863a4114, type: 3}
@@ -128,14 +108,40 @@ PrefabInstance:
       propertyPath: m_card
       value: 
       objectReference: {fileID: 1458675905969362800}
+    - target: {fileID: 5636301306242561431, guid: ef1d3ab221ea8e440a5fa517863a4114, type: 3}
+      propertyPath: m_ui.m_cardDropTrigger.m_eventToTrigger
+      value: 
+      objectReference: {fileID: 11400000, guid: 856b99b46ebcaee409c7fb6d66575bcd, type: 2}
     m_RemovedComponents:
     - {fileID: 5636301306242561433, guid: ef1d3ab221ea8e440a5fa517863a4114, type: 3}
+    m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: ef1d3ab221ea8e440a5fa517863a4114, type: 3}
 --- !u!1 &24011085213001992 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5636301306242561429, guid: ef1d3ab221ea8e440a5fa517863a4114, type: 3}
   m_PrefabInstance: {fileID: 5651287287403814045}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1458675905969362800
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 24011085213001992}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88f5102e475c1cf4eb3b4bba9046dda8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_resources: {fileID: 11400000, guid: d79b5d9a6f0742f4c862784cb90cabfc, type: 2}
+  m_cooldown: {fileID: 475080280616173808}
+  m_targeting:
+    m_targetLayer:
+      serializedVersion: 2
+      m_Bits: 512
+  m_startupModulesModules:
+  - {fileID: 475080280616173808}
+  m_scan: {fileID: 11400000, guid: 94a1daac1fd471541aebe8e6f06573e0, type: 2}
 --- !u!114 &475080280616173808 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5258714694495575149, guid: ef1d3ab221ea8e440a5fa517863a4114, type: 3}

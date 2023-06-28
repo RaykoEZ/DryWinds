@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Global Volume Profile
   m_EditorClassIdentifier: 
   components:
-  - {fileID: 550845407046828305}
   - {fileID: 6562119925085508444}
---- !u!114 &550845407046828305
+  - {fileID: 4853144614349132818}
+--- !u!114 &4853144614349132818
 MonoBehaviour:
   m_ObjectHideFlags: 3
   m_CorrespondingSourceObject: {fileID: 0}
@@ -30,16 +30,16 @@ MonoBehaviour:
   active: 1
   color:
     m_OverrideState: 1
-    m_Value: {r: 0.254717, g: 0.10763702, b: 0.0036044791, a: 1}
+    m_Value: {r: 0.4245283, g: 0.19112733, b: 0, a: 1}
   center:
-    m_OverrideState: 1
+    m_OverrideState: 0
     m_Value: {x: 0.5, y: 0.5}
   intensity:
     m_OverrideState: 1
-    m_Value: 0.55
+    m_Value: 0.3
   smoothness:
     m_OverrideState: 1
-    m_Value: 0.3
+    m_Value: 0.395
   rounded:
     m_OverrideState: 0
     m_Value: 0
@@ -61,7 +61,7 @@ MonoBehaviour:
     m_Value: 0.9
   intensity:
     m_OverrideState: 1
-    m_Value: 2.5
+    m_Value: 6
   scatter:
     m_OverrideState: 1
     m_Value: 0.6
@@ -70,7 +70,7 @@ MonoBehaviour:
     m_Value: 65472
   tint:
     m_OverrideState: 1
-    m_Value: {r: 1, g: 0.6443301, b: 0, a: 1}
+    m_Value: {r: 1, g: 0.91771525, b: 0.6367924, a: 1}
   highQualityFiltering:
     m_OverrideState: 0
     m_Value: 0
