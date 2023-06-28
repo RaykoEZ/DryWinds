@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using Curry.Events;
 using Assets.src.UI;
-
 namespace Curry.Explore
 {
     public delegate void OnActionStart(int timeSpent, List<IEnumerator> onActivate = null);

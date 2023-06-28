@@ -19,5 +19,5 @@ namespace Curry.Explore
             damage.intValue = EditorGUI.IntSlider(rect, label, damage.intValue, 0, 999);
         }
     }
-#endif
 }
+#endif

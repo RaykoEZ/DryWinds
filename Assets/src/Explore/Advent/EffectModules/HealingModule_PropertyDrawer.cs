@@ -18,5 +18,5 @@ namespace Curry.Explore
             healAmount.intValue = EditorGUI.IntSlider(rect, label, healAmount.intValue, 0, 999);          
         }
     }
-#endif
 }
+#endif
