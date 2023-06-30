@@ -24,7 +24,7 @@ namespace Curry.Explore
         [SerializeField] int m_timeToClear = default;
         [SerializeField] CurryGameEventListener m_onSpendTime = default;
         [SerializeField] CurryGameEventTrigger m_onTimeSpent = default;
-        [SerializeField] ResourceBar m_gauge = default;
+        [SerializeField] ResourceDisplayHandler m_gauge = default;
         [SerializeField] GameClock m_clock = default;
         [SerializeField] TextMeshProUGUI m_clearTimer = default;
         int m_timeLeftToClear;
@@ -40,7 +40,7 @@ namespace Curry.Explore
             ResetTime();
             m_onSpendTime?.Init();
             m_gauge?.SetMaxValue(TimeLeftToClear);
-            m_gauge?.SetBarValue(TimeToClear, forceInstantChange: true);
+            m_gauge?.SetCurrentValue(TimeToClear, true);
             UpdateTurnTimer();
         }
         public void ResetTime()
@@ -99,7 +99,7 @@ namespace Curry.Explore
             {
                 OnOutOfTimeTrigger?.Invoke(m_timeSpent);
             }
-            m_gauge.SetBarValue(m_timeLeftToClear);
+            m_gauge.SetCurrentValue(m_timeLeftToClear);
             // Animate clock
             for (int i = 0; i < toSpend; ++i)
             {

@@ -4,8 +4,28 @@ using System.Collections.Generic;
 using UnityEngine;
 using Curry.Events;
 using Assets.src.UI;
+using TMPro;
+
 namespace Curry.Explore
 {
+    [Serializable]
+    public struct ActionCost 
+    {
+        public int Time;
+        public int ActionCount;
+    }
+    //When player: moves, plays card, reformulate hand, this class handles cost previews 
+    public class ActionCostPreviewHandler : MonoBehaviour 
+    {
+        [SerializeField] TimeManager m_time = default;
+        [SerializeField] TextMeshProUGUI m_actionCostPreview = default;
+
+        public void OnCostPreview(ActionCost cost, out Action confirm, out Action cancel) 
+        {
+            confirm = () => { };
+            cancel = () => { };
+        }
+    }
     public delegate void OnActionStart(int timeSpent, List<IEnumerator> onActivate = null);
     // Intermediary between cards-in-hand and main play zone
     // Handles card activations
@@ -26,7 +46,6 @@ namespace Curry.Explore
         public int TotalHandHoldingValue => m_hand.TotalHandHoldingValue;
         public int MaxCapacity => m_hand.MaxCapacity;
         public IEnumerable<AdventCard> CardsInHand => new List<AdventCard>(m_hand.CardsInHand);
-
         public event OnActionStart OnActivate;
         public event OnCardReturn OnReturnToInventory;
         protected void Awake()
