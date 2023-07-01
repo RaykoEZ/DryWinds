@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using Curry.Util;
 using Curry.Events;
+using static UnityEditor.PlayerSettings;
 
 namespace Curry.Explore
 {
@@ -10,6 +11,7 @@ namespace Curry.Explore
         [SerializeField] PlayZone m_playZone = default;
         [SerializeField] SelectionManager m_selection = default;
         [SerializeField] CurryGameEventListener m_onDropTileSelected = default;
+        [SerializeField] ActionCostHandler m_cost = default;
         void Start()
         {
             m_onDropTileSelected?.Init();
@@ -37,16 +39,19 @@ namespace Curry.Explore
         }
         public void TargetGuide(DraggableCard draggable)
         {
-            if (draggable.Card is ITargetsPosition)
+            AdventCard card = draggable.Card;
+            if (card is ITargetsPosition)
             {
                 m_pendingCardRef = draggable;
                 m_selection?.TargetGuide(m_pendingCardRef.transform);
             }
+            m_cost?.BeginPreview(card.Cost);
             ShowDropZones();
         }
-        public void OnCardReturn(DraggableCard card)
+        public void OnCardReturn(DraggableCard _)
         {
             m_pendingCardRef = null;
+            m_cost?.CancelPreview();
             HideDropZone();
         }
         public void ShowDropZones() 

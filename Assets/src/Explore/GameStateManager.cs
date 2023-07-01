@@ -4,6 +4,7 @@ using Curry.Game;
 using Curry.Events;
 using Curry.Util;
 using System.Collections;
+using UnityEditor;
 
 namespace Curry.Explore
 {
@@ -14,18 +15,21 @@ namespace Curry.Explore
         public IPlayer Player { get; private set; }
         public DeckManager Deck { get; private set; }
         public LootManager LootManager { get; private set; }
+        public ActionCounter ActionCount { get; private set; }
         public GameConditionAttribute Milestones { get; private set; }
         public GameStateContext(
             int timeLeft, 
             IPlayer player,
             DeckManager deck,
             LootManager loot,
+            ActionCounter action,
             GameConditionAttribute milestones) 
         {
             TimeLeft = timeLeft;
             Player = player;
             Deck = deck;
             LootManager = loot;
+            ActionCount = action;
             Milestones = milestones;
         }
     }
@@ -47,6 +51,7 @@ namespace Curry.Explore
         [SerializeField] TimeManager m_time = default;
         [SerializeField] DeckManager m_deck = default;
         [SerializeField] LootManager m_loot = default;
+        [SerializeField] ActionCounter m_actionCount = default;
         [SerializeField] GamePhaseManager m_gamePhase = default;
         [SerializeField] TextMeshProUGUI m_resultText = default;
         [SerializeField] GameConditionAttribute m_mileStones = default;
@@ -55,7 +60,8 @@ namespace Curry.Explore
         public GameStateContext GetCurrent() 
         {
             int timeLeft = m_time.TimeLeftToClear;
-            GameStateContext ret = new GameStateContext(timeLeft, m_player, m_deck, m_loot, m_mileStones);
+            GameStateContext ret = new GameStateContext(
+                timeLeft, m_player, m_deck, m_loot, m_actionCount, m_mileStones);
             return ret;
         }
         void Start() 
@@ -72,7 +78,6 @@ namespace Curry.Explore
             yield return new WaitUntil(() => GameReadyToStart);
             m_gamePhase.StartGame();
         }
-
         public void OnGameConditionFulfilled(EventInfo info) 
         {
             if (info == null) 
@@ -85,7 +90,6 @@ namespace Curry.Explore
                 m_mileStones.Flag |= conditions.ConditionsFulfilled.Flag;
             }
         }
-
         void OnPlayerDefeat(ICharacter player) 
         {
             m_resultText.text = "Game Over";
@@ -101,13 +105,11 @@ namespace Curry.Explore
             m_resultText.text = "Main Objectives Complete";
             UpdateResultPanel();
         }
-
         void UpdateResultPanel() 
         {
             m_gameResult.gameObject.SetActive(true);
             m_gameResult.SetBool("GameOver", true);
         }
-
         void OnProceedToResult() 
         {
             m_gameResult.SetBool("GameOver", false);

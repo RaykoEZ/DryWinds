@@ -19,7 +19,7 @@ namespace Curry.Explore
         public string Name => m_resources.Attribute.Name;
         public string Description => m_resources.Attribute.Description;
         public RangeMap TargetingRange => m_resources.Attribute.TargetingRange;
-        public int TimeCost => m_resources.Attribute.TimeCost;
+        public ActionCost Cost => m_resources.Attribute.Cost;
         public int CooldownTime => m_resources.Attribute.Cooldown;
         public int HoldingValue => m_resources.Attribute.HoldingValue;
         public bool IsInitiallyOnCooldown => m_resources.Attribute.IsInitiallyOnCooldown;

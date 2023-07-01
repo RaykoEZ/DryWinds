@@ -45,17 +45,17 @@ namespace Curry.Explore
         }
         // returns true if we decide to act,
         // BasicAction & Reaction fields need to not be null before returning
-        public bool OnAction(int dt, bool reaction, out IEnumerator action)
+        public bool OnAction(ActionCost dt, bool reaction, out IEnumerator action)
         {
             bool ret;
             if (reaction) 
             {
-                ret = ChooseReaction_Internal(dt, out IEnumerator result);
+                ret = ChooseReaction_Internal(dt.Time, out IEnumerator result);
                 action = result;
             } 
             else 
             {
-                ret = ChooseAction_Internal(dt, out IEnumerator result);
+                ret = ChooseAction_Internal(dt.Time, out IEnumerator result);
                 action = result;
             }
             return ret;

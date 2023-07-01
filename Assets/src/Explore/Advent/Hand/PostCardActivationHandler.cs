@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.XR;
 
 namespace Curry.Explore
 {
@@ -8,17 +9,24 @@ namespace Curry.Explore
     // Triggers card behaviours when they are used (cooldown, consumable etc)
     public class PostCardActivationHandler : MonoBehaviour 
     {
-        protected TimeManager m_time;
+        [SerializeField] TimeManager m_time = default;
         protected Hand m_handRef; 
         protected List<AdventCard> m_cooldowns = new List<AdventCard>();
         public event OnCardReturn OnReturnToHand;
         public event OnCardReturn OnReturnToInventory;
-        public void Init(TimeManager time, Hand hand)
+        private void Start()
         {
-            m_time = time;
-            m_handRef = hand;
             m_time.OnTimeSpent += OnCooldownTick;
         }
+        void OnDestroy()
+        {
+            m_time.OnTimeSpent -= OnCooldownTick;
+        }
+        public void Init(Hand hand)
+        {
+            m_handRef = hand;
+        }
+
         public void TryApplyCoolDown(AdventCard card) 
         {
             if (card is ICooldown cd && cd.IsOnCooldown)
@@ -38,7 +46,7 @@ namespace Curry.Explore
             // played card will go back to inventory
             if (used is IConsumable consume) 
             {
-                m_handRef.TakeCard(used);
+                m_handRef?.TakeCard(used);
                 yield return StartCoroutine(HandleConsumable(used, consume));
             }
             else if(m_handRef.IsHandOverloaded)

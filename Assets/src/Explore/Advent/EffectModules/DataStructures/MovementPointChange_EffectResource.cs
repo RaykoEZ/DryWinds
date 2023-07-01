@@ -11,7 +11,7 @@ namespace Curry.Explore
         public MovementPointChange MovePointChange => m_movePointChange;
         public override void Activate(GameStateContext context)
         {
-            m_movePointChange?.ApplyEffect(context.Player);
+            m_movePointChange?.ApplyEffect(context.ActionCount);
         }
     }
 }

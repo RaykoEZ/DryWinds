@@ -15,7 +15,6 @@ namespace Curry.Explore
             time = t;
         }
     }
-
     public delegate void OutOfTime(int timeSpent);
     public delegate void TimeSpent(int timeSpent, int timeLeft);
     public class TimeManager : MonoBehaviour
@@ -48,7 +47,6 @@ namespace Curry.Explore
             m_timeLeftToClear = m_timeToClear;
             m_timeSpent = 0;
         }
-
         public void AddTime(EventInfo time)
         {
             if (time is TimeInfo add)
@@ -56,7 +54,6 @@ namespace Curry.Explore
                 m_timeLeftToClear += add.Time;
             }
         }
-
         // spend time and check if we run out of time
         public void SpendTime(EventInfo time)
         {
@@ -65,12 +62,10 @@ namespace Curry.Explore
                 TrySpendTime(spend.Time);
             }
         }
-
         public void AddTime(int time) 
         {
             m_timeLeftToClear += time;
         }
-
         // spend time and check if we run out of time
         public bool TrySpendTime(int timeToSpend) 
         {
@@ -81,7 +76,15 @@ namespace Curry.Explore
             }
             return enoughTime;
         }
-
+        public void PreviewCost(int cost) 
+        {
+            int newVal = Mathf.Clamp(m_timeLeftToClear - cost, 0, m_timeToClear);
+            m_gauge?.Preview(newVal);
+        }
+        public void CancelPreview() 
+        {
+            m_gauge?.TryCancelPreview();
+        }
         void UpdateTurnTimer()
         {
             if (m_clearTimer == null) return;

@@ -14,7 +14,7 @@ namespace Curry.Explore
     {
         protected class PlayerActionItem 
         {
-            public int TimeSpent;
+            public ActionCost ResourceSpent;
             public List<IEnumerator> Actions;
         }
         [SerializeField] MovementManager m_playerMovement = default;
@@ -30,11 +30,11 @@ namespace Curry.Explore
             m_playerMovement.OnStart += OnPlayerAction;
             m_enemy.OnActionBegin += OnEnemyAction;
         }
-        void OnPlayerAction(int timeSpent = 0, List<IEnumerator> actions = null)
+        void OnPlayerAction(ActionCost spent, List<IEnumerator> actions = null)
         {
             if (actions != null) 
             {
-                m_currentPlayerAction = new PlayerActionItem { TimeSpent = timeSpent, Actions = actions};
+                m_currentPlayerAction = new PlayerActionItem { ResourceSpent = spent, Actions = actions};
                 NextState = typeof(PlayerAction);
                 Interrupt();
             }
@@ -50,7 +50,7 @@ namespace Curry.Explore
             yield return CallActions(m_currentPlayerAction.Actions);
             yield return new WaitForEndOfFrame();
             // Check if there are enemy responses for this player action
-            if (m_enemy.OnEnemyInterrupt(m_currentPlayerAction.TimeSpent, out List<IEnumerator> resp))
+            if (m_enemy.OnEnemyInterrupt(m_currentPlayerAction.ResourceSpent, out List<IEnumerator> resp))
             {
                 m_interruptBuffer?.Push(resp);
             }                 

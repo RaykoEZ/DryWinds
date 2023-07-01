@@ -7,12 +7,9 @@ namespace Curry.Explore
     public class MovementPointChange : PropertyAttribute
     {
         [SerializeField] int m_changeValue = default;
-        public void ApplyEffect(ICharacter target)
+        public void ApplyEffect(ActionCounter target)
         {
-            if(target is IMovementLimiter lim) 
-            {
-                lim.UpdateMoveLimit(m_changeValue);
-            }
+            target.UpdateMoveCountDisplay(target.CurrentActionCount + m_changeValue);
         }
     }
 }

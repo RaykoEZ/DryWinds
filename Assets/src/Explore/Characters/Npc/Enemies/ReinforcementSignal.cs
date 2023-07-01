@@ -74,9 +74,9 @@ namespace Curry.Explore
         {
             m_countdownTimer = 0;
         }
-        public virtual bool OnAction(int dt, bool reaction, out IEnumerator action)
+        public virtual bool OnAction(ActionCost dt, bool reaction, out IEnumerator action)
         {
-            m_countdownTimer += dt;
+            m_countdownTimer += dt.Time;
             action = CanSpawn ? OnSpawnReinforcement() : null;
             m_countdownDisplay.text = CountdownTimer.ToString();
             return CanSpawn;

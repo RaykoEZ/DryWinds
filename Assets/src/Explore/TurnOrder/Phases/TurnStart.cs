@@ -8,11 +8,11 @@ namespace Curry.Explore
 {
     public class TurnStart : Phase
     {
-        [SerializeField] MovementManager m_movementManager = default;
+        [SerializeField] ActionCounter m_actionCount = default;
         protected override Type NextState { get; set; } = typeof(PlayerAction);
         protected override IEnumerator Evaluate_Internal()
         {
-            m_movementManager.UpdateMoveCounter();
+            m_actionCount.UpdateMoveCountDisplay(m_actionCount.CurrentActionCount + 1);
             TransitionTo();
             yield return null;
         }

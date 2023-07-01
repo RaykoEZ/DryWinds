@@ -4,6 +4,14 @@ using Curry.Util;
 
 namespace Curry.Explore
 {
+    [Serializable]
+    public struct ActionCost
+    {
+        [Range(0, 1000)]
+        public int Time;
+        [Range(0, 3)]
+        public int ActionCount;
+    }
     public enum CardType
     {
         Skill = 0,
@@ -18,8 +26,7 @@ namespace Curry.Explore
         [TextArea]
         [SerializeField] string m_description;
         [SerializeField] RangeMap m_targetingRange;
-        [Range(0, 1000)]
-        [SerializeField] int m_timeCost;
+        [SerializeField] ActionCost m_cost;
         [SerializeField] int m_cooldown;
         // How much room a card takes in hand, hand has a holding capacity (int)
         [SerializeField] int m_holdingValue;
@@ -27,7 +34,7 @@ namespace Curry.Explore
         public string Name => m_name;
         public string Description => m_description;
         public RangeMap TargetingRange => m_targetingRange;
-        public int TimeCost => m_timeCost;
+        public ActionCost Cost => m_cost;
         public int Cooldown => m_cooldown;
         public int HoldingValue => Mathf.Max(0, m_holdingValue);
         public bool IsInitiallyOnCooldown => m_isInitiallyOnCooldown;

@@ -174,16 +174,16 @@ namespace Curry.Explore
         // Whenever player spends time, update all enemies with countdowns 
         // returns: whether there are Responses from active enemies
         // out: enemy responses
-        public bool OnEnemyInterrupt(int timeSpent, out List<IEnumerator> resp)
+        public bool OnEnemyInterrupt(ActionCost resourceSpent, out List<IEnumerator> resp)
         {
             // Update all enemy countdowns here and get all responses
-            resp = HandleAction(timeSpent, reaction: true);
+            resp = HandleAction(resourceSpent, reaction: true);
             return resp.Count > 0;
         }
         // Notifies call stack for enemy action calls
         public bool OnEnemyAction() 
         {
-            List<IEnumerator> actions = HandleAction(0, reaction: false);
+            List<IEnumerator> actions = HandleAction(new ActionCost { }, reaction: false);
             bool hasActions = actions.Count > 0;
             if (hasActions) 
             {
@@ -208,7 +208,7 @@ namespace Curry.Explore
         }
 
         // Call all active enemies to respond to player action
-        List<IEnumerator> HandleAction(int dt, bool reaction) 
+        List<IEnumerator> HandleAction(ActionCost dt, bool reaction) 
         {
             // make sure list is up to date before and after
             UpdateActivity();

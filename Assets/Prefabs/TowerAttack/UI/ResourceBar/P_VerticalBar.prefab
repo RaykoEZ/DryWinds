@@ -347,9 +347,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9abe7b9aa298ef84da0240373c92ed7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_result: {fileID: 0}
+  m_result: {fileID: 8734236188599439317}
   m_transitionDuration: 0.5
-  m_resultFill: {fileID: 0}
+  m_resultFill: {fileID: 908518236281661979}
   m_warningGradient:
     serializedVersion: 2
     key0: {r: 0.8490566, g: 0.2659028, b: 0.20425417, a: 1}

@@ -4,36 +4,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using Curry.Events;
 using Assets.src.UI;
-using TMPro;
 
 namespace Curry.Explore
 {
-    [Serializable]
-    public struct ActionCost 
-    {
-        public int Time;
-        public int ActionCount;
-    }
-    //When player: moves, plays card, reformulate hand, this class handles cost previews 
-    public class ActionCostPreviewHandler : MonoBehaviour 
-    {
-        [SerializeField] TimeManager m_time = default;
-        [SerializeField] TextMeshProUGUI m_actionCostPreview = default;
-
-        public void OnCostPreview(ActionCost cost, out Action confirm, out Action cancel) 
-        {
-            confirm = () => { };
-            cancel = () => { };
-        }
-    }
-    public delegate void OnActionStart(int timeSpent, List<IEnumerator> onActivate = null);
+    public delegate void OnActionStart(ActionCost resouceSpent, List<IEnumerator> onActivate = null);
     // Intermediary between cards-in-hand and main play zone
     // Handles card activations
     public class HandManager : MonoBehaviour
     {
         [SerializeField] int m_maxHandCapacity = default;
         [SerializeField] Adventurer m_player = default;
-        [SerializeField] TimeManager m_time = default;
+        [SerializeField] ActionCostHandler m_cost = default;
         [SerializeField] PlayZone m_playZone = default;
         [SerializeField] Transform m_cardHolderRoot = default;
         [SerializeField] CurryGameEventListener m_onCardDraw = default;
@@ -55,7 +36,7 @@ namespace Curry.Explore
         protected void Start()
         {
             m_onCardDraw?.Init();
-            m_postActivation.Init(m_time, m_hand);
+            m_postActivation.Init(m_hand);
             m_postActivation.OnReturnToHand += AddCardsToHand;
             m_postActivation.OnReturnToInventory += ReturnCardsToInventory;
             // get starting hand
@@ -130,7 +111,7 @@ namespace Curry.Explore
         // When card is trying to actvated after it is dropped...
         void OnCardPlay(AdventCard card, Action onPlay, Action onCancel)
         {
-            bool enoughTime = card.TimeCost <= m_time.TimeLeftToClear;
+            bool enoughTime = m_cost.HasEnoughResource(card.Cost);
             //Try Spending Time/Resource, if not able, cancel
             if (!card.Activatable || !enoughTime)
             {
@@ -139,14 +120,14 @@ namespace Curry.Explore
             }
             else
             {
-                m_time.TrySpendTime(card.TimeCost);
+                m_cost.TrySpend(card.Cost);
                 onPlay?.Invoke();
                 // Make a container for the callstack and trigger it. 
                 List<IEnumerator> actions = new List<IEnumerator>
                 {
                     PlayCard(card)
                 };
-                OnActivate?.Invoke(card.TimeCost, actions);
+                OnActivate?.Invoke(card.Cost, actions);
                 m_audio?.OnCardPlay();
             }
         }

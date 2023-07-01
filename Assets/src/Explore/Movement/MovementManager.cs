@@ -4,6 +4,7 @@ using UnityEngine.Tilemaps;
 using Curry.Events;
 using System.Collections.Generic;
 using TMPro;
+using Curry.Game;
 
 namespace Curry.Explore
 {
@@ -13,10 +14,9 @@ namespace Curry.Explore
         [SerializeField] protected Adventurer m_player = default;
         [SerializeField] protected MoveToggle m_moveButton = default;
         [SerializeField] protected EncounterManager m_encounter = default;
-        [SerializeField] protected TimeManager m_time = default;
         [SerializeField] protected Tilemap m_terrain = default;
         [SerializeField] protected FogOfWar m_fog = default;
-
+        [SerializeField] protected ActionCostHandler m_actionCost = default;
         [SerializeField] protected CurryGameEventListener m_onAdventure = default;
         [SerializeField] protected CurryGameEventListener m_onPlayerMoved = default;
         [SerializeField] protected TextMeshProUGUI m_moveCountText = default;
@@ -25,13 +25,13 @@ namespace Curry.Explore
         bool m_movementInProgress = false;
         public static readonly string[] s_gameplayCollisionFilters = new string[] 
         { "Player", "Enemies", "Obstacles" };
+        static readonly ActionCost BaseMovementCost = new ActionCost { ActionCount = 1, Time = 1 };
         void Start()
         {
             m_onAdventure?.Init();
             m_onPlayerMoved?.Init();
             m_player.OnMoveFinished += OnPlayerMovementFinish;
             m_player.OnBlocked += OnPlayerBlocked;
-            UpdateMoveCountDisplay();
         }
         void OnPlayerBlocked(Vector3 blocked) 
         {
@@ -63,20 +63,24 @@ namespace Curry.Explore
             {
                 return;
             }
+            m_actionCost?.CancelPreview();
             StartInterrupt();
             bool tileExist = WorldTile.TryGetTile(m_terrain, worldPos, out WorldTile tile);
             // Trigger player to move to selected tile
             Vector3Int cell = m_terrain.WorldToCell(worldPos);
             Vector3 cellCenter = m_terrain.GetCellCenterWorld(cell);
             // Check for visible obstructions and time
-            if (tileExist && !IsPathObstructed(cellCenter, m_player.WorldPosition) && m_time.TrySpendTime(tile.Difficulty))
+            if (tileExist && !IsPathObstructed(cellCenter, m_player.WorldPosition) && 
+                m_actionCost.HasEnoughResource(BaseMovementCost))
             {
                 List<IEnumerator> action = new List<IEnumerator>
                 {
-                    StartAdventure(cellCenter, tile)
+                    StartAdventure(cellCenter)
                 };
                 // Trigger player to move to selected tile
-                OnStart?.Invoke(tile.Difficulty, action);
+                OnStart?.Invoke(
+                    new ActionCost { ActionCount = 1, Time = 1 }, 
+                    action);
             }
             else
             {
@@ -95,18 +99,9 @@ namespace Curry.Explore
                 OnFinish?.Invoke();
             }
         }
-        public void UpdateMoveCounter(int change = 1) 
-        {
-            m_player.UpdateMoveLimit(change);
-            UpdateMoveCountDisplay();
-        }
-        void UpdateMoveCountDisplay() 
-        {
-            m_moveCountText.text = $" {m_player.CurrentMoveCount} / {m_player.MaxMoveCount}";
-        }
         public void EnablePlay()
         {
-            m_moveButton.SetInteractable(m_player.CanMove);
+            m_moveButton.SetInteractable(m_actionCost.HasEnoughResource(BaseMovementCost));
         }
         public void DisablePlay()
         {
@@ -150,12 +145,12 @@ namespace Curry.Explore
             }
             return hit.Length > 1 && !allObstaclesAreUnKnown;
         }
-        IEnumerator StartAdventure(Vector3 targetPos, WorldTile tile)
+        IEnumerator StartAdventure(Vector3 targetPos)
         {
             StartInterrupt();
             m_movementInProgress = true;          
             m_player.Move(targetPos);
-            UpdateMoveCounter(-1);
+            m_actionCost?.TrySpend(BaseMovementCost);
             yield return new WaitUntil(() => !m_movementInProgress);
             bool trigger = false;
             OnEncounterFinish encounterFinishTrigger = () => trigger = true;

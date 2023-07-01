@@ -14,7 +14,7 @@ namespace Curry.Explore
         {
             SetCardName(attribute.Name);
             SetCardText(attribute.Description);
-            SetCost(attribute.TimeCost.ToString());
+            SetTimeCost(attribute.Cost.Time.ToString());
             SetHoldingValue(attribute.HoldingValue);
         }
         public void SetCardText(string description) 
@@ -25,7 +25,7 @@ namespace Curry.Explore
         {
             m_nameField.text = name;
         }
-        public void SetCost(string cost)
+        public void SetTimeCost(string cost)
         {
             m_cost.text = cost;
         }

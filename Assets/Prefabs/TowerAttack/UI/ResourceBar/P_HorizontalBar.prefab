@@ -180,6 +180,10 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8255802112180649354, guid: 61ff341e9831ab543883b0cf7ebb8054, type: 3}
+      propertyPath: m_Value
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8573629079525520911, guid: 61ff341e9831ab543883b0cf7ebb8054, type: 3}
       propertyPath: m_Name
       value: DiffBar
@@ -191,6 +195,10 @@ PrefabInstance:
     - target: {fileID: 8734236188599439317, guid: 61ff341e9831ab543883b0cf7ebb8054, type: 3}
       propertyPath: m_Direction
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8874075027954457089, guid: 61ff341e9831ab543883b0cf7ebb8054, type: 3}
+      propertyPath: m_smoothValueChange
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []

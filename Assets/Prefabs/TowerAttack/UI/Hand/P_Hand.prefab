@@ -15,9 +15,9 @@ GameObject:
   - component: {fileID: 3945677919952748297}
   - component: {fileID: 3945677919952748296}
   - component: {fileID: 3945677919952748299}
-  - component: {fileID: 3945677919952748294}
   - component: {fileID: 1204246923637035409}
   - component: {fileID: 5415707417686882081}
+  - component: {fileID: 3615171680018161651}
   m_Layer: 5
   m_Name: AdventHandPanel
   m_TagString: Untagged
@@ -127,7 +127,7 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-  m_postActivation: {fileID: 3945677919952748294}
+  m_postActivation: {fileID: 3615171680018161651}
   m_spacing:
     m_minSpacing: -150
     m_maxSpacing: 20
@@ -260,18 +260,6 @@ LineRenderer:
   m_UseWorldSpace: 1
   m_Loop: 0
   m_ApplyActiveColorSpace: 0
---- !u!114 &3945677919952748294
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3945677919952748302}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2271663a07a50874eb0b81294f6068b2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1204246923637035409
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -316,6 +304,18 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+--- !u!114 &3615171680018161651
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3945677919952748302}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2271663a07a50874eb0b81294f6068b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3945677920594794698
 GameObject:
   m_ObjectHideFlags: 0

@@ -1076,8 +1076,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 200, y: 50}
+  m_AnchoredPosition: {x: -15.5, y: -45}
+  m_SizeDelta: {x: 180, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &178023143
 MonoBehaviour:
@@ -1133,7 +1133,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 36
   m_fontStyle: 0
-  m_HorizontalAlignment: 2
+  m_HorizontalAlignment: 1
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -1162,7 +1162,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: 109.78529, y: 0, z: -24.951233, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -4825,8 +4825,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -44.86}
-  m_SizeDelta: {x: 200, y: 50}
+  m_AnchoredPosition: {x: 0, y: -45}
+  m_SizeDelta: {x: 180, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &871656575
 MonoBehaviour:
@@ -4882,7 +4882,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 36
   m_fontStyle: 0
-  m_HorizontalAlignment: 2
+  m_HorizontalAlignment: 4
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -4891,9 +4891,9 @@ MonoBehaviour:
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_enableWordWrapping: 0
   m_wordWrappingRatios: 0.4
-  m_overflowMode: 0
+  m_overflowMode: 1
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
@@ -4911,7 +4911,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: -25.436607, y: 0.72200584, z: 99.26487, w: 1.4441452}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -5462,7 +5462,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_displayName: Turn Start
-  m_movementManager: {fileID: 1190344612}
+  m_actionCount: {fileID: 1769241226}
 --- !u!1 &1013599510
 GameObject:
   m_ObjectHideFlags: 0
@@ -5498,8 +5498,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -44.86}
-  m_SizeDelta: {x: 200, y: 50}
+  m_AnchoredPosition: {x: 0, y: -45}
+  m_SizeDelta: {x: 250, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1013599512
 MonoBehaviour:
@@ -6189,9 +6189,9 @@ MonoBehaviour:
   m_player: {fileID: 1040645976}
   m_moveButton: {fileID: 1773398998}
   m_encounter: {fileID: 247824187}
-  m_time: {fileID: 81830746}
   m_terrain: {fileID: 1252504617}
   m_fog: {fileID: 2017579930}
+  m_actionCost: {fileID: 1769241227}
   m_onAdventure:
     m_eventToListen: {fileID: 11400000, guid: 736b70e15b9efe8408d6fe321c5396e4, type: 2}
     m_responses:
@@ -7796,6 +7796,7 @@ MonoBehaviour:
   m_time: {fileID: 81830746}
   m_deck: {fileID: 1024562575}
   m_loot: {fileID: 2069251241}
+  m_actionCount: {fileID: 0}
   m_gamePhase: {fileID: 1086930282}
   m_resultText: {fileID: 1152918570}
   m_mileStones:
@@ -8769,6 +8770,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1769241225}
+  - component: {fileID: 1769241226}
+  - component: {fileID: 1769241227}
   m_Layer: 5
   m_Name: ActionCounter
   m_TagString: Untagged
@@ -8797,6 +8800,35 @@ RectTransform:
   m_AnchoredPosition: {x: 128, y: 350}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1769241226
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1769241224}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0824787c5e60f048a7de1ca98fd3e8f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_maxMoveCount: 3
+  m_moveCount: {fileID: 871656575}
+  m_diff: {fileID: 178023143}
+--- !u!114 &1769241227
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1769241224}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb331b8118e77e647ad143bf6e824be4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_time: {fileID: 81830746}
+  m_actionCounter: {fileID: 1769241226}
 --- !u!1 &1773398996
 GameObject:
   m_ObjectHideFlags: 0
@@ -8953,6 +8985,70 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+        - m_Target: {fileID: 1769241226}
+          m_TargetAssemblyTypeName: Curry.Explore.ActionCounter, Assembly-CSharp
+          m_MethodName: PreviewCost
+          m_Mode: 3
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 1
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+        - m_Target: {fileID: 81830746}
+          m_TargetAssemblyTypeName: Curry.Explore.TimeManager, Assembly-CSharp
+          m_MethodName: PreviewCost
+          m_Mode: 3
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 1
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 1
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1736801562}
+          m_TargetAssemblyTypeName: UnityEngine.AudioSource, UnityEngine
+          m_MethodName: PlayOneShot
+          m_Mode: 2
+          m_Arguments:
+            m_ObjectArgument: {fileID: 8300000, guid: 7b6f21327634d0746b4bb6821bc6508f, type: 3}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+        - m_Target: {fileID: 1769241226}
+          m_TargetAssemblyTypeName: Curry.Explore.ActionCounter, Assembly-CSharp
+          m_MethodName: CancelPreview
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 1
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+        - m_Target: {fileID: 81830746}
+          m_TargetAssemblyTypeName: Curry.Explore.TimeManager, Assembly-CSharp
+          m_MethodName: CancelPreview
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &1801832017
 GameObject:
   m_ObjectHideFlags: 0
@@ -8983,8 +9079,8 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 871656574}
   - {fileID: 1013599511}
+  - {fileID: 871656574}
   - {fileID: 178023142}
   m_Father: {fileID: 1769241225}
   m_RootOrder: 0
@@ -11392,6 +11488,14 @@ PrefabInstance:
     serializedVersion: 2
     m_TransformParent: {fileID: 1938576582}
     m_Modifications:
+    - target: {fileID: 3615171680018161651, guid: 750af7f6d4fdfe44fb559603f07edcd9, type: 3}
+      propertyPath: m_time
+      value: 
+      objectReference: {fileID: 81830746}
+    - target: {fileID: 3945677919952748297, guid: 750af7f6d4fdfe44fb559603f07edcd9, type: 3}
+      propertyPath: m_cost
+      value: 
+      objectReference: {fileID: 1769241227}
     - target: {fileID: 3945677919952748297, guid: 750af7f6d4fdfe44fb559603f07edcd9, type: 3}
       propertyPath: m_time
       value: 
@@ -11524,6 +11628,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5415707417686882081, guid: 750af7f6d4fdfe44fb559603f07edcd9, type: 3}
+      propertyPath: m_cost
+      value: 
+      objectReference: {fileID: 1769241227}
     - target: {fileID: 5415707417686882081, guid: 750af7f6d4fdfe44fb559603f07edcd9, type: 3}
       propertyPath: m_playZone
       value: 
