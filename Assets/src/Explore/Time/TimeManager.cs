@@ -24,7 +24,6 @@ namespace Curry.Explore
         [SerializeField] CurryGameEventListener m_onSpendTime = default;
         [SerializeField] CurryGameEventTrigger m_onTimeSpent = default;
         [SerializeField] ResourceDisplayHandler m_gauge = default;
-        [SerializeField] GameClock m_clock = default;
         [SerializeField] TextMeshProUGUI m_clearTimer = default;
         int m_timeLeftToClear;
         int m_timeSpent;
@@ -32,7 +31,6 @@ namespace Curry.Explore
         public event TimeSpent OnTimeSpent;
         public int TimeToClear { get { return m_timeToClear; } }
         public int TimeLeftToClear { get { return m_timeLeftToClear; } }
-        public GameClock Clock { get { return m_clock; } }
         // Use this for initialization
         void Start()
         {
@@ -103,12 +101,7 @@ namespace Curry.Explore
                 OnOutOfTimeTrigger?.Invoke(m_timeSpent);
             }
             m_gauge.SetCurrentValue(m_timeLeftToClear);
-            // Animate clock
-            for (int i = 0; i < toSpend; ++i)
-            {
-                m_clock.Increment();
-                yield return new WaitForSeconds(0.02f);
-            }
+            yield return null;
         }
     }
 }

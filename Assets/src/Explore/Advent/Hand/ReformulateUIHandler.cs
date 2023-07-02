@@ -15,8 +15,10 @@ namespace Curry.Explore
         [SerializeField] PlayZone m_inventoryZone = default;
         [SerializeField] PlayZone m_handZone = default;
         [SerializeField] HandCapacityDisplay m_capacity = default;
+        [SerializeField] ActionCostHandler m_costHandle = default;
         public bool IsDisplaying { get; protected set; }
         public bool IsHandOverloaded => m_handHoldingValue > m_handCapacity;
+        static readonly ActionCost s_cost = new ActionCost { ActionCount = 1, Time = 0 };
         ReformulateState m_original = new ReformulateState();
         ReformulateState m_current;
         HandManager m_handRef;
@@ -65,7 +67,7 @@ namespace Curry.Explore
         {
             // Move cards between hand and inventory according to lists of additions
             // Show error if player tries to finish when result hand capacity is overloaded
-            if (IsHandOverloaded) 
+            if (IsHandOverloaded || !m_costHandle.TrySpend(s_cost)) 
             {
                 Debug.LogWarning($"Hand Capacity overloaded ({m_handHoldingValue} / {m_handCapacity})");
             }

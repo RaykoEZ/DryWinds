@@ -32,9 +32,19 @@ namespace Curry.Explore
             if (!m_onPreview)
             {
                 int newCurrent = m_current - toSpend;
-                m_diff.text = toSpend > 0 ?
-                    $"<color=red>( - {toSpend})</color>" : 
-                    $"<color=green>( + {-toSpend})</color>";
+                string display;
+                if (toSpend > 0) 
+                {
+                    display = $"<color=red>( - {toSpend})</color>";
+                }else if(newCurrent >= m_maxMoveCount) 
+                {
+                    display = "<color=white>( + 0)</color>";
+                }
+                else 
+                {
+                    display = $"<color=green>( + {-toSpend})</color>";
+                }
+                m_diff.text = display;
                 UpdateMoveCountDisplay(newCurrent);
                 m_onPreview = true;
             }
