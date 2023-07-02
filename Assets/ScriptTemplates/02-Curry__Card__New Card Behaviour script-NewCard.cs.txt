@@ -5,10 +5,10 @@ using UnityEngine;
 namespace Curry.Explore
 {
     #NOTRIM#
-    public class #SCRIPTNAME# : AdventCard, IEncounterModule
+    public class #SCRIPTNAME# : AdventCard
     {
         #NOTRIM#
-        public override IEnumerator ActivateEffect(IPlayer user)
+        public override IEnumerator ActivateEffect(ICharacter user)
         {
             #NOTRIM#
             yield return new WaitForEndOfFrame();

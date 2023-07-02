@@ -5096,6 +5096,7 @@ MonoBehaviour:
       m_defaultParent: {fileID: 1510134957}
   m_hand: {fileID: 615583783}
   m_startingInventory:
+  - {fileID: 3873730490787844752, guid: 747a31ceea71e9d43839068cd8db9f9a, type: 3}
   - {fileID: 6340036389574794449, guid: 5a2a7ebf41978774983f432c3005cb73, type: 3}
   - {fileID: 5636301306242561433, guid: ef1d3ab221ea8e440a5fa517863a4114, type: 3}
   - {fileID: 5400319584234665114, guid: 06703e5bca5015748b793e74e0f43e5a, type: 3}
