@@ -9,21 +9,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 477fd574d6d3fbc42a111c13f5e5337a, type: 3}
-  m_Name: Card_Spearhead
+  m_Script: {fileID: 11500000, guid: 2b7ceec576151e74d81d86c057ff9efc, type: 3}
+  m_Name: AreaAttack_
   m_EditorClassIdentifier: 
-  m_attribute:
-    m_name: Spearhead
-    m_description: Move to a position, immediately deal damage to adjacent enemies.
-    m_targetingRange:
+  m_effect:
+    m_uniqueTargets: 1
+    m_numToTarget: 2
+    m_attackRange:
       m_offsetList:
       - {x: 1, y: 0, z: 0}
       - {x: 0, y: 1, z: 0}
       - {x: -1, y: 0, z: 0}
       - {x: 0, y: -1, z: 0}
-    m_cost:
-      Time: 0
-      ActionCount: 0
-    m_cooldown: 0
-    m_holdingValue: 2
-    m_isInitiallyOnCooldown: 0
+    m_dealDamage: {fileID: 11400000, guid: 1ea5ea2e670d33643bec9b97b58623fd, type: 2}
+    m_targetLayer:
+      serializedVersion: 2
+      m_Bits: 0

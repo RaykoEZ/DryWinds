@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.PlayerSettings;
 
 namespace Curry.Explore
 {
@@ -12,18 +13,9 @@ namespace Curry.Explore
         [SerializeField] protected LayerMask m_targetLayer = default;
         public bool Satisfied { get; protected set; }
         public Vector3 Target { get; protected set; }
-        public bool HasValidTarget<T_Target>(Vector3 userOrigin, RangeMap range, out List<T_Target> validTargets)
+        public bool HasValidTargets<T_Target>(Vector3 userOrigin, RangeMap range, out List<T_Target> validTargets)
         {
-            validTargets = new List<T_Target>();
-            List<Vector3> validWorldPos = range.ApplyRangeOffsets(userOrigin);
-            foreach (Vector3 pos in validWorldPos)
-            {
-                if (GameUtil.TrySearchTarget(pos, m_targetLayer, out T_Target found))
-                {
-                    validTargets.Add(found);
-                }
-            }
-            return validTargets.Count > 0;
+            return GameUtil.HasValidTargets(userOrigin, range, m_targetLayer, out validTargets);
         }
         public void SetTarget(Vector3 target)
         {

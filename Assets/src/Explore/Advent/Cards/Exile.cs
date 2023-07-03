@@ -8,7 +8,7 @@ namespace Curry.Explore
     {
         [SerializeField] Push_EffectResource m_push = default;
         public override bool ConditionsSatisfied => m_targeting.Satisfied;
-        public override IEnumerator ActivateEffect(ICharacter user)
+        public override IEnumerator ActivateEffect(ICharacter user, GameStateContext context)
         {
             yield return m_targeting.
                 ActivateWithTargets<ICharacter, ICharacter>(user, m_push.PushModule.ApplyEffect);

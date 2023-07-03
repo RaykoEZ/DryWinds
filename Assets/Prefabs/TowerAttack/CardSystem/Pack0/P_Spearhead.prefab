@@ -193,6 +193,8 @@ MonoBehaviour:
       m_Bits: 512
   m_startupModulesModules:
   - {fileID: 8362635290521583200}
+  m_attack: {fileID: 11400000, guid: fd085a23668627f4e832dfeb8f822894, type: 2}
+  m_moveTo: {fileID: 11400000, guid: 9a81b79a32cdb4a42a6cb06e777bd53e, type: 2}
 --- !u!114 &8362635290521583200 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5258714694495575149, guid: ef1d3ab221ea8e440a5fa517863a4114, type: 3}

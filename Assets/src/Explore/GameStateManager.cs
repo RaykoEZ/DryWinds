@@ -9,11 +9,12 @@ using UnityEditor;
 namespace Curry.Explore
 {
     // A snapshot of the current game state
-    public struct GameStateContext
+    public class GameStateContext
     {
         public int TimeLeft { get; private set; }
         public IPlayer Player { get; private set; }
         public DeckManager Deck { get; private set; }
+        public MovementManager Movement { get; private set; }
         public LootManager LootManager { get; private set; }
         public ActionCounter ActionCount { get; private set; }
         public GameConditionAttribute Milestones { get; private set; }
@@ -21,12 +22,14 @@ namespace Curry.Explore
             int timeLeft, 
             IPlayer player,
             DeckManager deck,
+            MovementManager move,
             LootManager loot,
             ActionCounter action,
             GameConditionAttribute milestones) 
         {
             TimeLeft = timeLeft;
             Player = player;
+            Movement = move;
             Deck = deck;
             LootManager = loot;
             ActionCount = action;
@@ -48,9 +51,12 @@ namespace Curry.Explore
         [SerializeField] Adventurer m_player = default;
         [SerializeField] Animator m_gameResult = default;
         [SerializeField] ObjectiveManager m_objectives = default;
+        [SerializeField] PlayZone m_cardPlayZone = default;
+        [SerializeField] CardTargetEffectHandler m_cardTargeting = default;
         [SerializeField] TimeManager m_time = default;
         [SerializeField] DeckManager m_deck = default;
         [SerializeField] LootManager m_loot = default;
+        [SerializeField] MovementManager m_movement = default;
         [SerializeField] ActionCounter m_actionCount = default;
         [SerializeField] GamePhaseManager m_gamePhase = default;
         [SerializeField] TextMeshProUGUI m_resultText = default;
@@ -61,7 +67,13 @@ namespace Curry.Explore
         {
             int timeLeft = m_time.TimeLeftToClear;
             GameStateContext ret = new GameStateContext(
-                timeLeft, m_player, m_deck, m_loot, m_actionCount, m_mileStones);
+                timeLeft, 
+                m_player,
+                m_deck,
+                m_movement,
+                m_loot, 
+                m_actionCount, 
+                m_mileStones);
             return ret;
         }
         void Start() 
@@ -76,6 +88,10 @@ namespace Curry.Explore
         IEnumerator StartGame_Interal() 
         {
             yield return new WaitUntil(() => GameReadyToStart);
+            //initializing context users after deck loaded
+            GameStateContext c = GetCurrent();
+            m_cardPlayZone?.Init(c);
+            m_cardTargeting?.Init(c);
             m_gamePhase.StartGame();
         }
         public void OnGameConditionFulfilled(EventInfo info) 
@@ -109,11 +125,6 @@ namespace Curry.Explore
         {
             m_gameResult.gameObject.SetActive(true);
             m_gameResult.SetBool("GameOver", true);
-        }
-        void OnProceedToResult() 
-        {
-            m_gameResult.SetBool("GameOver", false);
-            m_gameResult.gameObject.SetActive(false);
         }
     }
 }

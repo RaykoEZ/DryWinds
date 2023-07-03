@@ -50,9 +50,8 @@ namespace Curry.Explore
                 resource?.Init(m_resources.Attribute);
             }
         }
-        // Card Effect
-        public abstract IEnumerator ActivateEffect(ICharacter user);
-
+        //Default Card Effect
+        public abstract IEnumerator ActivateEffect(ICharacter user, GameStateContext context);
         // Cooldown operation, if a card has cooldown (follows ICooldown)
         public void TriggerCooldown()
         {

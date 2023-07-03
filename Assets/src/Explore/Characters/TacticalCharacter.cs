@@ -35,8 +35,8 @@ namespace Curry.Explore
         public event OnCharacterUpdate OnDefeat;
         public event OnCharacterUpdate OnReveal;
         public event OnCharacterUpdate OnHide;
-        public event OnCharacterUpdate OnMoveFinished;
         public event OnMovementBlocked OnBlocked;
+        public event OnCharacterUpdate OnMoveFinished;
 
         protected virtual void OnTriggerEnter2D(Collider2D collision)
         {
@@ -126,7 +126,7 @@ namespace Curry.Explore
                 }
                 timeElapsed += Time.deltaTime;
                 transform.position = Vector2.Lerp(transform.position, target, timeElapsed / duration);
-                yield return null;
+                yield return new WaitForEndOfFrame();
             }
             OnMoveFinish();
         }

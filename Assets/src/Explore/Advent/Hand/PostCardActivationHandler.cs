@@ -5,15 +5,16 @@ using UnityEngine.XR;
 
 namespace Curry.Explore
 {
+    public delegate List<AdventCard> OnTakeCardFromHand(List<AdventCard> take);
     public delegate void OnCardReturn(List<AdventCard> toReturn);
     // Triggers card behaviours when they are used (cooldown, consumable etc)
     public class PostCardActivationHandler : MonoBehaviour 
     {
         [SerializeField] TimeManager m_time = default;
-        protected Hand m_handRef; 
         protected List<AdventCard> m_cooldowns = new List<AdventCard>();
         public event OnCardReturn OnReturnToHand;
         public event OnCardReturn OnReturnToInventory;
+        public event OnTakeCardFromHand OnTakeFromHand;
         private void Start()
         {
             m_time.OnTimeSpent += OnCooldownTick;
@@ -22,11 +23,6 @@ namespace Curry.Explore
         {
             m_time.OnTimeSpent -= OnCooldownTick;
         }
-        public void Init(Hand hand)
-        {
-            m_handRef = hand;
-        }
-
         public void TryApplyCoolDown(AdventCard card) 
         {
             if (card is ICooldown cd && cd.IsOnCooldown)
@@ -34,7 +30,7 @@ namespace Curry.Explore
                 StartCoroutine(HandleCooldown(cd, card));
             }
         }
-        public IEnumerator OnCardUse(AdventCard used) 
+        public IEnumerator OnCardUse(AdventCard used, bool isHandOverloaded) 
         {
             if (used is ICooldown cd) 
             {
@@ -44,26 +40,22 @@ namespace Curry.Explore
             // If hand is overloaded when card is played:
             // (total holding value in hand > max hand capacity)
             // played card will go back to inventory
+            List<AdventCard> take = new List<AdventCard> { used };
             if (used is IConsumable consume) 
             {
-                m_handRef?.TakeCard(used);
+                OnTakeFromHand?.Invoke(take);
                 yield return StartCoroutine(HandleConsumable(used, consume));
             }
-            else if(m_handRef.IsHandOverloaded)
+            else if(isHandOverloaded)
             {
-                m_handRef.TakeCard(used);
                 m_cooldowns.Remove(used);
-                ReturnToInventory(new List<AdventCard> { used });
+                OnReturnToInventory?.Invoke(take);
             }
             else 
             {
                 used.GetComponent<DraggableCard>()?.ReturnToBeforeDrag();
             }
             yield return new WaitForEndOfFrame();
-        }
-        protected void ReturnToInventory(List<AdventCard> toReturn) 
-        {
-            OnReturnToInventory?.Invoke(toReturn);
         }
         protected void OnCooldownTick(int spent, int timeLeft) 
         {

@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using Curry.Events;
 using Assets.src.UI;
+using UnityEditor;
+using Newtonsoft.Json.Linq;
+using Curry.UI;
 
 namespace Curry.Explore
 {
@@ -12,7 +15,6 @@ namespace Curry.Explore
     // Handles card activations
     public class HandManager : MonoBehaviour
     {
-        [SerializeField] int m_maxHandCapacity = default;
         [SerializeField] Adventurer m_player = default;
         [SerializeField] ActionCostHandler m_cost = default;
         [SerializeField] PlayZone m_playZone = default;
@@ -20,25 +22,22 @@ namespace Curry.Explore
         [SerializeField] CurryGameEventListener m_onCardDraw = default;
         [SerializeField] PostCardActivationHandler m_postActivation = default;
         [SerializeField] LayoutSpaceSetting m_spacing = default;
-        [SerializeField] CardDragHandler m_drag = default;
+        [SerializeField] CardTargetEffectHandler m_targetHandle = default;
         [SerializeField] HandCapacityDisplay m_capacity = default;
         [SerializeField] CardAudioHandler m_audio = default;
-        protected Hand m_hand;
+        [SerializeField] protected Hand m_hand = default;
         public int TotalHandHoldingValue => m_hand.TotalHandHoldingValue;
         public int MaxCapacity => m_hand.MaxCapacity;
+        public bool IsHandOverloaded => m_hand.IsHandOverloaded;
         public IEnumerable<AdventCard> CardsInHand => new List<AdventCard>(m_hand.CardsInHand);
         public event OnActionStart OnActivate;
         public event OnCardReturn OnReturnToInventory;
-        protected void Awake()
-        {
-            m_hand = new Hand(m_maxHandCapacity, m_drag);
-        }
         protected void Start()
         {
             m_onCardDraw?.Init();
-            m_postActivation.Init(m_hand);
             m_postActivation.OnReturnToHand += AddCardsToHand;
             m_postActivation.OnReturnToInventory += ReturnCardsToInventory;
+            m_postActivation.OnTakeFromHand += TakeCards;
             // get starting hand
             AdventCard[] cards = m_cardHolderRoot.GetComponentsInChildren<AdventCard>();
             m_hand.AddCards(cards);
@@ -55,26 +54,45 @@ namespace Curry.Explore
                 m_postActivation.TryApplyCoolDown(card);
                 cardsToAdd.Add(card);
                 card.transform.SetParent(transform, false);
+                PrepareCard(card);
             }
             m_hand.AddCards(cardsToAdd);
             m_audio?.OnCardDraw(cardsToAdd.Count);
             m_spacing.UpdateSpacing();
             m_capacity.UpdateDisplay(m_hand.MaxCapacity, m_hand.TotalHandHoldingValue);
         }
+        void PrepareCard(AdventCard card) 
+        {
+            if (card == null)
+            {
+                return;
+            }
+            card.GetComponent<DraggableCard>().OnReturn += m_targetHandle.OnCardReturn;
+            card.GetComponent<DraggableCard>().OnDragBegin += m_targetHandle.TargetGuide;
+            card.GetComponent<CardInteractionController>()?.SetInteractionMode(
+                CardInteractMode.Play | CardInteractMode.Inspect);
+        }
         public List<AdventCard> TakeCards(List<AdventCard> take) 
         {
             var ret = m_hand.TakeCards(take);
+            foreach (AdventCard taken in ret) 
+            {
+                OnCardLeaveHand(taken.GetComponent<DraggableCard>());
+            }
             m_spacing.UpdateSpacing();
             m_capacity.UpdateDisplay(m_hand.MaxCapacity, m_hand.TotalHandHoldingValue);
             return ret;
         }
+        protected virtual void OnCardLeaveHand(DraggableCard drag)
+        {
+            if (drag == null) return;
+            drag.OnDragBegin -= m_targetHandle.TargetGuide;
+            drag.OnReturn -= m_targetHandle.OnCardReturn;
+        }
         protected void ReturnCardsToInventory(List<AdventCard> cards) 
         {
-            foreach(var card in cards) 
-            {
-                m_hand.TakeCard(card);
-            }
-            OnReturnToInventory?.Invoke(cards);
+            var take = m_hand.TakeCards(cards);
+            OnReturnToInventory?.Invoke(take);
             m_capacity.UpdateDisplay(m_hand.MaxCapacity, m_hand.TotalHandHoldingValue);
         }
         public void OnCardDrawn(EventInfo info)
@@ -87,35 +105,35 @@ namespace Curry.Explore
         }
         protected virtual void OnCardLeavesHandParent(DraggableCard draggable)
         {
-            m_hand.OnCardLeaveHand(draggable);
+            OnCardLeaveHand(draggable);
             // If card is dragged out of hand, we re calculate spacing
             m_spacing.UpdateSpacing();
         }
         #endregion
         #region Playing a card
-        IEnumerator PlayCard(AdventCard card)
+        IEnumerator PlayCard(GameStateContext c, AdventCard card)
         {
             // Reset pending card
-            m_drag.ResetDragTarget();
+            m_targetHandle.ResetDragTarget();
             DraggableCard draggable = card.GetComponent<DraggableCard>();
             OnCardLeavesHandParent(draggable);
-            m_drag.HideDropZone();
-            yield return StartCoroutine(m_hand.PlayCard(card, m_player));
+            m_targetHandle.HideDropZone();
+            yield return StartCoroutine(m_hand.PlayCard(c, card, m_player));
             // after effect activation, we spend the card
             if(card is IConsumable) 
             {
                 m_audio?.OnCardConsume();
             }
-            yield return StartCoroutine(m_postActivation.OnCardUse(card));
+            yield return StartCoroutine(m_postActivation.OnCardUse(card, IsHandOverloaded));
         }
         // When card is trying to actvated after it is dropped...
-        void OnCardPlay(AdventCard card, Action onPlay, Action onCancel)
+        void OnCardPlay(GameStateContext c, AdventCard card, Action onPlay, Action onCancel)
         {
             bool enoughTime = m_cost.HasEnoughResource(card.Cost);
             //Try Spending Time/Resource, if not able, cancel
             if (!card.Activatable || !enoughTime)
             {
-                m_drag.HideDropZone();
+                m_targetHandle.HideDropZone();
                 onCancel?.Invoke();
             }
             else
@@ -125,7 +143,7 @@ namespace Curry.Explore
                 // Make a container for the callstack and trigger it. 
                 List<IEnumerator> actions = new List<IEnumerator>
                 {
-                    PlayCard(card)
+                    PlayCard(c, card)
                 };
                 OnActivate?.Invoke(card.Cost, actions);
                 m_audio?.OnCardPlay();
@@ -135,15 +153,23 @@ namespace Curry.Explore
         #region for displaying/disabling UI for playing cards
         public void EnablePlay()
         {
-            m_hand.EnablePlay();
-            m_playZone.OnDropped += OnCardPlay;
-            m_drag.OnCardTargetResolve += OnCardPlay;
+            foreach (AdventCard card in m_hand.CardsInHand)
+            {
+                card.GetComponent<CardInteractionController>()?.SetInteractionMode(
+                    CardInteractMode.Play | CardInteractMode.Inspect);
+            }
+            m_playZone.OnPlayed += OnCardPlay;
+            m_targetHandle.OnCardTargetResolve += OnCardPlay;
         }
         public void DisablePlay()
         {
-            m_hand.DisablePlay();
-            m_playZone.OnDropped -= OnCardPlay;
-            m_drag.OnCardTargetResolve -= OnCardPlay;
+            foreach (AdventCard card in m_hand.CardsInHand)
+            {
+                card.GetComponent<CardInteractionController>()?.
+                    SetInteractionMode(CardInteractMode.Inspect);
+            }
+            m_playZone.OnPlayed -= OnCardPlay;
+            m_targetHandle.OnCardTargetResolve -= OnCardPlay;
         }
         #endregion
     }

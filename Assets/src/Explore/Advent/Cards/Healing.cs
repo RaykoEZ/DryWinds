@@ -7,7 +7,7 @@ namespace Curry.Explore
     {
         [SerializeField] Heal_EffectResource m_healing = default;
         // Card Effect
-        public override IEnumerator ActivateEffect(ICharacter user)
+        public override IEnumerator ActivateEffect(ICharacter user, GameStateContext context)
         {
             m_healing?.Healing?.ApplyEffect(user, user);
             yield return null;

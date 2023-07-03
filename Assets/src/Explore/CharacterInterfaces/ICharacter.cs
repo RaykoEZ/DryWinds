@@ -1,5 +1,4 @@
-﻿using Curry.Game;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 namespace Curry.Explore
@@ -13,6 +12,8 @@ namespace Curry.Explore
         event OnCharacterUpdate OnDefeat;
         event OnCharacterUpdate OnReveal;
         event OnCharacterUpdate OnHide;
+        event OnCharacterUpdate OnMoveFinished;
+        event OnMovementBlocked OnBlocked;
         string Name { get; }
         int MaxHp { get; }
         int CurrentHp { get; }
@@ -30,5 +31,6 @@ namespace Curry.Explore
         void Despawn();
         // returns if warp was successful
         bool Warp(Vector3 to);
+        void Move(Vector3 destination);
     }
 }

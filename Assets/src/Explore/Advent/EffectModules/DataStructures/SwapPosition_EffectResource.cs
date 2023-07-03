@@ -9,9 +9,5 @@ namespace Curry.Explore
     {
         [SerializeField] SwapPosition m_swap = default;
         public SwapPosition SwapModule => m_swap;
-        public override void Activate(GameStateContext context)
-        {
-            // cannot do swap by just context yet
-        }
     }
 }

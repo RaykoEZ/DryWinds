@@ -36,6 +36,9 @@ namespace Curry.Explore
         public event OnCharacterUpdate OnHide;
         public event OnHpUpdate TakeDamage;
         public event OnHpUpdate RecoverHp;
+        public event OnCharacterUpdate OnMoveFinished;
+        public event OnMovementBlocked OnBlocked;
+
         public bool SpotsTarget => false;
         public EnemyId Id { get { return new EnemyId(gameObject.name); } }
         public IEnumerator BasicAction => OnSpawnReinforcement();
@@ -149,7 +152,9 @@ namespace Curry.Explore
         }
 
         public void Move(Vector3 target)
-        {     
+        {
+            OnMoveFinished?.Invoke(this);
+            OnBlocked?.Invoke(transform.position);
         }
         public bool Warp(Vector3 to)
         {

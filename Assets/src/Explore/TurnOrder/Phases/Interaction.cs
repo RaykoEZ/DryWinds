@@ -72,12 +72,14 @@ namespace Curry.Explore
             }
             TransitionTo();
         }
-
         protected IEnumerator CallActions(List<IEnumerator> actions) 
         {
             foreach (IEnumerator call in actions)
             {
-                yield return StartCoroutine(call);             
+                if (call != null) 
+                {
+                    yield return StartCoroutine(call);
+                }
                 yield return new WaitForEndOfFrame();
             }
         }

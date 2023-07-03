@@ -128,19 +128,19 @@ namespace Curry.Explore
         }
         void OnDragEnd(DraggableCard card)
         {
-            m_inventoryZone.SetPlayZonrActive(false);
-            m_handZone.SetPlayZonrActive(false);
+            m_inventoryZone.SetPlayZoneActive(false);
+            m_handZone.SetPlayZoneActive(false);
         }
         void OnCardDrag(DraggableCard drag) 
         {
             AdventCard card = drag.GetComponent<AdventCard>();
             if (m_current.HandCards.Contains(card)) 
             {
-                m_inventoryZone.SetPlayZonrActive();
+                m_inventoryZone.SetPlayZoneActive();
             }
             else if (m_current.InventoryCards.Contains(card)) 
             {
-                m_handZone.SetPlayZonrActive();
+                m_handZone.SetPlayZoneActive();
             }
         }
         void DropToInventory(AdventCard drop, Action onDrop, Action onCancel) 

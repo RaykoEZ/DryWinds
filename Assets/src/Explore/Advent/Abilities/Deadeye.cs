@@ -30,7 +30,7 @@ namespace Curry.Explore
             }
             bool rangeCheck = 
                 m_deadEyeCheck.
-                HasValidTarget(user.WorldPosition, 
+                HasValidTargets(user.WorldPosition, 
                 m_resource.Content.TargetingRange, out validTargets);
 
             IModifiable modify = user as IModifiable;

@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using UnityEngine;
 
@@ -6,10 +5,12 @@ namespace Curry.Explore
 {  
     public class Spearhead : AdventCard, ITargetsPosition, ICooldown
     {
-        [SerializeField] DealDamage_EffectResource m_dealDamage = default;
-        public override IEnumerator ActivateEffect(ICharacter user)
+        [SerializeField] AreaAttack_EffectResource m_attack = default;
+        [SerializeField] MoveTo_EffectResource m_moveTo = default;
+        public override IEnumerator ActivateEffect(ICharacter user, GameStateContext context)
         {
-            throw new NotImplementedException();
+            m_moveTo?.Effect?.ApplyEffect(user, m_targeting.Target, context.Movement, m_attack.Effect.ApplyEffect(user));
+            yield return null;
         }
     }
 }

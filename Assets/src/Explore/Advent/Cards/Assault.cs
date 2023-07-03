@@ -9,7 +9,7 @@ namespace Curry.Explore
     {
         [SerializeField] DealDamage_EffectResource m_dealDamage = default;
         public override bool ConditionsSatisfied => m_targeting.Satisfied;
-        public override IEnumerator ActivateEffect(ICharacter user)
+        public override IEnumerator ActivateEffect(ICharacter user, GameStateContext context)
         {
             yield return m_targeting.
                 ActivateWithTargets<ICharacter, ICharacter>(user, m_dealDamage.DamageModule.ApplyEffect);

@@ -1,25 +1,26 @@
 ﻿using UnityEngine;
-using Curry.Util;
 using Curry.Events;
-using static UnityEditor.PlayerSettings;
 
 namespace Curry.Explore
 {
-    public class CardDragHandler : MonoBehaviour
+    // Handles card activation triggers after a card finishes targeting a position
+    public class CardTargetEffectHandler : MonoBehaviour
     {
         [SerializeField] Transform m_playerTransform = default;
         [SerializeField] PlayZone m_playZone = default;
         [SerializeField] SelectionManager m_selection = default;
         [SerializeField] CurryGameEventListener m_onDropTileSelected = default;
         [SerializeField] ActionCostHandler m_cost = default;
-        void Start()
+        GameStateContext m_contextRef;
+        public void Init(GameStateContext c)
         {
+            m_contextRef = c;
             m_onDropTileSelected?.Init();
         }
         // The card we are dragging into a play zone
         DraggableCard m_pendingCardRef;
         // When a card, that targets a position, finishes targeting...
-        public event OnCardDrop OnCardTargetResolve;
+        public event OnCardPlayed OnCardTargetResolve;
         public void ResetDragTarget()
         {
             m_pendingCardRef = null;
@@ -35,7 +36,7 @@ namespace Curry.Explore
                 handler.SetTarget(pos.WorldPosition);
             }
             // do activation validation
-            OnCardTargetResolve?.Invoke(m_pendingCardRef.Card, onDrop: null, onCancel: m_pendingCardRef.OnCancel);
+            OnCardTargetResolve?.Invoke(m_contextRef, m_pendingCardRef.Card, onDrop: null, onCancel: m_pendingCardRef.OnCancel);
         }
         public void TargetGuide(DraggableCard draggable)
         {
@@ -62,13 +63,13 @@ namespace Curry.Explore
             }
             else 
             {
-                m_playZone.SetPlayZonrActive(true);
+                m_playZone.SetPlayZoneActive(true);
             }
         }
         public void HideDropZone()
         {
             m_selection.CancelSelection();
-            m_playZone.SetPlayZonrActive(false);
+            m_playZone.SetPlayZoneActive(false);
         }
     }
 }
