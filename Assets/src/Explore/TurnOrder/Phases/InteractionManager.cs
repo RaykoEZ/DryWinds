@@ -10,7 +10,7 @@ namespace Curry.Explore
 {
     // Handles player card/adventure plays
     // Handles AI actions and reactions
-    public class Interaction : Phase
+    public class InteractionManager : SceneInterruptBehaviour
     {
         protected class PlayerActionItem 
         {
@@ -21,10 +21,10 @@ namespace Curry.Explore
         [SerializeField] EnemyManager m_enemy = default;
         [SerializeField] HandManager m_cardPlay = default;
         Stack<List<IEnumerator>> m_interruptBuffer = new Stack<List<IEnumerator>>();
-        PlayerActionItem m_currentPlayerAction;
-        protected override Type NextState { get; set; } = typeof(PlayerAction);
-
-        public override void Init()
+        Stack<PlayerActionItem> m_characterActionStack = new Stack<PlayerActionItem>();
+        List<PlayerActionItem> m_actionsToAdd = new List<PlayerActionItem>();
+        bool m_inProgress = false;
+        void Start()
         {
             m_cardPlay.OnActivate += OnPlayerAction;
             m_playerMovement.OnStart += OnPlayerAction;
@@ -34,34 +34,59 @@ namespace Curry.Explore
         {
             if (actions != null) 
             {
-                m_currentPlayerAction = new PlayerActionItem { ResourceSpent = spent, Actions = actions};
-                NextState = typeof(PlayerAction);
-                Interrupt();
+                var newItem = new PlayerActionItem { ResourceSpent = spent, Actions = actions};
+                m_actionsToAdd.Add(newItem);
+            }
+            if (!m_inProgress) 
+            {
+                m_inProgress = true;
+                StartCoroutine(Evaluate_Internal());
             }
         }
         void OnEnemyAction(List<IEnumerator> actions) 
         {
             m_interruptBuffer.Push(actions);
-            NextState = typeof(EnemyAction);
-            Interrupt();
+            if (!m_inProgress)
+            {
+                m_inProgress = true;
+                StartCoroutine(Evaluate_Internal());
+            }
         }
         protected IEnumerator PlayerAction_Internal() 
         {
-            yield return CallActions(m_currentPlayerAction.Actions);
-            yield return new WaitForEndOfFrame();
-            // Check if there are enemy responses for this player action
-            if (m_enemy.OnEnemyInterrupt(m_currentPlayerAction.ResourceSpent, out List<IEnumerator> resp))
+            while(m_characterActionStack.Count > 0) 
             {
-                m_interruptBuffer?.Push(resp);
-            }                 
+                var currentAction = m_characterActionStack.Pop();
+                yield return CallActions(currentAction.Actions);
+                yield return new WaitForEndOfFrame();
+                // check for any generated actions after invoking current action
+                UpdateCalltack();
+                // Check if there are enemy responses for this player action
+                if (m_enemy.OnEnemyInterrupt(
+                    currentAction.ResourceSpent, out List<IEnumerator> resp) &&
+                    resp != null)
+                {
+                    m_interruptBuffer?.Push(resp);
+                }
+            }
+
         }
-        protected override IEnumerator Evaluate_Internal()
+        void UpdateCalltack()
         {
-            if (m_currentPlayerAction != null)
+            foreach(var toAdd in m_actionsToAdd) 
+            {
+                m_characterActionStack.Push(toAdd);
+            }
+            m_actionsToAdd.Clear();
+        }
+        protected IEnumerator Evaluate_Internal()
+        {
+            StartInterrupt();
+            UpdateCalltack();
+            if (m_characterActionStack.Count > 0)
             {
                 // Player goes first
                 yield return StartCoroutine(PlayerAction_Internal());
-                m_currentPlayerAction = null;
                 yield return new WaitForEndOfFrame();
             }
             // If we need to resolve interrupts from activated enemies, do it first
@@ -70,7 +95,8 @@ namespace Curry.Explore
                 yield return StartCoroutine(CallActions(m_interruptBuffer.Pop()));
                 yield return new WaitForSeconds(0.1f);
             }
-            TransitionTo();
+            m_inProgress = false;
+            EndInterrupt();
         }
         protected IEnumerator CallActions(List<IEnumerator> actions) 
         {

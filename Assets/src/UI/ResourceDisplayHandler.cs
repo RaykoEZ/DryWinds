@@ -25,9 +25,9 @@ namespace Curry.UI
         {
             if (!m_onPreview)
             {
+                m_diff?.SetBarValue(m_current.Current, true);
                 // preview bar shows behind current bar, showing the difference of old vs new
                 SetCurrentValue(val);
-                m_diff?.SetBarValue(m_previousValue, true);
                 m_onPreview = true;
             }
         }

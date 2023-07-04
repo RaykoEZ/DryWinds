@@ -56,7 +56,7 @@ namespace Curry.Explore
             ICharacter toMove = characterObj != null && characterObj is ICharacter character ?
                 character : m_player;
             IEnumerator onMoveFinish = info.Payload?["onMoveFinish"] as IEnumerator;
-            MoveCharacter(toMove, worldPos, onMoveFinish);
+            MoveCharacter(toMove, worldPos, true, onMoveFinish);
         }
         // When player reached selected tile, draw cards and trigger events
         public void OnPlayerMoved(EventInfo info)
@@ -121,21 +121,22 @@ namespace Curry.Explore
         public void MoveCharacter(
             ICharacter toMove, 
             Vector3 destination, 
+            bool payCost = true,
             IEnumerator onMoveFinish = null)
         {
-            m_actionCost?.CancelPreview();
             StartInterrupt();
             bool tileExist = WorldTile.TryGetTile(m_terrain, destination, out WorldTile tile);
             // Trigger player to move to selected tile
             Vector3Int cell = m_terrain.WorldToCell(destination);
             Vector3 cellCenter = m_terrain.GetCellCenterWorld(cell);
+            bool isBlocked = IsPathObstructed(cellCenter, m_player.WorldPosition);
+            bool eneoughResource = m_actionCost.HasEnoughResource(BaseMovementCost);
             // Check for visible obstructions and time
-            if (tileExist && !IsPathObstructed(cellCenter, m_player.WorldPosition) &&
-                m_actionCost.HasEnoughResource(BaseMovementCost))
+            if (tileExist && !isBlocked && eneoughResource)
             {
                 List<IEnumerator> action = new List<IEnumerator>
                 {
-                    StartAdventure(toMove, cellCenter, onMoveFinish),
+                    StartAdventure(toMove, cellCenter, payCost, onMoveFinish),
                 };
                 // Trigger player to move to selected tile
                 OnStart?.Invoke(
@@ -155,7 +156,6 @@ namespace Curry.Explore
             m_movementInProgress = true;
             toMove.Move(destination);
             yield return new WaitUntil(() => !m_movementInProgress);
-            m_actionCost?.TrySpend(BaseMovementCost);
             toMove.OnMoveFinished -= OnPlayerMovementFinish;
             toMove.OnBlocked -= OnPlayerBlocked;
             if(onFinish != null) 
@@ -163,12 +163,17 @@ namespace Curry.Explore
                 yield return StartCoroutine(onFinish);
             }
         }
-        IEnumerator StartAdventure(ICharacter toMove, Vector3 targetPos, IEnumerator onFinish = null)
+        IEnumerator StartAdventure(ICharacter toMove, Vector3 targetPos, bool payCost = true, IEnumerator onFinish = null)
         {
             StartInterrupt();
+            if (payCost) 
+            {
+                m_actionCost?.TrySpend(BaseMovementCost);
+            }
             yield return StartCoroutine(StartMovement(toMove, targetPos, onFinish));
+            m_actionCost?.CancelPreview();
             // only player gets to trigger encounters after moving
-            if(toMove is Adventurer) 
+            if (toMove is Adventurer) 
             {
                 yield return new WaitForEndOfFrame();
                 bool trigger = false;

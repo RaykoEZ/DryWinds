@@ -25,7 +25,9 @@ namespace Curry.Explore
         }
         public void TryApplyCoolDown(AdventCard card) 
         {
-            if (card is ICooldown cd && cd.IsOnCooldown)
+            if (card is ICooldown cd && 
+                cd.IsOnCooldown &&
+                !m_cooldowns.Contains(card))
             {
                 StartCoroutine(HandleCooldown(cd, card));
             }

@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditorInternal;
 using UnityEngine;
 
 namespace Curry.Explore
@@ -46,6 +47,11 @@ namespace Curry.Explore
         void HandleInterrupt(Phase interrupt) 
         {
             if (interrupt == null) return;
+            if(m_phaseStack.Count == 0) 
+            {
+                SetCurrentState(interrupt.GetType());
+                return;
+            }
             StartInterrupt();
             // interrupt current state, unlisten transition callbacks
             CurrentPhase.OnGameStateTransition -= OnStateTransition;

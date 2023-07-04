@@ -35,7 +35,7 @@ namespace Curry.Explore
         protected void Start()
         {
             m_onCardDraw?.Init();
-            m_postActivation.OnReturnToHand += AddCardsToHand;
+            m_postActivation.OnReturnToHand += PrepareCards;
             m_postActivation.OnReturnToInventory += ReturnCardsToInventory;
             m_postActivation.OnTakeFromHand += TakeCards;
             // get starting hand
@@ -47,19 +47,18 @@ namespace Curry.Explore
         #region Adding cards to hand
         public void AddCardsToHand(List<AdventCard> cards) 
         {
-            List<AdventCard> cardsToAdd = new List<AdventCard>();
-            foreach (AdventCard card in cards)
-            {
-                // If card is on cool down, apply cooldown tracking
-                m_postActivation.TryApplyCoolDown(card);
-                cardsToAdd.Add(card);
-                card.transform.SetParent(transform, false);
-                PrepareCard(card);
-            }
-            m_hand.AddCards(cardsToAdd);
-            m_audio?.OnCardDraw(cardsToAdd.Count);
+            PrepareCards(cards);
+            m_hand.AddCards(cards);
+            m_audio?.OnCardDraw(cards.Count);
             m_spacing.UpdateSpacing();
             m_capacity.UpdateDisplay(m_hand.MaxCapacity, m_hand.TotalHandHoldingValue);
+        }
+        void PrepareCards(List<AdventCard> toPrep)
+        {
+            foreach (AdventCard card in toPrep)
+            {
+                PrepareCard(card);
+            }
         }
         void PrepareCard(AdventCard card) 
         {
@@ -67,6 +66,9 @@ namespace Curry.Explore
             {
                 return;
             }
+            // If card is on cool down, apply cooldown tracking
+            m_postActivation.TryApplyCoolDown(card);
+            card.transform.SetParent(transform, false);
             card.GetComponent<DraggableCard>().OnReturn += m_targetHandle.OnCardReturn;
             card.GetComponent<DraggableCard>().OnDragBegin += m_targetHandle.TargetGuide;
             card.GetComponent<CardInteractionController>()?.SetInteractionMode(
@@ -139,6 +141,7 @@ namespace Curry.Explore
             else
             {
                 m_cost.TrySpend(card.Cost);
+                m_cost.CancelPreview();
                 onPlay?.Invoke();
                 // Make a container for the callstack and trigger it. 
                 List<IEnumerator> actions = new List<IEnumerator>

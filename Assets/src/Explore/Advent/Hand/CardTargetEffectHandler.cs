@@ -52,7 +52,6 @@ namespace Curry.Explore
         public void OnCardReturn(DraggableCard _)
         {
             m_pendingCardRef = null;
-            m_cost?.CancelPreview();
             HideDropZone();
         }
         public void ShowDropZones() 

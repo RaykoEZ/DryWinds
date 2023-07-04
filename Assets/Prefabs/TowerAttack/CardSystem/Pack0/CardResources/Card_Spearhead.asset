@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_attribute:
     m_name: Spearhead
-    m_description: Move to a position, immediately deal damage to adjacent enemies.
+    m_description: Move to a position, immediately deal damage to 2 enemies in the
+      four adjacent positions.
     m_targetingRange:
       m_offsetList:
       - {x: 1, y: 0, z: 0}

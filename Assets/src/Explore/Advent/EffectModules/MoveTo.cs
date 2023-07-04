@@ -9,7 +9,7 @@ namespace Curry.Explore
     {
         public void ApplyEffect(ICharacter moveThis, Vector3 destination, MovementManager movement, IEnumerator onMoveFinish = null)
         {
-            movement?.MoveCharacter(moveThis, destination, onMoveFinish);
+            movement?.MoveCharacter(moveThis, destination, false, onMoveFinish);
         }
     }
 }

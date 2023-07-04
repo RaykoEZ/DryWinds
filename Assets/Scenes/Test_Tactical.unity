@@ -427,13 +427,13 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 62530891}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1086930281}
-  m_RootOrder: 4
+  m_Father: {fileID: 0}
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -452,7 +452,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e464886484ce570439a2688f1e51eeec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_displayName: 
   m_playerMovement: {fileID: 1190344612}
   m_enemy: {fileID: 2096668154}
   m_cardPlay: {fileID: 615583783}
@@ -3376,26 +3375,6 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8798791765018246398, guid: 613f89d64653ca341b7e26c82704d43c, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8798791765018246398, guid: 613f89d64653ca341b7e26c82704d43c, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8798791765018246398, guid: 613f89d64653ca341b7e26c82704d43c, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8798791765018246398, guid: 613f89d64653ca341b7e26c82704d43c, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8798791765018246398, guid: 613f89d64653ca341b7e26c82704d43c, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 613f89d64653ca341b7e26c82704d43c, type: 3}
@@ -3613,7 +3592,7 @@ RectTransform:
   - {fileID: 13321990}
   - {fileID: 954890659}
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -4903,7 +4882,7 @@ RectTransform:
   - {fileID: 293502661}
   - {fileID: 260086586}
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -5233,10 +5212,9 @@ Transform:
   - {fileID: 2127039955}
   - {fileID: 262497677}
   - {fileID: 1962571923}
-  - {fileID: 62530892}
   - {fileID: 1356589893}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1086930282
 MonoBehaviour:
@@ -5257,7 +5235,6 @@ MonoBehaviour:
   - {fileID: 1009119723}
   - {fileID: 262497678}
   - {fileID: 1962571924}
-  - {fileID: 62530894}
   - {fileID: 2127039956}
 --- !u!114 &1152918570 stripped
 MonoBehaviour:
@@ -7875,30 +7852,6 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-        - m_Target: {fileID: 1769241226}
-          m_TargetAssemblyTypeName: Curry.Explore.ActionCounter, Assembly-CSharp
-          m_MethodName: PreviewCost
-          m_Mode: 3
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 1
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-        - m_Target: {fileID: 81830746}
-          m_TargetAssemblyTypeName: Curry.Explore.TimeManager, Assembly-CSharp
-          m_MethodName: PreviewCost
-          m_Mode: 3
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 1
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
   - eventID: 1
     callback:
       m_PersistentCalls:
@@ -7910,30 +7863,6 @@ MonoBehaviour:
           m_Arguments:
             m_ObjectArgument: {fileID: 8300000, guid: 7b6f21327634d0746b4bb6821bc6508f, type: 3}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-        - m_Target: {fileID: 1769241226}
-          m_TargetAssemblyTypeName: Curry.Explore.ActionCounter, Assembly-CSharp
-          m_MethodName: CancelPreview
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 1
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-        - m_Target: {fileID: 81830746}
-          m_TargetAssemblyTypeName: Curry.Explore.TimeManager, Assembly-CSharp
-          m_MethodName: CancelPreview
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 0
             m_StringArgument: 
@@ -8323,7 +8252,7 @@ Transform:
   - {fileID: 75294245}
   - {fileID: 598771461}
   m_Father: {fileID: 0}
-  m_RootOrder: 11
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1938576579
 GameObject:
@@ -8404,7 +8333,7 @@ RectTransform:
   - {fileID: 57948133}
   - {fileID: 120921341}
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -8552,7 +8481,7 @@ RectTransform:
   - {fileID: 696289189}
   - {fileID: 1283815371}
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}

@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2b7ceec576151e74d81d86c057ff9efc, type: 3}
-  m_Name: AreaAttack_
+  m_Name: AreaAttack_Spearhead
   m_EditorClassIdentifier: 
   m_effect:
     m_uniqueTargets: 1
@@ -24,4 +24,4 @@ MonoBehaviour:
     m_dealDamage: {fileID: 11400000, guid: 1ea5ea2e670d33643bec9b97b58623fd, type: 2}
     m_targetLayer:
       serializedVersion: 2
-      m_Bits: 0
+      m_Bits: 512
