@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_attribute:
     m_name: Sweep Scan
-    m_description: Clear nearby uncertainties.
+    m_description: Clear nearby fog of war.
     m_targetingRange:
       m_offsetList: []
     m_cost:

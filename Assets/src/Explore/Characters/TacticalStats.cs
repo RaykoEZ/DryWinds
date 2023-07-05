@@ -12,11 +12,16 @@ namespace Curry.Explore
     [Serializable]
     public struct TacticalStats 
     {
-        public int MaxHp;
-        public int Hp;
-        [Range(0, 3)]
-        public int MoveRange;
-        public int Speed;
+        [SerializeField] int maxHp;
+        [SerializeField] int hp;
+        [Range(1, 3)]
+        [SerializeField] int moveRange;
+        [SerializeField] int speed;
+
+        public int MaxHp { get => maxHp; set => maxHp = value; }
+        public int Hp { get => hp; set => hp = value; }
+        public int MoveRange { get => moveRange; set => moveRange = Mathf.Max(value, 1); }
+        public int Speed { get => speed; set => speed = value; }
     }
     public interface ITimedElement<T>
     {

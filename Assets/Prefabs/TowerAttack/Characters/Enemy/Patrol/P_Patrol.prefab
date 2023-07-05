@@ -519,11 +519,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_name: Border Patrol
   m_initStats:
-    MaxHp: 5
-    Hp: 5
-    MoveRange: 0
-    Speed: 2
-    Visibility: 0
+    maxHp: 5
+    hp: 5
+    moveRange: 1
+    speed: 1
   m_audio: {fileID: 5768770230270259994}
   m_anim: {fileID: 3642215462890439483}
   m_detect: {fileID: 9158939930621903418}

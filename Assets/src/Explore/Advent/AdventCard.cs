@@ -27,11 +27,12 @@ namespace Curry.Explore
         public int CurrentCooldown { get => m_cooldown.CurrentCooldown;}
         // Whether this card has satisfied activation conditions, if the card has any
         public virtual bool ConditionsSatisfied => true;
+
         // Whether keep card upon moving to a new tile
-        public virtual bool Activatable { get { return m_activatable; } private set { m_activatable = value; } }
+        public virtual bool IsActivatable(GameStateContext c)
+        { return m_activatable; }         
         public override void Prepare() 
         {
-            Activatable = true;
             var content = GetComponent<CardContentSetter>();
             content?.Setup(m_resources.Attribute);
 

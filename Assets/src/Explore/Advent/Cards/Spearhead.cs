@@ -1,3 +1,4 @@
+using Curry.Util;
 using System.Collections;
 using UnityEngine;
 
@@ -7,6 +8,13 @@ namespace Curry.Explore
     {
         [SerializeField] AreaAttack_EffectResource m_attack = default;
         [SerializeField] MoveTo_EffectResource m_moveTo = default;
+
+        public override bool IsActivatable(GameStateContext c)
+        {
+            bool isBloacked = c.Movement.IsPathObstructed(m_targeting.Target, c.Player.WorldPosition);
+            return !isBloacked;
+        }
+
         public override IEnumerator ActivateEffect(ICharacter user, GameStateContext context)
         {
             m_moveTo?.Effect?.ApplyEffect(user, m_targeting.Target, context.Movement, m_attack.Effect.ApplyEffect(user));

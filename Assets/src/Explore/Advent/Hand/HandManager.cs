@@ -133,7 +133,7 @@ namespace Curry.Explore
         {
             bool enoughTime = m_cost.HasEnoughResource(card.Cost);
             //Try Spending Time/Resource, if not able, cancel
-            if (!card.Activatable || !enoughTime)
+            if (!card.IsActivatable(c) || !enoughTime)
             {
                 m_targetHandle.HideDropZone();
                 onCancel?.Invoke();

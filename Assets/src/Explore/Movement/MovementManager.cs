@@ -53,7 +53,7 @@ namespace Curry.Explore
             ICharacter toMove = characterObj != null && characterObj is ICharacter character ?
                 character : m_player;
             IEnumerator onMoveFinish = info.Payload?["onMoveFinish"] as IEnumerator;
-            MoveCharacter(toMove, worldPos, true, onMoveFinish);
+            MoveCharacter(toMove, worldPos, BaseMovementCost, onMoveFinish);
         }
         public void EnablePlay()
         {
@@ -65,16 +65,16 @@ namespace Curry.Explore
             m_moveButton.Cancel();
         }
         // Do a collision check for direct path ahead, if there are hidden obstaclesm we allow the move
-        public bool IsPathObstructed(Vector3 targetCellCenter, Vector3 origin) 
+        public bool IsPathObstructed(Vector3 targetCellCenterWorld, Vector3 origin) 
         {
             // find any obstacles between player and destination
-            Vector3 diff = targetCellCenter - origin;
+            Vector3 diff = targetCellCenterWorld - origin;
             var hit = Physics2D.CircleCastAll
                 (origin, 
                 0.5f, 
                 diff.normalized, 
                 Vector2.Distance(origin, 
-                targetCellCenter), 
+                targetCellCenterWorld), 
                 LayerMask.GetMask(s_gameplayCollisionFilters));
             bool allObstaclesAreUnKnown = true;
             Vector3 pos;
@@ -107,7 +107,7 @@ namespace Curry.Explore
         public void MoveCharacter(
             ICharacter toMove, 
             Vector3 destination, 
-            bool payCost = true,
+            ActionCost cost,
             IEnumerator onMoveFinish = null)
         {
             StartInterrupt();
@@ -116,13 +116,13 @@ namespace Curry.Explore
             Vector3Int cell = m_terrain.WorldToCell(destination);
             Vector3 cellCenter = m_terrain.GetCellCenterWorld(cell);
             bool isBlocked = IsPathObstructed(cellCenter, m_player.WorldPosition);
-            bool eneoughResource = m_actionCost.HasEnoughResource(BaseMovementCost);
+            bool eneoughResource = m_actionCost.HasEnoughResource(cost);
             // Check for visible obstructions and time
             if (tileExist && !isBlocked && eneoughResource)
             {
                 List<IEnumerator> action = new List<IEnumerator>
                 {
-                    StartAdventure(toMove, cellCenter, payCost, onMoveFinish),
+                    StartAdventure(toMove, cellCenter, cost, onMoveFinish),
                 };
                 // Trigger player to move to selected tile
                 OnStart?.Invoke(
@@ -149,13 +149,10 @@ namespace Curry.Explore
                 yield return StartCoroutine(onFinish);
             }
         }
-        IEnumerator StartAdventure(ICharacter toMove, Vector3 targetPos, bool payCost = true, IEnumerator onFinish = null)
+        IEnumerator StartAdventure(ICharacter toMove, Vector3 targetPos, ActionCost payCost, IEnumerator onFinish = null)
         {
             StartInterrupt();
-            if (payCost) 
-            {
-                m_actionCost?.TrySpend(BaseMovementCost);
-            }
+            m_actionCost?.TrySpend(payCost);
             m_encounter.DisableEncounter();
             yield return StartCoroutine(StartMovement(toMove, targetPos, onFinish));
             m_actionCost?.CancelPreview();

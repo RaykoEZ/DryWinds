@@ -11,6 +11,7 @@ namespace Curry.Explore
         public int Time;
         [Range(0, 3)]
         public int ActionCount;
+        public static ActionCost Free => new ActionCost { ActionCount = 0, Time = 0 }; 
     }
     public enum CardType
     {
