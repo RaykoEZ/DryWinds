@@ -10,22 +10,14 @@ namespace Curry.Explore
     {
         [SerializeField] string m_displayName = default;
         public event OnTurnPhaseTransition OnGameStateTransition;
-        // Trigger interrupt for UI and others
-        public event OnPhaseInterrupt OnInterrupt;
         protected abstract Type NextState { get; set; }
         public string Name => m_displayName;
         public virtual void Init() { }
-
         public virtual void OnEnter(Phase incomingState) 
         {
             Evaluate();
         }
         public virtual void Pause() { }
-        public virtual void Resume() { }
-        protected void Interrupt()
-        {
-            OnInterrupt?.Invoke(this);
-        }
         // Type returned = the next game state.
         protected void Evaluate() 
         {

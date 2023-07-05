@@ -20,7 +20,6 @@ namespace Curry.Explore
         int MoveRange { get; }
         int Speed { get; }
         Vector3 WorldPosition { get; }
-        ObjectVisibility Visibility { get; }
         IReadOnlyList<AbilityContent> AbilityDetails { get; }
         Transform GetTransform();
         void Reveal();

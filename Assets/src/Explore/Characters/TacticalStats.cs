@@ -17,7 +17,6 @@ namespace Curry.Explore
         [Range(0, 3)]
         public int MoveRange;
         public int Speed;
-        public ObjectVisibility Visibility;
     }
     public interface ITimedElement<T>
     {

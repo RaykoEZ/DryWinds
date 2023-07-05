@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using Unity.Jobs.LowLevel.Unsafe;
 using UnityEngine;
 
 namespace Curry.UI
@@ -7,7 +8,8 @@ namespace Curry.UI
     public class BackgroundMusicManager : MonoBehaviour 
     {
         [SerializeField] AudioSource m_bgmSource = default;
-        [SerializeField] float m_fadeDuration = default;
+        [SerializeField] float m_fadeInDuration = default;
+        [SerializeField] float m_fadeOutDuration = default;
         [SerializeField] AnimationCurve m_fadeInCurve = default;
         [SerializeField] AnimationCurve m_fadeOutCurve = default;
         void Start()
@@ -19,11 +21,11 @@ namespace Curry.UI
         {
             if (playNow) 
             {
-                StartCoroutine(BgmTransition_Internal(clip));
+                m_bgmSource.clip = clip;
             }
             else 
             {
-                m_bgmSource.clip = clip;
+                StartCoroutine(BgmTransition_Internal(clip));
             }
         }
         IEnumerator BgmTransition_Internal(AudioClip clip) 
@@ -37,23 +39,23 @@ namespace Curry.UI
             m_bgmSource.Play();
             yield return StartCoroutine(FadeIn());
         }
-        IEnumerator FadeOut() 
+        public IEnumerator FadeOut() 
         {
             float t = 0f;
-            while (t < m_fadeDuration)
+            while (t < m_fadeInDuration)
             {
                 t += Time.deltaTime;
-                m_bgmSource.volume = m_fadeOutCurve.Evaluate(t / m_fadeDuration);
+                m_bgmSource.volume = m_fadeOutCurve.Evaluate(t / m_fadeOutDuration);
                 yield return null;
             }
         }
         IEnumerator FadeIn() 
         {
             float t = 0f;
-            while (t < m_fadeDuration)
+            while (t < m_fadeInDuration)
             {
                 t += Time.deltaTime;
-                m_bgmSource.volume = m_fadeInCurve.Evaluate(t/m_fadeDuration);
+                m_bgmSource.volume = m_fadeInCurve.Evaluate(t/m_fadeInDuration);
                 yield return null;
             }
         }

@@ -23,8 +23,8 @@ MonoBehaviour:
       - {x: -1, y: 0, z: 0}
       - {x: 0, y: -1, z: 0}
     m_cost:
-      Time: 0
-      ActionCount: 0
-    m_cooldown: 0
+      Time: 5
+      ActionCount: 1
+    m_cooldown: 20
     m_holdingValue: 2
     m_isInitiallyOnCooldown: 0

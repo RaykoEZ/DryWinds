@@ -1,8 +1,6 @@
 ﻿using Curry.Game;
-using Curry.Util;
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 namespace Curry.Explore
 {
@@ -25,13 +23,11 @@ namespace Curry.Explore
         }
         public override void Reveal()
         {
-            m_statManager.SetVisibility(ObjectVisibility.Visible);
             m_anim.SetBool("hidden", false);
             base.Reveal();
         }
         public override void Hide()
         {
-            m_statManager.SetVisibility(ObjectVisibility.Hidden);
             m_anim.SetBool("hidden", true);
             base.Hide();
         }
@@ -116,6 +112,7 @@ namespace Curry.Explore
             if (TargetsInSight.Count > 0)
             {
                 OnCombat();
+                Reveal();
             }
         }
         protected virtual void OnCombat()

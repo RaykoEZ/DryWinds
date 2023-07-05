@@ -29,7 +29,6 @@ namespace Curry.Explore
             {
                 phase.Init();
                 m_turnStateCollection.Add(phase.GetType(), phase);
-                phase.OnInterrupt += HandleInterrupt;
             }
             if (!m_turnStateCollection.ContainsValue(m_initPhase)) 
             {
@@ -43,40 +42,6 @@ namespace Curry.Explore
 
             m_gameStarted = true;
             SetCurrentState(m_initPhase.GetType());
-        }
-        void HandleInterrupt(Phase interrupt) 
-        {
-            if (interrupt == null) return;
-            if(m_phaseStack.Count == 0) 
-            {
-                SetCurrentState(interrupt.GetType());
-                return;
-            }
-            StartInterrupt();
-            // interrupt current state, unlisten transition callbacks
-            CurrentPhase.OnGameStateTransition -= OnStateTransition;
-            m_previous = CurrentPhase;
-            // Pause current phase (e.g. UI)
-            m_previous.Pause();
-            m_phaseStack.Push(interrupt);
-            Action onInterrupt = () => {
-                OnPhaseChange?.Invoke(interrupt.GetType());
-                interrupt.OnGameStateTransition += InterruptResolved;
-                interrupt.OnEnter(m_previous);
-            };
-            // Make popup for interrupt state
-            StartCoroutine(ChangeState(interrupt.Name, onInterrupt));
-        }
-        void InterruptResolved(Type _) 
-        {
-            // unlisten from finished interrupt state
-            m_previous = m_phaseStack.Pop();
-            m_previous.OnGameStateTransition -= InterruptResolved;
-            OnPhaseChange?.Invoke(CurrentPhase.GetType());
-            // Back from interrupt, listen to transition callbacks
-            // Resume previous phase operations
-            SetupCurrentState();
-            CurrentPhase.Resume();
         }
         void SetupCurrentState() 
         {
@@ -130,5 +95,4 @@ namespace Curry.Explore
             SetCurrentState(newGameState);
         }
     }
-
 }

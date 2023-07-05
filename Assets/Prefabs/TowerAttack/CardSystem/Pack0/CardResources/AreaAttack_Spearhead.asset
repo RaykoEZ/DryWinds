@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_effect:
     m_uniqueTargets: 1
-    m_numToTarget: 2
+    m_numToTarget: 3
     m_attackRange:
       m_offsetList:
       - {x: 1, y: 0, z: 0}

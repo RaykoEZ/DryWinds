@@ -14,8 +14,12 @@ namespace Curry.UI
         {
             m_previousValue = m_current.Current;
             m_current?.SetBarValue(val, instant);
-            TryConfirmPreview(val);
+            if (!m_onPreview) 
+            {
+                SetDiffValue(val);
+            }
         }
+
         public void SetMaxValue(float val) 
         {
             m_current?.SetMaxValue(val);
@@ -25,26 +29,23 @@ namespace Curry.UI
         {
             if (!m_onPreview)
             {
-                m_diff?.SetBarValue(m_current.Current, true);
+                m_onPreview = true;
+                SetDiffValue(m_current.Current, true);
                 // preview bar shows behind current bar, showing the difference of old vs new
                 SetCurrentValue(val);
-                m_onPreview = true;
-            }
-        }
-        void TryConfirmPreview(float val) 
-        {
-            if (m_onPreview) 
-            {
-                m_diff?.SetBarValue(val);
-                m_onPreview = false;
             }
         }
         public void TryCancelPreview() 
         {
             if (m_onPreview)
             {
+                m_onPreview = false;
                 SetCurrentValue(m_previousValue);
             }
+        }
+        void SetDiffValue(float val, bool instant = false)
+        {
+            m_diff?.SetBarValue(val, instant);
         }
     }
 }

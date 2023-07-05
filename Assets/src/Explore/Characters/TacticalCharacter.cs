@@ -26,7 +26,6 @@ namespace Curry.Explore
         public int CurrentHp => m_statManager.Current.Hp;      
         public int MoveRange => m_statManager.Current.MoveRange;     
         public int Speed => m_statManager.Current.Speed;
-        public virtual ObjectVisibility Visibility => m_statManager.Current.Visibility;
         public IModifierContainer<TacticalStats> CurrentStats => m_statManager;
         public abstract IReadOnlyList<AbilityContent> AbilityDetails { get; }
 
@@ -60,12 +59,10 @@ namespace Curry.Explore
         }
         public virtual void OnDefeated()
         {
-            GameUtil.LowlightGameplayObject(gameObject);
             OnDefeat?.Invoke(this);
         }
         public virtual void Reveal()
         {
-            GameUtil.HighlightGameplayObject(gameObject);
             OnReveal?.Invoke(this);
         }
         public void Despawn()

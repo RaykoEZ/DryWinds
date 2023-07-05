@@ -84,10 +84,6 @@ namespace Curry.Explore
         {
             m_current.Speed = speed;
         }
-        public void SetVisibility(ObjectVisibility newVal) 
-        {
-            m_current.Visibility = newVal;
-        }
         public virtual void OnTimeElapsed(int dt) 
         {
             foreach (IStatModifier<TacticalStats> mod in m_mods)
@@ -156,7 +152,6 @@ namespace Curry.Explore
                 Hp = Current.Hp,
                 MoveRange = m_base.MoveRange,
                 Speed = m_base.Speed,
-                Visibility = Current.Visibility
             };
             // if there are modifiers, reapply them to reset stats
             if (m_mods.Count == 0)
