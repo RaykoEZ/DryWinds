@@ -18,9 +18,7 @@ namespace Curry.Explore
         [SerializeField] protected FogOfWar m_fog = default;
         [SerializeField] protected ActionCostHandler m_actionCost = default;
         [SerializeField] protected CurryGameEventListener m_onAdventure = default;
-        [SerializeField] protected CurryGameEventListener m_onPlayerMoved = default;
         public event OnActionStart OnStart;
-        public event OnAdventureFinish OnFinish;
         bool m_movementInProgress = false;
         public static readonly string[] s_gameplayCollisionFilters = new string[] 
         { "Player", "Enemies", "Obstacles" };
@@ -28,7 +26,6 @@ namespace Curry.Explore
         void Start()
         {
             m_onAdventure?.Init();
-            m_onPlayerMoved?.Init();
         }
         // Used for event listener handle when player chooses a position to move into
         public void Adventure(EventInfo info)
@@ -57,17 +54,6 @@ namespace Curry.Explore
                 character : m_player;
             IEnumerator onMoveFinish = info.Payload?["onMoveFinish"] as IEnumerator;
             MoveCharacter(toMove, worldPos, true, onMoveFinish);
-        }
-        // When player reached selected tile, draw cards and trigger events
-        public void OnPlayerMoved(EventInfo info)
-        {
-            if (info == null) return;
-
-            if (info is CharacterInfo player)
-            {
-                HandleEncounterEvent(player.Character.WorldPosition);
-                OnFinish?.Invoke();
-            }
         }
         public void EnablePlay()
         {
@@ -170,22 +156,16 @@ namespace Curry.Explore
             {
                 m_actionCost?.TrySpend(BaseMovementCost);
             }
+            m_encounter.DisableEncounter();
             yield return StartCoroutine(StartMovement(toMove, targetPos, onFinish));
             m_actionCost?.CancelPreview();
             // only player gets to trigger encounters after moving
             if (toMove is Adventurer) 
             {
                 yield return new WaitForEndOfFrame();
-                bool trigger = false;
-                OnEncounterFinish encounterFinishTrigger = () => trigger = true;
-                m_encounter.OnEncounterFinished += encounterFinishTrigger;
                 // after movement, trigger any events
-                if (HandleEncounterEvent(m_player.WorldPosition))
-                {
-                    yield return new WaitUntil(() => trigger);
-                    m_encounter.OnEncounterFinished -= encounterFinishTrigger;
-                }
-            }       
+                m_encounter.CheckForEncounter(toMove.WorldPosition);
+            }
             EndInterrupt();
         }
         void OnPlayerBlocked(Vector3 blocked)
@@ -198,12 +178,6 @@ namespace Curry.Explore
         void OnPlayerMovementFinish(ICharacter player)
         {
             m_movementInProgress = false;
-        }
-        // one time events in locations
-        bool HandleEncounterEvent(Vector3 worldPosition)
-        {
-            // If there are special events in this location, trigger them
-            return m_encounter.OnEncounter(worldPosition);
         }
     }
 }

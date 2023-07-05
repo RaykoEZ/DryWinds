@@ -19,6 +19,7 @@ namespace Curry.UI
         bool showing = false;
         public void Display(ICharacter character) 
         {
+            StopAllCoroutines();
             StartCoroutine(Display_Internal(character));
         }
         IEnumerator Display_Internal(ICharacter character) 

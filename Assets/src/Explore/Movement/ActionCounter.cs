@@ -31,12 +31,12 @@ namespace Curry.Explore
         {
             if (!m_onPreview)
             {
-                int newCurrent = m_current - toSpend;
+                int newCurrent = Mathf.Clamp(m_current - toSpend, 0, m_maxMoveCount);
                 string display;
                 if (toSpend > 0) 
                 {
                     display = $"<color=red>( - {toSpend})</color>";
-                }else if(newCurrent >= m_maxMoveCount) 
+                }else if(newCurrent == m_current) 
                 {
                     display = "<color=white>( + 0)</color>";
                 }

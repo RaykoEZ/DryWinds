@@ -2,6 +2,7 @@
 using Curry.Events;
 using System;
 using UnityEngine.Tilemaps;
+
 namespace Curry.Explore
 {
     [Serializable]
@@ -15,39 +16,50 @@ namespace Curry.Explore
             EncounterId = id;
         }
     }
-    public delegate void OnEncounterFinish();
     public class EncounterManager : MonoBehaviour
     {
         [SerializeField] protected EncounterUIHandler m_ui = default;
         [SerializeField] protected GameStateManager m_gameState = default;
         [SerializeField] protected Tilemap m_locations = default;
         [SerializeField] protected TileBase m_clearTile = default;
-        public event OnEncounterFinish OnEncounterFinished;
+        [SerializeField] protected EncounterIcon m_icon = default;
         Vector3 m_currentPos;
         void Start()
         {
             m_ui.OnEncounterFinished += OnFinish;
+            m_icon.OnTrigger += TriggerEncounter;
         }
         void OnFinish() 
         {
             Vector3Int mapCoord = m_locations.WorldToCell(m_currentPos);
             m_locations.SetTile(mapCoord, m_clearTile);
-            OnEncounterFinished?.Invoke();
+            DisableEncounter();
         }
-        public bool OnEncounter(Vector3 worldPos)
+        public void TriggerEncounter() 
         {
-            // If there are special events in this location, trigger them
-            if (WorldTile.TryGetTile(m_locations, worldPos, out LocationTile e))
+            if (WorldTile.TryGetTile(m_locations, m_currentPos, out LocationTile e))
             {
-                m_currentPos = worldPos;
-                // Remove events after drawing those special event cards
                 m_ui.BeginEncounter(e.GetEncounter(), m_gameState.GetCurrent());
-                return true;
             }
-            else
+            else 
             {
-                return false;
-            }       
+                Debug.Log("No encounters here");
+            }
+        }
+        // Remove active encounter icon
+        public void DisableEncounter() 
+        {
+            m_icon?.Hide();
+        }
+        public void CheckForEncounter(Vector3 worldPos)
+        {
+            m_currentPos = worldPos;
+            // If there are special events in this location, trigger them
+            if (WorldTile.TryGetTile(m_locations, worldPos, out LocationTile _))
+            {
+                // Pop the encounter prompt icon if there is an encounter at this position
+                m_icon?.Show();
+            }     
         }
     }
 }

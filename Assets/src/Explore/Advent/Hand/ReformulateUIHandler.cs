@@ -69,7 +69,7 @@ namespace Curry.Explore
             // Show error if player tries to finish when result hand capacity is overloaded
             if (IsHandOverloaded || !m_costHandle.TrySpend(s_cost)) 
             {
-                Debug.LogWarning($"Hand Capacity overloaded ({m_handHoldingValue} / {m_handCapacity})");
+                Debug.LogWarning($"Cannot finalize");
             }
             else 
             {

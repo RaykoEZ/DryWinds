@@ -77,10 +77,13 @@ namespace Curry.Explore
             OnTileSelected?.Invoke(gridCoord);
             HighlightTileInternal(gridCoord);
             bool isCoordClear = m_fogOfWar.IsCellClear(gridCoord);
-            if (isCoordClear && info.SelectedObject != null &&
-                info.SelectedObject.TryGetComponent(out ICharacter character))
+            bool hasCharacter = GameUtil.TrySearchTarget(
+                info.ClickWorldPos,
+                LayerMask.GetMask(MovementManager.s_gameplayCollisionFilters),
+                out ICharacter result);
+            if (isCoordClear && hasCharacter && result != null)
             {
-                OnSelectCharacter(character, info.SelectionMode);
+                OnSelectCharacter(result, info.SelectionMode);
             }
             else
             {

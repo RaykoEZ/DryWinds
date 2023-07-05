@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using Curry.Game;
 using System.Collections;
-using Curry.UI;
-using Curry.Util;
 
 namespace Curry.Explore
 {
