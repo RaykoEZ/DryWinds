@@ -12,12 +12,12 @@ namespace Curry.Explore
     {
         [SerializeField] bool m_uniqueTargets = default;
         [SerializeField] int m_numToTarget = default;
-        [SerializeField] RangeMap m_attackRange = default;
+        [SerializeField] RangeMapAsset m_attackRange = default;
         [SerializeField] DealDamage_EffectResource m_dealDamage = default;
         [SerializeField] protected LayerMask m_targetLayer = default;
         public IEnumerator ApplyEffect(ICharacter user)
         {
-            if (GameUtil.HasValidTargets(user.WorldPosition, m_attackRange, m_targetLayer, out List<ICharacter> validTargets))
+            if (GameUtil.HasValidTargets(user.WorldPosition, m_attackRange.Range, m_targetLayer, out List<ICharacter> validTargets))
             {
                 List<ICharacter> result = SamplingUtil.SampleFromList(validTargets, m_numToTarget, m_uniqueTargets);
                 foreach (var chosen in result)

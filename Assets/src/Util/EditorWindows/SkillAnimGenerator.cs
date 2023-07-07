@@ -63,7 +63,6 @@ namespace Curry.Util
             var startToIdle = onStart.AddTransition(onIdle);
             startToIdle.hasExitTime = true;
             startToIdle.duration = 0f;
-
         }
     }
 }

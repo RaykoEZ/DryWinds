@@ -51,7 +51,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a3dca2e9f5e2b140bd0d738fb220f52, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_timeToClear: 20
+  m_timeToClear: 100
   m_onSpendTime:
     m_eventToListen: {fileID: 11400000, guid: 2178acb1d6855d044b6b15bf74dac0d6, type: 2}
     m_responses:

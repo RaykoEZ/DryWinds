@@ -9,31 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2ebb2a2024fb75e468a39bb5b90ce5b4, type: 3}
-  m_Name: MoveRangeMap
+  m_Script: {fileID: 11500000, guid: 4828170ceb351fb439fed079bce9c7d1, type: 3}
+  m_Name: Range_Rad_3
   m_EditorClassIdentifier: 
-  m_squareRadiusRangeMaps:
-  - OffsetsFromOrigin:
-    - {x: 0, y: 0, z: 0}
-  - OffsetsFromOrigin:
-    - {x: 0, y: 1, z: 0}
-    - {x: 0, y: -1, z: 0}
-    - {x: 1, y: 0, z: 0}
-    - {x: -1, y: 0, z: 0}
-  - OffsetsFromOrigin:
-    - {x: 0, y: -2, z: 0}
-    - {x: 0, y: 2, z: 0}
-    - {x: 1, y: 1, z: 0}
-    - {x: 1, y: -1, z: 0}
-    - {x: -1, y: 1, z: 0}
-    - {x: -1, y: -1, z: 0}
-    - {x: 0, y: -1, z: 0}
-    - {x: 0, y: 1, z: 0}
-    - {x: 2, y: 0, z: 0}
-    - {x: -2, y: 0, z: 0}
-    - {x: 1, y: 0, z: 0}
-    - {x: -1, y: 0, z: 0}
-  - OffsetsFromOrigin:
+  m_range:
+    m_offsetList:
     - {x: 0, y: -3, z: 0}
     - {x: 0, y: 3, z: 0}
     - {x: 1, y: 2, z: 0}

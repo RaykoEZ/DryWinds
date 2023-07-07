@@ -10,20 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 477fd574d6d3fbc42a111c13f5e5337a, type: 3}
-  m_Name: Card_Assault
+  m_Name: Card_Spearhead
   m_EditorClassIdentifier: 
   m_attribute:
-    m_name: Assault
-    m_description: 'Deal damage to an adjacent enemy. '
-    m_targetingRange:
-      m_offsetList:
-      - {x: 1, y: 0, z: 0}
-      - {x: 0, y: 1, z: 0}
-      - {x: -1, y: 0, z: 0}
-      - {x: 0, y: -1, z: 0}
+    m_name: Spearhead
+    m_description: Move to an adjacent position, then deal 3 damage to 2 enemies
+      in the four adjacent positions.
+    m_targetingRange: {fileID: 11400000, guid: 9854b15ca8b244d4f941a1ada2f81708, type: 2}
     m_cost:
       Time: 5
-      ActionCount: 0
-    m_cooldown: 3
-    m_holdingValue: 1
+      ActionCount: 1
+    m_cooldown: 20
+    m_holdingValue: 2
     m_isInitiallyOnCooldown: 0

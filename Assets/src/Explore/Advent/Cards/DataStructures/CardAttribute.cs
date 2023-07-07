@@ -26,7 +26,7 @@ namespace Curry.Explore
         [SerializeField] string m_name;
         [TextArea]
         [SerializeField] string m_description;
-        [SerializeField] RangeMap m_targetingRange;
+        [SerializeField] RangeMapAsset m_targetingRange;
         [SerializeField] ActionCost m_cost;
         [SerializeField] int m_cooldown;
         // How much room a card takes in hand, hand has a holding capacity (int)
@@ -34,7 +34,7 @@ namespace Curry.Explore
         [SerializeField] bool m_isInitiallyOnCooldown;
         public string Name => m_name;
         public string Description => m_description;
-        public RangeMap TargetingRange => m_targetingRange;
+        public RangeMap TargetingRange => m_targetingRange.Range;
         public ActionCost Cost => m_cost;
         public int Cooldown => m_cooldown;
         public int HoldingValue => Mathf.Max(0, m_holdingValue);

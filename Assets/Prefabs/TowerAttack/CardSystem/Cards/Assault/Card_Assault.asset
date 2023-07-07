@@ -10,16 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 477fd574d6d3fbc42a111c13f5e5337a, type: 3}
-  m_Name: Card_Foresight
+  m_Name: Card_Assault
   m_EditorClassIdentifier: 
   m_attribute:
-    m_name: Sweep Scan
-    m_description: Clear nearby fog of war.
-    m_targetingRange:
-      m_offsetList: []
+    m_name: Assault
+    m_description: 'Deal 3 damage to an adjacent enemy. '
+    m_targetingRange: {fileID: 11400000, guid: 9854b15ca8b244d4f941a1ada2f81708, type: 2}
     m_cost:
-      Time: 10
+      Time: 5
       ActionCount: 0
-    m_cooldown: 20
-    m_holdingValue: 2
+    m_cooldown: 3
+    m_holdingValue: 1
     m_isInitiallyOnCooldown: 0

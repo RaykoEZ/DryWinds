@@ -10,16 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 477fd574d6d3fbc42a111c13f5e5337a, type: 3}
-  m_Name: Card_ThreatAssessment
+  m_Name: Card_RepairKit
   m_EditorClassIdentifier: 
   m_attribute:
-    m_name: Threat Assessment
-    m_description: Show potential hostiles nearby
-    m_targetingRange:
-      m_offsetList: []
+    m_name: RepairKit
+    m_description: Recover 3 Hp
+    m_targetingRange: {fileID: 11400000, guid: d85024baf97a42c47be0378241a4ddca, type: 2}
     m_cost:
-      Time: 10
+      Time: 0
       ActionCount: 0
-    m_cooldown: 20
-    m_holdingValue: 2
+    m_cooldown: 0
+    m_holdingValue: 1
     m_isInitiallyOnCooldown: 0

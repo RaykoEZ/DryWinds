@@ -1383,6 +1383,10 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7201824097627520552, guid: 7eb8b9e0778509a4d97901db87f5ce46, type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 4282861567
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 7eb8b9e0778509a4d97901db87f5ce46, type: 3}
