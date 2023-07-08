@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d258a3574d4fc6841ae0008a1dbf0cce, type: 3}
+  m_Name: Rd_EncOpt_CatchOfTheDay
+  m_EditorClassIdentifier: 
+  m_detail: Time to experience some happy little accidents.
+  m_potentialOutcomes:
+  - m_probabilityWeight: 1
+    m_content:
+      m_effects:
+      - {fileID: 11400000, guid: 6b32ea712054c144bae15d2145f78578, type: 2}
+      - {fileID: 11400000, guid: 1c197245572ea7f4b8384fb7cade6cb8, type: 2}
+      m_dialogue:
+      - You are presented with a plate of char-grilled meats from the tail of a Quakespear.
+      - 'The unexpected umami and the perfect balance of flavours wakes you from
+        the monotonous trek across the wastes, '
+  - m_probabilityWeight: 1
+    m_content:
+      m_effects:
+      - {fileID: 11400000, guid: 97f44d31d63cbeb4b82d2ae6a8b58d8b, type: 2}
+      m_dialogue:
+      - Wow.
+      - That's a lot of meat.
+      - After a lengthy meal, you feel satified with your meal.

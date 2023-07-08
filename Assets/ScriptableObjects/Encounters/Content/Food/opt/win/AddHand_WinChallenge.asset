@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74b6efde534907e4ca6696c2aedf276e, type: 3}
+  m_Name: AddHand_WinChallenge
+  m_EditorClassIdentifier: 
+  m_addCard:
+    m_cardsToAdd:
+    - {fileID: 4967166744067937421, guid: 44e8672da6063f6498e55869bbbccf90, type: 3}
+    - {fileID: 7890401515055617514, guid: b46b0d0a4420fd243b209f610cc41346, type: 3}
+    - {fileID: 4967166744067937421, guid: 44e8672da6063f6498e55869bbbccf90, type: 3}
+    - {fileID: 7625811245545174198, guid: e8d23edcef4fc4a42b0271982b544924, type: 3}

@@ -3,14 +3,17 @@ using System.Collections;
 using UnityEngine;
 
 namespace Curry.Explore
-{
-    #NOTRIM#
-    public class #SCRIPTNAME# : AdventCard
+{  
+    public class JustWater : AdventCard, IConsumable
     {
-        #NOTRIM#
+        
         public override IEnumerator ActivateEffect(ICharacter user, GameStateContext context)
+        {        
+            yield return null;
+        }
+
+        public IEnumerator OnExpend()
         {
-            #NOTRIM#
             yield return null;
         }
     }

@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d258a3574d4fc6841ae0008a1dbf0cce, type: 3}
+  m_Name: Rd_EncOpt_MealChallenge
+  m_EditorClassIdentifier: 
+  m_detail: '[Boss Fight Music]'
+  m_potentialOutcomes:
+  - m_probabilityWeight: 0
+    m_content:
+      m_effects:
+      - {fileID: 11400000, guid: 0ef24f637108972438ce8052c1b9ab94, type: 2}
+      - {fileID: 11400000, guid: 67aa51b6aac0b084ca73f79c7ec66f7b, type: 2}
+      m_dialogue:
+      - You won, good job.
+      - ' Hope you enjoyed the food.'
+  - m_probabilityWeight: 0
+    m_content:
+      m_effects:
+      - {fileID: 11400000, guid: f84a52ef77f125648abe6559a99e1d80, type: 2}
+      - {fileID: 11400000, guid: 88bd35f38f914cb40a4a211ad13504f0, type: 2}
+      m_dialogue:
+      - You were so close, yet so far.
+      - A consolation prize is at hand.
+  - m_probabilityWeight: 0
+    m_content:
+      m_effects:
+      - {fileID: 11400000, guid: 8f691f34ae65dd24aa5eb3bf250ca28c, type: 2}
+      m_dialogue:
+      - You struggle to keep the food in as you take the forst few bites.
+      - An utter defeat.

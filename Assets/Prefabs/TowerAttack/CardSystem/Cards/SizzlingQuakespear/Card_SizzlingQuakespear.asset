@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 477fd574d6d3fbc42a111c13f5e5337a, type: 3}
+  m_Name: Card_SizzlingQuakespear
+  m_EditorClassIdentifier: 
+  m_attribute:
+    m_name: Sizzling Quakespear
+    m_description: Gain 1 Action, take 5 damage.
+    m_targetingRange: {fileID: 0}
+    m_cost:
+      Time: 3
+      ActionCount: 0
+    m_cooldown: 0
+    m_holdingValue: 1
+    m_isInitiallyOnCooldown: 0

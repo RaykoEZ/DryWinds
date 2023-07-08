@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d1556d503bc03346ac6bfa05461b9b5, type: 3}
   m_Name: EncOpt_Dessert
   m_EditorClassIdentifier: 
-  m_detail: You feel like you can consume this all day everyday, and still want more.
+  m_detail: Take your time to appease your sweet tooth.
   m_outcome:
     m_effects:
     - {fileID: 11400000, guid: 4a50183c31bd98d4a891a13cecfd50be, type: 2}
