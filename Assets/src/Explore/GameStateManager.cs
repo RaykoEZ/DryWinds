@@ -5,6 +5,7 @@ using Curry.Events;
 using Curry.Util;
 using System.Collections;
 using UnityEditor;
+using Curry.UI;
 
 namespace Curry.Explore
 {
@@ -52,6 +53,7 @@ namespace Curry.Explore
         [SerializeField] Animator m_gameResult = default;
         [SerializeField] ObjectiveManager m_objectives = default;
         [SerializeField] PlayZone m_cardPlayZone = default;
+        [SerializeField] GameIntroduction m_intro = default;
         [SerializeField] CardTargetEffectHandler m_cardTargeting = default;
         [SerializeField] TimeManager m_time = default;
         [SerializeField] DeckManager m_deck = default;
@@ -62,7 +64,7 @@ namespace Curry.Explore
         [SerializeField] TextMeshProUGUI m_resultText = default;
         [SerializeField] GameConditionAttribute m_mileStones = default;
         [SerializeField] CurryGameEventListener m_onConditionAchieved = default;
-        bool GameReadyToStart => m_deck.IsReady;
+        bool GameReadyToContinue => m_deck.IsReady && m_intro.IsReady;
         public GameStateContext GetCurrent() 
         {
             int timeLeft = m_time.TimeLeftToClear;
@@ -87,7 +89,8 @@ namespace Curry.Explore
         }
         IEnumerator StartGame_Interal() 
         {
-            yield return new WaitUntil(() => GameReadyToStart);
+            m_intro?.GameStartIntro();
+            yield return new WaitUntil(() => GameReadyToContinue);
             //initializing context users after deck loaded
             GameStateContext c = GetCurrent();
             m_cardPlayZone?.Init(c);
@@ -109,20 +112,23 @@ namespace Curry.Explore
         void OnPlayerDefeat(ICharacter player) 
         {
             m_resultText.text = "Game Over";
-            UpdateResultPanel();
+            StartCoroutine(UpdateResultPanel());
         }
         void OnCriticalFail(IObjective objective) 
         {
             m_resultText.text = "Game Over";
-            UpdateResultPanel();
+            StartCoroutine(UpdateResultPanel());
         }
         void OnGameCleared()
         {
             m_resultText.text = "Main Objectives Complete";
-            UpdateResultPanel();
+            StartCoroutine(UpdateResultPanel());
         }
-        void UpdateResultPanel() 
+        IEnumerator UpdateResultPanel() 
         {
+            m_intro?.GameEnd();
+            yield return new WaitForEndOfFrame();
+            yield return new WaitUntil(() => GameReadyToContinue);
             m_gameResult.gameObject.SetActive(true);
             m_gameResult.SetBool("GameOver", true);
         }

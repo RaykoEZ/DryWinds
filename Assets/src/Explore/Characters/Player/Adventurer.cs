@@ -25,7 +25,12 @@ namespace Curry.Explore
         }
         public override void OnDefeated()
         {
-            Debug.Log("Player defeated");
+            StartCoroutine(OnDefeat_Internal());
+        }
+        IEnumerator OnDefeat_Internal() 
+        {
+            m_anim.SetBool("defeat", true);
+            yield return new WaitForSeconds(1f);
             base.OnDefeated();
         }
         #endregion

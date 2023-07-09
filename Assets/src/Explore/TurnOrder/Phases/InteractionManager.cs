@@ -89,7 +89,7 @@ namespace Curry.Explore
             while (m_interruptBuffer.Count > 0)
             {
                 yield return StartCoroutine(CallActions(m_interruptBuffer.Pop()));
-                yield return new WaitForSeconds(0.1f);
+                yield return new WaitForEndOfFrame();
             }
             m_inProgress = false;
             EndInterrupt();
@@ -102,7 +102,7 @@ namespace Curry.Explore
                 {
                     yield return StartCoroutine(call);
                 }
-                yield return new WaitForEndOfFrame();
+                yield return new WaitForSeconds(0.2f);
             }
         }
     }

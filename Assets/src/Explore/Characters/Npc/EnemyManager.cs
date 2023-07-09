@@ -233,7 +233,7 @@ namespace Curry.Explore
         IEnumerator FinishActionPhase() 
         {
             OnActionFinish?.Invoke();
-            yield return null;
+            yield return new WaitForEndOfFrame();
         }
         #endregion
     }
