@@ -9,7 +9,7 @@ namespace Curry.Explore
         protected override Type NextState { get; set; } = typeof(TurnStart);
         protected override IEnumerator Evaluate_Internal()
         {
-            m_actionCount.UpdateMoveCountDisplay(m_actionCount.CurrentActionCount + 1);
+            m_actionCount.FullRecovery();
             TransitionTo();
             yield return null;
         }

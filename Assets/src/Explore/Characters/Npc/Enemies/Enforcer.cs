@@ -10,8 +10,8 @@ namespace Curry.Explore
         [SerializeField] ReliefAlly m_relief = default;
         public override IReadOnlyList<AbilityContent> AbilityDetails => 
             new List<AbilityContent>{
-                m_basicAttack.                Content,
-                m_relief.                Content
+                m_basicAttack.Content,
+                m_relief.Content
             };
         protected override bool ChooseAction_Internal(int dt, out IEnumerator action)
         {
@@ -27,6 +27,10 @@ namespace Curry.Explore
                 reliefNeeded = ReliefCheck(out action);                
             }
             return SpotsTarget || reliefNeeded;
+        }
+        protected override AbilityContent ShowIntent()
+        {
+            return SpotsTarget ? m_basicAttack.Content : AbilityContent.None;
         }
         protected bool ReliefCheck(out IEnumerator action) 
         {

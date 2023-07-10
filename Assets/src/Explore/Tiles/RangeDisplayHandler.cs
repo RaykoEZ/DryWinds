@@ -3,6 +3,8 @@ using UnityEngine.Tilemaps;
 using Curry.Util;
 namespace Curry.Explore
 {
+    // A script to show/hide tiles on a tilemap with given range pattern,
+    // name and gameobject to instantiate
     public class RangeDisplayHandler : MonoBehaviour
     {
         [SerializeField] TileManager m_rangeTileManager = default;

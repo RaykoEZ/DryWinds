@@ -14,9 +14,11 @@ namespace Curry.Explore
         protected IReadOnlyCollection<IEnemy> EnemiesInSight => m_detect.Enemies;
         protected virtual List<IEnemyReaction> m_reactions { get; } = 
             new List<IEnemyReaction>();
+        protected AbilityContent m_intendingAbility = AbilityContent.None;
         #region ICharacter & IEnemy interface 
         public bool SpotsTarget => TargetsInSight.Count > 0;
         public virtual EnemyId Id { get; protected set; }
+        public AbilityContent IntendingAbility => m_intendingAbility;
         public override void Move(Vector3 target)
         {
             OnMove?.Invoke(this, target, base.Move);
@@ -63,6 +65,7 @@ namespace Curry.Explore
         }
         protected virtual bool ChooseReaction_Internal(int dt, out IEnumerator reaction) 
         {
+            m_intendingAbility = ShowIntent();
             reaction = Reaction_Internal();
             return m_reactions.Count > 0;
         }
@@ -71,6 +74,7 @@ namespace Curry.Explore
             CurrentStats.Refresh();
             // Update any modifier changes before action
             m_anim?.SetTrigger("strike");
+            // reset pending ability
             yield return null;
         }
         protected virtual IEnumerator Reaction_Internal()
@@ -80,7 +84,12 @@ namespace Curry.Explore
             {
                 onAction?.OnPlayerAction(this);
             }
+            // reset pending ability
             yield return new WaitForEndOfFrame();
+        }
+        protected virtual AbilityContent ShowIntent() 
+        {
+            return AbilityContent.None;
         }
         #endregion
 

@@ -38,7 +38,6 @@ namespace Curry.Explore
         public event OnHpUpdate RecoverHp;
         public event OnCharacterUpdate OnMoveFinished;
         public event OnMovementBlocked OnBlocked;
-
         public bool SpotsTarget => false;
         public EnemyId Id { get { return new EnemyId(gameObject.name); } }
         public IEnumerator BasicAction => OnSpawnReinforcement();
@@ -64,6 +63,7 @@ namespace Curry.Explore
                 Icon = default
             } 
         };
+        public AbilityContent IntendingAbility => AbilityContent.None;
         public void Setup(Reinforcement_EffectResource reinforce)
         {
             m_spawn = reinforce.ReinforcementModule;

@@ -16,6 +16,14 @@ namespace Curry.Explore
         {
             UpdateMoveCountDisplay(m_maxMoveCount);
         }
+        public void FullRecovery() 
+        {
+            UpdateMoveCountDisplay(m_maxMoveCount);
+        }
+        public void Empty() 
+        {
+            UpdateMoveCountDisplay(0);
+        }
         public void UpdateMoveCountDisplay(int current)
         {
             m_previous = m_current;
@@ -26,6 +34,14 @@ namespace Curry.Explore
                 m_diff.text = "";
                 m_onPreview = false;
             }
+        }
+        public void PreviewFullRecovery()
+        {
+            PreviewCost(-m_maxMoveCount);
+        }
+        public void PreviewFullSpend()
+        {
+            PreviewCost(m_maxMoveCount);
         }
         public void PreviewCost(int toSpend) 
         {

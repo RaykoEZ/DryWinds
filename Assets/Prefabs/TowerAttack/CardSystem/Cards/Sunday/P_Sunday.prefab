@@ -535,7 +535,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9e1723eca4c0204bb207b13c561a111, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_card: {fileID: 0}
+  m_card: {fileID: 7890401515055617514}
   m_ui:
     m_cardDragTrigger:
       m_eventToTrigger: {fileID: 11400000, guid: 3a30f108650ad9e4ab7dd4f9d5c6b221, type: 2}
@@ -629,7 +629,6 @@ MonoBehaviour:
       m_Bits: 0
   m_startupModulesModules: []
   m_actionGain: {fileID: 11400000, guid: 6e81802902a4b804abf449741f5c8738, type: 2}
-  m_spendTime: {fileID: 11400000, guid: 4a50183c31bd98d4a891a13cecfd50be, type: 2}
 --- !u!1 &2048301793550412277
 GameObject:
   m_ObjectHideFlags: 0

@@ -7,6 +7,7 @@ using Curry.Game;
 using UnityEngine.Tilemaps;
 using Curry.UI;
 using Curry.Util;
+using static UnityEngine.EventSystems.EventTrigger;
 
 namespace Curry.Explore
 {
@@ -71,6 +72,7 @@ namespace Curry.Explore
         [SerializeField] MovementManager m_movement = default;
         [SerializeField] TacticalSpawnProperties m_spawnProperties = default;
         [SerializeField] FogOfWar m_fog = default;
+        [SerializeField] RangePreviewHandler m_dangerZoneDisplay = default;
         List<IEnemy> m_activeEnemies = new List<IEnemy>();
         HashSet<IEnemy> m_toRemove = new HashSet<IEnemy>();
         HashSet<IEnemy> m_toAdd = new HashSet<IEnemy>();
@@ -222,13 +224,27 @@ namespace Curry.Explore
                 {
                     calls.Add(chosenAction);
                 }
+                StartCoroutine(DisplayDangerZone(enemy.WorldPosition, enemy.IntendingAbility));
             }      
-            if(calls.Count > 0) 
+            if (calls.Count > 0) 
             {
                 calls.Add(FinishActionPhase());
             }
             UpdateActivity();
             return calls;
+        }
+        List<string> m_dangerZoneDisplayId = new List<string>();
+        IEnumerator DisplayDangerZone(Vector3 origin, AbilityContent ability) 
+        {
+            if (ability != null && ability != AbilityContent.None) 
+            {
+                m_dangerZoneDisplayId.Add(m_dangerZoneDisplay?.BeginDisplay(origin, ability));
+            }
+            else 
+            {
+
+            }
+            yield return new WaitForEndOfFrame();
         }
         IEnumerator FinishActionPhase() 
         {

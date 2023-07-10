@@ -34,16 +34,12 @@ namespace Curry.Explore
         protected override bool ChooseAction_Internal(int dt, out IEnumerator action)
         {
             // if we see target, do basic action
-            if (SpotsTarget)
-            {
-                action = ExecuteAction_Internal();
-            }
-            else
-            {
-                // find all enemies who can see a target
-                action = Disengage();
-            }
+            action = SpotsTarget ? ExecuteAction_Internal() : Disengage();
             return SpotsTarget;
+        }
+        protected override AbilityContent ShowIntent()
+        {
+            return SpotsTarget ? m_stormAmmo.Content : AbilityContent.None;
         }
         internal IEnumerator Disengage() 
         {

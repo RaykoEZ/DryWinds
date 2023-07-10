@@ -12,11 +12,20 @@ namespace Curry.Explore
         {
             m_standardAttack.Content
         };
+        protected override bool ChooseAction_Internal(int dt, out IEnumerator action)
+        {
+            bool ret = base.ChooseAction_Internal(dt, out action);
+            return ret;
+        }
+        protected override AbilityContent ShowIntent()
+        {
+            return SpotsTarget? m_standardAttack.Content: AbilityContent.None;
+        }
         protected override IEnumerator ExecuteAction_Internal()
         {
             foreach (IPlayer player in TargetsInSight) 
             {
-                m_anim?.SetTrigger("strike");
+                yield return base.ExecuteAction_Internal();
                 m_standardAttack.Activate(player);
                 yield break;
             }

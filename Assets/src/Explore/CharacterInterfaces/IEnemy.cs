@@ -9,6 +9,7 @@ namespace Curry.Explore
     {
         bool SpotsTarget { get; }
         EnemyId Id { get; }
+        AbilityContent IntendingAbility { get; }
         bool OnAction(ActionCost dt, bool reaction, out IEnumerator action);
     }
     public delegate void OnMovementBlocked(Vector3 blockedWorldPos);
