@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using Curry.Explore;
 using System.Collections.Generic;
+using Curry.Util;
 
 namespace Curry.UI
 {
@@ -10,27 +11,37 @@ namespace Curry.UI
         [SerializeField] protected RangeDisplayHandler m_rangeDisplay = default;
         protected List<string> m_patternNamesInPreview = new List<string>();
         protected virtual string PatternIdPrefix => "Detail/Zone";
+        protected virtual string GetRangePatternId(Transform origin) 
+        { 
+            return $"{PatternIdPrefix}/{origin.gameObject.name}";
+        }
         // returns the name/id of the current range pattern displayed
-        public virtual string BeginDisplay(Vector3 origin, AbilityContent ability) 
+        public virtual void BeginDisplay(Transform origin, RangeMap range, bool overwrite = true) 
         {
-            string name = $"{PatternIdPrefix}/{origin}/{ability.Name}";
+            string name = GetRangePatternId(origin);
+            if (overwrite)
+            {
+                ClearRangePattern(origin);
+            }
+            Vector2 pos = origin.position;
             // Display range preview on range Display
             m_rangeDisplay.ShowRange(
                 name,
                 m_tileRef,
-                ability.TargetingRange);
+                range);
             if (!m_patternNamesInPreview.Contains(name))
             {
-                m_rangeDisplay.MoveRangeTile(name, m_tileRef, origin);
+                m_rangeDisplay.MoveRangeTile(name, m_tileRef, pos);
                 m_patternNamesInPreview.Add(name);
             }
-            return name;
         }
-        public virtual void ClearRangePattern(string tileName) 
+        public virtual void ClearRangePattern(Transform origin)
         {
-            if (m_patternNamesInPreview.Contains(tileName)) 
+            string name = GetRangePatternId(origin);
+            if (m_patternNamesInPreview.Contains(name)) 
             {
-                m_rangeDisplay.ClearRangeTile(tileName, m_tileRef);
+                m_rangeDisplay.ClearRangeTile(name, m_tileRef);
+                m_patternNamesInPreview.Remove(name);
             }
         }
         // Clear all range tiles currently displayed

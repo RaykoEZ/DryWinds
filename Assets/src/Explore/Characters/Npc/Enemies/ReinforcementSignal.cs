@@ -63,7 +63,8 @@ namespace Curry.Explore
                 Icon = default
             } 
         };
-        public AbilityContent IntendingAbility => AbilityContent.None;
+        public EnemyIntent IntendingAction => EnemyIntent.None;
+
         public void Setup(Reinforcement_EffectResource reinforce)
         {
             m_spawn = reinforce.ReinforcementModule;
@@ -77,10 +78,10 @@ namespace Curry.Explore
         {
             m_countdownTimer = 0;
         }
-        public virtual bool OnAction(ActionCost dt, bool reaction, out IEnumerator action)
+        public virtual bool UpdateAction(ActionCost dt, out EnemyIntent action)
         {
             m_countdownTimer += dt.Time;
-            action = CanSpawn ? OnSpawnReinforcement() : null;
+            action = CanSpawn ? new EnemyIntent(AbilityDetails[0], OnSpawnReinforcement()) : null;
             m_countdownDisplay.text = CountdownTimer.ToString();
             return CanSpawn;
         }

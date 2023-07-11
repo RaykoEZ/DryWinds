@@ -14,11 +14,11 @@ namespace Curry.Explore
         protected IReadOnlyCollection<IEnemy> EnemiesInSight => m_detect.Enemies;
         protected virtual List<IEnemyReaction> m_reactions { get; } = 
             new List<IEnemyReaction>();
-        protected AbilityContent m_intendingAbility = AbilityContent.None;
+        EnemyIntent m_intendingAction = EnemyIntent.None;
         #region ICharacter & IEnemy interface 
         public bool SpotsTarget => TargetsInSight.Count > 0;
         public virtual EnemyId Id { get; protected set; }
-        public AbilityContent IntendingAbility => m_intendingAbility;
+        public EnemyIntent IntendingAction => m_intendingAction;
         public override void Move(Vector3 target)
         {
             OnMove?.Invoke(this, target, base.Move);
@@ -43,30 +43,19 @@ namespace Curry.Explore
         }
         // returns true if we decide to act,
         // BasicAction & Reaction fields need to not be null before returning
-        public bool OnAction(ActionCost dt, bool reaction, out IEnumerator action)
+        public bool UpdateAction(ActionCost dt, out EnemyIntent action)
         {
             bool ret;
-            if (reaction) 
-            {
-                ret = ChooseReaction_Internal(dt.Time, out IEnumerator result);
-                action = result;
-            } 
-            else 
-            {
-                ret = ChooseAction_Internal(dt.Time, out IEnumerator result);
-                action = result;
-            }
+            // Setup action to carry out after player end turn
+            var newIntent = UpdateIntent(dt);
+            ret = UpdatAction_Internal(dt.Time, out EnemyIntent result);
+            m_intendingAction = newIntent == null ? EnemyIntent.None : newIntent;
+            action = result == null? EnemyIntent.None : result;
             return ret;
         }
-        protected virtual bool ChooseAction_Internal(int dt, out IEnumerator action) 
+        protected virtual bool UpdatAction_Internal(int dt, out EnemyIntent reaction) 
         {
-            action = ExecuteAction_Internal();
-            return SpotsTarget;
-        }
-        protected virtual bool ChooseReaction_Internal(int dt, out IEnumerator reaction) 
-        {
-            m_intendingAbility = ShowIntent();
-            reaction = Reaction_Internal();
+            reaction = new EnemyIntent(AbilityContent.None, Reaction_Internal());
             return m_reactions.Count > 0;
         }
         protected virtual IEnumerator ExecuteAction_Internal()
@@ -87,9 +76,9 @@ namespace Curry.Explore
             // reset pending ability
             yield return new WaitForEndOfFrame();
         }
-        protected virtual AbilityContent ShowIntent() 
+        protected virtual EnemyIntent UpdateIntent(ActionCost dt)
         {
-            return AbilityContent.None;
+            return EnemyIntent.None;
         }
         #endregion
 

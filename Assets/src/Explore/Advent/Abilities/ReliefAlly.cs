@@ -8,11 +8,11 @@ namespace Curry.Explore
     public class ReliefAlly : BaseAbility
     {
         [SerializeField] SwapPosition_EffectResource m_relief = default;
-        public override AbilityContent Content
+        public override AbilityContent AbilityDetail
         {
             get
             {
-                AbilityContent ret = base.Content;
+                AbilityContent ret = base.AbilityDetail;
                 ret.Name = "Relief Ally";
                 ret.Description = "Swap position with a nearby ally.";
                 return ret;

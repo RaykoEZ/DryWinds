@@ -58,14 +58,13 @@ namespace Curry.Explore
                 // check for any generated actions after invoking current action
                 UpdateCalltack();
                 // Check if there are enemy responses for this player action
-                if (m_enemy.OnEnemyInterrupt(
+                if (m_enemy.UpdateEnemyAction(
                     currentAction.ResourceSpent, out List<IEnumerator> resp) &&
                     resp != null)
                 {
                     m_interruptBuffer?.Push(resp);
                 }
             }
-
         }
         void UpdateCalltack()
         {

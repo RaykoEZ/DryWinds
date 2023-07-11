@@ -26,6 +26,7 @@ namespace Curry.Explore
                 m_actionFinished = true;
             }
             yield return new WaitUntil(() => m_actionFinished);
+            m_enemies.UpdateEnemyAction(new ActionCost { }, out _);
             TransitionTo();
         }
     }

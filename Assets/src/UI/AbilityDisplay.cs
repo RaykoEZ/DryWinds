@@ -2,6 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using Curry.Explore;
+using Curry.Util;
 
 namespace Curry.UI
 {
@@ -12,13 +13,13 @@ namespace Curry.UI
         [SerializeField] TextMeshProUGUI m_description = default;
         [SerializeField] Image m_icon = default;
         protected override string PatternIdPrefix => "Detail/Preview";
-        public override string BeginDisplay(Vector3 origin, AbilityContent ability) 
+        public virtual void DisplayAbilityRange(Transform origin, AbilityContent ability) 
         {
             m_rangeDisplay.HidePrompt();
             m_name.text = ability.Name;
             m_description.text = ability.Description;
             m_icon.sprite = ability.Icon;
-            return base.BeginDisplay(origin, ability);
+            BeginDisplay(origin, ability.TargetingRange);
         }
         public override void ResetDisplay() 
         {        

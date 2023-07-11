@@ -19,11 +19,11 @@ namespace Curry.Explore
         {
             m_user = user;
         }
-        public override AbilityContent Content
+        public override AbilityContent AbilityDetail
         {
             get
             {
-                var ret = base.Content;
+                var ret = base.AbilityDetail;
                 ret.Description = $"Deal {m_damage.DamageModule.BaseDamage} damage to target.";
                 ret.TargetingRange = ret.TargetingRange = RangeMapping.GetRangeMap(3);
                 return ret;

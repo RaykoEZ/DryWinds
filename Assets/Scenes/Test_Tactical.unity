@@ -8982,9 +8982,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1599963311}
-  - component: {fileID: 1599963313}
-  - component: {fileID: 1599963312}
   - component: {fileID: 1599963314}
+  - component: {fileID: 1599963312}
+  - component: {fileID: 1599963313}
   m_Layer: 10
   m_Name: P_DanagerZone
   m_TagString: Untagged
@@ -9049,7 +9049,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1599963310}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1639e7cd524f85d449134b6f65260a84, type: 3}
+  m_Script: {fileID: 11500000, guid: 50ccbb1b27dc8f1488b91e352b6e25a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_tileRef: {fileID: 3398642188576576689, guid: 4656f8c27aaad82488e0ebeb59c14a3e, type: 3}
@@ -11224,32 +11224,33 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_movement: {fileID: 1190344612}
-  m_spawnProperties:
-    DoNotSpawnOn:
-      serializedVersion: 2
-      m_Bits: 3584
-    SpawnMap: {fileID: 1252504617}
-    OnSpawn:
-      m_eventToListen: {fileID: 11400000, guid: 27a13d8605e44b14a97ee9f2c806cf0c, type: 2}
-      m_responses:
-        m_PersistentCalls:
-          m_Calls:
-          - m_Target: {fileID: 2096668154}
-            m_TargetAssemblyTypeName: Curry.Explore.EnemyManager, Assembly-CSharp
-            m_MethodName: SpawnEnemy
-            m_Mode: 0
-            m_Arguments:
-              m_ObjectArgument: {fileID: 0}
-              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-              m_IntArgument: 0
-              m_FloatArgument: 0
-              m_StringArgument: 
-              m_BoolArgument: 0
-            m_CallState: 2
-    InstanceManager:
-      m_pool:
-        m_numToPool: 1
-        m_defaultParent: {fileID: 1968542685}
+  m_spawning:
+    m_spawnProperties:
+      DoNotSpawnOn:
+        serializedVersion: 2
+        m_Bits: 36352
+      SpawnMap: {fileID: 1252504617}
+      OnSpawn:
+        m_eventToListen: {fileID: 11400000, guid: 27a13d8605e44b14a97ee9f2c806cf0c, type: 2}
+        m_responses:
+          m_PersistentCalls:
+            m_Calls:
+            - m_Target: {fileID: 2096668154}
+              m_TargetAssemblyTypeName: Curry.Explore.EnemyManager, Assembly-CSharp
+              m_MethodName: SpawnEnemy
+              m_Mode: 0
+              m_Arguments:
+                m_ObjectArgument: {fileID: 0}
+                m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+                m_IntArgument: 0
+                m_FloatArgument: 0
+                m_StringArgument: 
+                m_BoolArgument: 0
+              m_CallState: 2
+      InstanceManager:
+        m_pool:
+          m_numToPool: 3
+          m_defaultParent: {fileID: 1968542685}
   m_fog: {fileID: 2017579930}
   m_dangerZoneDisplay: {fileID: 1599963314}
 --- !u!1 &2127039954

@@ -10,16 +10,12 @@ namespace Curry.Explore
         [SerializeField] StandardStrike m_standardAttack = default;
         public override IReadOnlyList<AbilityContent> AbilityDetails => new List<AbilityContent> 
         {
-            m_standardAttack.Content
+            m_standardAttack.AbilityDetail
         };
-        protected override bool ChooseAction_Internal(int dt, out IEnumerator action)
+        protected override EnemyIntent UpdateIntent(ActionCost dt)
         {
-            bool ret = base.ChooseAction_Internal(dt, out action);
-            return ret;
-        }
-        protected override AbilityContent ShowIntent()
-        {
-            return SpotsTarget? m_standardAttack.Content: AbilityContent.None;
+            return SpotsTarget? new EnemyIntent(m_standardAttack.AbilityDetail, ExecuteAction_Internal()) :
+                EnemyIntent.None;
         }
         protected override IEnumerator ExecuteAction_Internal()
         {

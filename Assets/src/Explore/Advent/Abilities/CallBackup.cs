@@ -16,11 +16,11 @@ namespace Curry.Explore
         int m_useLeft = 0;
         public int UsesLeft { get { return m_useLeft; } protected set { m_useLeft = value; } }
         public bool Usable => UsesLeft > 0;
-        public override AbilityContent Content
+        public override AbilityContent AbilityDetail
         {
             get
             {
-                var ret = base.Content;
+                var ret = base.AbilityDetail;
                 ret.Name = "Call Baclup";
                 ret.Description = $"Requests reinforcement on an adjacent position.";
                 return ret;

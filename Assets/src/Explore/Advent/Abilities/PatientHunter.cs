@@ -10,13 +10,14 @@ namespace Curry.Explore
         [SerializeField] Prepared m_preparedBuff = default;
         bool m_activated = false;
         Prepared m_instance;
-        public override AbilityContent Content => new AbilityContent
+        public override AbilityContent AbilityDetail => new AbilityContent
         { 
             Name = m_resource.Content.Name,
             Description = m_resource.Content.Description,
             TargetingRange =RangeMapping.GetRangeMap(3),
             Icon = m_resource.Content.Icon
         };
+
         public void AddStack(int addVal = 1) 
         {
             m_instance?.AddStack(addVal);

@@ -22,29 +22,19 @@ namespace Curry.Explore
         };
         public override IReadOnlyList<AbilityContent> AbilityDetails => new List<AbilityContent> 
         {
-            m_stormAmmo.Content,
-            m_deadEye.Content,
-            m_patient.Content
+            m_stormAmmo.AbilityDetail,
+            m_deadEye.AbilityDetail,
+            m_patient.AbilityDetail
         };
         public IProjectile RangedAttack => m_currentProjectileInstance;
         protected void FiringWeapon() 
         {
             Fire?.Invoke();
         }
-        protected override bool ChooseAction_Internal(int dt, out IEnumerator action)
+        protected override EnemyIntent UpdateIntent(ActionCost dt)
         {
-            // if we see target, do basic action
-            action = SpotsTarget ? ExecuteAction_Internal() : Disengage();
-            return SpotsTarget;
-        }
-        protected override AbilityContent ShowIntent()
-        {
-            return SpotsTarget ? m_stormAmmo.Content : AbilityContent.None;
-        }
-        internal IEnumerator Disengage() 
-        {
-            Hide();
-            yield return null;
+            return SpotsTarget ? new EnemyIntent(m_stormAmmo.AbilityDetail, ExecuteAction_Internal()) : 
+                EnemyIntent.None;
         }
         protected override IEnumerator ExecuteAction_Internal()
         {
