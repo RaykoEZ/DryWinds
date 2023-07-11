@@ -8,11 +8,9 @@ namespace Curry.Explore
     public class Enforcer : TacticalEnemy 
     {
         [SerializeField] StandardStrike m_basicAttack = default;
-        [SerializeField] ReliefAlly m_relief = default;
         public override IReadOnlyList<AbilityContent> AbilityDetails => 
             new List<AbilityContent>{
                 m_basicAttack.AbilityDetail,
-                m_relief.AbilityDetail
             };
         protected override EnemyIntent UpdateIntent(ActionCost dt)
         {
@@ -23,39 +21,10 @@ namespace Curry.Explore
             }
             else 
             {
-                ReliefCheck(out EnemyIntent result);
-                ret = result;
+                ret = EnemyIntent.None;
             }
             return ret;
         }
-        protected bool ReliefCheck(out EnemyIntent action) 
-        {
-            bool reliefNeeded = false;
-            action = null;
-            // find all enemies who can see a target
-            List<IEnemy> activeEnemies = new List<IEnemy>();
-            foreach (IEnemy e in EnemiesInSight)
-            {
-                if (e.SpotsTarget)
-                {
-                    activeEnemies.Add(e);
-                }
-            }
-            // set basic action, if we have nearby enemies who sees enemies,
-            // swap position with one of them
-            if (activeEnemies.Count > 0)
-            {
-                int rand = UnityEngine.Random.Range(0, activeEnemies.Count);
-                action = new EnemyIntent(m_relief.AbilityDetail, ReliefAlly(activeEnemies[rand]));
-                reliefNeeded = true;
-            }
-            return reliefNeeded && action != null;
-        }
-        protected override bool UpdatAction_Internal(int dt, out EnemyIntent reaction)
-        {
-            return ReliefCheck(out reaction);
-        }
-
         protected override IEnumerator ExecuteAction_Internal()
         {
             yield return base.ExecuteAction_Internal();
@@ -65,12 +34,6 @@ namespace Curry.Explore
                 break;
             }
             yield return null;
-        }
-
-        protected virtual IEnumerator ReliefAlly(ICharacter target) 
-        {
-            m_relief?.Activate(target, this);
-            yield return new WaitForEndOfFrame();
         }
     }
 }

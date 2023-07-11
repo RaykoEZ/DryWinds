@@ -9,6 +9,8 @@ namespace Curry.Explore
     {
         [SerializeField] TimeManager m_time = default;
         [SerializeField] ActionCounter m_actionCounter = default;
+        public static readonly ActionCost BaseMovementCost = 
+            new ActionCost { ActionCount = 1, Time = 1 };
         public bool HasEnoughResource(ActionCost cost) 
         {
             return cost.Time <= m_time.TimeLeftToClear &&

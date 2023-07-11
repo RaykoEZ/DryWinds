@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEditor;
 
 namespace Curry.Explore
 {
@@ -11,6 +12,7 @@ namespace Curry.Explore
         [SerializeField] TextMeshProUGUI m_label = default;
         [SerializeField] SelectionManager m_selector = default;
         [SerializeField] PositionConfirmDisplay m_confirm = default;
+        [SerializeField] ActionCostHandler m_cost = default;
         public bool Interactable { get; protected set; } = true;
         public void SetInteractable(bool interactable) 
         {
@@ -20,6 +22,7 @@ namespace Curry.Explore
         public void OnMovementToggle(bool isOn) 
         {
             if (!Interactable) { return; }
+            if (!m_cost.HasEnoughResource(ActionCostHandler.BaseMovementCost)) { return; }
 
             if (isOn) 
             {
@@ -29,6 +32,15 @@ namespace Curry.Explore
             {
                 Cancel();
             }
+        }
+        public void EnablePlay()
+        {
+            SetInteractable(true);
+        }
+        public void DisablePlay()
+        {
+            SetInteractable(false);
+            Cancel();
         }
         public void Cancel()
         {

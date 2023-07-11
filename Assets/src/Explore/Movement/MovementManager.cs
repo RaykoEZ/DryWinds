@@ -12,7 +12,6 @@ namespace Curry.Explore
     public class MovementManager: SceneInterruptBehaviour 
     {
         [SerializeField] protected Adventurer m_player = default;
-        [SerializeField] protected MoveToggle m_moveButton = default;
         [SerializeField] protected EncounterManager m_encounter = default;
         [SerializeField] protected Tilemap m_terrain = default;
         [SerializeField] protected FogOfWar m_fog = default;
@@ -22,7 +21,6 @@ namespace Curry.Explore
         bool m_movementInProgress = false;
         public static readonly string[] s_gameplayCollisionFilters = new string[] 
         { "Player", "Enemies", "Obstacles" };
-        static readonly ActionCost BaseMovementCost = new ActionCost { ActionCount = 1, Time = 1 };
         void Start()
         {
             m_onAdventure?.Init();
@@ -53,16 +51,7 @@ namespace Curry.Explore
             ICharacter toMove = characterObj != null && characterObj is ICharacter character ?
                 character : m_player;
             IEnumerator onMoveFinish = info.Payload?["onMoveFinish"] as IEnumerator;
-            MoveCharacter(toMove, worldPos, BaseMovementCost, onMoveFinish);
-        }
-        public void EnablePlay()
-        {
-            m_moveButton.SetInteractable(m_actionCost.HasEnoughResource(BaseMovementCost));
-        }
-        public void DisablePlay()
-        {
-            m_moveButton.SetInteractable(false);
-            m_moveButton.Cancel();
+            MoveCharacter(toMove, worldPos, ActionCostHandler.BaseMovementCost, onMoveFinish);
         }
         // Do a collision check for direct path ahead, if there are hidden obstaclesm we allow the move
         public bool IsPathObstructed(Vector3 targetCellCenterWorld, Vector3 origin) 
