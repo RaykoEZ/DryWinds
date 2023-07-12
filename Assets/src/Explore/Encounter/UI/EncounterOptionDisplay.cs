@@ -8,7 +8,7 @@ using UnityEngine.UI;
 namespace Curry.Explore
 {
     [Serializable]
-    public class EncounterOption : MonoBehaviour
+    public class EncounterOptionDisplay : MonoBehaviour
     {
         [SerializeField] Button m_button = default;
         [SerializeField] TextMeshProUGUI m_descriptionText = default;
@@ -33,7 +33,7 @@ namespace Curry.Explore
         protected virtual void ShowDescription() 
         {
             m_descriptionText.text = m_details.Description;
-            m_detailText.text = m_details.OutcomeDetail.DetailText;
+            m_detailText.text = m_details.OptionDetail.DetailText;
         }
     }
 }

@@ -19,8 +19,8 @@ MonoBehaviour:
     m_coverImage: {fileID: 21300000, guid: 631734eb5dc5b334c8a7ac2a72023f67, type: 3}
     m_options:
     - m_description: Request additional assistance from the Armory.
-      m_outcomeDetail: {fileID: 11400000, guid: d7f7c19f9214827499191b3d542ae20d, type: 2}
+      m_optionDetail: {fileID: 11400000, guid: d7f7c19f9214827499191b3d542ae20d, type: 2}
     - m_description: Rest and recuperate.
-      m_outcomeDetail: {fileID: 11400000, guid: cb66496281d419349a165de42f7fe84b, type: 2}
+      m_optionDetail: {fileID: 11400000, guid: cb66496281d419349a165de42f7fe84b, type: 2}
     - m_description: Scout the surrounding perimeter.
-      m_outcomeDetail: {fileID: 11400000, guid: ad4e8daa97ed0614899826846b4c6504, type: 2}
+      m_optionDetail: {fileID: 11400000, guid: ad4e8daa97ed0614899826846b4c6504, type: 2}

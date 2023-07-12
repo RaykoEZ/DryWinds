@@ -4,8 +4,9 @@ using Curry.Game;
 using Curry.Events;
 using Curry.Util;
 using System.Collections;
-using UnityEditor;
 using Curry.UI;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Curry.Explore
 {
@@ -14,6 +15,7 @@ namespace Curry.Explore
     {
         public int TimeLeft { get; private set; }
         public IPlayer Player { get; private set; }
+        public IReadOnlyList<AdventCard> CardsInHand { get; private set; }
         public DeckManager Deck { get; private set; }
         public MovementManager Movement { get; private set; }
         public LootManager LootManager { get; private set; }
@@ -22,6 +24,7 @@ namespace Curry.Explore
         public GameStateContext(
             int timeLeft, 
             IPlayer player,
+            IEnumerable<AdventCard> hand,
             DeckManager deck,
             MovementManager move,
             LootManager loot,
@@ -30,6 +33,7 @@ namespace Curry.Explore
         {
             TimeLeft = timeLeft;
             Player = player;
+            CardsInHand = hand.ToList();
             Movement = move;
             Deck = deck;
             LootManager = loot;
@@ -56,6 +60,7 @@ namespace Curry.Explore
         [SerializeField] GameIntroduction m_intro = default;
         [SerializeField] CardTargetEffectHandler m_cardTargeting = default;
         [SerializeField] TimeManager m_time = default;
+        [SerializeField] HandManager m_hand = default;
         [SerializeField] DeckManager m_deck = default;
         [SerializeField] LootManager m_loot = default;
         [SerializeField] MovementManager m_movement = default;
@@ -69,12 +74,13 @@ namespace Curry.Explore
         {
             int timeLeft = m_time.TimeLeftToClear;
             GameStateContext ret = new GameStateContext(
-                timeLeft, 
+                timeLeft,
                 m_player,
+                m_hand.CardsInHand,
                 m_deck,
                 m_movement,
-                m_loot, 
-                m_actionCount, 
+                m_loot,
+                m_actionCount,
                 m_mileStones);
             return ret;
         }

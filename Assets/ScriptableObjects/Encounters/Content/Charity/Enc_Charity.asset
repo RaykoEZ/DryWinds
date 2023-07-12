@@ -18,4 +18,4 @@ MonoBehaviour:
     m_coverImage: {fileID: 0}
     m_options:
     - m_description: Look around for supplies.
-      m_outcomeDetail: {fileID: 11400000, guid: 02e4935c73dc6f140ab3483b41b7cb9e, type: 2}
+      m_optionDetail: {fileID: 11400000, guid: 02e4935c73dc6f140ab3483b41b7cb9e, type: 2}

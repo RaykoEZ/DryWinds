@@ -8551,6 +8551,7 @@ MonoBehaviour:
   m_intro: {fileID: 677521687}
   m_cardTargeting: {fileID: 3945677920547352367}
   m_time: {fileID: 81830746}
+  m_hand: {fileID: 615583783}
   m_deck: {fileID: 1024562575}
   m_loot: {fileID: 2069251241}
   m_movement: {fileID: 1190344612}

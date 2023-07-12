@@ -20,8 +20,8 @@ MonoBehaviour:
     m_coverImage: {fileID: 21300000, guid: 73d46f13b6f7ac6458d1645b3c37c957, type: 3}
     m_options:
     - m_description: Agree with your visual receptors and head for the city.
-      m_outcomeDetail: {fileID: 11400000, guid: c9731abd6202a06468975b9540007319, type: 2}
+      m_optionDetail: {fileID: 11400000, guid: c9731abd6202a06468975b9540007319, type: 2}
     - m_description: '"It''s a trap!"'
-      m_outcomeDetail: {fileID: 11400000, guid: 39d5ed2e7e0db3145bd9b15b0bd4e147, type: 2}
+      m_optionDetail: {fileID: 11400000, guid: 39d5ed2e7e0db3145bd9b15b0bd4e147, type: 2}
     - m_description: '"Maybe we need a second opinion for this."'
-      m_outcomeDetail: {fileID: 11400000, guid: 0d1745c42758f8c4cb091904a67c2742, type: 2}
+      m_optionDetail: {fileID: 11400000, guid: 0d1745c42758f8c4cb091904a67c2742, type: 2}

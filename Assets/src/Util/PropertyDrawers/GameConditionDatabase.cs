@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Curry.Util
 {
-    [CreateAssetMenu(fileName = "GameConditionDatabase", menuName = "Curry/GameConditionDatabase", order = 1)]
+    [CreateAssetMenu(fileName = "GameConditionDatabase", menuName = "Curry/GameState/GameConditionDatabase", order = 1)]
     public class GameConditionDatabase : ScriptableObject
     {
         [Header("Existing Game Condition Flags")]

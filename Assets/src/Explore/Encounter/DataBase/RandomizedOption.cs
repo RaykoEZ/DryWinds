@@ -8,8 +8,8 @@ namespace Curry.Explore
 {
     // Stores operator & operands (includes odds in weights) of possible outcomes of an encounter option
     [Serializable]
-    [CreateAssetMenu(fileName = "Rd_EncOpt_", menuName = "Curry/Encounter/Options/New Randomized Outcome", order = 1)]
-    public class RandomizedOutcome : EncounterOutcome, IEncounterModule
+    [CreateAssetMenu(fileName = "RdEncOpt_", menuName = "Curry/Encounter/Options/New Randomized Option", order = 1)]
+    public class RandomizedOption : EncounterOption, IEncounterModule
     {
         [SerializeField] List<WeightedEncounterContent> m_potentialOutcomes = default;
         public override EncounterContent GetOutcomeContent()

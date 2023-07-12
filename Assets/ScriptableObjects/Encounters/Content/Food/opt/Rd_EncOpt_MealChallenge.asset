@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_detail: '[Boss Fight Music]'
   m_potentialOutcomes:
-  - m_probabilityWeight: 0
+  - m_probabilityWeight: 1
     m_content:
       m_effects:
       - {fileID: 11400000, guid: 0ef24f637108972438ce8052c1b9ab94, type: 2}
@@ -22,7 +22,7 @@ MonoBehaviour:
       m_dialogue:
       - You won, good job.
       - ' Hope you enjoyed the food.'
-  - m_probabilityWeight: 0
+  - m_probabilityWeight: 1
     m_content:
       m_effects:
       - {fileID: 11400000, guid: f84a52ef77f125648abe6559a99e1d80, type: 2}
@@ -30,10 +30,11 @@ MonoBehaviour:
       m_dialogue:
       - You were so close, yet so far.
       - A consolation prize is at hand.
-  - m_probabilityWeight: 0
+  - m_probabilityWeight: 1
     m_content:
       m_effects:
       - {fileID: 11400000, guid: 8f691f34ae65dd24aa5eb3bf250ca28c, type: 2}
+      - {fileID: 11400000, guid: f84a52ef77f125648abe6559a99e1d80, type: 2}
       m_dialogue:
       - You struggle to keep the food in as you take the forst few bites.
       - An utter defeat.

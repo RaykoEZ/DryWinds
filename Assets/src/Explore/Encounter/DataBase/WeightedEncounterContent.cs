@@ -9,7 +9,7 @@ namespace Curry.Explore
         int Weight { get; }
     }
     [Serializable]
-    public struct EncounterContent 
+    public class EncounterContent 
     {
         [SerializeField] List<BaseEffectResource> m_effects;
         [TextArea]
@@ -17,9 +17,8 @@ namespace Curry.Explore
         public List<BaseEffectResource> Effects => m_effects;
         public List<string> Dialogue => m_dialogue;
     }
-
     [Serializable]
-    public struct WeightedEncounterContent : IWeightedItem
+    public class WeightedEncounterContent : IWeightedItem
     {
         [Range(0, 100)]
         [SerializeField] int m_probabilityWeight;

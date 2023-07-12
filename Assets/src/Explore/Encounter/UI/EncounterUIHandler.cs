@@ -16,9 +16,9 @@ namespace Curry.Explore
         [SerializeField] Image m_background = default;
         [SerializeField] Transform m_optionParent = default;
         [SerializeField] DialogueManager m_dialogue = default;
-        [SerializeField] EncounterOption m_optionRef = default;
+        [SerializeField] EncounterOptionDisplay m_optionRef = default;
         public event OnEncounterUpdate OnEncounterFinished;
-        protected List<EncounterOption> m_currentOptions = new List<EncounterOption>();
+        protected List<EncounterOptionDisplay> m_currentOptions = new List<EncounterOptionDisplay>();
         GameStateContext m_contextRef;
         public void BeginEncounter(EncounterDetail detail, GameStateContext context) 
         {
@@ -32,7 +32,7 @@ namespace Curry.Explore
             // dialogues and events when player chooses an option
             foreach(EncounterOptionAttribute option in detail.Options) 
             {
-                EncounterOption instance = Instantiate(m_optionRef, m_optionParent);
+                EncounterOptionDisplay instance = Instantiate(m_optionRef, m_optionParent);
                 instance.Init(option, context);
                 instance.OnChosen += OnOptionChosen; 
                 m_currentOptions.Add(instance);
@@ -47,7 +47,7 @@ namespace Curry.Explore
         }
         void OnOptionChosen(EncounterOptionAttribute chosen) 
         {
-            foreach (EncounterOption option in m_currentOptions)
+            foreach (EncounterOptionDisplay option in m_currentOptions)
             {
                 option.OnChosen -= OnOptionChosen;
                 Destroy(option.gameObject);
@@ -55,16 +55,16 @@ namespace Curry.Explore
             m_currentOptions.Clear();
             // Options give text to display in dialogues
             // When dialogues finishes, trigger encounter effect
-            StartCoroutine(OnChosen_Internal(chosen.OutcomeDetail));
+            StartCoroutine(OnChosen_Internal(chosen.OptionDetail));
         }
         // Do dialogues
-        IEnumerator OnChosen_Internal(EncounterOutcome outcome) 
+        IEnumerator OnChosen_Internal(EncounterOption outcome) 
         {
             var content = outcome.GetOutcomeContent();
             m_dialogue.OpenDialogue(content.Dialogue, "");
             // call option effect when we finish dialogue
             yield return new WaitUntil(() => !m_dialogue.InProgress);
-            yield return StartCoroutine(EncounterOutcome.Activate(m_contextRef, content.Effects));
+            yield return StartCoroutine(EncounterOption.Activate(m_contextRef, content.Effects));
             // finish after we yield from encounter effect
             OnFinish();
             yield return new WaitForEndOfFrame();
