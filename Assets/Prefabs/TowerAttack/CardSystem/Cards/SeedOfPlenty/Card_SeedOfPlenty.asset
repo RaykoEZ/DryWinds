@@ -13,12 +13,13 @@ MonoBehaviour:
   m_Name: Card_SeedOfPlenty
   m_EditorClassIdentifier: 
   m_attribute:
-    m_name: 
-    m_description: 
+    m_name: Seed of Plenty
+    m_description: 'When in hand, Gain [Regen] and increase Max HP by 5. ([Regin]:
+      Heal 2 HP at the end of player''s turn)'
     m_targetingRange: {fileID: 0}
     m_cost:
       Time: 0
       ActionCount: 0
     m_cooldown: 0
-    m_holdingValue: 0
+    m_holdingValue: 1
     m_isInitiallyOnCooldown: 0
