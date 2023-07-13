@@ -4,7 +4,7 @@ using Curry.Events;
 namespace Curry.Explore
 {
     // Handles card activation triggers after a card finishes targeting a position
-    public class CardTargetEffectHandler : MonoBehaviour
+    public class CardActivationHandler : MonoBehaviour
     {
         [SerializeField] Transform m_playerTransform = default;
         [SerializeField] PlayZone m_playZone = default;
@@ -55,6 +55,14 @@ namespace Curry.Explore
             m_cost?.CancelPreview();
             HideDropZone();
         }
+        public void ActivateHandEffect(IHandEffect handEffect) 
+        {
+            handEffect?.HandEffect(m_contextRef);
+        }
+        public void RevertHandEffect(IHandEffect handEffect) 
+        {
+            handEffect?.OnLeaveHand(m_contextRef);
+        }
         public void ShowDropZones() 
         {
             if (m_pendingCardRef != null && m_pendingCardRef.Card is ITargetsPosition target)
@@ -70,6 +78,10 @@ namespace Curry.Explore
         {
             m_selection.CancelSelection();
             m_playZone.SetPlayZoneActive(false);
+        }
+        public void EndOfTurnEffect(IEndOfTurnEffect card) 
+        {
+            card?.OnEndOfTurn(m_contextRef);
         }
     }
 }

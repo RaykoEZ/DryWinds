@@ -16,12 +16,12 @@ namespace Curry.UI
         [SerializeField] AbilityList m_abilities = default;
         [SerializeField] ModifierList m_modifiers = default;
         bool showing = false;
-        public void Display(ICharacter character) 
+        public void Display(TacticalCharacter character) 
         {
             StopAllCoroutines();
             StartCoroutine(Display_Internal(character));
         }
-        IEnumerator Display_Internal(ICharacter character) 
+        IEnumerator Display_Internal(TacticalCharacter character) 
         {
             m_name.text = character.Name;
             m_hpBar?.SetDisplayTarget(character);

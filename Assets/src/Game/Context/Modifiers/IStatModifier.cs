@@ -1,9 +1,11 @@
 ﻿using Curry.Explore;
+using System;
 using System.Collections.Generic;
 
 namespace Curry.Game
 {
-    public interface IStatModifier<T>
+    public delegate void OnStatUpdate<T>(T newStat);
+    public interface IStatModifier<T> : IEquatable<IStatModifier<T>>
     {
         ModifierContent Content { get; }
         event OnModifierExpire<T> OnExpire;
@@ -15,6 +17,7 @@ namespace Curry.Game
     {
         event OnModifierExpire<T> OnModExpire;
         event OnModifierTrigger<T> OnModTrigger;
+        event OnStatUpdate<T> OnStatUpdated;
         T Current { get; }
         IReadOnlyList<IStatModifier<T>> Modifiers { get; }
         void Refresh();

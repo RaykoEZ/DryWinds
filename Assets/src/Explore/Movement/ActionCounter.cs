@@ -8,12 +8,14 @@ namespace Curry.Explore
         [SerializeField] int m_maxMoveCount = default;
         [SerializeField] protected TextMeshProUGUI m_moveCount = default;
         [SerializeField] protected TextMeshProUGUI m_diff = default;
+        [SerializeField] TurnEnd m_turnEnd = default;
         bool m_onPreview = false;
         int m_previous;
         int m_current = 0;
         public int CurrentActionCount => m_onPreview? m_previous : m_current;
-        private void Start()
+        void Start()
         {
+            m_turnEnd.OnTurnEnding += FullRecovery;
             UpdateMoveCountDisplay(m_maxMoveCount);
         }
         public void FullRecovery() 

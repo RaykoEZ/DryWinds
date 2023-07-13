@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab06a9a3706533b4bbd03df9fb6f105f, type: 3}
+  m_Name: Mod_MaxHpUp
+  m_EditorClassIdentifier: 
+  m_content:
+    Icon: {fileID: 7482667652216324306, guid: 8546c1b55c20c42438e2e981104c9a5b, type: 3}
+    Name: Max Hp + 5
+    Description: Gain 5 Max Hp.

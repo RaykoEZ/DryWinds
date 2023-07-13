@@ -8,5 +8,6 @@ namespace Curry.Explore
     {
         // Activate without user and target in argument, will have player as the only target/user available
         public virtual void Activate(GameStateContext context) { }
+        public virtual void Deactivate(GameStateContext context) { }
     }
 }

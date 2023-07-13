@@ -1,11 +1,12 @@
 ﻿using Curry.Game;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Curry.Explore
 {
     // handles modifiers applied by cards, items, attacks 
-    public class TacticalStatManager : IModifierContainer<TacticalStats>
+    public partial class TacticalStatManager : IModifierContainer<TacticalStats>
     {
         protected List<IStatModifier<TacticalStats>> m_mods = 
             new List<IStatModifier<TacticalStats>>();
@@ -16,6 +17,7 @@ namespace Curry.Explore
         public IReadOnlyList<IStatModifier<TacticalStats>> Modifiers => m_mods;
         public event OnModifierExpire<TacticalStats> OnModExpire;
         public event OnModifierTrigger<TacticalStats> OnModTrigger;
+        public event OnStatUpdate<TacticalStats> OnStatUpdated;
         TacticalStats m_base;
         TacticalStats m_current;
         public TacticalStats Current { get { return m_current; } protected set { m_current = value; } }
@@ -61,8 +63,7 @@ namespace Curry.Explore
         }
         public void SetMaxHp(int maxHp) 
         {
-            if (maxHp < 1) return;
-            m_current.MaxHp = maxHp;
+            m_current.MaxHp = Mathf.Max(maxHp, 1);
         }
         public void TakeDamage(int damage) 
         {
@@ -114,17 +115,19 @@ namespace Curry.Explore
             mod.OnTrigger += OnModifierEffectTrigger;
             m_mods.Add(mod);
         }
-
         protected virtual void RemoveExpiredModifier(IStatModifier<TacticalStats> mod)
         {
             if (mod == null)
             {
                 return;
             }
-            mod.OnExpire -= OnModifierExpire;
-            mod.OnTrigger -= OnModifierEffectTrigger;
-            m_mods.Remove(mod);
-            OnModExpire?.Invoke(mod);
+            // find modifier by name and description
+            if (m_mods.Contains(mod)) 
+            {
+                m_toRemove.Add(mod);
+                OnModExpire?.Invoke(mod);
+                Refresh();
+            }
         }
         protected virtual void OnModifierEffectTrigger(IStatModifier<TacticalStats> mod)
         {
@@ -136,7 +139,9 @@ namespace Curry.Explore
             // Clear all expired mods this frame
             foreach (IStatModifier<TacticalStats> expired in m_toRemove)
             {
-                RemoveExpiredModifier(expired);
+                expired.OnExpire -= OnModifierExpire;
+                expired.OnTrigger -= OnModifierEffectTrigger;
+                m_mods.Remove(expired);
             }
             m_toRemove.Clear();
             //Add all new modifiers
@@ -154,11 +159,7 @@ namespace Curry.Explore
                 Speed = m_base.Speed,
             };
             // if there are modifiers, reapply them to reset stats
-            if (m_mods.Count == 0)
-            {
-                return;
-            }
-            else
+            if (m_mods.Count > 0)
             {
                 // Apply all modifiera to base
                 foreach (var mod in m_mods)
@@ -166,13 +167,12 @@ namespace Curry.Explore
                     Current = mod.Process(Current);
                 }
             }
+            OnStatUpdated?.Invoke(Current);
         }
-
         public void RemoveModifier(IStatModifier<TacticalStats> modRef)
         {
             RemoveExpiredModifier(modRef);
         }
-
         public void Refresh()
         {
             UpdateModifierState();

@@ -22,9 +22,10 @@ namespace Curry.Explore
         [SerializeField] CurryGameEventListener m_onCardDraw = default;
         [SerializeField] PostCardActivationHandler m_postActivation = default;
         [SerializeField] LayoutSpaceSetting m_spacing = default;
-        [SerializeField] CardTargetEffectHandler m_targetHandle = default;
+        [SerializeField] CardActivationHandler m_activation = default;
         [SerializeField] HandCapacityDisplay m_capacity = default;
         [SerializeField] CardAudioHandler m_audio = default;
+        [SerializeField] TurnEnd m_turnEnd = default;
         [SerializeField] protected Hand m_hand = default;
         public int TotalHandHoldingValue => m_hand.TotalHandHoldingValue;
         public int MaxCapacity => m_hand.MaxCapacity;
@@ -38,6 +39,7 @@ namespace Curry.Explore
             m_postActivation.OnReturnToHand += PrepareCards;
             m_postActivation.OnReturnToInventory += ReturnCardsToInventory;
             m_postActivation.OnTakeFromHand += TakeCards;
+            m_turnEnd.OnTurnEnding += OnTurnEndEffect;
             // get starting hand
             AdventCard[] cards = m_cardHolderRoot.GetComponentsInChildren<AdventCard>();
             m_hand.AddCards(cards);
@@ -53,6 +55,7 @@ namespace Curry.Explore
             m_spacing.UpdateSpacing();
             m_capacity.UpdateDisplay(m_hand.MaxCapacity, m_hand.TotalHandHoldingValue);
         }
+        // Initialize card handles and activate effect triggers on hand 
         void PrepareCards(List<AdventCard> toPrep)
         {
             foreach (AdventCard card in toPrep)
@@ -65,14 +68,28 @@ namespace Curry.Explore
             if (card == null)
             {
                 return;
+            }           
+            if (card is IHandEffect handEffect) 
+            {
+                m_activation.ActivateHandEffect(handEffect);
+            }
+            else 
+            {
+                card.GetComponent<DraggableCard>().OnReturn += m_activation.OnCardReturn;
+                card.GetComponent<DraggableCard>().OnDragBegin += m_activation.TargetGuide;
             }
             // If card is on cool down, apply cooldown tracking
             m_postActivation.TryApplyCoolDown(card);
             card.transform.SetParent(transform, false);
-            card.GetComponent<DraggableCard>().OnReturn += m_targetHandle.OnCardReturn;
-            card.GetComponent<DraggableCard>().OnDragBegin += m_targetHandle.TargetGuide;
             card.GetComponent<CardInteractionController>()?.SetInteractionMode(
                 CardInteractMode.Play | CardInteractMode.Inspect);
+        }
+        void OnTurnEndEffect() 
+        { 
+            foreach(AdventCard card in CardsInHand) 
+            {
+                m_activation.EndOfTurnEffect(card as IEndOfTurnEffect);
+            }
         }
         public List<AdventCard> TakeCards(List<AdventCard> take) 
         {
@@ -88,8 +105,13 @@ namespace Curry.Explore
         protected virtual void OnCardLeaveHand(DraggableCard drag)
         {
             if (drag == null) return;
-            drag.OnDragBegin -= m_targetHandle.TargetGuide;
-            drag.OnReturn -= m_targetHandle.OnCardReturn;
+
+            if (drag.Card is IHandEffect handEffect) 
+            {
+                m_activation.RevertHandEffect(handEffect);
+            }
+            drag.OnDragBegin -= m_activation.TargetGuide;
+            drag.OnReturn -= m_activation.OnCardReturn;
         }
         protected void ReturnCardsToInventory(List<AdventCard> cards) 
         {
@@ -116,10 +138,10 @@ namespace Curry.Explore
         IEnumerator PlayCard(GameStateContext c, AdventCard card)
         {
             // Reset pending card
-            m_targetHandle.ResetDragTarget();
+            m_activation.ResetDragTarget();
             DraggableCard draggable = card.GetComponent<DraggableCard>();
             OnCardLeavesHandParent(draggable);
-            m_targetHandle.HideDropZone();
+            m_activation.HideDropZone();
             yield return StartCoroutine(m_hand.PlayCard(c, card, m_player));
             // after effect activation, we spend the card
             if(card is IConsumable) 
@@ -135,7 +157,7 @@ namespace Curry.Explore
             //Try Spending Time/Resource, if not able, cancel
             if (!card.IsActivatable(c) || !enoughTime)
             {
-                m_targetHandle.HideDropZone();
+                m_activation.HideDropZone();
                 onCancel?.Invoke();
             }
             else
@@ -162,7 +184,7 @@ namespace Curry.Explore
                     CardInteractMode.Play | CardInteractMode.Inspect);
             }
             m_playZone.OnPlayed += OnCardPlay;
-            m_targetHandle.OnCardTargetResolve += OnCardPlay;
+            m_activation.OnCardTargetResolve += OnCardPlay;
         }
         public void DisablePlay()
         {
@@ -172,7 +194,7 @@ namespace Curry.Explore
                     SetInteractionMode(CardInteractMode.Inspect);
             }
             m_playZone.OnPlayed -= OnCardPlay;
-            m_targetHandle.OnCardTargetResolve -= OnCardPlay;
+            m_activation.OnCardTargetResolve -= OnCardPlay;
         }
         #endregion
     }

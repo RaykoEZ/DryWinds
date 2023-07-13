@@ -28,7 +28,6 @@ namespace Curry.Explore
         public int Speed => m_statManager.Current.Speed;
         public IModifierContainer<TacticalStats> CurrentStats => m_statManager;
         public abstract IReadOnlyList<AbilityContent> AbilityDetails { get; }
-
         public event OnHpUpdate TakeDamage;
         public event OnHpUpdate RecoverHp;
         public event OnCharacterUpdate OnDefeat;
@@ -150,7 +149,6 @@ namespace Curry.Explore
         {
             m_statManager.OnTimeElapsed(dt);
         }
-
         public void Refresh()
         {
             CurrentStats.Refresh();

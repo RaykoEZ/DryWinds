@@ -80,7 +80,7 @@ namespace Curry.Explore
             bool hasCharacter = GameUtil.TrySearchTarget(
                 info.ClickWorldPos,
                 LayerMask.GetMask(MovementManager.s_gameplayCollisionFilters),
-                out ICharacter result);
+                out TacticalCharacter result);
             if (isCoordClear && hasCharacter && result != null)
             {
                 OnSelectCharacter(result, info.SelectionMode);
@@ -91,11 +91,11 @@ namespace Curry.Explore
                 m_enemyDetail?.EndDisplay();
             }
         }
-        void OnSelectCharacter(ICharacter character, TileSelectionMode mode) 
+        void OnSelectCharacter(TacticalCharacter character, TileSelectionMode mode) 
         {
-            if(character is IPlayer player) 
+            if(character is IPlayer) 
             {
-                OnSelectPlayer(player, mode);
+                OnSelectPlayer(character, mode);
             }
             else 
             {
@@ -115,7 +115,7 @@ namespace Curry.Explore
             m_tileHighlightManager.MoveTileTo(new ObjectId(m_previewTerrainTile), centerWorld);
             m_tileHighlightManager.Show(m_previewTileId);
         }
-        void OnSelectPlayer(IPlayer player, TileSelectionMode mode)
+        void OnSelectPlayer(TacticalCharacter player, TileSelectionMode mode)
         {
             GameObject rangeTile;
             switch (mode)

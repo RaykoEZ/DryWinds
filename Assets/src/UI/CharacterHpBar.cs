@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using Curry.Explore;
 using TMPro;
+using UnityEngine.PlayerLoop;
 
 namespace Curry.UI
 {
@@ -9,16 +10,17 @@ namespace Curry.UI
         [SerializeField] TacticalCharacter m_initTarget = default;
         [SerializeField] ResourceBar m_bar = default;
         [SerializeField] TextMeshProUGUI m_hpText = default;
-        ICharacter m_currentTarget;
+        TacticalCharacter m_currentTarget;
         void Start()
         {
             SetDisplayTarget(m_initTarget);
         }
-        public void SetDisplayTarget(ICharacter target) 
+        public void SetDisplayTarget(TacticalCharacter target) 
         {
             if (target != null)
             {
                 m_currentTarget = target;
+                m_currentTarget.CurrentStats.OnStatUpdated += UpdateHpStats;
                 m_currentTarget.TakeDamage += UpdateHp;
                 m_currentTarget.RecoverHp += UpdateHp;
                 SetHpText(m_currentTarget.CurrentHp, m_currentTarget.MaxHp);
@@ -35,6 +37,12 @@ namespace Curry.UI
         {
             m_bar?.SetBarValue(newHP);
             SetHpText(newHP, (int)m_bar.Max);
+        }
+        void UpdateHpStats(TacticalStats newStats)
+        {
+            m_bar?.SetMaxValue(newStats.MaxHp);
+            UpdateHp(0, newStats.Hp);
+            SetHpText(newStats.Hp, newStats.MaxHp);
         }
     }
 }

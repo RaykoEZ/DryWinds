@@ -17,7 +17,6 @@ namespace Curry.Explore
             TargetingRange =RangeMapping.GetRangeMap(3),
             Icon = m_resource.Content.Icon
         };
-
         public void AddStack(int addVal = 1) 
         {
             m_instance?.AddStack(addVal);
@@ -43,7 +42,7 @@ namespace Curry.Explore
             {
                 m_instance.AddStack();
             }
-            else if(m_activated && !activate)
+            else if (m_activated && !activate)
             {
                 applyTo.CurrentStats.RemoveModifier(m_instance);
                 m_activated = false;

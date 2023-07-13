@@ -130,7 +130,7 @@ MonoBehaviour:
     itemWidth: 220
     m_layout: {fileID: 3945677919952748298}
     m_layoutLimit: {fileID: 3945677920594794699}
-  m_targetHandle: {fileID: 7216561757060450774}
+  m_activation: {fileID: 7774845029451196478}
   m_capacity: {fileID: 6828391529962177100}
   m_audio: {fileID: 0}
   m_hand:
@@ -341,7 +341,7 @@ GameObject:
   - component: {fileID: 6555509657805821307}
   - component: {fileID: 522609233351070588}
   - component: {fileID: 6052059180502564647}
-  - component: {fileID: 7216561757060450774}
+  - component: {fileID: 7774845029451196478}
   m_Layer: 8
   m_Name: TargetGuide
   m_TagString: Untagged
@@ -492,7 +492,7 @@ LineRenderer:
   m_UseWorldSpace: 1
   m_Loop: 0
   m_ApplyActiveColorSpace: 0
---- !u!114 &7216561757060450774
+--- !u!114 &7774845029451196478
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -501,19 +501,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 8961618953883279873}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 225af2186a12a9f49970699a070d2cd6, type: 3}
+  m_Script: {fileID: 11500000, guid: e2906b8018d97704ca0829872fac88f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_playerTransform: {fileID: 0}
   m_playZone: {fileID: 0}
   m_selection: {fileID: 0}
   m_onDropTileSelected:
-    m_eventToListen: {fileID: 11400000, guid: 856b99b46ebcaee409c7fb6d66575bcd, type: 2}
+    m_eventToListen: {fileID: 11400000, guid: 7a080d8b73d1f6f48b52338b98fa8950, type: 2}
     m_responses:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 7216561757060450774}
-          m_TargetAssemblyTypeName: Curry.Explore.CardTargetEffectHandler, Assembly-CSharp
+        - m_Target: {fileID: 7774845029451196478}
+          m_TargetAssemblyTypeName: Curry.Explore.CardActivationHandler, Assembly-CSharp
           m_MethodName: OnTargetDropZoneSelected
           m_Mode: 0
           m_Arguments:
@@ -525,6 +525,7 @@ MonoBehaviour:
             m_BoolArgument: 0
           m_CallState: 2
   m_cost: {fileID: 0}
+  m_turnEnd: {fileID: 0}
 --- !u!1001 &5738011182659167694
 PrefabInstance:
   m_ObjectHideFlags: 0

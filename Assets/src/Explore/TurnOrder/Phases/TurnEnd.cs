@@ -3,13 +3,14 @@ using System.Collections;
 using UnityEngine;
 namespace Curry.Explore
 {
+    public delegate void OnTurnEnd();
     public class TurnEnd : Phase
     {
-        [SerializeField] ActionCounter m_actionCount = default;
+        public event OnTurnEnd OnTurnEnding;
         protected override Type NextState { get; set; } = typeof(TurnStart);
         protected override IEnumerator Evaluate_Internal()
         {
-            m_actionCount.FullRecovery();
+            OnTurnEnding?.Invoke();
             TransitionTo();
             yield return null;
         }

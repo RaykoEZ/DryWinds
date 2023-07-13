@@ -4,28 +4,35 @@ using UnityEngine;
 
 namespace Curry.Explore
 {
-    public interface IEffectInHand 
+    public class SeedOfPlenty : AdventCard, IEndOfTurnEffect, IHandEffect
     {
-        public void InHandEffect(GameStateContext c);
-        public void OnLeaveHand(GameStateContext c);
-    }
-    public class SeedOfPlenty : AdventCard, IEffectInHand
-    {
+        [SerializeField] Heal_EffectResource m_heal = default;
+        [SerializeField] GainStat_EffectResource m_gainStats = default;
+        StatUp m_currentModifier;
         public override bool IsActivatable(GameStateContext c)
         { return false; }
         public override IEnumerator ActivateEffect(ICharacter user, GameStateContext context)
         {       
             yield return null;
         }
-
-        public void InHandEffect(GameStateContext c)
+        public void OnEndOfTurn(GameStateContext c)
         {
-            throw new NotImplementedException();
+            m_heal.Activate(c);
         }
-
+        public void HandEffect(GameStateContext c)
+        {
+            if (c.Player is IModifiable mod)
+            {
+                m_currentModifier = new StatUp(m_gainStats.Effect);
+                mod.CurrentStats.ApplyModifier(m_currentModifier);
+            }
+        }
         public void OnLeaveHand(GameStateContext c)
         {
-            throw new NotImplementedException();
+            if (c.Player is IModifiable mod)
+            {
+                mod.CurrentStats.RemoveModifier(m_currentModifier);
+            }
         }
     }
 }

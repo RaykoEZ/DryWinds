@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_attribute:
     m_name: Seed of Plenty
-    m_description: 'When in hand, Gain [Regen] and increase Max HP by 5. ([Regin]:
-      Heal 2 HP at the end of player''s turn)'
+    m_description: When in hand, increase Max HP by 5 and heal 2 HP at the end of
+      player's turn)
     m_targetingRange: {fileID: 0}
     m_cost:
       Time: 0

@@ -58,7 +58,7 @@ namespace Curry.Explore
         [SerializeField] ObjectiveManager m_objectives = default;
         [SerializeField] PlayZone m_cardPlayZone = default;
         [SerializeField] GameIntroduction m_intro = default;
-        [SerializeField] CardTargetEffectHandler m_cardTargeting = default;
+        [SerializeField] CardActivationHandler m_cardTargeting = default;
         [SerializeField] TimeManager m_time = default;
         [SerializeField] HandManager m_hand = default;
         [SerializeField] DeckManager m_deck = default;

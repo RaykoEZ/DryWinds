@@ -66,5 +66,10 @@ namespace Curry.Game
         {
             OnTrigger?.Invoke(this);
         }
+
+        public bool Equals(IStatModifier<CharacterModifierProperty> other)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
