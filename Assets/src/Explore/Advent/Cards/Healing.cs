@@ -9,7 +9,7 @@ namespace Curry.Explore
         // Card Effect
         public override IEnumerator ActivateEffect(ICharacter user, GameStateContext context)
         {
-            m_healing?.Healing?.ApplyEffect(user, user);
+            m_healing?.Healing?.ApplyEffect(user);
             yield return null;
         }
         public IEnumerator OnExpend()

@@ -6,7 +6,8 @@ namespace Curry.Explore
     public class HealingModule : PropertyAttribute
     {
         [SerializeField] int m_healAmount = default;
-        public void ApplyEffect(ICharacter target, ICharacter user)
+        public int HealAmount => m_healAmount;
+        public void ApplyEffect(ICharacter target)
         {
             target.Recover(m_healAmount);
         }
