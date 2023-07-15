@@ -7,8 +7,7 @@ MonoImporter:
   - m_resources: {fileID: 11400000, guid: 63ad83d7803a4074caeb19c6e8fca421, type: 2}
   - m_cooldown: {instanceID: 0}
   - m_heal: {fileID: 11400000, guid: 2801758da1e57fc489324c6c946ed55b, type: 2}
-  - m_move: {fileID: 11400000, guid: 9a81b79a32cdb4a42a6cb06e777bd53e, type: 2}
-  - m_exhaustAllActionPoint: {fileID: 11400000, guid: 29f8a2c3d5969804ca5d131e4c4bc2fe, type: 2}
+  - m_exhaustActionPoint: {fileID: 11400000, guid: a340dde5cdc090c41b5c5e8dab13289c, type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

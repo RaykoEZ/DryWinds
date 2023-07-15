@@ -14,11 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_attribute:
     m_name: Sandskater Roast
-    m_description: Gain 10 Hp.
+    m_description: Gain 10 HP.
     m_targetingRange: {fileID: 0}
     m_cost:
-      Time: 5
-      ActionCount: 0
+      Time: 10
+      ActionPoint: 0
     m_cooldown: 0
     m_holdingValue: 2
     m_isInitiallyOnCooldown: 0

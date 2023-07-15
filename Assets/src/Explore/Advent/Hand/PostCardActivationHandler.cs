@@ -56,6 +56,7 @@ namespace Curry.Explore
             else 
             {
                 used.GetComponent<DraggableCard>()?.ReturnToBeforeDrag();
+                OnReturnToHand?.Invoke(take);
             }
             yield return new WaitForEndOfFrame();
         }

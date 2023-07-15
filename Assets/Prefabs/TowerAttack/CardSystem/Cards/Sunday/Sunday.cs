@@ -6,7 +6,7 @@ namespace Curry.Explore
 {   
     public class Sunday : AdventCard, IConsumable
     {
-        [SerializeField] ActionPointChange_EffectResource m_actionGain = default;
+        [SerializeField] GainAp_EffectResource m_actionGain = default;
         public override IEnumerator ActivateEffect(ICharacter user, GameStateContext context)
         {
             m_actionGain?.Activate(context);

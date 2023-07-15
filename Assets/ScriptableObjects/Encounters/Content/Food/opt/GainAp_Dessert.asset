@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 904ffd7c4c348704b92f703526cea522, type: 3}
-  m_Name: Heal_Disengage
+  m_Script: {fileID: 11500000, guid: a49cf181f8d978f439c31267df0e2dfd, type: 3}
+  m_Name: GainAp_Dessert
   m_EditorClassIdentifier: 
-  m_healing:
-    m_healAmount: 5
+  m_gain:
+    m_changeValue: 1

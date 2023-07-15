@@ -15,11 +15,11 @@ MonoBehaviour:
   m_attribute:
     m_name: Onslaught
     m_description: Deal 4 damage to one enemy, if the enemy is defeated by this effect,
-      gain 1AP and + 4 damage for next use of this card.
+      gain 1AP and + 4 damage for next use of this card. (Unstackable)
     m_targetingRange: {fileID: 11400000, guid: 9854b15ca8b244d4f941a1ada2f81708, type: 2}
     m_cost:
       Time: 3
-      ActionCount: 2
+      ActionPoint: 2
     m_cooldown: 0
     m_holdingValue: 2
     m_isInitiallyOnCooldown: 0

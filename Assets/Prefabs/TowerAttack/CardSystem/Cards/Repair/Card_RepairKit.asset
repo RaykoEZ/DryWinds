@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_attribute:
     m_name: RepairKit
-    m_description: Recover 3 Hp
+    m_description: Recover 3 HP.
     m_targetingRange: {fileID: 11400000, guid: d85024baf97a42c47be0378241a4ddca, type: 2}
     m_cost:
       Time: 0

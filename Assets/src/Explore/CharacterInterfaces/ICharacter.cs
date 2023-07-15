@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 
 namespace Curry.Explore
@@ -26,7 +27,7 @@ namespace Curry.Explore
         void Hide();
         void Recover(int val);
         void TakeHit(int hitVal);
-        void OnDefeated();
+        IEnumerator OnDefeated();
         void Despawn();
         // returns if warp was successful
         bool Warp(Vector3 to);

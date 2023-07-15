@@ -5570,6 +5570,8 @@ MonoBehaviour:
   - {fileID: 1458675905969362800, guid: 9c001e81f6b3943469e0d99d2d350573, type: 3}
   - {fileID: 1717730041097802572, guid: 0afe34ab51c25e64ba9c21a89feafe34, type: 3}
   - {fileID: -1498232522625378632, guid: b7ccdd7a1ab8f3242bc4d6189423b3dd, type: 3}
+  - {fileID: 8071710509276292979, guid: 7e804290738bed44d953e373c62c356f, type: 3}
+  - {fileID: 5239562036305896454, guid: fe246b37acb1a5d4d9ef01e4d78ee505, type: 3}
   m_prompter:
     m_choiceManagerRef: {fileID: 732907792}
 --- !u!1 &1040645975 stripped
@@ -9505,8 +9507,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0824787c5e60f048a7de1ca98fd3e8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_maxMoveCount: 3
-  m_moveCount: {fileID: 871656575}
+  m_maxMovePoint: 3
+  m_apValueField: {fileID: 871656575}
   m_diff: {fileID: 178023143}
   m_turnEnd: {fileID: 2127039956}
 --- !u!114 &1769241227
@@ -9735,7 +9737,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 200, y: 50}
+  m_SizeDelta: {x: 210, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1801832019
 MonoBehaviour:
@@ -9757,7 +9759,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Actions Left:'
+  m_text: 'AP left:'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -9784,7 +9786,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 31.4
+  m_fontSize: 36
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1

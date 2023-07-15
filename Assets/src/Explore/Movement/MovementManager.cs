@@ -115,7 +115,7 @@ namespace Curry.Explore
                 };
                 // Trigger player to move to selected tile
                 OnStart?.Invoke(
-                    new ActionCost { ActionCount = 1, Time = 1 },
+                    new ActionCost { ActionPoint = 1, Time = 1 },
                     action);
             }
             else

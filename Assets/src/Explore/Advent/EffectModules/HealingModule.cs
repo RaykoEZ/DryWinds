@@ -11,5 +11,9 @@ namespace Curry.Explore
         {
             target.Recover(m_healAmount);
         }
+        public void ApplyEffect(ICharacter target, int healAmount) 
+        {
+            target.Recover(healAmount);
+        }
     }
 }

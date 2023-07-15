@@ -7,7 +7,7 @@ namespace Curry.Explore
     {
         public void ApplyEffect(ActionCounter actionCounter, out int numSpent) 
         {
-            numSpent = actionCounter.CurrentActionCount;
+            numSpent = actionCounter.CurrentActionPoint;
             actionCounter.UpdateMoveCountDisplay(0);
         }
     }

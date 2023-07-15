@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_attribute:
     m_name: Sizzling Quakespear
-    m_description: Gain 1 Action, take 5 damage.
+    m_description: Gain 1 AP, take 5 damage.
     m_targetingRange: {fileID: 0}
     m_cost:
       Time: 3

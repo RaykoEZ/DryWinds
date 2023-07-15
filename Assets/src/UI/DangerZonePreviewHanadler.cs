@@ -14,11 +14,6 @@ namespace Curry.UI
             {
                 BeginDisplay(origin, ability.TargetingRange);
             }
-            else 
-            {
-                // If we don't have range to display anymore, we clear danager
-                ClearRangePattern(origin);
-            }
         }
         public IEnumerator ClearDanagerZone(Transform origin)
         {

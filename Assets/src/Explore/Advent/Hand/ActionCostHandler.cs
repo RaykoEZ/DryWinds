@@ -10,11 +10,11 @@ namespace Curry.Explore
         [SerializeField] TimeManager m_time = default;
         [SerializeField] ActionCounter m_actionCounter = default;
         public static readonly ActionCost BaseMovementCost = 
-            new ActionCost { ActionCount = 1, Time = 1 };
+            new ActionCost { ActionPoint = 1, Time = 1 };
         public bool HasEnoughResource(ActionCost cost) 
         {
             return cost.Time <= m_time.TimeLeftToClear &&
-                cost.ActionCount <= m_actionCounter.CurrentActionCount;
+                cost.ActionPoint <= m_actionCounter.CurrentActionPoint;
         }
         public bool TrySpend(ActionCost cost) 
         {
@@ -22,14 +22,14 @@ namespace Curry.Explore
             if (ret) 
             {
                 m_time.TrySpendTime(cost.Time);
-                m_actionCounter.UpdateMoveCountDisplay(m_actionCounter.CurrentActionCount - cost.ActionCount);
+                m_actionCounter.UpdateMoveCountDisplay(m_actionCounter.CurrentActionPoint - cost.ActionPoint);
             }
             return ret;
         }
         public void BeginPreview(ActionCost cost) 
         {
             m_time?.PreviewCost(cost.Time);
-            m_actionCounter?.PreviewCost(cost.ActionCount);
+            m_actionCounter?.PreviewCost(cost.ActionPoint);
         }
         public void CancelPreview() 
         {

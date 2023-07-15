@@ -17,6 +17,10 @@ namespace Curry.Explore
         {
             return GameUtil.HasValidTargets(userOrigin, range, m_targetLayer, out validTargets);
         }
+        public bool TryGetCurrentTarget<T_Target>(out T_Target result) 
+        {          
+            return GameUtil.TrySearchTarget(Target, m_targetLayer, out result);
+        }
         public void SetTarget(Vector3 target)
         {
             Target = target;

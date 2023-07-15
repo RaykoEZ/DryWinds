@@ -78,6 +78,8 @@ namespace Curry.Explore
             remove.OnDefeat -= OnEnemyRemove;
             remove.OnReveal -= m_fog.OnEnemyReveal;
             remove.OnHide -= m_fog.OnEnemyHide;
+            // Clear danager zone belonging to removed enemy
+            StartCoroutine(m_dangerZoneDisplay.ClearDanagerZone(remove.GetTransform()));
             m_enemies.ScheduleRemove(remove as IEnemy);
             remove.Despawn();
         }

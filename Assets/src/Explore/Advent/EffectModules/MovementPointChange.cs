@@ -9,7 +9,7 @@ namespace Curry.Explore
         [SerializeField] int m_changeValue = default;
         public void ApplyEffect(ActionCounter target)
         {
-            target.UpdateMoveCountDisplay(target.CurrentActionCount + m_changeValue);
+            target.UpdateMoveCountDisplay(target.CurrentActionPoint + m_changeValue);
         }
     }
 }

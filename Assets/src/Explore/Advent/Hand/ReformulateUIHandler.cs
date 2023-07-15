@@ -18,7 +18,7 @@ namespace Curry.Explore
         [SerializeField] ActionCostHandler m_costHandle = default;
         public bool IsDisplaying { get; protected set; }
         public bool IsHandOverloaded => m_handHoldingValue > m_handCapacity;
-        static readonly ActionCost s_cost = new ActionCost { ActionCount = 1, Time = 0 };
+        static readonly ActionCost s_cost = new ActionCost { ActionPoint = 1, Time = 0 };
         ReformulateState m_original = new ReformulateState();
         ReformulateState m_current;
         HandManager m_handRef;

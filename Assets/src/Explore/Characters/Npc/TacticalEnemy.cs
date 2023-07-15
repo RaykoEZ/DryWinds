@@ -122,9 +122,10 @@ namespace Curry.Explore
             //reset anim state and countdown
             m_anim?.SetBool("combat", false);
         }
-        protected virtual void Defeat()
+        public override IEnumerator OnDefeated()
         {
-            StartCoroutine(HandleDefeat());
+            yield return StartCoroutine(HandleDefeat());
+            yield return base.OnDefeated();
         }
         #endregion
 
@@ -138,7 +139,6 @@ namespace Curry.Explore
                     return m_anim.GetCurrentAnimatorStateInfo(m_anim.GetLayerIndex("TakeHit")).IsName("Defeat") &&
                     m_anim.GetCurrentAnimatorStateInfo(m_anim.GetLayerIndex("TakeHit")).normalizedTime >= 1.0f; 
                 });
-            OnDefeated();
         }
         void OnDetectEnter(IPlayer adv)
         {

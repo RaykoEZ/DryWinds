@@ -23,15 +23,15 @@ namespace Curry.Explore
             m_anim.ResetTrigger("takeHit");
             m_anim.SetTrigger("takeHit");
         }
-        public override void OnDefeated()
+        public override IEnumerator OnDefeated()
         {
-            StartCoroutine(OnDefeat_Internal());
+            yield return StartCoroutine(OnDefeat_Internal());
+            yield return base.OnDefeated();
         }
         IEnumerator OnDefeat_Internal() 
         {
             m_anim.SetBool("defeat", true);
             yield return new WaitForSeconds(1f);
-            base.OnDefeated();
         }
         #endregion
 

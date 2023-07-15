@@ -2,8 +2,8 @@
 
 namespace Curry.Explore
 {
-    [CreateAssetMenu(fileName = "ExhaustActionPoint_", menuName = "Curry/Effects/ExhaustActionPoint", order = 1)]
-    public class ExhaustActionPoint_EffectResource : BaseEffectResource 
+    [CreateAssetMenu(fileName = "ExhaustAP_", menuName = "Curry/Effects/Exhaust AP", order = 1)]
+    public class ExhaustAp_EffectResource : BaseEffectResource 
     {
         [SerializeField] ExhaustActionPoint m_exhaust = default;
         public ExhaustActionPoint Effect => m_exhaust;

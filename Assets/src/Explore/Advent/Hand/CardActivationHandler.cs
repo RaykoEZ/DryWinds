@@ -10,12 +10,14 @@ namespace Curry.Explore
         [SerializeField] PlayZone m_playZone = default;
         [SerializeField] SelectionManager m_selection = default;
         [SerializeField] CurryGameEventListener m_onDropTileSelected = default;
+        [SerializeField] CurryGameEventListener m_onCardActivate = default;
         [SerializeField] ActionCostHandler m_cost = default;
         GameStateContext m_contextRef;
         public void Init(GameStateContext c)
         {
             m_contextRef = c;
             m_onDropTileSelected?.Init();
+            m_onCardActivate?.Init();
         }
         // The card we are dragging into a play zone
         DraggableCard m_pendingCardRef;
@@ -25,7 +27,7 @@ namespace Curry.Explore
         {
             m_pendingCardRef = null;
         }
-        public void OnTargetDropZoneSelected(EventInfo info)
+        public void OnCardActivate(EventInfo info)
         {
             if (m_pendingCardRef == null) return;
 

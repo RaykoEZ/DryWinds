@@ -14,12 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_attribute:
     m_name: Disengage
-    m_description: Move to target position and spend all remaining Action Pointt,
-      heal for Action Point spent x 2.
-    m_targetingRange: {fileID: 11400000, guid: 9854b15ca8b244d4f941a1ada2f81708, type: 2}
+    m_description: Spend all remaining AP, heal for AP spent x 5.
+    m_targetingRange: {fileID: 0}
     m_cost:
       Time: 0
-      ActionCount: 0
+      ActionPoint: 0
     m_cooldown: 10
     m_holdingValue: 1
     m_isInitiallyOnCooldown: 0

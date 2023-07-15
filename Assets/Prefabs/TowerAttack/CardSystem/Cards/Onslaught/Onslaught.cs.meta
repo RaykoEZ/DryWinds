@@ -6,6 +6,8 @@ MonoImporter:
   defaultReferences:
   - m_resources: {fileID: 11400000, guid: b555cca2d83b8da4ab543328dfe485b2, type: 2}
   - m_cooldown: {instanceID: 0}
+  - m_damage: {fileID: 11400000, guid: 7da228c8b9ddbf548a9b20d7ea9229b7, type: 2}
+  - m_gainAp: {fileID: 11400000, guid: 076727aef6f9e394684694d324c0c3f9, type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

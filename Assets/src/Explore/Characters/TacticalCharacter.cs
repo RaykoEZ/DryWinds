@@ -56,9 +56,10 @@ namespace Curry.Explore
         {
             OnHide?.Invoke(this);
         }
-        public virtual void OnDefeated()
+        public virtual IEnumerator OnDefeated()
         {
             OnDefeat?.Invoke(this);
+            yield return null;
         }
         public virtual void Reveal()
         {
@@ -98,7 +99,7 @@ namespace Curry.Explore
             TakeDamage?.Invoke(result, CurrentHp);
             if (CurrentHp <= 0)
             {
-                OnDefeated();
+                StartCoroutine(OnDefeated());
             }
             else 
             {

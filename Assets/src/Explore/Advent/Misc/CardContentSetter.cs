@@ -18,7 +18,7 @@ namespace Curry.Explore
         {
             SetCardName(attribute.Name);
             SetCardText(attribute.Description);
-            SetActionCost(attribute.Cost.ActionCount);
+            SetActionCost(attribute.Cost.ActionPoint);
             SetTimeCost(attribute.Cost.Time.ToString());
             SetHoldingValue(attribute.HoldingValue);
         }

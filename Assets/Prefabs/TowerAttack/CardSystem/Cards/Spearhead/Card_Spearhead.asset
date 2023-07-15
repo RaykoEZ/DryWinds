@@ -19,7 +19,7 @@ MonoBehaviour:
     m_targetingRange: {fileID: 11400000, guid: 9854b15ca8b244d4f941a1ada2f81708, type: 2}
     m_cost:
       Time: 5
-      ActionCount: 1
+      ActionPoint: 1
     m_cooldown: 20
     m_holdingValue: 2
     m_isInitiallyOnCooldown: 0

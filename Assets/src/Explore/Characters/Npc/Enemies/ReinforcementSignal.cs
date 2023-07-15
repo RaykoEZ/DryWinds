@@ -107,7 +107,7 @@ namespace Curry.Explore
         // destrpy this signal (canceling the reinforcement).
         public void Trigger(ICharacter overlapping)
         {        
-            OnDefeated();
+            StartCoroutine(OnDefeated());
         }
         protected void OnTriggerEnter2D(Collider2D collision)
         {
@@ -141,17 +141,10 @@ namespace Curry.Explore
         {
             RecoverHp?.Invoke(val, CurrentHp);
         }
-
         public void TakeHit(int hitVal)
         {
             TakeDamage?.Invoke(hitVal, CurrentHp);
         }
-
-        public void OnDefeated()
-        {
-            OnDefeat?.Invoke(this);
-        }
-
         public void Move(Vector3 target)
         {
             OnMoveFinished?.Invoke(this);
@@ -165,6 +158,11 @@ namespace Curry.Explore
         public Transform GetTransform()
         {
             return transform;
+        }
+        public IEnumerator OnDefeated()
+        {
+            OnDefeat?.Invoke(this);
+            yield return null;
         }
     }
 }

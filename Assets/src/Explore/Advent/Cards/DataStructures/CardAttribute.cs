@@ -10,8 +10,8 @@ namespace Curry.Explore
         [Range(0, 1000)]
         public int Time;
         [Range(0, 3)]
-        public int ActionCount;
-        public static ActionCost Free => new ActionCost { ActionCount = 0, Time = 0 }; 
+        public int ActionPoint;
+        public static ActionCost Free => new ActionCost { ActionPoint = 0, Time = 0 }; 
     }
     public enum CardType
     {
