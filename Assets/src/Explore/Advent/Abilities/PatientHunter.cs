@@ -10,7 +10,7 @@ namespace Curry.Explore
         [SerializeField] Prepared m_preparedBuff = default;
         bool m_activated = false;
         Prepared m_instance;
-        public override AbilityContent Content => new AbilityContent
+        public override AbilityContent AbilityDetail => new AbilityContent
         { 
             Name = m_resource.Content.Name,
             Description = m_resource.Content.Description,
@@ -42,7 +42,7 @@ namespace Curry.Explore
             {
                 m_instance.AddStack();
             }
-            else if(m_activated && !activate)
+            else if (m_activated && !activate)
             {
                 applyTo.CurrentStats.RemoveModifier(m_instance);
                 m_activated = false;

@@ -8,17 +8,16 @@ namespace Curry.Explore
     public class StandardStrike : BaseAbility, IActiveAbility
     {
         [SerializeField] DealDamage_EffectResource m_basicAttack = default;
-        protected int m_addDamage = 0;
         protected List<IStatusAilment> m_onHit = new List<IStatusAilment> { };
         public int BaseDamage => m_basicAttack.DamageModule.BaseDamage;
         public IReadOnlyList<IStatusAilment> OnHitEffects => m_onHit;
-        public override AbilityContent Content
+        public override AbilityContent AbilityDetail
         {
             get
             {
-                AbilityContent ret = base.Content;
+                AbilityContent ret = base.AbilityDetail;
                 ret.Name = "Standard Strike";
-                ret.Description = $"Deal {BaseDamage} (+{m_addDamage}) damage to target.";
+                ret.Description = $"Deal {BaseDamage} damage to target.";
                 return ret;
             }
         }

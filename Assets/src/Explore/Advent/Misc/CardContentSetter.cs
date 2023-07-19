@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
 using TMPro;
+using System.Collections.Generic;
+using UnityEngine.UI;
+
 namespace Curry.Explore
 {
     public class CardContentSetter : MonoBehaviour 
@@ -9,12 +12,16 @@ namespace Curry.Explore
         [SerializeField] TextMeshProUGUI m_cost = default;
         [SerializeField] TextMeshProUGUI m_cooldown = default;
         [SerializeField] TextMeshProUGUI m_holdingValue = default;
+        [SerializeField] Image m_cardArt = default;
         [SerializeField] GameObject m_consumableIcon = default;
-        public void Setup(CardAttribute attribute) 
+        [SerializeField] List<Image> m_actionCostIcons = default;
+        public void Setup(CardProperties attribute) 
         {
             SetCardName(attribute.Name);
             SetCardText(attribute.Description);
-            SetCost(attribute.TimeCost.ToString());
+            SetActionCost(attribute.Cost.ActionPoint);
+            m_cardArt.sprite = attribute.CardArt;
+            SetTimeCost(attribute.Cost.Time.ToString());
             SetHoldingValue(attribute.HoldingValue);
         }
         public void SetCardText(string description) 
@@ -25,9 +32,18 @@ namespace Curry.Explore
         {
             m_nameField.text = name;
         }
-        public void SetCost(string cost)
+        public void SetTimeCost(string cost)
         {
             m_cost.text = cost;
+        }
+        public void SetActionCost(int cost) 
+        {
+            int i = 0;
+            foreach(var icon in m_actionCostIcons) 
+            {
+                icon.gameObject.SetActive(i < cost);
+                ++i;
+            }
         }
         public void SetCooldown(string cd)
         {

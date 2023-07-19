@@ -18,22 +18,16 @@ namespace Curry.Explore
         {
             m_actionFinished = true;
         }
-        public override void Resume()
-        {
-            if (m_actionFinished) 
-            {
-                TransitionTo();
-            }
-        }
         protected override IEnumerator Evaluate_Internal()
         {
             m_actionFinished = false;
-            if (!m_enemies.OnEnemyAction()) 
+            if (!m_enemies.OnEnemyAction())
             {
                 m_actionFinished = true;
-                TransitionTo();
             }
-            yield return null;
+            yield return new WaitUntil(() => m_actionFinished);
+            m_enemies.UpdateEnemyAction(new ActionCost { }, out _);
+            TransitionTo();
         }
     }
 }

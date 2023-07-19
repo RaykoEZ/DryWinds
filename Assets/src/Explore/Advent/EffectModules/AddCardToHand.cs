@@ -6,10 +6,10 @@ namespace Curry.Explore
     [Serializable]
     public class AddCardToHand : PropertyAttribute 
     {
-        [SerializeField] List<AdventCard> m_cardsToAdd = default;
+        [SerializeField] List<CardAsset> m_cardsToAdd = default;
         public virtual void ApplyEffect(DeckManager deck)
         {
-            deck.AddToHand(m_cardsToAdd);
+            deck.AddToHand_FromAsset(m_cardsToAdd);
         }
     }
 }

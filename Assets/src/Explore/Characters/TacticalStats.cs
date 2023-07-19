@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Curry.Ai;
+using System;
 using UnityEngine;
+using static UnityEngine.Rendering.DebugUI;
 
 namespace Curry.Explore
 {
@@ -12,12 +14,31 @@ namespace Curry.Explore
     [Serializable]
     public struct TacticalStats 
     {
-        public int MaxHp;
-        public int Hp;
+        [SerializeField] int maxHp;
+        [SerializeField] int hp;
         [Range(0, 3)]
-        public int MoveRange;
-        public int Speed;
-        public ObjectVisibility Visibility;
+        [SerializeField] int moveRange;
+        [SerializeField] int speed;
+
+        public TacticalStats(int maxHP, int hpIn, int range, int spd)
+        {
+            maxHp = Mathf.Max(maxHP, 0);
+            hp = Mathf.Max(hpIn, 0);
+            moveRange = Mathf.Max(range, 1);
+            speed = Mathf.Max(spd, 0);
+        }
+
+        public int MaxHp { get => maxHp; set => maxHp = value; }
+        public int Hp { get => hp; set => hp = value; }
+        public int MoveRange { get => moveRange; set => moveRange = Mathf.Max(value, 1); }
+        public int Speed { get => speed; set => speed = value; }
+        public static TacticalStats operator +(TacticalStats a) => a;
+        public static TacticalStats operator +(TacticalStats a, TacticalStats b) => 
+            new TacticalStats(a.maxHp + b.maxHp, a.hp + b.hp, a.moveRange + b.moveRange,a.speed + b.speed);
+        public static TacticalStats operator -(TacticalStats a, TacticalStats b) =>
+            new TacticalStats(a.maxHp - b.maxHp, a.hp - b.hp, a.moveRange - b.moveRange, a.speed - b.speed);
+        public static TacticalStats operator *(TacticalStats a, TacticalStats b) =>
+            new TacticalStats(a.maxHp * b.maxHp, a.hp * b.hp, a.moveRange * b.moveRange, a.speed * b.speed);
     }
     public interface ITimedElement<T>
     {

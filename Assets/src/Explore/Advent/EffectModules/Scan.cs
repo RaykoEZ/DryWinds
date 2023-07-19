@@ -12,7 +12,7 @@ namespace Curry.Explore
         [SerializeField] CurryGameEventTrigger m_onScan = default;
         public void ApplyEffect(ICharacter target, ICharacter user)
         {
-            ScanInfo info = new ScanInfo(user, m_detectionLevel, 3f, target.WorldPosition);
+            ScanInfo info = new ScanInfo(user, m_detectionLevel, 5f, target.WorldPosition);
             m_onScan?.TriggerEvent(info);
         }
     }

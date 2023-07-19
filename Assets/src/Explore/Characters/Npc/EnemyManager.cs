@@ -4,91 +4,33 @@ using System.Collections.Generic;
 using UnityEngine;
 using Curry.Events;
 using Curry.Game;
-using UnityEngine.Tilemaps;
 using Curry.UI;
-using Curry.Util;
-
 namespace Curry.Explore
 {
-    [Serializable]
-    public struct TacticalSpawnProperties 
-    {
-        [SerializeField] public LayerMask DoNotSpawnOn;
-        [SerializeField] public Tilemap SpawnMap;
-        [SerializeField] public CurryGameEventListener OnSpawn;
-        [SerializeField] public BaseBehaviourInstanceManager InstanceManager;
-    }
     public delegate void OnEnemyActionFinish();
     public delegate void OnEnemyActionStart(List<IEnumerator> actions);
     // Monitors all spawned enemies, triggers enemy action phases
-    public class EnemyManager : SceneInterruptBehaviour
+    public partial class EnemyManager : SceneInterruptBehaviour
     {
-        #region Enemy Comparer class
-        // Comparer<TacticalEnemy> for priority sorting 
-        protected class EnemyPriorityComparer : IComparer<IEnemy>
-        {
-            public int Compare(IEnemy x, IEnemy y)
-            {
-                if (x.Id == y.Id)
-                {
-                    return 0;
-                }
-                if (x == null)
-                {
-                    if (y == null)
-                    {
-                        // If x is null and y is null, they're
-                        // equal.
-                        return 0;
-                    }
-                    else
-                    {
-                        // If x is null and y is not null, y
-                        // is greater.
-                        return -1;
-                    }
-                }
-                else
-                {
-                    // If x is not null...
-                    //
-                    if (y == null)
-                    // ...and y is null, x is greater.
-                    {
-                        return 1;
-                    }
-                    else
-                    {
-                        // ...and y is not null, return countdown difference
-                        return x.Speed - y.Speed;
-                    }
-                }
-            }
-        }
-        #endregion
-
         #region Serialize Fields & Members
         [SerializeField] MovementManager m_movement = default;
-        [SerializeField] TacticalSpawnProperties m_spawnProperties = default;
+        [SerializeField] EnemySpawnHandler m_spawning = default;
         [SerializeField] FogOfWar m_fog = default;
-        List<IEnemy> m_activeEnemies = new List<IEnemy>();
-        HashSet<IEnemy> m_toRemove = new HashSet<IEnemy>();
-        HashSet<IEnemy> m_toAdd = new HashSet<IEnemy>();
+        [SerializeField] DangerZonePreviewHanadler m_dangerZoneDisplay = default;
+        EnemyContainer m_enemies = new EnemyContainer();
         // Comparer for enemy priority
-        EnemyPriorityComparer m_priorityComparer = new EnemyPriorityComparer();
         public event OnEnemyActionFinish OnActionFinish;
         public event OnEnemyActionStart OnActionBegin;
-        public bool AreEnemiesActive => m_activeEnemies.Count > 0;
         #endregion
         #region Class Body
         void Awake()
         {
-            m_spawnProperties.OnSpawn?.Init();
+            m_spawning.SpawnProperties.OnSpawn?.Init();
         }
         void Start()
         {
             // Add all intially spawned enemies into the manager
-            foreach(Transform t in m_spawnProperties.InstanceManager.PoolDefaultParent) 
+            foreach(Transform t in m_spawning.SpawnProperties.InstanceManager.PoolDefaultParent) 
             { 
                 if (t.TryGetComponent(out IEnemy enemy) && t.TryGetComponent(out PoolableBehaviour behaviour)) 
                 {
@@ -100,25 +42,16 @@ namespace Curry.Explore
         // When a spawner requests an enemy spawn
         public void SpawnEnemy(EventInfo info)
         {
-            if (info is SpawnInfo spawn)
-            {
-                SpawnEnemy_Internal(spawn.Behaviour, spawn.SpawnWorldPosition,spawn.OnInstantiate, spawn.Parent);
-            }
-        }
-        protected void SpawnEnemy_Internal(PoolableBehaviour behaviour, Vector3 position, Action<PoolableBehaviour> setup = null, Transform parent = null)
-        {
-            Vector3Int coord = m_spawnProperties.SpawnMap.WorldToCell(position);
-            Vector3 cellCenter = m_spawnProperties.SpawnMap.GetCellCenterWorld(coord);
-            if (!(behaviour is IEnemy) || !m_spawnProperties.SpawnMap.HasTile(coord))
+            if(info is not SpawnInfo) 
             {
                 return;
             }
-            // Look for available pooled instances
-            PoolableBehaviour newBehaviour = m_spawnProperties.InstanceManager.
-                GetInstanceFromAsset(behaviour.gameObject, parent);
-            // setup new spawn instance
-            setup?.Invoke(newBehaviour);
-            InitInstance(newBehaviour, cellCenter);
+            var spawn = info as SpawnInfo;
+            var result = m_spawning.SpawnEnemy_Internal(spawn.Behaviour, spawn.SpawnWorldPosition, spawn.OnInstantiate, spawn.Parent);
+            if(result != null) 
+            {
+                InitInstance(result, result.transform.position);
+            }
         }
         void InitInstance(PoolableBehaviour newBehaviour, Vector3 cellCenterWorld) 
         {
@@ -128,24 +61,26 @@ namespace Curry.Explore
             if (spawn is IMovableEnemy movable) 
             {
                 movable.OnMove += OnEnemyMovement;
-                movable.OnBlocked += OnMovementBlocked;
+                movable.OnBlocked += m_fog.OnMovementBlocked;
             }
             spawn.OnDefeat += OnEnemyRemove;
-            spawn.OnReveal += OnEnemyReveal;
-            spawn.OnHide += OnEnemyHide;
-            m_toAdd.Add(spawn);
+            spawn.OnReveal += m_fog.OnEnemyReveal;
+            spawn.OnHide += m_fog.OnEnemyHide;
+            m_enemies.ScheduleAdd(spawn);
         }
         void OnEnemyRemove(ICharacter remove)
         {
             if(remove is IMovableEnemy movable) 
             {
                 movable.OnMove -= OnEnemyMovement;
-                movable.OnBlocked -= OnMovementBlocked;
+                movable.OnBlocked -= m_fog.OnMovementBlocked;
             }
             remove.OnDefeat -= OnEnemyRemove;
-            remove.OnReveal -= OnEnemyReveal;
-            remove.OnHide -= OnEnemyHide;
-            m_toRemove.Add(remove as IEnemy);
+            remove.OnReveal -= m_fog.OnEnemyReveal;
+            remove.OnHide -= m_fog.OnEnemyHide;
+            // Clear danager zone belonging to removed enemy
+            StartCoroutine(m_dangerZoneDisplay.ClearDanagerZone(remove.GetTransform()));
+            m_enemies.ScheduleRemove(remove as IEnemy);
             remove.Despawn();
         }
         #endregion
@@ -157,33 +92,21 @@ namespace Curry.Explore
                 call?.Invoke(destination);
             }          
         }
-        void OnEnemyReveal(ICharacter reveal)
-        {
-            m_fog.SetFogOfWar(reveal.WorldPosition, clearFog: true);
-        }
-        void OnEnemyHide(ICharacter hide)
-        {
-            m_fog.SetFogOfWar(hide.WorldPosition, clearFog: false);
-        }
-
-        void OnMovementBlocked(Vector3 pos) 
-        {
-            m_fog.SetFogOfWar(pos);
-        }
         #endregion
-        // Whenever player spends time, update all enemies with countdowns 
+        // Whenever player spends time, update all enemies with countdowns
+        // Updates enemy action choice after player ends turn
         // returns: whether there are Responses from active enemies
         // out: enemy responses
-        public bool OnEnemyInterrupt(int timeSpent, out List<IEnumerator> resp)
+        public bool UpdateEnemyAction(ActionCost resourceSpent, out List<IEnumerator> reactions)
         {
             // Update all enemy countdowns here and get all responses
-            resp = HandleAction(timeSpent, reaction: true);
-            return resp.Count > 0;
+            reactions = UpdateEnemyAction(resourceSpent);
+            return reactions.Count > 0;
         }
         // Notifies call stack for enemy action calls
         public bool OnEnemyAction() 
         {
-            List<IEnumerator> actions = HandleAction(0, reaction: false);
+            List<IEnumerator> actions = GetCurrentEnemyAction();
             bool hasActions = actions.Count > 0;
             if (hasActions) 
             {
@@ -191,49 +114,57 @@ namespace Curry.Explore
             }
             return actions.Count > 0;
         }
-
-        // add and remove scheduled updates to the enemy list
-        void UpdateActivity() 
+        // Get current intended enemy actons
+        List<IEnumerator> GetCurrentEnemyAction() 
         {
-            foreach (IEnemy e in m_toAdd)
+            List<IEnumerator> ret = new List<IEnumerator>();
+            m_enemies.UpdateActivity();
+            m_enemies.SortActiveEnemyPriorities();
+            foreach (var item in m_enemies.ActiveEnemies)
             {
-                m_activeEnemies.Add(e);
+                EnemyIntent intent = item.IntendingAction;
+                if(intent != null && intent.Call != null) 
+                {
+                    ret.Add(m_dangerZoneDisplay.ClearDanagerZone(item.GetTransform()));
+                    ret.Add(intent.Call);
+                }
             }
-            foreach (IEnemy e in m_toRemove) 
+            if (ret.Count > 0)
             {
-                m_activeEnemies.Remove(e);
+                ret.Add(FinishActionPhase());
             }
-            m_toAdd.Clear();
-            m_toRemove.Clear();
+            m_enemies.UpdateActivity();
+            return ret;
         }
-
         // Call all active enemies to respond to player action
-        List<IEnumerator> HandleAction(int dt, bool reaction) 
+        List<IEnumerator> UpdateEnemyAction(ActionCost dt) 
         {
             // make sure list is up to date before and after
-            UpdateActivity();
+            m_enemies.UpdateActivity();
             List<IEnumerator> calls = new List<IEnumerator>();
             // sort execution order by ascending countdown value
-            m_activeEnemies.Sort(m_priorityComparer);
-            foreach (IEnemy enemy in m_activeEnemies)
+            m_enemies.SortActiveEnemyPriorities();
+            foreach (IEnemy enemy in m_enemies.ActiveEnemies)
             {
                 // returns true if countdown reached, add to execution list
-                if (enemy.OnAction(dt, reaction, out IEnumerator chosenAction) && chosenAction != null)
+                if (enemy.UpdateAction(dt, out EnemyIntent intent) && 
+                    intent.Call != null)
                 {
-                    calls.Add(chosenAction);
+                    calls.Add(intent.Call);
                 }
-            }      
-            if(calls.Count > 0) 
+                m_dangerZoneDisplay.DisplayDangerZone(enemy.GetTransform(), enemy.IntendingAction.Ability);
+            }
+            if (calls.Count > 0) 
             {
                 calls.Add(FinishActionPhase());
             }
-            UpdateActivity();
+            m_enemies.UpdateActivity();
             return calls;
         }
         IEnumerator FinishActionPhase() 
         {
             OnActionFinish?.Invoke();
-            yield return null;
+            yield return new WaitForEndOfFrame();           
         }
         #endregion
     }

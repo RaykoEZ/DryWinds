@@ -1,8 +1,6 @@
 ﻿using Curry.Game;
-using Curry.Util;
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 namespace Curry.Explore
 {
@@ -16,22 +14,22 @@ namespace Curry.Explore
         protected IReadOnlyCollection<IEnemy> EnemiesInSight => m_detect.Enemies;
         protected virtual List<IEnemyReaction> m_reactions { get; } = 
             new List<IEnemyReaction>();
+        EnemyIntent m_intendingAction = EnemyIntent.None;
         #region ICharacter & IEnemy interface 
         public bool SpotsTarget => TargetsInSight.Count > 0;
         public virtual EnemyId Id { get; protected set; }
+        public EnemyIntent IntendingAction => m_intendingAction;
         public override void Move(Vector3 target)
         {
             OnMove?.Invoke(this, target, base.Move);
         }
         public override void Reveal()
         {
-            m_statManager.SetVisibility(ObjectVisibility.Visible);
             m_anim.SetBool("hidden", false);
             base.Reveal();
         }
         public override void Hide()
         {
-            m_statManager.SetVisibility(ObjectVisibility.Hidden);
             m_anim.SetBool("hidden", true);
             base.Hide();
         }
@@ -45,29 +43,19 @@ namespace Curry.Explore
         }
         // returns true if we decide to act,
         // BasicAction & Reaction fields need to not be null before returning
-        public bool OnAction(int dt, bool reaction, out IEnumerator action)
+        public bool UpdateAction(ActionCost dt, out EnemyIntent action)
         {
             bool ret;
-            if (reaction) 
-            {
-                ret = ChooseReaction_Internal(dt, out IEnumerator result);
-                action = result;
-            } 
-            else 
-            {
-                ret = ChooseAction_Internal(dt, out IEnumerator result);
-                action = result;
-            }
+            // Setup action to carry out after player end turn
+            var newIntent = UpdateIntent(dt);
+            ret = UpdatAction_Internal(dt.Time, out EnemyIntent result);
+            m_intendingAction = newIntent == null ? EnemyIntent.None : newIntent;
+            action = result == null? EnemyIntent.None : result;
             return ret;
         }
-        protected virtual bool ChooseAction_Internal(int dt, out IEnumerator action) 
+        protected virtual bool UpdatAction_Internal(int dt, out EnemyIntent reaction) 
         {
-            action = ExecuteAction_Internal();
-            return SpotsTarget;
-        }
-        protected virtual bool ChooseReaction_Internal(int dt, out IEnumerator reaction) 
-        {
-            reaction = Reaction_Internal();
+            reaction = new EnemyIntent(AbilityContent.None, Reaction_Internal());
             return m_reactions.Count > 0;
         }
         protected virtual IEnumerator ExecuteAction_Internal()
@@ -75,6 +63,7 @@ namespace Curry.Explore
             CurrentStats.Refresh();
             // Update any modifier changes before action
             m_anim?.SetTrigger("strike");
+            // reset pending ability
             yield return null;
         }
         protected virtual IEnumerator Reaction_Internal()
@@ -84,7 +73,12 @@ namespace Curry.Explore
             {
                 onAction?.OnPlayerAction(this);
             }
+            // reset pending ability
             yield return new WaitForEndOfFrame();
+        }
+        protected virtual EnemyIntent UpdateIntent(ActionCost dt)
+        {
+            return EnemyIntent.None;
         }
         #endregion
 
@@ -116,6 +110,7 @@ namespace Curry.Explore
             if (TargetsInSight.Count > 0)
             {
                 OnCombat();
+                Reveal();
             }
         }
         protected virtual void OnCombat()
@@ -127,9 +122,10 @@ namespace Curry.Explore
             //reset anim state and countdown
             m_anim?.SetBool("combat", false);
         }
-        protected virtual void Defeat()
+        public override IEnumerator OnDefeated()
         {
-            StartCoroutine(HandleDefeat());
+            yield return StartCoroutine(HandleDefeat());
+            yield return base.OnDefeated();
         }
         #endregion
 
@@ -143,7 +139,6 @@ namespace Curry.Explore
                     return m_anim.GetCurrentAnimatorStateInfo(m_anim.GetLayerIndex("TakeHit")).IsName("Defeat") &&
                     m_anim.GetCurrentAnimatorStateInfo(m_anim.GetLayerIndex("TakeHit")).normalizedTime >= 1.0f; 
                 });
-            OnDefeated();
         }
         void OnDetectEnter(IPlayer adv)
         {

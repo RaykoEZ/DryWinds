@@ -5,49 +5,47 @@ using UnityEngine.UI;
 
 namespace Curry.UI
 {
-
     public class ResourceBar : MonoBehaviour
     {
-        [SerializeField] Slider m_slider = default;
+        [SerializeField] Slider m_result = default;
         [SerializeField] float m_transitionDuration = default;
-        [SerializeField] Image m_fill = default;
+        [SerializeField] Image m_resultFill = default;
         [SerializeField] Gradient m_warningGradient = default;
         [SerializeField] AnimationCurve m_lerpSpeed = default;
         [SerializeField] bool m_smoothValueChange = default;
-        public float Current => m_slider.value;
-        public float Max => m_slider.maxValue;
+        public float Current => m_result.value;
+        public float Max => m_result.maxValue;
         bool m_changeInProgress = false;
         float m_currentTargetVal = 0f;
-        Coroutine m_currentTransition = default;
+        Coroutine m_currentResultTransition = default;
         public void SetBarValue(float val, bool forceInstantChange = false) 
         {
-            if(val == m_slider.value || val == m_currentTargetVal) 
+            if(val == m_result.value || val == m_currentTargetVal) 
             { 
                 return; 
             }
 
             if (!m_smoothValueChange || forceInstantChange) 
             {
-                m_slider.value = val;
+                m_result.value = val;
                 return;
             }
 
             if (m_changeInProgress) 
             {
-                StopCoroutine(m_currentTransition);
+                StopCoroutine(m_currentResultTransition);
             }
-
             m_currentTargetVal = val;
-            m_currentTransition = StartCoroutine(OnValueChange());
+            m_currentResultTransition = StartCoroutine(OnValueChange());
         }
 
         public void SetMaxValue(float val) 
         {
-            if (val == m_slider.maxValue) 
+            if (val == m_result.maxValue) 
             { 
                 return; 
             }
-            m_slider.maxValue = val;
+            m_result.maxValue = val;
         }
 
         IEnumerator OnValueChange() 
@@ -57,15 +55,13 @@ namespace Curry.UI
             while(elapsedTime < m_transitionDuration) 
             {
                 elapsedTime += Time.smoothDeltaTime;
-                m_slider.value = Mathf.Lerp(m_slider.value, m_currentTargetVal, m_lerpSpeed.Evaluate(elapsedTime / m_transitionDuration));
-                m_fill.color = m_warningGradient.Evaluate(m_slider.normalizedValue);
+                m_result.value = Mathf.Lerp(m_result.value, m_currentTargetVal, m_lerpSpeed.Evaluate(elapsedTime / m_transitionDuration));
+                m_resultFill.color = m_warningGradient.Evaluate(m_result.normalizedValue);
                 yield return new WaitForEndOfFrame();
             }
             m_changeInProgress = false;
         }
-
     }
-
 }
 
 

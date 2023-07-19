@@ -6,6 +6,7 @@ namespace Curry.Explore
 {
     public interface IEnemyReaction 
     {
+        AbilityContent AbilityDetail { get; }
         public void OnPlayerAction(IEnemy enemy);
     }
     [Serializable]

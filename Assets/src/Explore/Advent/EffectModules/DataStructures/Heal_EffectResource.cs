@@ -12,7 +12,7 @@ namespace Curry.Explore
 
         public override void Activate(GameStateContext context)
         {
-            m_healing.ApplyEffect(context.Player, context.Player);
+            m_healing.ApplyEffect(context.Player);
         }
     }
 }

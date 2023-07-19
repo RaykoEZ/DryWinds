@@ -1,5 +1,5 @@
-﻿using Curry.Game;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 
 namespace Curry.Explore
@@ -13,22 +13,24 @@ namespace Curry.Explore
         event OnCharacterUpdate OnDefeat;
         event OnCharacterUpdate OnReveal;
         event OnCharacterUpdate OnHide;
+        event OnCharacterUpdate OnMoveFinished;
+        event OnMovementBlocked OnBlocked;
         string Name { get; }
         int MaxHp { get; }
         int CurrentHp { get; }
         int MoveRange { get; }
         int Speed { get; }
         Vector3 WorldPosition { get; }
-        ObjectVisibility Visibility { get; }
         IReadOnlyList<AbilityContent> AbilityDetails { get; }
         Transform GetTransform();
         void Reveal();
         void Hide();
         void Recover(int val);
         void TakeHit(int hitVal);
-        void OnDefeated();
+        IEnumerator OnDefeated();
         void Despawn();
         // returns if warp was successful
         bool Warp(Vector3 to);
+        void Move(Vector3 destination);
     }
 }

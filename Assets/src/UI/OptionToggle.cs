@@ -7,7 +7,12 @@ namespace Assets.src.UI
     {
         [SerializeField] CanvasGroup m_canvasGroup = default;
         protected bool IsOn = false;
-
+        void Start()
+        {
+            IsOn = false;
+            m_canvasGroup.alpha = 0f;
+            m_canvasGroup.blocksRaycasts = false;
+        }
         public void Toggle() 
         {
             IsOn = !IsOn;

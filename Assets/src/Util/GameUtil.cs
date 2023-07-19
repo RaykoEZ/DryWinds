@@ -9,18 +9,6 @@ namespace Curry.Util
 {
     public static class GameUtil
     {
-        public static void HighlightGameplayObject(GameObject highlight) 
-        {
-            if (highlight == null) return;
-
-            highlight.GetComponent<Renderer>().sortingLayerName = "GameplayObjects_Highlight";
-        }
-        public static void LowlightGameplayObject(GameObject lowlight)
-        {
-            if (lowlight == null) return;
-
-            lowlight.GetComponent<Renderer>().sortingLayerName = "GameplayObjects";
-        }
         public static List<int> RandomRangeUnique(int min, int max, int numToGet) 
         {
             List<int> ret = new List<int>();
@@ -55,8 +43,21 @@ namespace Curry.Util
             }
             return false;
         }
+        public static bool HasValidTargets<T_Target>(Vector3 userOrigin, RangeMap range, LayerMask mask, out List<T_Target> validTargets)
+        {
+            validTargets = new List<T_Target>();
+            List<Vector3> validWorldPos = range.ApplyRangeOffsets(userOrigin);
+            foreach (Vector3 pos in validWorldPos)
+            {
+                if (TrySearchTarget(pos, mask, out T_Target found))
+                {
+                    validTargets.Add(found);
+                }
+            }
+            return validTargets.Count > 0;
+        }
         /// returns ratio of two velocities
-        public static float ScaleFactior(float v1, float v2, float minFactor, float maxFactor) 
+        public static float ScaleFactor(float v1, float v2, float minFactor, float maxFactor) 
         {
             float ret = v1 / (v2 + 0.1f);
 
@@ -85,7 +86,6 @@ namespace Curry.Util
             temp *= 0.5f;
             return Mathf.Abs(temp);
         }
-
         public static void RenderLine(List<Vector2> verts,  LineRenderer line, EdgeCollider2D col = null) 
         {
             col?.SetPoints(verts);

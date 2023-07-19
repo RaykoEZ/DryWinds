@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 466d0b936dd03564b90140c7cb4b5e8e, type: 3}
+  m_Name: GainStat_MaxHpUp
+  m_EditorClassIdentifier: 
+  m_gainStats:
+    m_resource: {fileID: 11400000, guid: 9e19cf34d1197e44d9372db89a5b3958, type: 2}
+    m_toGain:
+      maxHp: 5
+      hp: 0
+      moveRange: 0
+      speed: 0

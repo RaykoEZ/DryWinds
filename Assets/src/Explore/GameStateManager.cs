@@ -4,28 +4,40 @@ using Curry.Game;
 using Curry.Events;
 using Curry.Util;
 using System.Collections;
+using Curry.UI;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Curry.Explore
 {
     // A snapshot of the current game state
-    public struct GameStateContext
+    public class GameStateContext
     {
         public int TimeLeft { get; private set; }
         public IPlayer Player { get; private set; }
+        public IReadOnlyList<AdventCard> CardsInHand { get; private set; }
         public DeckManager Deck { get; private set; }
+        public MovementManager Movement { get; private set; }
         public LootManager LootManager { get; private set; }
+        public ActionCounter ActionCount { get; private set; }
         public GameConditionAttribute Milestones { get; private set; }
         public GameStateContext(
             int timeLeft, 
             IPlayer player,
+            IEnumerable<AdventCard> hand,
             DeckManager deck,
+            MovementManager move,
             LootManager loot,
+            ActionCounter action,
             GameConditionAttribute milestones) 
         {
             TimeLeft = timeLeft;
             Player = player;
+            CardsInHand = hand.ToList();
+            Movement = move;
             Deck = deck;
             LootManager = loot;
+            ActionCount = action;
             Milestones = milestones;
         }
     }
@@ -44,18 +56,32 @@ namespace Curry.Explore
         [SerializeField] Adventurer m_player = default;
         [SerializeField] Animator m_gameResult = default;
         [SerializeField] ObjectiveManager m_objectives = default;
+        [SerializeField] PlayZone m_cardPlayZone = default;
+        [SerializeField] GameIntroduction m_intro = default;
+        [SerializeField] CardActivationHandler m_cardTargeting = default;
         [SerializeField] TimeManager m_time = default;
+        [SerializeField] HandManager m_hand = default;
         [SerializeField] DeckManager m_deck = default;
         [SerializeField] LootManager m_loot = default;
+        [SerializeField] MovementManager m_movement = default;
+        [SerializeField] ActionCounter m_actionCount = default;
         [SerializeField] GamePhaseManager m_gamePhase = default;
         [SerializeField] TextMeshProUGUI m_resultText = default;
         [SerializeField] GameConditionAttribute m_mileStones = default;
         [SerializeField] CurryGameEventListener m_onConditionAchieved = default;
-        bool GameReadyToStart => m_deck.IsReady;
+        bool GameReadyToContinue => m_deck.IsReady && m_intro.IsReady;
         public GameStateContext GetCurrent() 
         {
             int timeLeft = m_time.TimeLeftToClear;
-            GameStateContext ret = new GameStateContext(timeLeft, m_player, m_deck, m_loot, m_mileStones);
+            GameStateContext ret = new GameStateContext(
+                timeLeft,
+                m_player,
+                m_hand.CardsInHand,
+                m_deck,
+                m_movement,
+                m_loot,
+                m_actionCount,
+                m_mileStones);
             return ret;
         }
         void Start() 
@@ -69,10 +95,14 @@ namespace Curry.Explore
         }
         IEnumerator StartGame_Interal() 
         {
-            yield return new WaitUntil(() => GameReadyToStart);
+            m_intro?.GameStartIntro();
+            yield return new WaitUntil(() => GameReadyToContinue);
+            //initializing context users after deck loaded
+            GameStateContext c = GetCurrent();
+            m_cardPlayZone?.Init(c);
+            m_cardTargeting?.Init(c);
             m_gamePhase.StartGame();
         }
-
         public void OnGameConditionFulfilled(EventInfo info) 
         {
             if (info == null) 
@@ -85,33 +115,28 @@ namespace Curry.Explore
                 m_mileStones.Flag |= conditions.ConditionsFulfilled.Flag;
             }
         }
-
         void OnPlayerDefeat(ICharacter player) 
         {
             m_resultText.text = "Game Over";
-            UpdateResultPanel();
+            StartCoroutine(UpdateResultPanel());
         }
         void OnCriticalFail(IObjective objective) 
         {
             m_resultText.text = "Game Over";
-            UpdateResultPanel();
+            StartCoroutine(UpdateResultPanel());
         }
         void OnGameCleared()
         {
             m_resultText.text = "Main Objectives Complete";
-            UpdateResultPanel();
+            StartCoroutine(UpdateResultPanel());
         }
-
-        void UpdateResultPanel() 
+        IEnumerator UpdateResultPanel() 
         {
+            m_intro?.GameEnd();
+            yield return new WaitForEndOfFrame();
+            yield return new WaitUntil(() => GameReadyToContinue);
             m_gameResult.gameObject.SetActive(true);
             m_gameResult.SetBool("GameOver", true);
-        }
-
-        void OnProceedToResult() 
-        {
-            m_gameResult.SetBool("GameOver", false);
-            m_gameResult.gameObject.SetActive(false);
         }
     }
 }

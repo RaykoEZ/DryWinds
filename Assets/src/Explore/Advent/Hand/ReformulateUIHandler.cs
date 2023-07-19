@@ -15,8 +15,10 @@ namespace Curry.Explore
         [SerializeField] PlayZone m_inventoryZone = default;
         [SerializeField] PlayZone m_handZone = default;
         [SerializeField] HandCapacityDisplay m_capacity = default;
+        [SerializeField] ActionCostHandler m_costHandle = default;
         public bool IsDisplaying { get; protected set; }
         public bool IsHandOverloaded => m_handHoldingValue > m_handCapacity;
+        static readonly ActionCost s_cost = new ActionCost { ActionPoint = 1, Time = 0 };
         ReformulateState m_original = new ReformulateState();
         ReformulateState m_current;
         HandManager m_handRef;
@@ -65,9 +67,9 @@ namespace Curry.Explore
         {
             // Move cards between hand and inventory according to lists of additions
             // Show error if player tries to finish when result hand capacity is overloaded
-            if (IsHandOverloaded) 
+            if (IsHandOverloaded || !m_costHandle.TrySpend(s_cost)) 
             {
-                Debug.LogWarning($"Hand Capacity overloaded ({m_handHoldingValue} / {m_handCapacity})");
+                Debug.LogWarning($"Cannot finalize");
             }
             else 
             {
@@ -126,19 +128,19 @@ namespace Curry.Explore
         }
         void OnDragEnd(DraggableCard card)
         {
-            m_inventoryZone.SetPlayZonrActive(false);
-            m_handZone.SetPlayZonrActive(false);
+            m_inventoryZone.SetPlayZoneActive(false);
+            m_handZone.SetPlayZoneActive(false);
         }
         void OnCardDrag(DraggableCard drag) 
         {
             AdventCard card = drag.GetComponent<AdventCard>();
             if (m_current.HandCards.Contains(card)) 
             {
-                m_inventoryZone.SetPlayZonrActive();
+                m_inventoryZone.SetPlayZoneActive();
             }
             else if (m_current.InventoryCards.Contains(card)) 
             {
-                m_handZone.SetPlayZonrActive();
+                m_handZone.SetPlayZoneActive();
             }
         }
         void DropToInventory(AdventCard drop, Action onDrop, Action onCancel) 
@@ -149,7 +151,7 @@ namespace Curry.Explore
             {
                 m_current.HandCards.Remove(drop);
                 m_current.InventoryCards.Add(drop);
-                m_handHoldingValue -= drop.HoldingValue;
+                m_handHoldingValue -= drop.Resource.HoldingValue;
                 onDrop?.Invoke();
                 UpdateCapacityDisplay();
             }
@@ -166,7 +168,7 @@ namespace Curry.Explore
             {
                 m_current.InventoryCards.Remove(drop);
                 m_current.HandCards.Add(drop);
-                m_handHoldingValue += drop.HoldingValue;
+                m_handHoldingValue += drop.Resource.HoldingValue;
                 onDrop?.Invoke();
                 UpdateCapacityDisplay();
             }

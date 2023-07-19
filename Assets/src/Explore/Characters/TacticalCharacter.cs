@@ -26,17 +26,15 @@ namespace Curry.Explore
         public int CurrentHp => m_statManager.Current.Hp;      
         public int MoveRange => m_statManager.Current.MoveRange;     
         public int Speed => m_statManager.Current.Speed;
-        public virtual ObjectVisibility Visibility => m_statManager.Current.Visibility;
         public IModifierContainer<TacticalStats> CurrentStats => m_statManager;
         public abstract IReadOnlyList<AbilityContent> AbilityDetails { get; }
-
         public event OnHpUpdate TakeDamage;
         public event OnHpUpdate RecoverHp;
         public event OnCharacterUpdate OnDefeat;
         public event OnCharacterUpdate OnReveal;
         public event OnCharacterUpdate OnHide;
-        public event OnCharacterUpdate OnMoveFinished;
         public event OnMovementBlocked OnBlocked;
+        public event OnCharacterUpdate OnMoveFinished;
 
         protected virtual void OnTriggerEnter2D(Collider2D collision)
         {
@@ -58,14 +56,13 @@ namespace Curry.Explore
         {
             OnHide?.Invoke(this);
         }
-        public virtual void OnDefeated()
+        public virtual IEnumerator OnDefeated()
         {
-            GameUtil.LowlightGameplayObject(gameObject);
             OnDefeat?.Invoke(this);
+            yield return null;
         }
         public virtual void Reveal()
         {
-            GameUtil.HighlightGameplayObject(gameObject);
             OnReveal?.Invoke(this);
         }
         public void Despawn()
@@ -102,7 +99,7 @@ namespace Curry.Explore
             TakeDamage?.Invoke(result, CurrentHp);
             if (CurrentHp <= 0)
             {
-                OnDefeated();
+                StartCoroutine(OnDefeated());
             }
             else 
             {
@@ -126,7 +123,7 @@ namespace Curry.Explore
                 }
                 timeElapsed += Time.deltaTime;
                 transform.position = Vector2.Lerp(transform.position, target, timeElapsed / duration);
-                yield return null;
+                yield return new WaitForEndOfFrame();
             }
             OnMoveFinish();
         }
@@ -153,7 +150,6 @@ namespace Curry.Explore
         {
             m_statManager.OnTimeElapsed(dt);
         }
-
         public void Refresh()
         {
             CurrentStats.Refresh();

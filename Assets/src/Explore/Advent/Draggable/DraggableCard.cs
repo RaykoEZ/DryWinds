@@ -19,21 +19,12 @@ namespace Curry.Explore
             public CurryGameEventTrigger DragTrigger { get { return m_cardDragTrigger; } }
             public CurryGameEventTrigger DropTrigger { get { return m_cardDropTrigger; } }
         }
-
-
         [SerializeField] AdventCard m_card = default;
         [SerializeField] protected UITriggers m_ui = default;
         public delegate void OnCardDragUpdate(DraggableCard card);
         public event OnCardDragUpdate OnDragFinish;
         public event OnCardDragUpdate OnDragBegin;
         public event OnCardDragUpdate OnReturn;
-        public override bool Droppable
-        {
-            get
-            {
-                return m_card.Activatable;
-            }
-        }
         public AdventCard Card { get { return m_card; } }
         public override void OnBeginDrag(PointerEventData eventData)
         {
@@ -47,7 +38,8 @@ namespace Curry.Explore
         }
         public override void OnEndDrag(PointerEventData eventData)
         {
-            if (Droppable)
+            // Let target validation activate card effect
+            if (Droppable && Card.Resource is not ITargetsPosition)
             {
                 EventInfo info = new EventInfo();
                 m_ui.DropTrigger?.TriggerEvent(info);

@@ -6,45 +6,32 @@ using System.Collections.Generic;
 
 namespace Curry.Explore
 {
-    public interface IMovementLimiter 
-    {
-        bool CanMove { get; }
-        int CurrentMoveCount { get; }
-        int MaxMoveCount { get; }
-        void UpdateMoveLimit(int change = 1);
-    }
-
     // A basic player character for adventure mode
-    public class Adventurer : TacticalCharacter, IPlayer, IMovementLimiter
+    public class Adventurer : TacticalCharacter, IPlayer
     {
         #region Serialize Fields
         [SerializeField] Animator m_anim = default;
-        [SerializeField] MovementCount m_moveCount = default;
         // Pings player status to trigger card draw events etc
         [SerializeField] CurryGameEventTrigger m_onPlayerPing = default;
         [SerializeField] CurryGameEventTrigger m_onScout = default;
         #endregion
-        public bool CanMove => m_moveCount.Current > 0;
         public override IReadOnlyList<AbilityContent> AbilityDetails => new List<AbilityContent>();
-        public int CurrentMoveCount => m_moveCount.Current;
-        public int MaxMoveCount => m_moveCount.Max;
         #region IPlayer interface impl
-        public override void Prepare()
-        {
-            m_moveCount.Init();
-            base.Prepare();
-        }
-
         protected override void TakeHit_Internal(int hitVal)
         {
             Debug.Log("Player takes " + hitVal + " damage.");
             m_anim.ResetTrigger("takeHit");
             m_anim.SetTrigger("takeHit");
         }
-        public override void OnDefeated()
+        public override IEnumerator OnDefeated()
         {
-            Debug.Log("Player defeated");
-            base.OnDefeated();
+            yield return StartCoroutine(OnDefeat_Internal());
+            yield return base.OnDefeated();
+        }
+        IEnumerator OnDefeat_Internal() 
+        {
+            m_anim.SetBool("defeat", true);
+            yield return new WaitForSeconds(1f);
         }
         #endregion
 
@@ -62,10 +49,6 @@ namespace Curry.Explore
             // Ping once at start
             CharacterInfo info = new CharacterInfo(this);
             m_onScout?.TriggerEvent(info);
-        }
-        public void UpdateMoveLimit(int change = 1)
-        {
-            m_moveCount.UpdateCount(change);
         }
     }
 }

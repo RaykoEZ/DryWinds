@@ -77,10 +77,13 @@ namespace Curry.Explore
             OnTileSelected?.Invoke(gridCoord);
             HighlightTileInternal(gridCoord);
             bool isCoordClear = m_fogOfWar.IsCellClear(gridCoord);
-            if (isCoordClear && info.SelectedObject != null &&
-                info.SelectedObject.TryGetComponent(out ICharacter character))
+            bool hasCharacter = GameUtil.TrySearchTarget(
+                info.ClickWorldPos,
+                LayerMask.GetMask(MovementManager.s_gameplayCollisionFilters),
+                out TacticalCharacter result);
+            if (isCoordClear && hasCharacter && result != null)
             {
-                OnSelectCharacter(character, info.SelectionMode);
+                OnSelectCharacter(result, info.SelectionMode);
             }
             else
             {
@@ -88,11 +91,11 @@ namespace Curry.Explore
                 m_enemyDetail?.EndDisplay();
             }
         }
-        void OnSelectCharacter(ICharacter character, TileSelectionMode mode) 
+        void OnSelectCharacter(TacticalCharacter character, TileSelectionMode mode) 
         {
-            if(character is IPlayer player) 
+            if(character is IPlayer) 
             {
-                OnSelectPlayer(player, mode);
+                OnSelectPlayer(character, mode);
             }
             else 
             {
@@ -112,7 +115,7 @@ namespace Curry.Explore
             m_tileHighlightManager.MoveTileTo(new ObjectId(m_previewTerrainTile), centerWorld);
             m_tileHighlightManager.Show(m_previewTileId);
         }
-        void OnSelectPlayer(IPlayer player, TileSelectionMode mode)
+        void OnSelectPlayer(TacticalCharacter player, TileSelectionMode mode)
         {
             GameObject rangeTile;
             switch (mode)

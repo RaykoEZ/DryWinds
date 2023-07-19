@@ -6,10 +6,10 @@ namespace Curry.Explore
     [Serializable]
     public class AddToInventory : PropertyAttribute
     {
-        [SerializeField] List<AdventCard> m_cardsToAdd = default;
+        [SerializeField] List<CardAsset> m_cardsToAdd = default;
         public virtual void ApplyEffect(DeckManager deck)
         {
-            deck.AddToInventory(m_cardsToAdd);
+            deck.AddToInventory_FromAsset(m_cardsToAdd);
         }
     }
 }

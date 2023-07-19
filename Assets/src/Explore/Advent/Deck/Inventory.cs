@@ -5,11 +5,21 @@ using UnityEngine;
 
 namespace Curry.Explore
 {
-    public class CompareCardByName : IComparer<AdventCard>
+    public class CompareCardByName : IComparer<AdventCard>, IEqualityComparer<AdventCard>
     {
         public int Compare(AdventCard x, AdventCard y)
         {
-            return string.Compare(x.Name, y.Name);
+            return string.Compare(x.Resource.Name, y.Resource.Name);
+        }
+
+        public bool Equals(AdventCard x, AdventCard y)
+        {
+            return x.Resource.Name == y.Resource.Name;
+        }
+
+        public int GetHashCode(AdventCard obj)
+        {
+            return obj.GetHashCode();
         }
     }
     public class Inventory : MonoBehaviour

@@ -8,28 +8,20 @@ namespace Curry.Explore
     public class BorderPatrol : TacticalEnemy
     {
         [SerializeField] StandardStrike m_standardAttack = default;
-        [SerializeField] CallBackup m_backup = default;
         public override IReadOnlyList<AbilityContent> AbilityDetails => new List<AbilityContent> 
         {
-            m_standardAttack.Content,
-            m_backup.Content
+            m_standardAttack.AbilityDetail
         };
-        public override void Prepare()
+        protected override EnemyIntent UpdateIntent(ActionCost dt)
         {
-            // Restore reinforcement uses
-            m_backup.Refresh();
-            base.Prepare();
-        }
-        protected override void OnDetect()
-        {
-            m_backup.Try(transform.position, out bool _);
-            base.OnDetect();
+            return SpotsTarget? new EnemyIntent(m_standardAttack.AbilityDetail, ExecuteAction_Internal()) :
+                EnemyIntent.None;
         }
         protected override IEnumerator ExecuteAction_Internal()
         {
             foreach (IPlayer player in TargetsInSight) 
             {
-                m_anim?.SetTrigger("strike");
+                yield return base.ExecuteAction_Internal();
                 m_standardAttack.Activate(player);
                 yield break;
             }

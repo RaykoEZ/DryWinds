@@ -11,9 +11,10 @@ namespace Curry.Game
         protected List<IStatModifier<CharacterModifierProperty>> m_toRemove = 
             new List<IStatModifier<CharacterModifierProperty>>();
         protected List<CharacterModifier> m_toAdd = new List<CharacterModifier>();
-
         public event OnModifierExpire<CharacterModifierProperty> OnModExpire;
         public event OnModifierTrigger<CharacterModifierProperty> OnModTrigger;
+        public event OnStatUpdate<CharacterModifierProperty> OnStatUpdated;
+
         CharacterModifierProperty m_overallValue;
         public CharacterModifierProperty Current { get { return m_overallValue; } }
         public IReadOnlyList<IStatModifier<CharacterModifierProperty>> Modifiers => m_modifiers;
@@ -106,6 +107,7 @@ namespace Curry.Game
                     m_overallValue = m_modifiers[i].Process(m_overallValue);
                 }
             }
+            OnStatUpdated?.Invoke(Current);
         }
 
         public IReadOnlyList<ModifierContent> GetCurrentModifierDetails()

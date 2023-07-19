@@ -1,5 +1,4 @@
 using Curry.UI;
-using Curry.Util;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,7 +8,7 @@ namespace Curry.Explore
     public class ChooseLoot : PropertyAttribute
     {
         [SerializeField] ChoiceConditions m_conditions = default;
-        [SerializeReference] List<AdventCard> m_lootOptions = default;
+        [SerializeReference] List<CardAsset> m_lootOptions = default;
         protected virtual List<AdventCard> OnLootChosen(ChoiceResult result) 
         {
             List<AdventCard> ret = new List<AdventCard>();
@@ -29,7 +28,8 @@ namespace Curry.Explore
                 List<AdventCard> loot = OnLootChosen(result);
                 lootManager.ReceiveLoot(loot);
             };
-            List<IChoice> lootCopies = deck.CloneCardChoice(m_lootOptions);
+            var cards = deck.InstantiateCards_FromAsset(m_lootOptions);
+            List<IChoice> lootCopies = deck.CloneCardChoice(cards);
             lootManager.ChooseLoot(lootCopies, m_conditions, onFinish);
         }
     }

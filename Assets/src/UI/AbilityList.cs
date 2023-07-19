@@ -32,7 +32,7 @@ namespace Curry.UI
         {
             if (m_currentContent.Count > 0) 
             {
-                m_display?.Setup(m_target, m_target.WorldPosition, m_currentContent[m_currentIndex]);
+                m_display?.DisplayAbilityRange(m_target.GetTransform(), m_currentContent[m_currentIndex]);
             }
         }
         public void Hide() 

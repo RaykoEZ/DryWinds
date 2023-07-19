@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24190962eb4cb5746a59a386b8675991, type: 3}
+  m_Name: Enc_Seedling
+  m_EditorClassIdentifier: 
+  m_detail:
+    m_title: Birth of an Oasis
+    m_description: The endless dunes surrounds a patch of young greenery. Though
+      struggling, with some assistance, the seedllngs may one day shelter many more
+      to come.
+    m_coverImage: {fileID: 21300000, guid: 51bc35c0d0cfc374facb81094e724843, type: 3}
+    m_options:
+    - m_description: Leave it alone
+      m_optionDetail: {fileID: 11400000, guid: c4a7028edd8ba31459178faf792f380e, type: 2}
+    - m_description: Give it some water (require Just Water)
+      m_optionDetail: {fileID: 0}

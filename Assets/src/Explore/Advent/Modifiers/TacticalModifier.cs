@@ -47,5 +47,13 @@ namespace Curry.Explore
             OnExpire?.Invoke(this);
         }
         protected abstract TacticalStats Process_Internal(TacticalStats baseVal);
+
+        public bool Equals(IStatModifier<TacticalStats> other)
+        {
+            if (other == null) return false;
+            bool sameName = Content.Name == other.Content.Name;
+            bool sameDescription = Content.Description == other.Content.Description;
+            return sameName && sameDescription;
+        }
     }
 }

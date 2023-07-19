@@ -36,6 +36,8 @@ namespace Curry.Explore
         public event OnCharacterUpdate OnHide;
         public event OnHpUpdate TakeDamage;
         public event OnHpUpdate RecoverHp;
+        public event OnCharacterUpdate OnMoveFinished;
+        public event OnMovementBlocked OnBlocked;
         public bool SpotsTarget => false;
         public EnemyId Id { get { return new EnemyId(gameObject.name); } }
         public IEnumerator BasicAction => OnSpawnReinforcement();
@@ -61,6 +63,8 @@ namespace Curry.Explore
                 Icon = default
             } 
         };
+        public EnemyIntent IntendingAction => EnemyIntent.None;
+
         public void Setup(Reinforcement_EffectResource reinforce)
         {
             m_spawn = reinforce.ReinforcementModule;
@@ -74,10 +78,10 @@ namespace Curry.Explore
         {
             m_countdownTimer = 0;
         }
-        public virtual bool OnAction(int dt, bool reaction, out IEnumerator action)
+        public virtual bool UpdateAction(ActionCost dt, out EnemyIntent action)
         {
-            m_countdownTimer += dt;
-            action = CanSpawn ? OnSpawnReinforcement() : null;
+            m_countdownTimer += dt.Time;
+            action = CanSpawn ? new EnemyIntent(AbilityDetails[0], OnSpawnReinforcement()) : null;
             m_countdownDisplay.text = CountdownTimer.ToString();
             return CanSpawn;
         }
@@ -103,7 +107,7 @@ namespace Curry.Explore
         // destrpy this signal (canceling the reinforcement).
         public void Trigger(ICharacter overlapping)
         {        
-            OnDefeated();
+            StartCoroutine(OnDefeated());
         }
         protected void OnTriggerEnter2D(Collider2D collision)
         {
@@ -137,19 +141,14 @@ namespace Curry.Explore
         {
             RecoverHp?.Invoke(val, CurrentHp);
         }
-
         public void TakeHit(int hitVal)
         {
             TakeDamage?.Invoke(hitVal, CurrentHp);
         }
-
-        public void OnDefeated()
-        {
-            OnDefeat?.Invoke(this);
-        }
-
         public void Move(Vector3 target)
-        {     
+        {
+            OnMoveFinished?.Invoke(this);
+            OnBlocked?.Invoke(transform.position);
         }
         public bool Warp(Vector3 to)
         {
@@ -159,6 +158,11 @@ namespace Curry.Explore
         public Transform GetTransform()
         {
             return transform;
+        }
+        public IEnumerator OnDefeated()
+        {
+            OnDefeat?.Invoke(this);
+            yield return null;
         }
     }
 }

@@ -18,7 +18,18 @@ namespace Curry.Explore
             m_onTileReveal?.Init();
             m_onTileFog?.Init();
         }
-
+        public void OnEnemyReveal(ICharacter reveal)
+        {
+            SetFogOfWar(reveal.WorldPosition, clearFog: true);
+        }
+        public void OnEnemyHide(ICharacter hide)
+        {
+            SetFogOfWar(hide.WorldPosition, clearFog: false);
+        }
+        public void OnMovementBlocked(Vector3 pos)
+        {
+            SetFogOfWar(pos);
+        }
         public void SetFogOfWar(Vector3 worldPos, bool clearFog = true) 
         {
             Vector3Int mapCoord = m_map.WorldToCell(worldPos);

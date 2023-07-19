@@ -15,7 +15,6 @@ namespace Curry.Explore
             time = t;
         }
     }
-
     public delegate void OutOfTime(int timeSpent);
     public delegate void TimeSpent(int timeSpent, int timeLeft);
     public class TimeManager : MonoBehaviour
@@ -24,8 +23,7 @@ namespace Curry.Explore
         [SerializeField] int m_timeToClear = default;
         [SerializeField] CurryGameEventListener m_onSpendTime = default;
         [SerializeField] CurryGameEventTrigger m_onTimeSpent = default;
-        [SerializeField] ResourceBar m_gauge = default;
-        [SerializeField] GameClock m_clock = default;
+        [SerializeField] ResourceDisplayHandler m_gauge = default;
         [SerializeField] TextMeshProUGUI m_clearTimer = default;
         int m_timeLeftToClear;
         int m_timeSpent;
@@ -33,14 +31,13 @@ namespace Curry.Explore
         public event TimeSpent OnTimeSpent;
         public int TimeToClear { get { return m_timeToClear; } }
         public int TimeLeftToClear { get { return m_timeLeftToClear; } }
-        public GameClock Clock { get { return m_clock; } }
         // Use this for initialization
         void Start()
         {
             ResetTime();
             m_onSpendTime?.Init();
             m_gauge?.SetMaxValue(TimeLeftToClear);
-            m_gauge?.SetBarValue(TimeToClear, forceInstantChange: true);
+            m_gauge?.SetCurrentValue(TimeToClear, true);
             UpdateTurnTimer();
         }
         public void ResetTime()
@@ -48,7 +45,6 @@ namespace Curry.Explore
             m_timeLeftToClear = m_timeToClear;
             m_timeSpent = 0;
         }
-
         public void AddTime(EventInfo time)
         {
             if (time is TimeInfo add)
@@ -56,7 +52,6 @@ namespace Curry.Explore
                 m_timeLeftToClear += add.Time;
             }
         }
-
         // spend time and check if we run out of time
         public void SpendTime(EventInfo time)
         {
@@ -65,12 +60,10 @@ namespace Curry.Explore
                 TrySpendTime(spend.Time);
             }
         }
-
         public void AddTime(int time) 
         {
             m_timeLeftToClear += time;
         }
-
         // spend time and check if we run out of time
         public bool TrySpendTime(int timeToSpend) 
         {
@@ -81,7 +74,15 @@ namespace Curry.Explore
             }
             return enoughTime;
         }
-
+        public void PreviewCost(int cost) 
+        {
+            int newVal = Mathf.Clamp(m_timeLeftToClear - cost, 0, m_timeToClear);
+            m_gauge?.Preview(newVal);
+        }
+        public void CancelPreview() 
+        {
+            m_gauge?.TryCancelPreview();
+        }
         void UpdateTurnTimer()
         {
             if (m_clearTimer == null) return;
@@ -99,13 +100,8 @@ namespace Curry.Explore
             {
                 OnOutOfTimeTrigger?.Invoke(m_timeSpent);
             }
-            m_gauge.SetBarValue(m_timeLeftToClear);
-            // Animate clock
-            for (int i = 0; i < toSpend; ++i)
-            {
-                m_clock.Increment();
-                yield return new WaitForSeconds(0.02f);
-            }
+            m_gauge.SetCurrentValue(m_timeLeftToClear);
+            yield return null;
         }
     }
 }

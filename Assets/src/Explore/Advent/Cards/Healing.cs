@@ -1,15 +1,23 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 
 namespace Curry.Explore
 {
-    public class Healing : AdventCard, IConsumable
+    [Serializable]
+    public class Healing : CardResource, IConsumable
     {
         [SerializeField] Heal_EffectResource m_healing = default;
-        // Card Effect
-        public override IEnumerator ActivateEffect(ICharacter user)
+
+        public Healing(Healing effect) : base(effect)
         {
-            m_healing?.Healing?.ApplyEffect(user, user);
+            m_healing = effect.m_healing;
+        }
+
+        // Card Effect
+        public override IEnumerator ActivateEffect(ICharacter user, GameStateContext context)
+        {
+            m_healing?.Healing?.ApplyEffect(user);
             yield return null;
         }
         public IEnumerator OnExpend()

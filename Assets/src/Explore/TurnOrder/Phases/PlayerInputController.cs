@@ -7,7 +7,7 @@ namespace Curry.Explore
     public class PlayerInputController : MonoBehaviour
     {
         // Scripts to disable/enable upon interrupting the scene
-        [SerializeField] MovementManager m_movement = default;
+        [SerializeField] MoveToggle m_movement = default;
         [SerializeField] SelectionManager m_selectInput = default;
         [SerializeField] HandManager m_cardPlay = default;
         [SerializeField] List<CanvasGroup> m_toControl = default;

@@ -7,7 +7,12 @@ namespace Curry.Explore
     {
         [SerializeField] DeckManager m_deck = default;
         [SerializeField] ChoicePrompter m_prompter = default;
-        public void ReceiveLoot(List<AdventCard> items) 
+        public void ReceiveLoot_FromAsset(List<CardAsset> items) 
+        {
+            if (items == null || items.Count == 0) return;
+            m_deck.AddToHand_FromAsset(items);
+        }
+        public void ReceiveLoot(List<AdventCard> items)
         {
             if (items == null || items.Count == 0) return;
             m_deck.AddToHand(items);

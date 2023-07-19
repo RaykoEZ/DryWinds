@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d1556d503bc03346ac6bfa05461b9b5, type: 3}
+  m_Name: EncOpt_Dessert
+  m_EditorClassIdentifier: 
+  m_detail: Take your time to appease your sweet tooth.
+  m_outcome:
+    m_effects:
+    - {fileID: 11400000, guid: 4a50183c31bd98d4a891a13cecfd50be, type: 2}
+    - {fileID: 11400000, guid: 6e81802902a4b804abf449741f5c8738, type: 2}
+    m_dialogue:
+    - ...
+    - You really enjoyed the decadent treat.
+    - The sweetness was strong though not overbearing.
+    - Harmonizing with a hint of refreshing, fruity acidity.
+    - You return to your mission on a delayed schedule, with renewed vigor.

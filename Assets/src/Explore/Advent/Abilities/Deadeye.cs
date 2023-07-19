@@ -10,11 +10,11 @@ namespace Curry.Explore
         [SerializeField] protected PositionTargetingModule m_deadEyeCheck = default;
         [SerializeField] protected Impediment m_impediment = default;
         [SerializeField] protected Enhancement m_enhancedBuff = default;
-        public override AbilityContent Content
+        public override AbilityContent AbilityDetail
         {
             get
             {
-                var ret = base.Content;
+                var ret = base.AbilityDetail;
                 ret.Name = "Deadeye";
                 ret.Description = $"When target is in specific positions, increase attack damage and apply [{m_impediment.Content.Name}] on projectile hit.";
                 return ret;
@@ -30,7 +30,7 @@ namespace Curry.Explore
             }
             bool rangeCheck = 
                 m_deadEyeCheck.
-                HasValidTarget(user.WorldPosition, 
+                HasValidTargets(user.WorldPosition, 
                 m_resource.Content.TargetingRange, out validTargets);
 
             IModifiable modify = user as IModifiable;
