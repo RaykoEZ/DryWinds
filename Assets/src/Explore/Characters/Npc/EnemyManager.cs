@@ -16,7 +16,6 @@ namespace Curry.Explore
         [SerializeField] MovementManager m_movement = default;
         [SerializeField] EnemySpawnHandler m_spawning = default;
         [SerializeField] FogOfWar m_fog = default;
-        [SerializeField] DangerZonePreviewHanadler m_dangerZoneDisplay = default;
         EnemyContainer m_enemies = new EnemyContainer();
         // Comparer for enemy priority
         public event OnEnemyActionFinish OnActionFinish;
@@ -78,8 +77,6 @@ namespace Curry.Explore
             remove.OnDefeat -= OnEnemyRemove;
             remove.OnReveal -= m_fog.OnEnemyReveal;
             remove.OnHide -= m_fog.OnEnemyHide;
-            // Clear danager zone belonging to removed enemy
-            StartCoroutine(m_dangerZoneDisplay.ClearDanagerZone(remove.GetTransform()));
             m_enemies.ScheduleRemove(remove as IEnemy);
             remove.Despawn();
         }
@@ -125,7 +122,6 @@ namespace Curry.Explore
                 EnemyIntent intent = item.IntendingAction;
                 if(intent != null && intent.Call != null) 
                 {
-                    ret.Add(m_dangerZoneDisplay.ClearDanagerZone(item.GetTransform()));
                     ret.Add(intent.Call);
                 }
             }
@@ -152,7 +148,6 @@ namespace Curry.Explore
                 {
                     calls.Add(intent.Call);
                 }
-                m_dangerZoneDisplay.DisplayDangerZone(enemy.GetTransform(), enemy.IntendingAction.Ability);
             }
             if (calls.Count > 0) 
             {

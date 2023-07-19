@@ -339,8 +339,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_name: Imperial Sharpshooter
   m_initStats:
-    maxHp: 15
-    hp: 15
+    maxHp: 25
+    hp: 25
     moveRange: 1
     speed: 2
   m_audio: {fileID: 4493951257985126110}
@@ -742,8 +742,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -852664857
-  m_SortingLayer: 4
+  m_SortingLayerID: 1235874715
+  m_SortingLayer: 5
   m_SortingOrder: 6
   m_Sprite: {fileID: 21300000, guid: 2386dae2c2be9e344b79e2fea6226e5f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 0}
@@ -774,6 +774,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 331127766470196373, guid: 4ad472d5faa12c942859fb7c51148f7f, type: 3}
       propertyPath: m_WholeNumbers
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 909365959468839487, guid: 4ad472d5faa12c942859fb7c51148f7f, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 909365959468839487, guid: 4ad472d5faa12c942859fb7c51148f7f, type: 3}
+      propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2042233191701416708, guid: 4ad472d5faa12c942859fb7c51148f7f, type: 3}
