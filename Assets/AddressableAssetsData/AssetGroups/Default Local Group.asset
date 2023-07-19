@@ -23,6 +23,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - CardPack0
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b555cca2d83b8da4ab543328dfe485b2
+    m_Address: Assets/Prefabs/TowerAttack/CardSystem/Pack0/Onslaught/Card_Onslaught.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - CardPack0
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: b7f44c639b5eac6459efa6d347a60ca1, type: 2}
   m_SchemaSet:

@@ -33,7 +33,7 @@ namespace Curry.Explore
         {
             if (m_cardsInHand.Remove(card))
             {
-                m_totalHoldingValueInHand -= card.HoldingValue;                       
+                m_totalHoldingValueInHand -= card.Resource.HoldingValue;
                 return true;
             }
             else
@@ -46,14 +46,14 @@ namespace Curry.Explore
             m_cardsInHand.AddRange(cards);
             foreach(var card in cards) 
             {
-                m_totalHoldingValueInHand += card.HoldingValue;
+                m_totalHoldingValueInHand += card.Resource.HoldingValue;
             }
         }
         internal IEnumerator PlayCard(GameStateContext context, AdventCard card, IPlayer player)
         {
             if (m_cardsInHand.Contains(card))
             {
-                yield return card.StartCoroutine(card.ActivateEffect(player, context));
+                yield return card.StartCoroutine(card.Resource.ActivateEffect(player, context));
             }
         }        
     }

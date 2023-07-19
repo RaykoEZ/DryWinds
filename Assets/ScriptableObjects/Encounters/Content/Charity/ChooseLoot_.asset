@@ -17,8 +17,7 @@ MonoBehaviour:
       m_canCancel: 1
       m_maxChoice: 1
       m_minChoice: 0
-      m_description: 
     m_lootOptions:
-    - {fileID: 5636301306242561433, guid: ef1d3ab221ea8e440a5fa517863a4114, type: 3}
-    - {fileID: 1717730041097802572, guid: 0afe34ab51c25e64ba9c21a89feafe34, type: 3}
-    - {fileID: 5400319584234665114, guid: 06703e5bca5015748b793e74e0f43e5a, type: 3}
+    - {fileID: 11400000, guid: 422d2a60528e45f4a8aee5487acd887e, type: 2}
+    - {fileID: 11400000, guid: a6cfb50903aeec74b8c90833937ede4f, type: 2}
+    - {fileID: 11400000, guid: 54a5e86dc6d49554e8a5136519222622, type: 2}

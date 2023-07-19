@@ -9,17 +9,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 477fd574d6d3fbc42a111c13f5e5337a, type: 3}
+  m_Script: {fileID: 11500000, guid: 0c04ba19910fcd043a53d6c17a75b52d, type: 3}
   m_Name: Card_Spearhead
   m_EditorClassIdentifier: 
-  m_attribute:
-    m_name: Spearhead
-    m_description: Move to an adjacent position, then deal 3 damage to 2 enemies
-      in the four adjacent positions.
-    m_targetingRange: {fileID: 11400000, guid: 9854b15ca8b244d4f941a1ada2f81708, type: 2}
-    m_cost:
-      Time: 5
-      ActionPoint: 1
-    m_cooldown: 20
-    m_holdingValue: 2
-    m_isInitiallyOnCooldown: 0
+  m_resource:
+    m_properties:
+      m_name: Spearhead
+      m_description: Move to target location and deal 3 damage to adjacent enemies
+        (max. 3).
+      m_cardArt: {fileID: 21300000, guid: 4b468977d6c3d5741a5939d57a2a880e, type: 3}
+      m_targetingRange: {fileID: 11400000, guid: 9854b15ca8b244d4f941a1ada2f81708, type: 2}
+      m_cost:
+        Time: 10
+        ActionPoint: 1
+      m_cooldown: 10
+      m_holdingValue: 1
+      m_isInitiallyOnCooldown: 0
+    m_attack: {fileID: 11400000, guid: fd085a23668627f4e832dfeb8f822894, type: 2}
+    m_moveTo: {fileID: 11400000, guid: 9a81b79a32cdb4a42a6cb06e777bd53e, type: 2}

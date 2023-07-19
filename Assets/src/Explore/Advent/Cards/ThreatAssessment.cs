@@ -1,11 +1,19 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 
 namespace Curry.Explore
 {
-    public class ThreatAssessment : AdventCard, ICooldown
+    [Serializable]
+    public class ThreatAssessment : CardResource, ICooldown
     {
         [SerializeField] Scan_EffectResource m_scan = default;
+
+        public ThreatAssessment(ThreatAssessment effect) : base(effect)
+        {
+            m_scan = effect.m_scan;
+        }
+
         public override IEnumerator ActivateEffect(ICharacter user, GameStateContext context)
         {
             m_scan?.ScanModule?.ApplyEffect(user, user);

@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
-using UnityEngine.ResourceManagement.AsyncOperations;
 using Curry.Util;
 namespace Curry.Explore
 {
@@ -13,12 +11,12 @@ namespace Curry.Explore
     [CreateAssetMenu(fileName = "Carddb_", menuName = "Curry/Card/Database", order = 1)]
     public class CardDatabase : ScriptableObject 
     {
-        [SerializeField] AssetLoader m_cardLoader = default;
+        [SerializeField] AssetLoader<CardAsset> m_cardLoader = default;
         // includes all advent cards to load (listed from each advent collection)
         // These are for advent card prefab instantiations, 
-        Dictionary<int, AdventCard> m_advents = new Dictionary<int, AdventCard>();
+        Dictionary<string, CardAsset> m_advents = new Dictionary<string, CardAsset>();
         Action onLoadFinish;
-        public IReadOnlyDictionary<int, AdventCard> AdventList 
+        public IReadOnlyDictionary<string, CardAsset> AdventList 
         { get { return m_advents; } }
         public void LoadAsset(Action onFinishLoading = null)
         {
@@ -26,14 +24,11 @@ namespace Curry.Explore
             // Load all cards
             m_cardLoader.LoadAssets(OnLoaded);
         }
-        protected virtual void OnLoaded(ICollection<GameObject> objs)
+        protected virtual void OnLoaded(ICollection<CardAsset> objs)
         {
-            foreach(GameObject obj in objs) 
+            foreach(CardAsset obj in objs) 
             {
-                if (obj.TryGetComponent(out AdventCard deploy))
-                {
-                    m_advents.Add(deploy.Id, deploy);
-                }
+                m_advents.Add(obj.name, obj);
             }
             onLoadFinish?.Invoke();
         }

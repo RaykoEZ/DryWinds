@@ -1,13 +1,9 @@
 fileFormatVersion: 2
-guid: 5bdd387c4eb04aa478bfff754e550bd0
+guid: 69fcbcb673aed524091c49de1404dae7
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences:
-  - m_resources: {fileID: 11400000, guid: d2ff9344e19b98541b6a33fa649613fc, type: 2}
-  - m_cooldown: {instanceID: 0}
-  - m_heal: {fileID: 11400000, guid: a4f325cc6b7ba7f4abaf22c1bf17b8cd, type: 2}
-  - m_gainStats: {fileID: 11400000, guid: 5e827d8675a852d499aa3c29d0d45afb, type: 2}
+  defaultReferences: []
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

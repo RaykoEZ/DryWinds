@@ -8,14 +8,14 @@ using Curry.Explore;
 namespace Curry.Util
 {
     [Serializable]
-    public class AssetLoader : IAssetBatch<GameObject>
+    public class AssetLoader<T> : IAssetBatch<T> where T : UnityEngine.Object
     {
         [SerializeField] List<AssetReference> m_assets = default;
 
-        protected event IAssetBatch<GameObject>.OnAssetLoadSuccess OnLoadSuccess;
-        List<AsyncOperationHandle<GameObject>> m_loadedCardHandles = new List<AsyncOperationHandle<GameObject>>();
+        protected event IAssetBatch<T>.OnAssetLoadSuccess OnLoadSuccess;
+        List<AsyncOperationHandle<T>> m_loadedCardHandles = new List<AsyncOperationHandle<T>>();
         int m_numToLoad = 0;
-        public void LoadAssets(IAssetBatch<GameObject>.OnAssetLoadSuccess callback = null)
+        public void LoadAssets(IAssetBatch<T>.OnAssetLoadSuccess callback = null)
         {
             m_numToLoad = m_assets.Count;
             OnLoadSuccess += callback;
@@ -27,18 +27,18 @@ namespace Curry.Util
                 }
                 else 
                 {
-                    assetRef.LoadAssetAsync<GameObject>().Completed += OnLoaded;
+                    assetRef.LoadAssetAsync<T>().Completed += OnLoaded;
                 }
             }
             // If we already loaded these assets, finish now
             if(m_numToLoad == 0) 
             {
-                List<GameObject> ret = AddResultToList();
+                List<T> ret = AddResultToList();
                 OnLoadSuccess?.Invoke(ret);
                 OnLoadSuccess -= callback;
             }
         }
-        protected void OnLoaded(AsyncOperationHandle<GameObject> obj)
+        protected void OnLoaded(AsyncOperationHandle<T> obj)
         {
             // store unique card handles
             if (obj.Status == AsyncOperationStatus.Succeeded)
@@ -49,15 +49,15 @@ namespace Curry.Util
 
             if (m_numToLoad == 0) 
             {
-                List<GameObject> ret = AddResultToList();
+                List<T> ret = AddResultToList();
                 OnLoadSuccess?.Invoke(ret);
                 OnLoadSuccess = null;
             }
         }
-        List<GameObject> AddResultToList() 
+        List<T> AddResultToList() 
         {
-            List<GameObject> ret = new List<GameObject>();
-            foreach (AsyncOperationHandle<GameObject> handle in m_loadedCardHandles)
+            List<T> ret = new List<T>();
+            foreach (AsyncOperationHandle<T> handle in m_loadedCardHandles)
             {
                 ret.Add(handle.Result);
             }

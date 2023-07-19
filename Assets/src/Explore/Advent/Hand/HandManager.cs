@@ -69,7 +69,7 @@ namespace Curry.Explore
             {
                 return;
             }           
-            if (card is IHandEffect handEffect) 
+            if (card.Resource is IHandEffect handEffect) 
             {
                 m_activation.ActivateHandEffect(handEffect);
             }
@@ -88,7 +88,7 @@ namespace Curry.Explore
         { 
             foreach(AdventCard card in CardsInHand) 
             {
-                m_activation.EndOfTurnEffect(card as IEndOfTurnEffect);
+                m_activation.EndOfTurnEffect(card.Resource as IEndOfTurnEffect);
             }
         }
         public List<AdventCard> TakeCards(List<AdventCard> take) 
@@ -106,7 +106,7 @@ namespace Curry.Explore
         {
             if (drag == null) return;
 
-            if (drag.Card is IHandEffect handEffect) 
+            if (drag.Card.Resource is IHandEffect handEffect) 
             {
                 m_activation.RevertHandEffect(handEffect);
             }
@@ -144,7 +144,7 @@ namespace Curry.Explore
             m_activation.HideDropZone();
             yield return StartCoroutine(m_hand.PlayCard(c, card, m_player));
             // after effect activation, we spend the card
-            if(card is IConsumable) 
+            if(card.Resource is IConsumable) 
             {
                 m_audio?.OnCardConsume();
             }
@@ -153,16 +153,16 @@ namespace Curry.Explore
         // When card is trying to actvated after it is dropped...
         void OnCardPlay(GameStateContext c, AdventCard card, Action onPlay, Action onCancel)
         {
-            bool enoughTime = m_cost.HasEnoughResource(card.Cost);
+            bool enoughTime = m_cost.HasEnoughResource(card.Resource.Cost);
             //Try Spending Time/Resource, if not able, cancel
-            if (!card.IsActivatable(c) || !enoughTime || card.IsOnCooldown)
+            if (!card.IsActivatable(c) || !enoughTime || card.Resource.IsOnCooldown)
             {
                 m_activation.HideDropZone();
                 onCancel?.Invoke();
             }
             else
             {
-                m_cost.TrySpend(card.Cost);
+                m_cost.TrySpend(card.Resource.Cost);
                 m_cost.CancelPreview();
                 onPlay?.Invoke();
                 // Make a container for the callstack and trigger it. 
@@ -170,7 +170,7 @@ namespace Curry.Explore
                 {
                     PlayCard(c, card)
                 };
-                OnActivate?.Invoke(card.Cost, actions);
+                OnActivate?.Invoke(card.Resource.Cost, actions);
                 m_audio?.OnCardPlay();
             }
         }

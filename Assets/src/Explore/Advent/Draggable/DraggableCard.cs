@@ -38,7 +38,8 @@ namespace Curry.Explore
         }
         public override void OnEndDrag(PointerEventData eventData)
         {
-            if (Droppable)
+            // Let target validation activate card effect
+            if (Droppable && Card.Resource is not ITargetsPosition)
             {
                 EventInfo info = new EventInfo();
                 m_ui.DropTrigger?.TriggerEvent(info);

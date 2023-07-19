@@ -9,16 +9,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 477fd574d6d3fbc42a111c13f5e5337a, type: 3}
+  m_Script: {fileID: 11500000, guid: f97217775050fe5438fb710898985fa2, type: 3}
   m_Name: Card_ThreatAssessment
   m_EditorClassIdentifier: 
-  m_attribute:
-    m_name: Threat Assessment
-    m_description: 'Scans for nearby hostiles (radius: 2)'
-    m_targetingRange: {fileID: 11400000, guid: d85024baf97a42c47be0378241a4ddca, type: 2}
-    m_cost:
-      Time: 10
-      ActionCount: 0
-    m_cooldown: 20
-    m_holdingValue: 2
-    m_isInitiallyOnCooldown: 0
+  m_resource:
+    m_properties:
+      m_name: Threat Assessment
+      m_description: Reveal nearby hidden enemies.
+      m_cardArt: {fileID: 21300000, guid: e3da52ac3387cde43a395a8a8d1e25eb, type: 3}
+      m_targetingRange: {fileID: 0}
+      m_cost:
+        Time: 15
+        ActionPoint: 0
+      m_cooldown: 20
+      m_holdingValue: 1
+      m_isInitiallyOnCooldown: 0
+    m_scan: {fileID: 11400000, guid: 94a1daac1fd471541aebe8e6f06573e0, type: 2}

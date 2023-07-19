@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_effect:
     m_cardsToAdd:
-    - {fileID: 7625811245545174198, guid: e8d23edcef4fc4a42b0271982b544924, type: 3}
+    - {fileID: 11400000, guid: 7358f638a3989ec40b289ab211e57e62, type: 2}

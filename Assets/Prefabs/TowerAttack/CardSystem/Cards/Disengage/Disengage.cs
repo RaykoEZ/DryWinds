@@ -4,11 +4,17 @@ using UnityEngine;
 
 namespace Curry.Explore
 {
-    
-    public class Disengage : AdventCard, ICooldown
+    [Serializable]
+    public class Disengage : CardResource, ICooldown
     {
         [SerializeField] Heal_EffectResource m_heal;
         [SerializeField] ExhaustAp_EffectResource m_exhaustActionPoint = default;
+        public Disengage(Disengage effect) : base(effect)
+        {
+            m_heal = effect.m_heal;
+            m_exhaustActionPoint = effect.m_exhaustActionPoint;
+        }
+
         public override IEnumerator ActivateEffect(ICharacter user, GameStateContext context)
         {
             m_exhaustActionPoint.Effect.ApplyEffect(context.ActionCount, out int numSpent);

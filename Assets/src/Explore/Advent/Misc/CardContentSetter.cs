@@ -12,13 +12,15 @@ namespace Curry.Explore
         [SerializeField] TextMeshProUGUI m_cost = default;
         [SerializeField] TextMeshProUGUI m_cooldown = default;
         [SerializeField] TextMeshProUGUI m_holdingValue = default;
+        [SerializeField] Image m_cardArt = default;
         [SerializeField] GameObject m_consumableIcon = default;
         [SerializeField] List<Image> m_actionCostIcons = default;
-        public void Setup(CardAttribute attribute) 
+        public void Setup(CardProperties attribute) 
         {
             SetCardName(attribute.Name);
             SetCardText(attribute.Description);
             SetActionCost(attribute.Cost.ActionPoint);
+            m_cardArt.sprite = attribute.CardArt;
             SetTimeCost(attribute.Cost.Time.ToString());
             SetHoldingValue(attribute.HoldingValue);
         }

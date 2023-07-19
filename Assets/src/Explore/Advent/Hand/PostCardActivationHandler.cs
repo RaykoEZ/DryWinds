@@ -25,7 +25,7 @@ namespace Curry.Explore
         }
         public void TryApplyCoolDown(AdventCard card) 
         {
-            if (card is ICooldown cd && 
+            if (card.Resource is ICooldown cd && 
                 cd.IsOnCooldown &&
                 !m_cooldowns.Contains(card))
             {
@@ -34,7 +34,7 @@ namespace Curry.Explore
         }
         public IEnumerator OnCardUse(AdventCard used, bool isHandOverloaded) 
         {
-            if (used is ICooldown cd) 
+            if (used.Resource is ICooldown cd) 
             {
                 yield return StartCoroutine(HandleCooldown(cd, used));
             }
@@ -43,7 +43,7 @@ namespace Curry.Explore
             // (total holding value in hand > max hand capacity)
             // played card will go back to inventory
             List<AdventCard> take = new List<AdventCard> { used };
-            if (used is IConsumable consume) 
+            if (used.Resource is IConsumable consume) 
             {
                 OnTakeFromHand?.Invoke(take);
                 yield return StartCoroutine(HandleConsumable(used, consume));
@@ -67,7 +67,7 @@ namespace Curry.Explore
             ICooldown cd;
             foreach (AdventCard card in m_cooldowns) 
             {
-                cd = card as ICooldown;
+                cd = card.Resource as ICooldown;
                 cd.Tick(spent, out isStillOnCooldown);
                 if (!isStillOnCooldown) 
                 {

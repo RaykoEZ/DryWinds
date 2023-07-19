@@ -11,7 +11,7 @@ namespace Curry.Explore
         public virtual void ApplyEffect(LootManager lootManager)
         {
             LootDrop drop = SamplingUtil.SampleWithWeights(m_lootPool);
-            lootManager.ReceiveLoot(drop.LootItems);
+            lootManager.ReceiveLoot_FromAsset(drop.LootItems);
         }
     }
 }

@@ -9,12 +9,12 @@ namespace Curry.Explore
     {
         public int Compare(AdventCard x, AdventCard y)
         {
-            return string.Compare(x.Name, y.Name);
+            return string.Compare(x.Resource.Name, y.Resource.Name);
         }
 
         public bool Equals(AdventCard x, AdventCard y)
         {
-            return x.Name == y.Name;
+            return x.Resource.Name == y.Resource.Name;
         }
 
         public int GetHashCode(AdventCard obj)

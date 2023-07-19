@@ -1,0 +1,37 @@
+using System;
+using System.Collections;
+using UnityEngine;
+
+namespace Curry.Explore
+{
+    #NOTRIM#
+    [Serializable]
+    public class #SCRIPTNAME# : CardResource
+    {
+        #NOTRIM#
+        public #SCRIPTNAME#(#SCRIPTNAME# effect):base(effect)
+        {
+            #NOTRIM#
+        }
+        #NOTRIM#
+        public override IEnumerator ActivateEffect(ICharacter user, GameStateContext context)
+        {
+            #NOTRIM#
+            yield return null;
+        }
+    }
+    #NOTRIM#
+    [CreateAssetMenu(fileName = "Card_#SCRIPTNAME#", menuName = "Curry/Card/Resource/#SCRIPTNAME# Asset", order = 1)]
+    #NOTRIM#
+    public class #SCRIPTNAME#_Asset : CardAsset
+    {
+        #NOTRIM#
+        [SerializeField] #SCRIPTNAME# m_resource = default;
+        #NOTRIM#
+        public override CardResource GetResource()
+        {
+        #NOTRIM#
+            return new #SCRIPTNAME#(m_resource);
+        }
+    }
+}

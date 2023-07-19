@@ -668,7 +668,7 @@ GameObject:
   - component: {fileID: 611770846333937967}
   - component: {fileID: 6975011501337287384}
   - component: {fileID: 6475374814142928085}
-  - component: {fileID: 5400319584234665114}
+  - component: {fileID: 1490534781480131340}
   m_Layer: 12
   m_Name: P_ReparKit
   m_TagString: Untagged
@@ -749,7 +749,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9e1723eca4c0204bb207b13c561a111, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_card: {fileID: 5400319584234665114}
+  m_card: {fileID: 0}
   m_ui:
     m_cardDragTrigger:
       m_eventToTrigger: {fileID: 11400000, guid: 3a30f108650ad9e4ab7dd4f9d5c6b221, type: 2}
@@ -818,12 +818,13 @@ MonoBehaviour:
   m_cost: {fileID: 2903919919297227289}
   m_cooldown: {fileID: 3022441034557042625}
   m_holdingValue: {fileID: 1168638121274035751}
+  m_cardArt: {fileID: 0}
   m_consumableIcon: {fileID: 3514772315045626998}
   m_actionCostIcons:
   - {fileID: 7925838596324148414}
   - {fileID: 5910205570847243437}
   - {fileID: 321758603637912799}
---- !u!114 &5400319584234665114
+--- !u!114 &1490534781480131340
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -832,17 +833,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 3640191682562909597}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2b89797dcf4d7c34c961e679ec0bdb53, type: 3}
+  m_Script: {fileID: 11500000, guid: 8d401c795b235d141aaa2e4a8fe90d14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_resources: {fileID: 11400000, guid: 1deeb36c6436fa342a9a46306253bd5e, type: 2}
   m_cooldown: {fileID: 0}
+  m_contentSetter: {fileID: 0}
   m_targeting:
     m_targetLayer:
       serializedVersion: 2
       m_Bits: 0
   m_startupModulesModules: []
-  m_healing: {fileID: 11400000, guid: eeed7c9f618660041a1709b2b4618191, type: 2}
 --- !u!1 &3971331073725697357
 GameObject:
   m_ObjectHideFlags: 0

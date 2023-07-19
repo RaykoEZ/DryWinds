@@ -9,16 +9,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 477fd574d6d3fbc42a111c13f5e5337a, type: 3}
+  m_Script: {fileID: 11500000, guid: 17e43b7195b187945be2f09d066169a2, type: 3}
   m_Name: Card_JustWater
   m_EditorClassIdentifier: 
-  m_attribute:
-    m_name: Just Water
-    m_description: Just water, nothing special.
-    m_targetingRange: {fileID: 0}
-    m_cost:
-      Time: 1
-      ActionCount: 0
-    m_cooldown: 0
-    m_holdingValue: 1
-    m_isInitiallyOnCooldown: 0
+  m_resource:
+    m_properties:
+      m_name: Just Water
+      m_description: Just water, nothing special.
+      m_cardArt: {fileID: 21300000, guid: 22f49a93e66eeea4693a6428a961a931, type: 3}
+      m_targetingRange: {fileID: 0}
+      m_cost:
+        Time: 0
+        ActionPoint: 0
+      m_cooldown: 0
+      m_holdingValue: 1
+      m_isInitiallyOnCooldown: 0

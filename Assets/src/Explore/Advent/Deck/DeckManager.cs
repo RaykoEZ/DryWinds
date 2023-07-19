@@ -14,7 +14,8 @@ namespace Curry.Explore
         [SerializeField] protected CardDatabase m_cardPool = default;
         [SerializeField] AdventInstanceManager m_instance = default;
         [SerializeField] HandManager m_hand = default;
-        [SerializeField] List<AdventCard> m_startingInventory = default;
+        [SerializeField] AdventCard m_cardRef = default;
+        [SerializeField] List<CardAsset> m_startingInventoryToLoad = default;
         [SerializeField] ChoicePrompter m_prompter = default;
         bool m_isReady = false;
         public bool IsReady { get => m_isReady; protected set => m_isReady = value; }
@@ -42,7 +43,7 @@ namespace Curry.Explore
             // and assgn their Value property to the real card in inventory for later process
             foreach (AdventCard card in cardSource)
             {
-                AdventCard copy = InstantiateCard(card);
+                AdventCard copy = InstantiateCard(card, new CardResource(card.Resource));
                 copy.GetComponent<CardInteractionController>()?.
                     Init(card, CardInteractMode.Inspect | CardInteractMode.Select);
                 copies.Add(copy);
@@ -92,37 +93,71 @@ namespace Curry.Explore
             List<AdventCard> cardInstances = InstantiateCards(add);
             m_inventory.AddRange(cardInstances);
         }
+        public void AddToInventory_FromAsset(List<CardAsset> cardsToDraw)
+        {
+            List<AdventCard> cardInstances = InstantiateCards_FromAsset(cardsToDraw);
+            m_inventory.AddRange(cardInstances);
+        }
         // Instantiate cards and add to hand
         public void AddToHand(List<AdventCard> cardsToDraw)
         {
             List<AdventCard> cardInstances = InstantiateCards(cardsToDraw);
             m_hand.AddCardsToHand(cardInstances);
         }
-        List<AdventCard> InstantiateCards(List<AdventCard> refs, CardInteractMode interactMode = CardInteractMode.Inspect)
+        public void AddToHand_FromAsset(List<CardAsset> cardsToDraw)
         {
+            List<AdventCard> cardInstances = InstantiateCards_FromAsset(cardsToDraw);
+            m_hand.AddCardsToHand(cardInstances);
+        }
+        public List<AdventCard> InstantiateCards_FromAsset(List<CardAsset> refs, CardInteractMode interactMode = CardInteractMode.Inspect) 
+        {
+            List<CardResource> assets = new List<CardResource>();
+            foreach (var item in refs)
+            {
+                assets.Add(item.GetResource());
+            }
             List<AdventCard> ret = new List<AdventCard>();
-            foreach (AdventCard cardRef in refs)
+            foreach (CardResource cardRef in assets)
             {
                 // Instantiating cards to be drawn
-                AdventCard cardInstance = InstantiateCard(cardRef, interactMode);
+                AdventCard cardInstance = InstantiateCard(m_cardRef, cardRef, interactMode);
                 ret.Add(cardInstance);
             }
             return ret;
         }
-        AdventCard InstantiateCard(AdventCard cardRef, CardInteractMode interactMode = CardInteractMode.Inspect)
+        List<AdventCard> InstantiateCards(List<AdventCard> refs, CardInteractMode interactMode = CardInteractMode.Inspect)
+        {
+            List<CardResource> assets = new List<CardResource>();
+            foreach (var item in refs)
+            {
+                assets.Add(item.Resource);
+            }
+            List<AdventCard> ret = new List<AdventCard>();
+            foreach (CardResource cardRef in assets)
+            {
+                // Instantiating cards to be drawn
+                AdventCard cardInstance = InstantiateCard(m_cardRef, cardRef, interactMode);
+                ret.Add(cardInstance);
+            }
+            return ret;
+        }
+        AdventCard InstantiateCard(AdventCard cardRef, CardResource resource, CardInteractMode interactMode = CardInteractMode.Inspect)
         {
             AdventCard ret;
             ret = m_instance.GetInstanceFromAsset(cardRef.gameObject);
             ret.GetComponent<CardInteractionController>()?.Init(ret, interactMode);
+            ret.InitResource(resource);
             return ret;
         }
         void OnAdventLoadFinish()
         {
-            foreach (KeyValuePair<int, AdventCard> advent in m_cardPool.AdventList)
+            List<AdventCard> addToInventory = new List<AdventCard>();
+            foreach (var advent in m_startingInventoryToLoad)
             {
-                m_instance.PrepareNewInstance(advent.Value.gameObject);
+                AdventCard newCard = InstantiateCard(m_cardRef, advent.GetResource());
+                addToInventory.Add(newCard);
             }
-            AddToInventory(m_startingInventory);
+            AddToInventory(addToInventory);
             IsReady = true;
         }
     }

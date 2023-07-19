@@ -17,7 +17,7 @@ MonoBehaviour:
     m_description: The endless dunes surrounds a patch of young greenery. Though
       struggling, with some assistance, the seedllngs may one day shelter many more
       to come.
-    m_coverImage: {fileID: 0}
+    m_coverImage: {fileID: 21300000, guid: 51bc35c0d0cfc374facb81094e724843, type: 3}
     m_options:
     - m_description: Leave it alone
       m_optionDetail: {fileID: 11400000, guid: c4a7028edd8ba31459178faf792f380e, type: 2}

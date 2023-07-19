@@ -151,7 +151,7 @@ namespace Curry.Explore
             {
                 m_current.HandCards.Remove(drop);
                 m_current.InventoryCards.Add(drop);
-                m_handHoldingValue -= drop.HoldingValue;
+                m_handHoldingValue -= drop.Resource.HoldingValue;
                 onDrop?.Invoke();
                 UpdateCapacityDisplay();
             }
@@ -168,7 +168,7 @@ namespace Curry.Explore
             {
                 m_current.InventoryCards.Remove(drop);
                 m_current.HandCards.Add(drop);
-                m_handHoldingValue += drop.HoldingValue;
+                m_handHoldingValue += drop.Resource.HoldingValue;
                 onDrop?.Invoke();
                 UpdateCapacityDisplay();
             }

@@ -15,7 +15,7 @@ MonoBehaviour:
   m_detail:
     m_title: Finally, an Oasis!
     m_description: You reach an oasis, yay!
-    m_coverImage: {fileID: 0}
+    m_coverImage: {fileID: 21300000, guid: 30ac74232efa3f441b62851dc03f696e, type: 3}
     m_options:
     - m_description: Look around for supplies.
       m_optionDetail: {fileID: 11400000, guid: 02e4935c73dc6f140ab3483b41b7cb9e, type: 2}

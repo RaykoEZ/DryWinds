@@ -9,16 +9,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 477fd574d6d3fbc42a111c13f5e5337a, type: 3}
+  m_Script: {fileID: 11500000, guid: 901eb3b0ed577434f901d121ee2750bd, type: 3}
   m_Name: Card_Foresight
   m_EditorClassIdentifier: 
-  m_attribute:
-    m_name: Sweep Scan
-    m_description: 'Clear nearby fog of war (radius: 2).'
-    m_targetingRange: {fileID: 11400000, guid: d85024baf97a42c47be0378241a4ddca, type: 2}
-    m_cost:
-      Time: 10
-      ActionCount: 0
-    m_cooldown: 20
-    m_holdingValue: 2
-    m_isInitiallyOnCooldown: 0
+  m_resource:
+    m_properties:
+      m_name: Request Foresight
+      m_description: Reveal nearby obscurred positions.
+      m_cardArt: {fileID: 21300000, guid: 01f28074b46ddd04a9a887589ced596c, type: 3}
+      m_targetingRange: {fileID: 0}
+      m_cost:
+        Time: 10
+        ActionPoint: 0
+      m_cooldown: 5
+      m_holdingValue: 1
+      m_isInitiallyOnCooldown: 0
+    m_reveal: {fileID: 11400000, guid: 6546434e9008eb243a0d12d863a1fb4c, type: 2}

@@ -57,7 +57,7 @@ namespace Curry.UI
             dragAllowed = (InteractMode & (CardInteractMode.Play | CardInteractMode.Move)) != 0;
             drag.enabled = dragAllowed;
             drag.Draggable = dragAllowed;
-            bool targets = m_card is ITargetsPosition;
+            bool targets = m_card.Resource is ITargetsPosition;
             bool moveAllowed = (dragAllowed && !targets) || (targets && (InteractMode & CardInteractMode.Move) != 0);
             drag.Movable = moveAllowed;
         }

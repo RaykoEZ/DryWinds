@@ -3,10 +3,15 @@ using System.Collections;
 using UnityEngine;
 
 namespace Curry.Explore
-{   
-    public class Sunday : AdventCard, IConsumable
+{
+    [Serializable]
+    public class Sunday : CardResource, IConsumable
     {
         [SerializeField] GainAp_EffectResource m_actionGain = default;
+        public Sunday(Sunday effect) : base(effect)
+        {
+            m_actionGain = effect.m_actionGain;
+        }
         public override IEnumerator ActivateEffect(ICharacter user, GameStateContext context)
         {
             m_actionGain?.Activate(context);

@@ -9,16 +9,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 477fd574d6d3fbc42a111c13f5e5337a, type: 3}
+  m_Script: {fileID: 11500000, guid: e0686054f0b0d1e4e98a1ec996ae0a92, type: 3}
   m_Name: Card_SizzlingQuakespear
   m_EditorClassIdentifier: 
-  m_attribute:
-    m_name: Sizzling Quakespear
-    m_description: Gain 1 AP, take 5 damage.
-    m_targetingRange: {fileID: 0}
-    m_cost:
-      Time: 3
-      ActionCount: 0
-    m_cooldown: 0
-    m_holdingValue: 1
-    m_isInitiallyOnCooldown: 0
+  m_resource:
+    m_properties:
+      m_name: Sizzling Quakespear
+      m_description: Hurts self for 5 HP, gain 1 AP.
+      m_cardArt: {fileID: 21300000, guid: a12f0a21237ae0048a30d87366933092, type: 3}
+      m_targetingRange: {fileID: 0}
+      m_cost:
+        Time: 10
+        ActionPoint: 0
+      m_cooldown: 0
+      m_holdingValue: 0
+      m_isInitiallyOnCooldown: 0
+    m_selfDamage: {fileID: 11400000, guid: 1c197245572ea7f4b8384fb7cade6cb8, type: 2}
+    m_gainAction: {fileID: 11400000, guid: 6b32ea712054c144bae15d2145f78578, type: 2}

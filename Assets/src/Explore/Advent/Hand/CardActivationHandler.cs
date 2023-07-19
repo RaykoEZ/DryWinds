@@ -34,7 +34,7 @@ namespace Curry.Explore
             if (info is PositionInfo pos)
             {
                 // Activate card effect with target
-                ITargetsPosition handler = m_pendingCardRef.Card as ITargetsPosition;
+                ITargetsPosition handler = m_pendingCardRef.Card.Resource as ITargetsPosition;
                 handler.SetTarget(pos.WorldPosition);
             }
             // do activation validation
@@ -43,12 +43,12 @@ namespace Curry.Explore
         public void TargetGuide(DraggableCard draggable)
         {
             AdventCard card = draggable.Card;
-            if (card is ITargetsPosition)
+            if (card.Resource is ITargetsPosition)
             {
                 m_pendingCardRef = draggable;
                 m_selection?.TargetGuide(m_pendingCardRef.transform);
             }
-            m_cost?.BeginPreview(card.Cost);
+            m_cost?.BeginPreview(card.Resource.Cost);
             ShowDropZones();
         }
         public void OnCardReturn(DraggableCard _)
@@ -67,9 +67,9 @@ namespace Curry.Explore
         }
         public void ShowDropZones() 
         {
-            if (m_pendingCardRef != null && m_pendingCardRef.Card is ITargetsPosition target)
+            if (m_pendingCardRef != null && m_pendingCardRef.Card.Resource is ITargetsPosition target)
             {
-                m_selection.SelectDropZoneTile(m_pendingCardRef.Card.Name, target.TargetingRange, m_playerTransform);
+                m_selection.SelectDropZoneTile(m_pendingCardRef.Card.Resource.Name, target.TargetingRange, m_playerTransform);
             }
             else 
             {

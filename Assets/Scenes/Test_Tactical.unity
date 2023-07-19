@@ -5563,15 +5563,16 @@ MonoBehaviour:
       m_numToPool: 2
       m_defaultParent: {fileID: 1510134957}
   m_hand: {fileID: 615583783}
-  m_startingInventory:
-  - {fileID: 3873730490787844752, guid: 747a31ceea71e9d43839068cd8db9f9a, type: 3}
-  - {fileID: 5636301306242561433, guid: ef1d3ab221ea8e440a5fa517863a4114, type: 3}
-  - {fileID: 5400319584234665114, guid: 06703e5bca5015748b793e74e0f43e5a, type: 3}
-  - {fileID: 1458675905969362800, guid: 9c001e81f6b3943469e0d99d2d350573, type: 3}
-  - {fileID: 1717730041097802572, guid: 0afe34ab51c25e64ba9c21a89feafe34, type: 3}
-  - {fileID: -1498232522625378632, guid: b7ccdd7a1ab8f3242bc4d6189423b3dd, type: 3}
-  - {fileID: 8071710509276292979, guid: 7e804290738bed44d953e373c62c356f, type: 3}
-  - {fileID: 5239562036305896454, guid: fe246b37acb1a5d4d9ef01e4d78ee505, type: 3}
+  m_cardRef: {fileID: 5749793458515807818, guid: fe246b37acb1a5d4d9ef01e4d78ee505, type: 3}
+  m_startingInventoryToLoad:
+  - {fileID: 11400000, guid: 54a5e86dc6d49554e8a5136519222622, type: 2}
+  - {fileID: 11400000, guid: 63ad83d7803a4074caeb19c6e8fca421, type: 2}
+  - {fileID: 11400000, guid: aed5d6eb51da5e44396684d1ff7c02f4, type: 2}
+  - {fileID: 11400000, guid: b555cca2d83b8da4ab543328dfe485b2, type: 2}
+  - {fileID: 11400000, guid: 422d2a60528e45f4a8aee5487acd887e, type: 2}
+  - {fileID: 11400000, guid: d2ff9344e19b98541b6a33fa649613fc, type: 2}
+  - {fileID: 11400000, guid: 9d6e93fbfcc38a5428ddc5ac9f767aeb, type: 2}
+  - {fileID: 11400000, guid: d79b5d9a6f0742f4c862784cb90cabfc, type: 2}
   m_prompter:
     m_choiceManagerRef: {fileID: 732907792}
 --- !u!1 &1040645975 stripped
