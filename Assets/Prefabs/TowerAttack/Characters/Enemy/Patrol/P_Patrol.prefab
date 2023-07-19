@@ -423,8 +423,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -852664857
-  m_SortingLayer: 4
+  m_SortingLayerID: 1235874715
+  m_SortingLayer: 5
   m_SortingOrder: 6
   m_Sprite: {fileID: 21300000, guid: 2386dae2c2be9e344b79e2fea6226e5f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 0}
@@ -451,7 +451,6 @@ GameObject:
   - component: {fileID: 4063988590427125916}
   - component: {fileID: 124719436035578632}
   - component: {fileID: 8231386241522679744}
-  - component: {fileID: 7639117143483301035}
   - component: {fileID: 7394046197572877155}
   - component: {fileID: 4075219535851998224}
   m_Layer: 9
@@ -520,8 +519,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_name: Border Patrol
   m_initStats:
-    maxHp: 5
-    hp: 5
+    maxHp: 7
+    hp: 7
     moveRange: 1
     speed: 1
   m_audio: {fileID: 5768770230270259994}
@@ -617,23 +616,6 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.49
---- !u!114 &7639117143483301035
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4063988590427125918}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c97f899a36d608c4caa90d5285c51d05, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_resource: {fileID: 11400000, guid: 7f446f919d13e2241924537dfac651a4, type: 2}
-  m_signal: {fileID: 7365727130124127263, guid: 8e01471e2c522a4449af9ef1ac38054e, type: 3}
-  m_spawnCountdown: {fileID: 11400000, guid: 1af61f82327a5f64c96c99af8d0f7bbb, type: 2}
-  m_spawnFromReinforcement: {fileID: 11400000, guid: 6a1a1ff561016774f94d28d5eace9934, type: 2}
-  m_maxUses: 1
 --- !u!114 &7394046197572877155
 MonoBehaviour:
   m_ObjectHideFlags: 0

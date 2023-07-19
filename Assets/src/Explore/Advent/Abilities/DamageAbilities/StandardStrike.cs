@@ -16,7 +16,7 @@ namespace Curry.Explore
             get
             {
                 AbilityContent ret = base.AbilityDetail;
-                ret.Name = "Standard Strike";
+                ret.Name = m_resource.Content.Name;
                 ret.Description = $"Deal {BaseDamage} damage to target.";
                 return ret;
             }

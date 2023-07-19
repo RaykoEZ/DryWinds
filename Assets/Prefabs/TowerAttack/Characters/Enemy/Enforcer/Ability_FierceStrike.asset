@@ -10,15 +10,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e13ba65c0867a4d4dacc1376a312b15b, type: 3}
-  m_Name: Ability_Relief
+  m_Name: Ability_FierceStrike
   m_EditorClassIdentifier: 
   m_content:
-    Name: Relief Ally
-    Description: Swaps position with nearby ally.
+    Name: Fierce Strike
+    Description: Deal 5 damage to target.
     TargetingRange:
       m_offsetList:
       - {x: 1, y: 0, z: 0}
       - {x: 0, y: 1, z: 0}
       - {x: -1, y: 0, z: 0}
       - {x: 0, y: -1, z: 0}
-    Icon: {fileID: 21300000, guid: aaacef4370026e5479109f240268f21b, type: 3}
+      - {x: 1, y: -1, z: 0}
+      - {x: -1, y: -1, z: 0}
+      - {x: -1, y: 1, z: 0}
+      - {x: 1, y: 1, z: 0}
+    Icon: {fileID: 21300000, guid: 487d29cbebfcc644892e243904556b2b, type: 3}

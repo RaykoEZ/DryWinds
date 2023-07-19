@@ -15,6 +15,7 @@ namespace Curry.UI
         [SerializeField] TextMeshProUGUI m_moveRange = default;
         [SerializeField] AbilityList m_abilities = default;
         [SerializeField] ModifierList m_modifiers = default;
+        [SerializeField] DangerZonePreviewHanadler m_dangerZoneDisplay = default;
         bool showing = false;
         public void Display(TacticalCharacter character) 
         {
@@ -29,6 +30,11 @@ namespace Curry.UI
             m_moveRange.text = character.MoveRange.ToString();
             IReadOnlyList<AbilityContent> abilities = character.AbilityDetails;
             m_abilities.Setup(character, abilities);
+            if(character is IEnemy enemy) 
+            {
+                m_dangerZoneDisplay.ResetDisplay();
+                m_dangerZoneDisplay.DisplayDangerZone(enemy.GetTransform(), enemy.IntendingAction.Ability);
+            }
             if (character is IModifiable modify) 
             {
                 modify.Refresh();
@@ -50,6 +56,7 @@ namespace Curry.UI
         }
         IEnumerator EndDisplay_Internal() 
         {
+            m_dangerZoneDisplay.ResetDisplay();
             // Start anim for exit
             m_anim?.Hide();
             yield return new WaitForSeconds(0.5f);

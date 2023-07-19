@@ -7573,6 +7573,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8305593886435461068, guid: c710e0229225de9489229e46ed4c33fa, type: 3}
+      propertyPath: m_dangerZoneDisplay
+      value: 
+      objectReference: {fileID: 1599963314}
     - target: {fileID: 8343926101936125328, guid: c710e0229225de9489229e46ed4c33fa, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -13059,6 +13063,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8305593886435461068, guid: c710e0229225de9489229e46ed4c33fa, type: 3}
+      propertyPath: m_dangerZoneDisplay
+      value: 
+      objectReference: {fileID: 1599963314}
     - target: {fileID: 8343926101936125328, guid: c710e0229225de9489229e46ed4c33fa, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0

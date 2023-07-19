@@ -13,12 +13,16 @@ MonoBehaviour:
   m_Name: Ability_StandardStrike
   m_EditorClassIdentifier: 
   m_content:
-    Name: Standard Strike
-    Description: Attack one nearby enemy.
+    Name: Fierce Strike
+    Description: Deal 3 damage to target.
     TargetingRange:
       m_offsetList:
       - {x: 1, y: 0, z: 0}
       - {x: 0, y: 1, z: 0}
       - {x: -1, y: 0, z: 0}
       - {x: 0, y: -1, z: 0}
+      - {x: 1, y: -1, z: 0}
+      - {x: -1, y: -1, z: 0}
+      - {x: -1, y: 1, z: 0}
+      - {x: 1, y: 1, z: 0}
     Icon: {fileID: 21300000, guid: 487d29cbebfcc644892e243904556b2b, type: 3}
