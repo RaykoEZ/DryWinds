@@ -105,7 +105,7 @@ namespace Curry.Explore
             Vector3Int cell = m_terrain.WorldToCell(destination);
             Vector3 cellCenter = m_terrain.GetCellCenterWorld(cell);
             bool isBlocked = IsPathObstructed(cellCenter, m_player.WorldPosition);
-            bool eneoughResource = m_actionCost.HasEnoughResource(cost);
+            bool eneoughResource = m_actionCost.HasEnoughResource(cost, true);
             // Check for visible obstructions and time
             if (tileExist && !isBlocked && eneoughResource)
             {

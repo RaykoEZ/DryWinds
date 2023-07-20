@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEngine;
 using TMPro;
+using Curry.UI;
 
 namespace Curry.Explore
 {
@@ -9,16 +10,29 @@ namespace Curry.Explore
     {
         [SerializeField] TimeManager m_time = default;
         [SerializeField] ActionCounter m_actionCounter = default;
+        [SerializeField] GameErrorTrigger m_message = default;
         public static readonly ActionCost BaseMovementCost = 
             new ActionCost { ActionPoint = 1, Time = 1 };
-        public bool HasEnoughResource(ActionCost cost) 
+        public static string s_notEnoughTime = "Insufficient Time";
+        public static string s_notEnoughAp = "Insufficient AP";
+        public bool HasEnoughResource(ActionCost cost, bool errorMessage = false) 
         {
-            return cost.Time <= m_time.TimeLeftToClear &&
-                cost.ActionPoint <= m_actionCounter.CurrentActionPoint;
+            bool enoughTime = cost.Time <= m_time.TimeLeftToClear;
+            bool enoughAp = cost.ActionPoint <= m_actionCounter.CurrentActionPoint;
+            bool ret = enoughTime && enoughAp;
+            if (errorMessage && !enoughTime) 
+            {
+                m_message?.SendErrorMessage(s_notEnoughTime);
+            }
+            if (errorMessage && !enoughAp) 
+            {
+                m_message?.SendErrorMessage(s_notEnoughAp);
+            }
+            return ret;
         }
         public bool TrySpend(ActionCost cost) 
         {
-            bool ret = HasEnoughResource(cost);
+            bool ret = HasEnoughResource(cost, true);
             if (ret) 
             {
                 m_time.TrySpendTime(cost.Time);

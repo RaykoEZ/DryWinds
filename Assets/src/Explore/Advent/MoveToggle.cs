@@ -22,7 +22,7 @@ namespace Curry.Explore
         public void OnMovementToggle(bool isOn) 
         {
             if (!Interactable) { return; }
-            if (!m_cost.HasEnoughResource(ActionCostHandler.BaseMovementCost)) { return; }
+            if (!m_cost.HasEnoughResource(ActionCostHandler.BaseMovementCost, true)) { return; }
 
             if (isOn) 
             {

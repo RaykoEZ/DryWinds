@@ -13,7 +13,7 @@ namespace Curry.Util
         protected OnCoroutineInterrupt m_onCoroutineInterrupted = default;
 
         bool m_coroutineInProgress = false;
-
+        public bool CoroutineInProgress => m_coroutineInProgress;
         void OnEnable()
         {
             Init();
@@ -48,7 +48,7 @@ namespace Curry.Util
 
         public void StartScheduledCoroutines()
         {
-            if (m_coroutineInProgress && m_coroutines.Count == 0)
+            if (CoroutineInProgress && m_coroutines.Count == 0)
             {
                 return;
             }
@@ -64,7 +64,7 @@ namespace Curry.Util
 
         void OnCoroutineInterrupted(IEnumerator runThis)
         {
-            if (m_coroutineInProgress)
+            if (CoroutineInProgress)
             {
                 StopCurrentCoroutine();
             }

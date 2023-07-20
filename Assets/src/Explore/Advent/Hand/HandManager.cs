@@ -153,7 +153,7 @@ namespace Curry.Explore
         // When card is trying to actvated after it is dropped...
         void OnCardPlay(GameStateContext c, AdventCard card, Action onPlay, Action onCancel)
         {
-            bool enoughTime = m_cost.HasEnoughResource(card.Resource.Cost);
+            bool enoughTime = m_cost.HasEnoughResource(card.Resource.Cost, true);
             //Try Spending Time/Resource, if not able, cancel
             if (!card.IsActivatable(c) || !enoughTime || card.Resource.IsOnCooldown)
             {
