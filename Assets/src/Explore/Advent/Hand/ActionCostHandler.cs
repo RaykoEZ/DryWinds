@@ -13,8 +13,7 @@ namespace Curry.Explore
         [SerializeField] GameErrorTrigger m_message = default;
         public static readonly ActionCost BaseMovementCost = 
             new ActionCost { ActionPoint = 1, Time = 1 };
-        public static string s_notEnoughTime = "Insufficient Time";
-        public static string s_notEnoughAp = "Insufficient AP";
+
         public bool HasEnoughResource(ActionCost cost, bool errorMessage = false) 
         {
             bool enoughTime = cost.Time <= m_time.TimeLeftToClear;
@@ -22,11 +21,11 @@ namespace Curry.Explore
             bool ret = enoughTime && enoughAp;
             if (errorMessage && !enoughTime) 
             {
-                m_message?.SendErrorMessage(s_notEnoughTime);
+                m_message?.SendErrorMessage(ErrorMessages.s_notEnoughTime);
             }
             if (errorMessage && !enoughAp) 
             {
-                m_message?.SendErrorMessage(s_notEnoughAp);
+                m_message?.SendErrorMessage(ErrorMessages.s_notEnoughAp);
             }
             return ret;
         }

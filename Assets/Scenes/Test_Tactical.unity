@@ -5166,6 +5166,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4156664648376572980, guid: 53e3f1484228d2d48b67a859b4d6e56d, type: 3}
+      propertyPath: m_error
+      value: 
+      objectReference: {fileID: 310942184}
+    - target: {fileID: 4156664648376572980, guid: 53e3f1484228d2d48b67a859b4d6e56d, type: 3}
       propertyPath: m_costHandle
       value: 
       objectReference: {fileID: 1769241227}
