@@ -12,13 +12,17 @@ namespace Curry.UI
         public static string s_chosenTooMany = "Chosen too many";
     }
     // Trigger error message event
-    public class GameErrorTrigger : MonoBehaviour 
+    public class GameMessageTrigger : MonoBehaviour 
     {
         [SerializeField] CurryGameEventTrigger m_triggerMessage = default;
-
-        public void SendErrorMessage(string errorMessage) 
+        public void TriggerGameMessage(string errorMessage) 
         {
-            GameErrorInfo info = new GameErrorInfo(errorMessage);
+            GameMessageInfo info = new GameMessageInfo(errorMessage);
+            m_triggerMessage?.TriggerEvent(info);
+        }
+        public void TriggerGameMessage(string message, Color32 backdropColour) 
+        {
+            ColouredMessageInfo info = new ColouredMessageInfo(message, backdropColour);
             m_triggerMessage?.TriggerEvent(info);
         }
     }

@@ -75,7 +75,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294572543
+    rgba: 4294967295
   m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -221,15 +221,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_anim: {fileID: 5542475652033145738}
-  m_errorText: {fileID: 5542475651869393142}
-  m_onGameError:
+  m_onMessageTrigger:
     m_eventToListen: {fileID: 11400000, guid: 6a842ae5b7368ab46b3f18ed49d9c482, type: 2}
     m_responses:
       m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 5542475652033145739}
-          m_TargetAssemblyTypeName: Curry.UI.GameErrorDisplay, Assembly-CSharp
-          m_MethodName: OnGameError
+          m_TargetAssemblyTypeName: Curry.UI.TextMessageDisplay, Assembly-CSharp
+          m_MethodName: OnGameMessage
           m_Mode: 0
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -240,6 +239,7 @@ MonoBehaviour:
             m_BoolArgument: 0
           m_CallState: 2
   m_coroutine: {fileID: 1211756885357471918}
+  m_textField: {fileID: 5542475651869393142}
 --- !u!114 &1211756885357471918
 MonoBehaviour:
   m_ObjectHideFlags: 0

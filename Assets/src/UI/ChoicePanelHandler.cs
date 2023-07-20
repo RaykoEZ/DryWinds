@@ -15,7 +15,7 @@ namespace Curry.UI
         [SerializeField] Transform m_content = default;
         [SerializeField] Button m_confirm = default;
         [SerializeField] Button m_cancel = default;
-        [SerializeField] GameErrorTrigger m_error = default;
+        [SerializeField] GameMessageTrigger m_error = default;
         event OnChoiceFinish OnChoiceComplete;
         protected bool m_inProgress = false;
         protected ChoiceContext m_currentContext;
@@ -83,12 +83,12 @@ namespace Curry.UI
             bool tooMany = numChosen > m_currentContext.Conditons.MaxChoiceCount;
             if (tooFew)
             {
-                m_error.SendErrorMessage(
+                m_error.TriggerGameMessage(
                     ErrorMessages.s_chosenTooFew + $": Min: {m_currentContext.Conditons.MinChoiceCount}");
             }
             else if (tooMany) 
             {
-                m_error.SendErrorMessage(
+                m_error.TriggerGameMessage(
                     ErrorMessages.s_chosenTooMany + $": Max: {m_currentContext.Conditons.MaxChoiceCount}");
             }
             else 

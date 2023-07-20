@@ -10,7 +10,7 @@ namespace Curry.Explore
     {
         [SerializeField] TimeManager m_time = default;
         [SerializeField] ActionCounter m_actionCounter = default;
-        [SerializeField] GameErrorTrigger m_message = default;
+        [SerializeField] GameMessageTrigger m_message = default;
         public static readonly ActionCost BaseMovementCost = 
             new ActionCost { ActionPoint = 1, Time = 1 };
 
@@ -21,11 +21,11 @@ namespace Curry.Explore
             bool ret = enoughTime && enoughAp;
             if (errorMessage && !enoughTime) 
             {
-                m_message?.SendErrorMessage(ErrorMessages.s_notEnoughTime);
+                m_message?.TriggerGameMessage(ErrorMessages.s_notEnoughTime);
             }
             if (errorMessage && !enoughAp) 
             {
-                m_message?.SendErrorMessage(ErrorMessages.s_notEnoughAp);
+                m_message?.TriggerGameMessage(ErrorMessages.s_notEnoughAp);
             }
             return ret;
         }

@@ -15,6 +15,7 @@ namespace Curry.Explore
     // Handles card activations
     public class HandManager : MonoBehaviour
     {
+        [SerializeField] GameMessageTrigger m_abilityMessage = default;
         [SerializeField] Adventurer m_player = default;
         [SerializeField] ActionCostHandler m_cost = default;
         [SerializeField] PlayZone m_playZone = default;
@@ -71,6 +72,7 @@ namespace Curry.Explore
             }           
             if (card.Resource is IHandEffect handEffect) 
             {
+                m_abilityMessage.TriggerGameMessage(card.Resource.Name, Color.blue);
                 m_activation.ActivateHandEffect(handEffect);
             }
             else 
@@ -88,7 +90,11 @@ namespace Curry.Explore
         { 
             foreach(AdventCard card in CardsInHand) 
             {
-                m_activation.EndOfTurnEffect(card.Resource as IEndOfTurnEffect);
+                if (card.Resource is IEndOfTurnEffect effect) 
+                {
+                    m_abilityMessage.TriggerGameMessage(card.Resource.Name, Color.blue);
+                    m_activation.EndOfTurnEffect(effect);
+                }
             }
         }
         public List<AdventCard> TakeCards(List<AdventCard> take) 
@@ -137,6 +143,7 @@ namespace Curry.Explore
         #region Playing a card
         IEnumerator PlayCard(GameStateContext c, AdventCard card)
         {
+            m_abilityMessage.TriggerGameMessage(card.Resource.Name, Color.blue);
             // Reset pending card
             m_activation.ResetDragTarget();
             DraggableCard draggable = card.GetComponent<DraggableCard>();
