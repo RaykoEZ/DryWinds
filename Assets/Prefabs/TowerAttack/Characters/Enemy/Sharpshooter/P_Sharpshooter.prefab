@@ -477,7 +477,7 @@ MonoBehaviour:
     m_rangeDecrease: 1
   m_enhancedBuff:
     m_resource: {fileID: 11400000, guid: 0fe6e35b3ea54a14da83bedad654a752, type: 2}
-    m_damageUp: 1
+    m_damageUp: 2
 --- !u!114 &4560052167075255862
 MonoBehaviour:
   m_ObjectHideFlags: 0

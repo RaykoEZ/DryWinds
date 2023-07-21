@@ -5,6 +5,8 @@ using UnityEngine;
 using Curry.Events;
 using Curry.Game;
 using Curry.UI;
+using static UnityEngine.EventSystems.EventTrigger;
+
 namespace Curry.Explore
 {
     public delegate void OnEnemyActionFinish();
@@ -13,6 +15,7 @@ namespace Curry.Explore
     public partial class EnemyManager : SceneInterruptBehaviour
     {
         #region Serialize Fields & Members
+        [SerializeField] GameMessageTrigger m_abilityMessage = default;
         [SerializeField] MovementManager m_movement = default;
         [SerializeField] EnemySpawnHandler m_spawning = default;
         [SerializeField] FogOfWar m_fog = default;
@@ -117,11 +120,12 @@ namespace Curry.Explore
             List<IEnumerator> ret = new List<IEnumerator>();
             m_enemies.UpdateActivity();
             m_enemies.SortActiveEnemyPriorities();
-            foreach (var item in m_enemies.ActiveEnemies)
+            foreach (var enemy in m_enemies.ActiveEnemies)
             {
-                EnemyIntent intent = item.IntendingAction;
+                EnemyIntent intent = enemy.IntendingAction;
                 if(intent != null && intent.Call != null) 
                 {
+                    ret.Add(ShowAbilityMessage(enemy));
                     ret.Add(intent.Call);
                 }
             }
@@ -155,6 +159,11 @@ namespace Curry.Explore
             }
             m_enemies.UpdateActivity();
             return calls;
+        }
+        IEnumerator ShowAbilityMessage(IEnemy enemy) 
+        {
+            m_abilityMessage.TriggerGameMessage(enemy.IntendingAction.Ability.Name, Color.red);
+            yield return null;
         }
         IEnumerator FinishActionPhase() 
         {
