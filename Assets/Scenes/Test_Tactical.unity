@@ -12678,10 +12678,6 @@ PrefabInstance:
       propertyPath: m_Color.a
       value: 0.31764707
       objectReference: {fileID: 0}
-    - target: {fileID: 3945677920594794693, guid: 750af7f6d4fdfe44fb559603f07edcd9, type: 3}
-      propertyPath: m_AdditionalShaderChannelsFlag
-      value: 25
-      objectReference: {fileID: 0}
     - target: {fileID: 3945677920594794698, guid: 750af7f6d4fdfe44fb559603f07edcd9, type: 3}
       propertyPath: m_Name
       value: P_Hand
