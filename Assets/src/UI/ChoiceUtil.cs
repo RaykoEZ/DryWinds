@@ -19,8 +19,22 @@ namespace Curry.Explore
                     choices.Add(CardInteractionController.AttachToCard(card));
                 }
             }
-
             return choices;
+        }
+        // Setup cards to be choices
+        public static List<IChoice> SetupCardChoice(List<AdventCard> cardSource)
+        {
+            List<AdventCard> copies = new List<AdventCard>();
+            // Instantiate copies
+            // and assgn their Value property to the real card in inventory for later process
+            foreach (AdventCard card in cardSource)
+            {
+                card.GetComponent<CardInteractionController>()?.
+                    Init(card, CardInteractMode.Inspect | CardInteractMode.Select);
+                copies.Add(card);
+            }
+            List<IChoice> ret = ChoiceUtil.ChooseCards(copies);
+            return ret;
         }
     }
 }

@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Rd_EncOpt_MealChallenge
   m_EditorClassIdentifier: 
   m_detail: '[Boss Fight Music]'
+  m_validUnlockConditions: []
   m_potentialOutcomes:
   - m_probabilityWeight: 1
     m_content:
@@ -25,7 +26,7 @@ MonoBehaviour:
   - m_probabilityWeight: 1
     m_content:
       m_effects:
-      - {fileID: 11400000, guid: f84a52ef77f125648abe6559a99e1d80, type: 2}
+      - {fileID: 11400000, guid: 80c1225532ca6a74b8fe006787b8a2ab, type: 2}
       - {fileID: 11400000, guid: 88bd35f38f914cb40a4a211ad13504f0, type: 2}
       m_dialogue:
       - You were so close, yet so far.
@@ -34,7 +35,7 @@ MonoBehaviour:
     m_content:
       m_effects:
       - {fileID: 11400000, guid: 8f691f34ae65dd24aa5eb3bf250ca28c, type: 2}
-      - {fileID: 11400000, guid: f84a52ef77f125648abe6559a99e1d80, type: 2}
+      - {fileID: 11400000, guid: 80c1225532ca6a74b8fe006787b8a2ab, type: 2}
       m_dialogue:
       - You struggle to keep the food in as you take the forst few bites.
       - An utter defeat.

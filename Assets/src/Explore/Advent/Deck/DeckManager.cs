@@ -114,7 +114,8 @@ namespace Curry.Explore
             List<CardResource> assets = new List<CardResource>();
             foreach (var item in refs)
             {
-                assets.Add(item.GetResource());
+                var resource = item.GetResource();
+                assets.Add(resource);
             }
             List<AdventCard> ret = new List<AdventCard>();
             foreach (CardResource cardRef in assets)

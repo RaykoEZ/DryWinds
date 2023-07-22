@@ -9,9 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd5f8b9b9a024984c9afece8c20bdbb3, type: 3}
-  m_Name: AddToInventory_Loss
+  m_Script: {fileID: 11500000, guid: 74b6efde534907e4ca6696c2aedf276e, type: 3}
+  m_Name: AddToHand_Water
   m_EditorClassIdentifier: 
-  m_effect:
+  m_addCard:
     m_cardsToAdd:
     - {fileID: 11400000, guid: 7358f638a3989ec40b289ab211e57e62, type: 2}

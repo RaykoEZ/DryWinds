@@ -29,8 +29,8 @@ namespace Curry.Explore
                 lootManager.ReceiveLoot(loot);
             };
             var cards = deck.InstantiateCards_FromAsset(m_lootOptions);
-            List<IChoice> lootCopies = deck.CloneCardChoice(cards);
-            lootManager.ChooseLoot(lootCopies, m_conditions, onFinish);
+            List<IChoice> choices = ChoiceUtil.SetupCardChoice(cards);
+            lootManager.ChooseLoot(choices, m_conditions, onFinish);
         }
     }
 }
