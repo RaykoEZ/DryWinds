@@ -10,13 +10,14 @@ namespace Curry.Explore
         [SerializeField] protected PositionTargetingModule m_deadEyeCheck = default;
         [SerializeField] protected Impediment m_impediment = default;
         [SerializeField] protected Enhancement m_enhancedBuff = default;
+        Enhancement m_enhanceInstance;
         public override AbilityContent AbilityDetail
         {
             get
             {
                 var ret = base.AbilityDetail;
                 ret.Name = "Deadeye";
-                ret.Description = $"When target is in specific positions, increase attack damage and apply [{m_impediment.Content.Name}] on projectile hit.";
+                ret.Description = $"When target is in specific positions, increase attack damage by {m_enhancedBuff.DamageUp} and apply [{m_impediment.Content.Name}] on projectile hit.";
                 return ret;
             }
         }
@@ -37,9 +38,14 @@ namespace Curry.Explore
             if (rangeCheck) 
             {
                 // apply impede on projectile impact
-                ranged.RangedAttack?.AddOnHitEffect(m_impediment);
-                // apply damage up
-                modify?.CurrentStats.ApplyModifier(m_enhancedBuff);
+                ranged.RangedAttack?.AddOnHitEffect(new Impediment(m_impediment));
+                // Only apply enhanced when user isn't a;ready enhanced
+                if( m_enhanceInstance == null || !modify.ContainsModifier(m_enhanceInstance)) 
+                {
+                    m_enhanceInstance = new Enhancement(m_enhancedBuff);
+                    // apply damage up
+                    modify?.CurrentStats.ApplyModifier(m_enhanceInstance);
+                }
             }
             return rangeCheck;
         }

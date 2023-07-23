@@ -10,6 +10,7 @@ namespace Curry.Explore
     public interface IModifiable
     {
         IModifierContainer<TacticalStats> CurrentStats { get; }
+        bool ContainsModifier(IStatModifier<TacticalStats> mod);
         void Refresh();
     }
     public abstract class TacticalCharacter : PoolableBehaviour, ICharacter, IModifiable, IMovable
@@ -86,7 +87,6 @@ namespace Curry.Explore
         }
         public virtual void Recover(int val)
         {
-            Debug.Log("Player recovers " + val + " HP.");
             m_statManager.RecoverHp(val);
             m_audio.Play("heal");
             RecoverHp?.Invoke(val, CurrentHp);
@@ -153,6 +153,10 @@ namespace Curry.Explore
         public void Refresh()
         {
             CurrentStats.Refresh();
+        }
+        public bool ContainsModifier(IStatModifier<TacticalStats> mod)
+        {
+            return m_statManager.ContainsModifier(mod);
         }
     }
 

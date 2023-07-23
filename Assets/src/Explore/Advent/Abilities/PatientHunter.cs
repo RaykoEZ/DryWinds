@@ -1,5 +1,6 @@
 ﻿using Curry.Util;
 using System;
+using System.Collections;
 using UnityEngine;
 
 namespace Curry.Explore
@@ -7,14 +8,17 @@ namespace Curry.Explore
     [Serializable]
     public class PatientHunter : BaseAbility, IStackableEffect, IEnemyReaction
     {
-        [SerializeField] Prepared m_preparedBuff = default;
+        [SerializeField] TakeAim m_preparedBuff = default;
         bool m_activated = false;
-        Prepared m_instance;
+        TakeAim m_instance;
+        public int CurrentStack => m_instance != null ? m_instance.CurrentStack : 0;
+        public event OnAbilityMessage OnMessage;
+
         public override AbilityContent AbilityDetail => new AbilityContent
         { 
             Name = m_resource.Content.Name,
-            Description = m_resource.Content.Description,
-            TargetingRange =RangeMapping.GetRangeMap(3),
+            Description = $"{m_resource.Content.Description} (Current Stack: {CurrentStack})",
+            TargetingRange = RangeMapping.GetRangeMap(3),
             Icon = m_resource.Content.Icon
         };
         public void AddStack(int addVal = 1) 
@@ -34,26 +38,30 @@ namespace Curry.Explore
         {
             if (!m_activated && activate) 
             {
-                m_instance = new Prepared(m_preparedBuff);
+                OnMessage?.Invoke($"{AbilityDetail.Name} Activated");
+                m_instance = new TakeAim(m_preparedBuff);
                 applyTo?.CurrentStats.ApplyModifier(m_instance);
                 m_activated = true;
             }
             else if (m_activated && activate)
             {
                 m_instance.AddStack();
+                OnMessage?.Invoke($"{AbilityDetail.Name} x {m_instance.CurrentStack}");
             }
             else if (m_activated && !activate)
             {
                 applyTo.CurrentStats.RemoveModifier(m_instance);
+                OnMessage?.Invoke($"{AbilityDetail.Name} Reset");
                 m_activated = false;
             }
         }
-        public void OnPlayerAction(IEnemy enemy)
+        public IEnumerator OnPlayerAction(IEnemy enemy)
         {
-            if(enemy is IModifiable mod) 
+            if (enemy is IModifiable mod) 
             {
                 Activate(mod, enemy.SpotsTarget);
             }
+            yield return null;
         }
     }
 }

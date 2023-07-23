@@ -7,10 +7,19 @@ namespace Curry.Explore
     
     public class Enhancement : TacticalModifier, IAttackModifier
     {
-        [SerializeField] protected int m_damageUp = default;
+        [SerializeField] private int damageUp = default;
+        public int DamageUp => damageUp;
+
+        public Enhancement(Enhancement copy) : base(copy)
+        {
+            damageUp = copy.DamageUp;
+        }
+
+
         public int Apply(int hitVal)
         {
-            return hitVal + m_damageUp;
+            Expire();
+            return hitVal + DamageUp;
         }
         protected override TacticalStats Process_Internal(TacticalStats baseVal)
         {

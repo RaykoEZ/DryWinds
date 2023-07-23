@@ -25,6 +25,7 @@ namespace Curry.Explore
         [SerializeField] CurryGameEventTrigger m_onTimeSpent = default;
         [SerializeField] ResourceDisplayHandler m_gauge = default;
         [SerializeField] TextMeshProUGUI m_clearTimer = default;
+        [SerializeField] TextMeshProUGUI m_costDiff = default;
         int m_timeLeftToClear;
         int m_timeSpent;
         public event OutOfTime OnOutOfTimeTrigger;
@@ -76,10 +77,13 @@ namespace Curry.Explore
         {
             int newVal = Mathf.Clamp(m_timeLeftToClear - cost, 0, m_timeToClear);
             m_gauge?.Preview(newVal);
+            m_costDiff.text = $"-> {newVal}";
+            m_costDiff.color = Color.red;
         }
         public void CancelPreview() 
         {
             m_gauge?.TryCancelPreview();
+            m_costDiff.color = Color.clear;
         }
         void UpdateTurnTimer()
         {

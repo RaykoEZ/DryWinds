@@ -10,6 +10,7 @@ namespace Curry.Explore
         [SerializeField] protected Animator m_anim = default;
         [SerializeField] protected CharacterDetector m_detect = default;
         public event OnEnemyMove OnMove;
+        public event OnAbilityMessage OnAbility;
         protected IReadOnlyCollection<IPlayer> TargetsInSight => m_detect.TargetsInSight;
         protected IReadOnlyCollection<IEnemy> EnemiesInSight => m_detect.Enemies;
         protected virtual List<IEnemyReaction> m_reactions { get; } = 
@@ -71,7 +72,8 @@ namespace Curry.Explore
             CurrentStats.Refresh();
             foreach (IEnemyReaction onAction in m_reactions )
             {
-                onAction?.OnPlayerAction(this);
+                yield return onAction?.OnPlayerAction(this);
+                yield return new WaitForSeconds(1f);
             }
             // reset pending ability
             yield return new WaitForEndOfFrame();
@@ -81,7 +83,10 @@ namespace Curry.Explore
             return EnemyIntent.None;
         }
         #endregion
-
+        protected virtual void OnAbilityMessageTrigger(string message) 
+        {
+            OnAbility?.Invoke(message);
+        }
         #region pooling implementation
         public override void Prepare()
         {
@@ -92,6 +97,10 @@ namespace Curry.Explore
             m_detect.OnPlayerExitDetection += OnDetectExit;
             m_detect.OnEnemyEnterDetection += OnOtherEnemyEnter;
             m_detect.OnEnemyExitDetection += OnOtherEnemyExit;
+            foreach (var item in m_reactions)
+            {
+                item.OnMessage += OnAbilityMessageTrigger;
+            }
         }
         public override void ReturnToPool()
         {
@@ -100,6 +109,10 @@ namespace Curry.Explore
             m_detect.OnPlayerExitDetection -= OnDetectExit;
             m_detect.OnEnemyEnterDetection -= OnOtherEnemyEnter;
             m_detect.OnEnemyExitDetection -= OnOtherEnemyExit;
+            foreach (var item in m_reactions)
+            {
+                item.OnMessage -= OnAbilityMessageTrigger;
+            }
             base.ReturnToPool();
         }
         #endregion

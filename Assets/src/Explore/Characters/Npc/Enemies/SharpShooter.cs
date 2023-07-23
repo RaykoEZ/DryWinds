@@ -58,7 +58,10 @@ namespace Curry.Explore
                 m_currentProjectileInstance = Instantiate(m_stormAmmo, transform.position, rot, transform.parent);
                 m_currentProjectileInstance.Setup(this);
                 // Check for Dead Eye activation condition, activate if we can activate
-                m_deadEye.TryActivate<IPlayer>(this, out _);
+                if (m_deadEye.TryActivate<IPlayer>(this, out _)) 
+                {
+                    OnAbilityMessageTrigger(m_deadEye.AbilityDetail.Name);
+                }
                 yield return StartCoroutine(m_currentProjectileInstance.FireAt(target.WorldPosition));
                 break;
             }

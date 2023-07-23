@@ -18,8 +18,10 @@ namespace Curry.Explore
         public static EnemyIntent None => new EnemyIntent(AbilityContent.None, null);
     }
     public delegate void OnEnemyMove(IEnemy moving, Vector3 destination, Action<Vector3> moveCall);
+    public delegate void OnAbilityMessage(string message);
     public interface IEnemy : ICharacter
     {
+        event OnAbilityMessage OnAbility;
         bool SpotsTarget { get; }
         EnemyId Id { get; }
         EnemyIntent IntendingAction { get; }
