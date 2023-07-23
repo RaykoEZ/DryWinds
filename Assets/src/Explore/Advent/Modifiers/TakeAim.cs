@@ -6,21 +6,21 @@ namespace Curry.Explore
 {
     public interface IEnemyReaction 
     {
+        event OnAbilityMessage OnMessage;
         AbilityContent AbilityDetail { get; }
-        public void OnPlayerAction(IEnemy enemy);
+        public IEnumerator OnPlayerAction(IEnemy enemy);
     }
     [Serializable]
-    public class Prepared : StackableModifier, IAttackModifier, IStackableEffect
+    public class TakeAim : StackableModifier, IAttackModifier, IStackableEffect
     {
         [SerializeField] protected int m_damageUpPerStack;
         protected override string ValuePerStackDisplay => $"{m_damageUpPerStack} Damage Up";
-        public Prepared(Prepared toCopy) : base(toCopy)
+        public TakeAim(TakeAim toCopy) : base(toCopy)
         {
             m_damageUpPerStack = toCopy.m_damageUpPerStack;
         }
         public int Apply(int hitVal)
         {
-            Debug.Log("Prepared Spent x " + m_currentStack);
             Trigger();
             int stack = m_currentStack;
             ResetStack();

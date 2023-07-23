@@ -1,7 +1,5 @@
-﻿using Curry.Ai;
-using System;
+﻿using System;
 using UnityEngine;
-using static UnityEngine.Rendering.DebugUI;
 
 namespace Curry.Explore
 {

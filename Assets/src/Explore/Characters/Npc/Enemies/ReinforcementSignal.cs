@@ -38,6 +38,7 @@ namespace Curry.Explore
         public event OnHpUpdate RecoverHp;
         public event OnCharacterUpdate OnMoveFinished;
         public event OnMovementBlocked OnBlocked;
+        public event OnAbilityMessage OnAbility;
         public bool SpotsTarget => false;
         public EnemyId Id { get { return new EnemyId(gameObject.name); } }
         public IEnumerator BasicAction => OnSpawnReinforcement();
@@ -87,6 +88,7 @@ namespace Curry.Explore
         }
         protected virtual IEnumerator OnSpawnReinforcement()
         {
+            OnAbility?.Invoke(AbilityDetails[0].Name);
             Spawn();
             yield return new WaitForSeconds(0.1f);
             OnDefeated();

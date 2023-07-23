@@ -115,6 +115,12 @@ namespace Curry.Explore
             mod.OnTrigger += OnModifierEffectTrigger;
             m_mods.Add(mod);
         }
+        public bool ContainsModifier(IStatModifier<TacticalStats> mod) 
+        {
+            UpdateModifierState();
+            return m_mods.Contains(mod);
+        }
+
         protected virtual void RemoveExpiredModifier(IStatModifier<TacticalStats> mod)
         {
             if (mod == null)

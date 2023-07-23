@@ -19,6 +19,7 @@ namespace Curry.Explore
         [SerializeField] MovementManager m_movement = default;
         [SerializeField] EnemySpawnHandler m_spawning = default;
         [SerializeField] FogOfWar m_fog = default;
+        [SerializeField] AudioManager m_audio = default;
         EnemyContainer m_enemies = new EnemyContainer();
         // Comparer for enemy priority
         public event OnEnemyActionFinish OnActionFinish;
@@ -65,6 +66,7 @@ namespace Curry.Explore
                 movable.OnMove += OnEnemyMovement;
                 movable.OnBlocked += m_fog.OnMovementBlocked;
             }
+            spawn.OnAbility += DisplayEnemyAbility;
             spawn.OnDefeat += OnEnemyRemove;
             spawn.OnReveal += m_fog.OnEnemyReveal;
             spawn.OnHide += m_fog.OnEnemyHide;
@@ -77,11 +79,17 @@ namespace Curry.Explore
                 movable.OnMove -= OnEnemyMovement;
                 movable.OnBlocked -= m_fog.OnMovementBlocked;
             }
+            (remove as IEnemy).OnAbility -= DisplayEnemyAbility;
             remove.OnDefeat -= OnEnemyRemove;
             remove.OnReveal -= m_fog.OnEnemyReveal;
             remove.OnHide -= m_fog.OnEnemyHide;
             m_enemies.ScheduleRemove(remove as IEnemy);
             remove.Despawn();
+        }
+        void DisplayEnemyAbility(string message) 
+        {
+            m_audio.Play("enemyAbility");
+            m_abilityMessage.TriggerGameMessage(message, Color.red);
         }
         #endregion
         #region IEnemy event handlers
@@ -162,7 +170,7 @@ namespace Curry.Explore
         }
         IEnumerator ShowAbilityMessage(IEnemy enemy) 
         {
-            m_abilityMessage.TriggerGameMessage(enemy.IntendingAction.Ability.Name, Color.red);
+            DisplayEnemyAbility(enemy.IntendingAction.Ability.Name);
             yield return null;
         }
         IEnumerator FinishActionPhase() 

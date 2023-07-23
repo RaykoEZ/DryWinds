@@ -19,7 +19,6 @@ namespace Curry.Explore
         #region IPlayer interface impl
         protected override void TakeHit_Internal(int hitVal)
         {
-            Debug.Log("Player takes " + hitVal + " damage.");
             m_anim.ResetTrigger("takeHit");
             m_anim.SetTrigger("takeHit");
         }

@@ -3801,6 +3801,18 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+        - m_Target: {fileID: 81830746}
+          m_TargetAssemblyTypeName: Curry.Explore.TimeManager, Assembly-CSharp
+          m_MethodName: PreviewCost
+          m_Mode: 3
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 5
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
   - eventID: 1
     callback:
       m_PersistentCalls:
@@ -3813,6 +3825,18 @@ MonoBehaviour:
             m_ObjectArgument: {fileID: 0}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
             m_IntArgument: -1
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+        - m_Target: {fileID: 81830746}
+          m_TargetAssemblyTypeName: Curry.Explore.TimeManager, Assembly-CSharp
+          m_MethodName: CancelPreview
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
             m_FloatArgument: 0
             m_StringArgument: 
             m_BoolArgument: 0
@@ -3837,6 +3861,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 033fa45fbd492b34fb1a23d60c7fe12e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_time: {fileID: 0}
 --- !u!1001 &669700488
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9444,6 +9469,12 @@ MonoBehaviour:
     Volume: 1
     Pitch: 1
     Source: {fileID: 0}
+  - Name: enemyAbility
+    Clip: {fileID: 8300000, guid: 97600507529918b43bddfbc350260ec6, type: 3}
+    Loop: 0
+    Volume: 1
+    Pitch: 1
+    Source: {fileID: 0}
 --- !u!82 &1736801562
 AudioSource:
   m_ObjectHideFlags: 0
@@ -11514,6 +11545,7 @@ MonoBehaviour:
           m_numToPool: 3
           m_defaultParent: {fileID: 1968542685}
   m_fog: {fileID: 2017579930}
+  m_audio: {fileID: 1736801561}
 --- !u!1 &2127039954
 GameObject:
   m_ObjectHideFlags: 0

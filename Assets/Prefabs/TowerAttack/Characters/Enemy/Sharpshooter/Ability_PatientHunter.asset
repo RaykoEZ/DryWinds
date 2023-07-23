@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Ability_PatientHunter
   m_EditorClassIdentifier: 
   m_content:
-    Name: Patient Hunter
+    Name: Take Aim
     Description: 'Reaction: Gain [Prepared] stack when target is inside detection
       range. Stacks reset upon first attack [OR] Target leaves line of sight.'
     TargetingRange:
