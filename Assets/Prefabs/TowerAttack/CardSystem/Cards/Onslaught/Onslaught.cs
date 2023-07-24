@@ -32,7 +32,7 @@ namespace Curry.Explore
                 m_damage.DamageModule.ApplyEffect(found, user);
             }
             // Check if enemy is defeated after attack
-            if (found.CurrentHp <= 0)
+            if (found?.CurrentHp <= 0)
             {
                 Debug.Log("enemy defeated, power up Onslaught");
                 // gain AP and power up on next card use

@@ -172,7 +172,7 @@ MonoBehaviour:
   m_BlockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
-    m_Bits: 4096
+    m_Bits: 0
 --- !u!1 &1112016717896508115
 GameObject:
   m_ObjectHideFlags: 0
@@ -323,7 +323,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4156664648376188280}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -511,6 +511,8 @@ MonoBehaviour:
   m_inventoryZone: {fileID: 7099677114857723127}
   m_handZone: {fileID: 1112016717271352603}
   m_capacity: {fileID: 4532926751355612020}
+  m_costHandle: {fileID: 0}
+  m_error: {fileID: 0}
 --- !u!222 &4156664648376572984
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1455,7 +1457,7 @@ MonoBehaviour:
   m_BlockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
-    m_Bits: 4096
+    m_Bits: 0
 --- !u!1 &7099677115287559378
 GameObject:
   m_ObjectHideFlags: 0
