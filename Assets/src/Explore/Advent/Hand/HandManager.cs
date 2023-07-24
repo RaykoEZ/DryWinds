@@ -151,7 +151,7 @@ namespace Curry.Explore
             m_activation.HideDropZone();
             yield return StartCoroutine(m_hand.PlayCard(c, card, m_player));
             // after effect activation, we spend the card
-            if(card.Resource is IConsumable) 
+            if (card.Resource is IConsumable) 
             {
                 m_audio?.OnCardConsume();
             }

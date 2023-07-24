@@ -1,7 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR;
+using static UnityEngine.UIElements.UxmlAttributeDescription;
 
 namespace Curry.Explore
 {
@@ -50,8 +52,7 @@ namespace Curry.Explore
             }
             else if(isHandOverloaded)
             {
-                m_cooldowns.Remove(used);
-                OnReturnToInventory?.Invoke(take);
+                yield return StartCoroutine(ReturnToInventory_Internal(used));
             }
             else 
             {
@@ -80,6 +81,16 @@ namespace Curry.Explore
             }
             OnReturnToHand?.Invoke(cardsToReturn);
         }
+        protected virtual IEnumerator ReturnToInventory_Internal(AdventCard card)
+        {
+            card?.GetComponent<Animator>()?.SetBool("returnInventory", true);
+            yield return new WaitForSeconds(0.3f);
+            if (card.Resource is ICooldown cd)
+            {
+                m_cooldowns.Remove(card);
+            }
+            OnReturnToInventory?.Invoke(new List<AdventCard>{card});
+        }
         protected virtual IEnumerator HandleCooldown(ICooldown cd, AdventCard card) 
         {
             m_cooldowns.Add(card);
@@ -89,7 +100,9 @@ namespace Curry.Explore
         protected virtual IEnumerator HandleConsumable(AdventCard used, IConsumable consume)
         {
             yield return consume?.OnExpend();
-            yield return new WaitForEndOfFrame();
+            Animator anim = used?.GetComponent<Animator>();
+            anim?.SetBool("consume", true);
+            yield return new WaitForSeconds(1f);
             if (consume is ICooldown) 
             { 
                 m_cooldowns.Remove(used); 
