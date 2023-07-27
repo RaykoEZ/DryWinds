@@ -13,6 +13,7 @@
 *.log
 *.wav
 Assets/TextMesh Pro*
+Assets/Art/SFXPackages*
 Assets/Samples/*
 Assets/StreamingAssets/aa/*
 Packages/*
