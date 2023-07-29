@@ -1,12 +1,14 @@
 ﻿using UnityEngine;
 using Curry.Game;
 using System.Collections.Generic;
+using Curry.Vfx;
 
 namespace Curry.Explore
 {
     // Base class for all playable cards
     public class AdventCard : PoolableBehaviour, IPoolable
     {
+        [SerializeField] protected VfxHandler m_vfxHandler = default;
         [SerializeField] protected CooldownModule m_cooldown = default;
         [SerializeField] protected CardContentSetter m_contentSetter = default;
         [SerializeField] protected PositionTargetingModule m_targeting = default;
@@ -26,7 +28,7 @@ namespace Curry.Explore
             m_cardResource = resource;
             string cdText = Resource is ICooldown cd ? cd.CooldownTime.ToString() : "-";
             m_contentSetter?.SetCooldown(cdText);
-            m_cardResource?.Init(m_cooldown, m_targeting);
+            m_cardResource?.Init(m_cooldown, m_targeting, m_vfxHandler);
             bool isConsume = Resource is IConsumable;
             m_contentSetter?.SetConsumableIcon(isConsume);
             m_contentSetter?.Setup(m_cardResource.Properties);

@@ -1,7 +1,11 @@
 ﻿using Curry.Util;
+using Curry.Vfx;
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Playables;
+using UnityEngine.Timeline;
+using UnityEngine.VFX;
 
 namespace Curry.Explore
 {
@@ -10,8 +14,13 @@ namespace Curry.Explore
     public class CardResource 
     {
         [SerializeField] protected CardProperties m_properties = default;
+        // A vfx and director to insert into a card instance for effect sequence when activating a card
+        [SerializeField] protected VisualEffectAsset m_vfx = default;
+        [SerializeField] protected TimelineAsset m_vfxTimeLine = default;
         protected PositionTargetingModule m_targeting = default;
         protected CooldownModule m_cooldownState = default;
+        // For controlling card Vfx to time effect activation and visuals
+        protected VfxHandler m_vfxHandler = default;
         bool m_activatable = true;
         public string Name => m_properties.Name;
         public string Description => m_properties.Description;
@@ -25,21 +34,63 @@ namespace Curry.Explore
         // Whether this card has satisfied activation conditions, if the card has any
         public virtual bool ConditionsSatisfied => true;
         public virtual CardProperties Properties => m_properties;
+        public CardResource(CardResource effect) 
+        {
+            m_activatable = effect.m_activatable;
+            m_properties = effect.m_properties;
+            m_vfx = effect.m_vfx;
+            m_vfxTimeLine = effect.m_vfxTimeLine;
+        }
+        public virtual void Init(CooldownModule cd, PositionTargetingModule targeting, VfxHandler vfxHandler) 
+        {
+            m_cooldownState = cd;
+            m_targeting = targeting;
+            m_vfxHandler = vfxHandler;
+            // setup vfx for card vfx sequences 
+            SetupVfxAsset(m_vfx, m_vfxTimeLine);
+        }
         public virtual bool IsActivatable(GameStateContext c)
         { return m_activatable; }
         public virtual IEnumerator ActivateEffect(ICharacter user, GameStateContext context)
         {
             yield return null;
         }
-        public CardResource(CardResource effect) 
+        protected void SetupVfxAsset(VisualEffectAsset vfx, TimelineAsset timeline) 
         {
-            m_activatable = effect.m_activatable;
-            m_properties = effect.m_properties;
+            // setup vfx for card vfx sequences 
+            if (m_vfxHandler != null &&
+                m_vfxTimeLine != null && m_vfx != null)
+            {
+                m_vfxHandler.Director.playableAsset = timeline;
+                m_vfxHandler.Vfx.visualEffectAsset = vfx;
+                var tracks = m_vfxHandler.Director.playableAsset.outputs;
+                foreach (PlayableBinding binding in tracks) 
+                {
+                    // Rebind all timeline tracks depending on its acccepted component type
+                    Type bindingType = binding.outputTargetType;
+                    if (bindingType == typeof(VisualEffect))
+                    {
+                        m_vfxHandler.Director.SetGenericBinding(binding.sourceObject, m_vfxHandler.Vfx);
+                    }
+                    else if (bindingType == typeof(AudioSource)) 
+                    {
+                        m_vfxHandler.Director.SetGenericBinding(binding.sourceObject, m_vfxHandler.GetComponent<AudioSource>());
+                    }
+                    else if(bindingType == typeof(SignalReceiver)) 
+                    {
+                        m_vfxHandler.Director.SetGenericBinding(binding.sourceObject, m_vfxHandler.Trigger);
+                    }
+                }
+            }
         }
-        public void Init(CooldownModule cd, PositionTargetingModule targeting) 
+        // play vfx at a location with user gameobject as the parent
+        protected virtual IEnumerator PlayVfx(ICharacter user, Vector3 target)
         {
-            m_cooldownState = cd;
-            m_targeting = targeting;
+            Transform origin = m_vfxHandler.transform.parent;
+            m_vfxHandler.transform.SetParent(user.GetTransform(), false);
+            m_vfxHandler.transform.position = target;
+            yield return m_vfxHandler?.PlaySequence();
+            m_vfxHandler.transform.SetParent(origin, false);
         }
         // Cooldown operation, if a card has cooldown (follows ICooldown)
         public void TriggerCooldown()

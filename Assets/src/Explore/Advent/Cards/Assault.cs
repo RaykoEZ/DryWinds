@@ -19,6 +19,7 @@ namespace Curry.Explore
         public override bool ConditionsSatisfied => m_targeting.Satisfied;
         public override IEnumerator ActivateEffect(ICharacter user, GameStateContext context)
         {
+            yield return PlayVfx(user, m_targeting.Target);
             yield return m_targeting.
                 ActivateWithTargets<ICharacter, ICharacter>(user, m_dealDamage.DamageModule.ApplyEffect);
         }

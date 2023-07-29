@@ -2,6 +2,8 @@
 using TMPro;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using UnityEngine.VFX;
+using UnityEngine.Playables;
 
 namespace Curry.Explore
 {

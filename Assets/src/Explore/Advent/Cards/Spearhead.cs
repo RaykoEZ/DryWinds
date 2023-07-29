@@ -23,8 +23,13 @@ namespace Curry.Explore
         }
         public override IEnumerator ActivateEffect(ICharacter user, GameStateContext context)
         {
-            m_moveTo?.Effect?.ApplyEffect(user, m_targeting.Target, context.Movement, m_attack.Effect.ApplyEffect(user));
+            m_moveTo?.Effect?.ApplyEffect(user, m_targeting.Target, context.Movement, AreaAttack(user));
             yield return null;
+        }
+        protected IEnumerator AreaAttack(ICharacter user) 
+        {
+            yield return PlayVfx(user, user.WorldPosition);
+            yield return m_attack.Effect.ApplyEffect(user);
         }
     }
 }

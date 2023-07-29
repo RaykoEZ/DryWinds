@@ -13,8 +13,10 @@ GameObject:
   - component: {fileID: 5904666822870257353}
   - component: {fileID: 5589892818915034884}
   - component: {fileID: 5222462972926093315}
+  - component: {fileID: 8811750356202014498}
+  - component: {fileID: 6641585147809637033}
   m_Layer: 0
-  m_Name: P_impactEffect
+  m_Name: P_CardVfx
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -128,7 +130,7 @@ PlayableDirector:
   m_Enabled: 1
   serializedVersion: 3
   m_PlayableAsset: {fileID: 11400000, guid: d3dcb805a0b79dc46a648fdb33068f24, type: 2}
-  m_InitialState: 1
+  m_InitialState: 0
   m_WrapMode: 2
   m_DirectorUpdateMode: 1
   m_InitialTime: 0
@@ -137,8 +139,11 @@ PlayableDirector:
     value: {fileID: 5904666822870257358}
   - key: {fileID: 3768957153859533008, guid: d3dcb805a0b79dc46a648fdb33068f24, type: 2}
     value: {fileID: 5222462972926093315}
+  - key: {fileID: -4976878988801378824, guid: d3dcb805a0b79dc46a648fdb33068f24, type: 2}
+    value: {fileID: 8811750356202014498}
   m_ExposedReferences:
-    m_References: []
+    m_References:
+    - 01f37ab2f4f898b45976bc5d4f1e2d70: {fileID: 5904666822870257355}
 --- !u!82 &5222462972926093315
 AudioSource:
   m_ObjectHideFlags: 0
@@ -149,7 +154,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 4202d5387e31f434c815264f300058ed, type: 3}
+  m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -235,3 +240,45 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &8811750356202014498
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5904666822870257355}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce3327bf21b42864b80b0d3ac0339870, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Events:
+    m_Signals:
+    - {fileID: 11400000, guid: f3fb1fe36ee264e49b9d9f07307b9f0f, type: 2}
+    m_Events:
+    - m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 8811750356202014498}
+          m_TargetAssemblyTypeName: Curry.Vfx.TimelineSignalListener, Assembly-CSharp
+          m_MethodName: ReceiveSequenceSignal
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+--- !u!114 &6641585147809637033
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5904666822870257355}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c065c2822d927c409e3eee9e1ac79e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
