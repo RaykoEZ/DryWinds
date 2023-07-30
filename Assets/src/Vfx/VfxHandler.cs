@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.Timeline;
@@ -19,6 +20,36 @@ namespace Curry.Vfx
         void OnSequenceTriggered() 
         {
             m_trigger = true;
+        }
+        // set vfx and sequence assets and bind components to PlayableDirector
+        public void SetupAsset(VisualEffectAsset vfx, TimelineAsset timeline) 
+        {
+            // prevent null and duplicate setup
+            if (timeline != null && vfx != null &&
+                Vfx.visualEffectAsset != vfx &&
+                Director.playableAsset != timeline) 
+            {
+                Director.playableAsset = timeline;
+                Vfx.visualEffectAsset = vfx;
+                var tracks = Director.playableAsset.outputs;
+                foreach (PlayableBinding binding in tracks)
+                {
+                    // Rebind all timeline tracks depending on its acccepted component type
+                    Type bindingType = binding.outputTargetType;
+                    if (bindingType == typeof(VisualEffect))
+                    {
+                        Director.SetGenericBinding(binding.sourceObject, Vfx);
+                    }
+                    else if (bindingType == typeof(AudioSource))
+                    {
+                        Director.SetGenericBinding(binding.sourceObject, GetComponent<AudioSource>());
+                    }
+                    else if (bindingType == typeof(SignalReceiver))
+                    {
+                        Director.SetGenericBinding(binding.sourceObject, Trigger);
+                    }
+                }
+            }
         }
         public IEnumerator PlaySequence() 
         {

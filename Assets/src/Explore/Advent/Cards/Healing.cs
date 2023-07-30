@@ -8,7 +8,6 @@ namespace Curry.Explore
     public class Healing : CardResource, IConsumable
     {
         [SerializeField] Heal_EffectResource m_healing = default;
-
         public Healing(Healing effect) : base(effect)
         {
             m_healing = effect.m_healing;
@@ -17,6 +16,7 @@ namespace Curry.Explore
         // Card Effect
         public override IEnumerator ActivateEffect(ICharacter user, GameStateContext context)
         {
+            yield return PlayVfx(user, user.WorldPosition);
             m_healing?.Healing?.ApplyEffect(user);
             yield return null;
         }

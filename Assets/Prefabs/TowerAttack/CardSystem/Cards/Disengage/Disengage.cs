@@ -17,6 +17,7 @@ namespace Curry.Explore
 
         public override IEnumerator ActivateEffect(ICharacter user, GameStateContext context)
         {
+            yield return PlayVfx(user, user.WorldPosition);
             m_exhaustActionPoint.Effect.ApplyEffect(context.ActionCount, out int numSpent);
             // heal for [base healing value] * num. of actions exhausted
             m_heal.Healing.ApplyEffect(context.Player, numSpent * m_heal.Healing.HealAmount);

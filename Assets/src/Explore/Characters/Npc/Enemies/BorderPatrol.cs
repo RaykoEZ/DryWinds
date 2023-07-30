@@ -12,6 +12,11 @@ namespace Curry.Explore
         {
             m_standardAttack.AbilityDetail
         };
+        public override void Prepare()
+        {
+            base.Prepare();
+            m_vfxHandler.SetupAsset(m_standardAttack.Vfx, m_standardAttack.VfxTimeline);
+        }
         protected override EnemyIntent UpdateIntent(ActionCost dt)
         {
             return SpotsTarget? new EnemyIntent(m_standardAttack.AbilityDetail, ExecuteAction_Internal()) :
@@ -21,6 +26,7 @@ namespace Curry.Explore
         {
             foreach (IPlayer player in TargetsInSight) 
             {
+                yield return m_vfxHandler.PlaySequence();
                 yield return base.ExecuteAction_Internal();
                 m_standardAttack.Activate(player);
                 yield break;

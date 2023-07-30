@@ -19,7 +19,6 @@ namespace Curry.Explore
         Stack<List<IEnumerator>> m_interruptBuffer = new Stack<List<IEnumerator>>();
         Stack<PlayerActionItem> m_characterActionStack = new Stack<PlayerActionItem>();
         List<PlayerActionItem> m_actionsToAdd = new List<PlayerActionItem>();
-        bool m_inProgress = false;
         void Start()
         {
             m_cardPlay.OnActivate += OnPlayerAction;
@@ -33,30 +32,20 @@ namespace Curry.Explore
                 var newItem = new PlayerActionItem { ResourceSpent = spent, Actions = actions};
                 m_actionsToAdd.Add(newItem);
             }
-            if (!m_inProgress) 
-            {
-                m_inProgress = true;
-                StartCoroutine(Evaluate_Internal());
-            }
+            StartCoroutine(Evaluate_Internal());
         }
         void OnEnemyAction(List<IEnumerator> actions) 
         {
             m_interruptBuffer.Push(actions);
-            if (!m_inProgress)
-            {
-                m_inProgress = true;
-                StartCoroutine(Evaluate_Internal());
-            }
+            StartCoroutine(Evaluate_Internal());
         }
         protected IEnumerator PlayerAction_Internal() 
         {
-            while(m_characterActionStack.Count > 0) 
+            UpdateCallback();
+            while (m_characterActionStack.Count > 0) 
             {
                 var currentAction = m_characterActionStack.Pop();
                 yield return CallActions(currentAction.Actions);
-                yield return new WaitForEndOfFrame();
-                // check for any generated actions after invoking current action
-                UpdateCalltack();
                 // Check if there are enemy responses for this player action
                 if (m_enemy.UpdateEnemyAction(
                     currentAction.ResourceSpent, out List<IEnumerator> resp) &&
@@ -64,9 +53,12 @@ namespace Curry.Explore
                 {
                     m_interruptBuffer?.Push(resp);
                 }
+                yield return new WaitForEndOfFrame();
+                // check for any generated actions after invoking current action
+                UpdateCallback();
             }
         }
-        void UpdateCalltack()
+        void UpdateCallback()
         {
             foreach(var toAdd in m_actionsToAdd) 
             {
@@ -77,20 +69,19 @@ namespace Curry.Explore
         protected IEnumerator Evaluate_Internal()
         {
             StartInterrupt();
-            UpdateCalltack();
+            UpdateCallback();
             if (m_characterActionStack.Count > 0)
             {
                 // Player goes first
                 yield return StartCoroutine(PlayerAction_Internal());
                 yield return new WaitForEndOfFrame();
             }
-            // If we need to resolve interrupts from activated enemies, do it first
+            // If we need to resolve interrupts from activated enemies, do it
             while (m_interruptBuffer.Count > 0)
             {
                 yield return StartCoroutine(CallActions(m_interruptBuffer.Pop()));
                 yield return new WaitForEndOfFrame();
             }
-            m_inProgress = false;
             EndInterrupt();
         }
         protected IEnumerator CallActions(List<IEnumerator> actions) 

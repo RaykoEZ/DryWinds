@@ -854,8 +854,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35b701abf19fbc443b4873816e12536f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_vfx: {fileID: 4901411660154593592}
-  m_vfxDirector: {fileID: 6370219874903369970}
   m_nameField: {fileID: 1283581823912955685}
   m_descriptionField: {fileID: 6018678553206447306}
   m_cost: {fileID: 3407528388295411283}
@@ -2422,11 +2420,6 @@ PrefabInstance:
     m_RemovedComponents: []
     m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 010d207fe96a0194dbdaa3a6f3a1e16d, type: 3}
---- !u!2083052967 &4901411660154593592 stripped
-VisualEffect:
-  m_CorrespondingSourceObject: {fileID: 5904666822870257358, guid: 010d207fe96a0194dbdaa3a6f3a1e16d, type: 3}
-  m_PrefabInstance: {fileID: 1582127822666706934}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4901411660154593598 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5904666822870257352, guid: 010d207fe96a0194dbdaa3a6f3a1e16d, type: 3}
@@ -2443,8 +2436,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c065c2822d927c409e3eee9e1ac79e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!320 &6370219874903369970 stripped
-PlayableDirector:
-  m_CorrespondingSourceObject: {fileID: 5589892818915034884, guid: 010d207fe96a0194dbdaa3a6f3a1e16d, type: 3}
-  m_PrefabInstance: {fileID: 1582127822666706934}
-  m_PrefabAsset: {fileID: 0}

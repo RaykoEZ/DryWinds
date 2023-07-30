@@ -4,8 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using Curry.Events;
 using Assets.src.UI;
-using UnityEditor;
-using Newtonsoft.Json.Linq;
 using Curry.UI;
 
 namespace Curry.Explore
@@ -143,6 +141,7 @@ namespace Curry.Explore
         #region Playing a card
         IEnumerator PlayCard(GameStateContext c, AdventCard card)
         {
+            m_cost.TrySpend(card.Resource.Cost);
             m_abilityMessage.TriggerGameMessage(card.Resource.Name, Color.blue);
             // Reset pending card
             m_activation.ResetDragTarget();
@@ -169,7 +168,6 @@ namespace Curry.Explore
             }
             else
             {
-                m_cost.TrySpend(card.Resource.Cost);
                 m_cost.CancelPreview();
                 onPlay?.Invoke();
                 // Make a container for the callstack and trigger it. 
@@ -178,7 +176,6 @@ namespace Curry.Explore
                     PlayCard(c, card)
                 };
                 OnActivate?.Invoke(card.Resource.Cost, actions);
-                m_audio?.OnCardPlay();
             }
         }
         #endregion

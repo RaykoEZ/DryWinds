@@ -26,3 +26,5 @@ MonoBehaviour:
       - {x: -2, y: -1, z: 0}
       - {x: -1, y: -2, z: 0}
     Icon: {fileID: 21300000, guid: eb07a65253503574e8a80ca43811259a, type: 3}
+  m_vfx: {fileID: 8926484042661614526, guid: 2b34459176d328946bca545a3a818479, type: 3}
+  m_vfxTimeLine: {fileID: 11400000, guid: 8c75471042ad1bd4fab0d7a3c564f84b, type: 2}

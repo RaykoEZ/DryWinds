@@ -73,7 +73,7 @@ namespace Curry.Explore
             foreach (IEnemyReaction onAction in m_reactions )
             {
                 yield return onAction?.OnPlayerAction(this);
-                yield return new WaitForSeconds(1f);
+                yield return new WaitForSeconds(0.5f);
             }
             // reset pending ability
             yield return new WaitForEndOfFrame();

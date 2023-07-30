@@ -1422,9 +1422,9 @@ PrefabInstance:
       propertyPath: m_Color.a
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 2571672766922976634, guid: 7eb8b9e0778509a4d97901db87f5ce46, type: 3}
-      propertyPath: m_SortingOrder
-      value: 11
+    - target: {fileID: 2661885974491305341, guid: 7eb8b9e0778509a4d97901db87f5ce46, type: 3}
+      propertyPath: m_SortingLayer
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 3399898053931695239, guid: 7eb8b9e0778509a4d97901db87f5ce46, type: 3}
       propertyPath: m_AnchorMax.x
@@ -2092,10 +2092,6 @@ PrefabInstance:
     - target: {fileID: 5721523385255238380, guid: 80d8f0c6732715c4c9298055a44fffdd, type: 3}
       propertyPath: m_SortingLayer
       value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 5721523385255238380, guid: 80d8f0c6732715c4c9298055a44fffdd, type: 3}
-      propertyPath: m_SortingOrder
-      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 6175265371599182551, guid: 80d8f0c6732715c4c9298055a44fffdd, type: 3}
       propertyPath: m_Pivot.x
@@ -10862,7 +10858,7 @@ TilemapRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -852664857
   m_SortingLayer: 4
-  m_SortingOrder: 10
+  m_SortingOrder: 20
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
   m_MaxChunkCount: 16

@@ -12,6 +12,11 @@ namespace Curry.Explore
             new List<AbilityContent>{
                 m_basicAttack.AbilityDetail,
             };
+        public override void Prepare()
+        {
+            base.Prepare();
+            m_vfxHandler.SetupAsset(m_basicAttack.Vfx, m_basicAttack.VfxTimeline);
+        }
         protected override EnemyIntent UpdateIntent(ActionCost dt)
         {
             EnemyIntent ret;
@@ -30,6 +35,7 @@ namespace Curry.Explore
             yield return base.ExecuteAction_Internal();
             foreach (IPlayer player in TargetsInSight)
             {
+                yield return m_vfxHandler.PlaySequence();
                 m_basicAttack.Activate(player);
                 break;
             }

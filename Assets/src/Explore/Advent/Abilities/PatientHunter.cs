@@ -2,7 +2,6 @@
 using System;
 using System.Collections;
 using UnityEngine;
-
 namespace Curry.Explore
 {
     [Serializable]
@@ -39,19 +38,19 @@ namespace Curry.Explore
             if (!m_activated && activate) 
             {
                 OnMessage?.Invoke($"{AbilityDetail.Name} Activated");
+                StartCoroutine((applyTo as TacticalCharacter).TriggerVfxOnCharacter(Vfx, VfxTimeline));
                 m_instance = new TakeAim(m_preparedBuff);
                 applyTo?.CurrentStats.ApplyModifier(m_instance);
                 m_activated = true;
             }
             else if (m_activated && activate)
             {
+                StartCoroutine((applyTo as TacticalCharacter).TriggerVfxOnCharacter(Vfx, VfxTimeline));
                 m_instance.AddStack();
-                OnMessage?.Invoke($"{AbilityDetail.Name} x {m_instance.CurrentStack}");
             }
             else if (m_activated && !activate)
             {
                 applyTo.CurrentStats.RemoveModifier(m_instance);
-                OnMessage?.Invoke($"{AbilityDetail.Name} Reset");
                 m_activated = false;
             }
         }

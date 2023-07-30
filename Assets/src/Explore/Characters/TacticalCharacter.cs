@@ -4,6 +4,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Curry.UI;
+using Curry.Vfx;
+using UnityEngine.Timeline;
+using UnityEngine.VFX;
 
 namespace Curry.Explore
 {
@@ -18,6 +21,7 @@ namespace Curry.Explore
         [SerializeField] protected string m_name = default;
         [SerializeField] TacticalStats m_initStats = default;
         [SerializeField] AudioManager m_audio = default;
+        [SerializeField] protected VfxHandler m_vfxHandler = default;
         protected TacticalStatManager m_statManager;
         protected bool m_blocked = false;
         protected bool m_moving = false;
@@ -70,6 +74,12 @@ namespace Curry.Explore
         {
             ReturnToPool();
         }
+        public virtual IEnumerator TriggerVfxOnCharacter(VisualEffectAsset vfx, TimelineAsset timeline) 
+        {
+            // setup vfx to trigger
+            m_vfxHandler.SetupAsset(vfx, timeline);
+            yield return m_vfxHandler.PlaySequence();
+        }
         public virtual void Move(Vector3 target)
         {
             StartCoroutine(Move_Internal(target));
@@ -88,7 +98,6 @@ namespace Curry.Explore
         public virtual void Recover(int val)
         {
             m_statManager.RecoverHp(val);
-            m_audio.Play("heal");
             RecoverHp?.Invoke(val, CurrentHp);
         }
         public void TakeHit(int hitVal) 

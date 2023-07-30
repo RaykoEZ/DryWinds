@@ -16,6 +16,7 @@ namespace Curry.Explore
         }
         public override IEnumerator ActivateEffect(ICharacter user, GameStateContext context)
         {
+            yield return PlayVfx(user, user.WorldPosition);
             m_selfDamage?.Activate(context);
             m_gainAction?.Activate(context);
             yield return null;

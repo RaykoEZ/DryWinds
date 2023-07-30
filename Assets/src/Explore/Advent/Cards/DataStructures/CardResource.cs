@@ -58,29 +58,9 @@ namespace Curry.Explore
         protected void SetupVfxAsset(VisualEffectAsset vfx, TimelineAsset timeline) 
         {
             // setup vfx for card vfx sequences 
-            if (m_vfxHandler != null &&
-                m_vfxTimeLine != null && m_vfx != null)
+            if (m_vfxHandler != null)
             {
-                m_vfxHandler.Director.playableAsset = timeline;
-                m_vfxHandler.Vfx.visualEffectAsset = vfx;
-                var tracks = m_vfxHandler.Director.playableAsset.outputs;
-                foreach (PlayableBinding binding in tracks) 
-                {
-                    // Rebind all timeline tracks depending on its acccepted component type
-                    Type bindingType = binding.outputTargetType;
-                    if (bindingType == typeof(VisualEffect))
-                    {
-                        m_vfxHandler.Director.SetGenericBinding(binding.sourceObject, m_vfxHandler.Vfx);
-                    }
-                    else if (bindingType == typeof(AudioSource)) 
-                    {
-                        m_vfxHandler.Director.SetGenericBinding(binding.sourceObject, m_vfxHandler.GetComponent<AudioSource>());
-                    }
-                    else if(bindingType == typeof(SignalReceiver)) 
-                    {
-                        m_vfxHandler.Director.SetGenericBinding(binding.sourceObject, m_vfxHandler.Trigger);
-                    }
-                }
+                m_vfxHandler.SetupAsset(vfx, timeline);
             }
         }
         // play vfx at a location with user gameobject as the parent

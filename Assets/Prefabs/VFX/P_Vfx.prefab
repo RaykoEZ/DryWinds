@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 8811750356202014498}
   - component: {fileID: 6641585147809637033}
   m_Layer: 0
-  m_Name: P_CardVfx
+  m_Name: P_Vfx
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -35,7 +35,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!2083052967 &5904666822870257358
 VisualEffect:
@@ -45,7 +45,7 @@ VisualEffect:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5904666822870257355}
   m_Enabled: 1
-  m_Asset: {fileID: 8926484042661614526, guid: e11c0d1e1300d784894124644c438b0c, type: 3}
+  m_Asset: {fileID: 0}
   m_InitialEventName: OnPlay
   m_InitialEventNameOverriden: 0
   m_StartSeed: 0
@@ -117,9 +117,9 @@ VFXRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 1235874715
-  m_SortingLayer: 5
-  m_SortingOrder: 10
+  m_SortingLayerID: -852664857
+  m_SortingLayer: 4
+  m_SortingOrder: 30
 --- !u!320 &5589892818915034884
 PlayableDirector:
   m_ObjectHideFlags: 0
@@ -129,7 +129,7 @@ PlayableDirector:
   m_GameObject: {fileID: 5904666822870257355}
   m_Enabled: 1
   serializedVersion: 3
-  m_PlayableAsset: {fileID: 11400000, guid: d3dcb805a0b79dc46a648fdb33068f24, type: 2}
+  m_PlayableAsset: {fileID: 0}
   m_InitialState: 0
   m_WrapMode: 2
   m_DirectorUpdateMode: 1
@@ -141,6 +141,18 @@ PlayableDirector:
     value: {fileID: 5222462972926093315}
   - key: {fileID: -4976878988801378824, guid: d3dcb805a0b79dc46a648fdb33068f24, type: 2}
     value: {fileID: 8811750356202014498}
+  - key: {fileID: 5748540900456384320, guid: 49a2694614603334ba800b474ba7519e, type: 2}
+    value: {fileID: 5904666822870257358}
+  - key: {fileID: 5165363239315585093, guid: 49a2694614603334ba800b474ba7519e, type: 2}
+    value: {fileID: 8811750356202014498}
+  - key: {fileID: -8298297823832364292, guid: 49a2694614603334ba800b474ba7519e, type: 2}
+    value: {fileID: 5222462972926093315}
+  - key: {fileID: -1448489105680658744, guid: 8c75471042ad1bd4fab0d7a3c564f84b, type: 2}
+    value: {fileID: 5904666822870257358}
+  - key: {fileID: 4799392338186307702, guid: 8c75471042ad1bd4fab0d7a3c564f84b, type: 2}
+    value: {fileID: 8811750356202014498}
+  - key: {fileID: -4290389432243565851, guid: 8c75471042ad1bd4fab0d7a3c564f84b, type: 2}
+    value: {fileID: 5222462972926093315}
   m_ExposedReferences:
     m_References:
     - 01f37ab2f4f898b45976bc5d4f1e2d70: {fileID: 5904666822870257355}

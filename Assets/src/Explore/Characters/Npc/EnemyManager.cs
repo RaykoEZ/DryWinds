@@ -170,7 +170,7 @@ namespace Curry.Explore
         }
         IEnumerator ShowAbilityMessage(IEnemy enemy) 
         {
-            DisplayEnemyAbility(enemy.IntendingAction.Ability.Name);
+            DisplayEnemyAbility($"{enemy.Name}: {enemy.IntendingAction.Ability.Name}");
             yield return null;
         }
         IEnumerator FinishActionPhase() 
