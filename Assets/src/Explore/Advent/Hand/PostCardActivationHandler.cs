@@ -101,8 +101,9 @@ namespace Curry.Explore
         {
             yield return consume?.OnExpend();
             Animator anim = used?.GetComponent<Animator>();
-            anim?.SetBool("consume", true);
-            yield return new WaitForSeconds(1f);
+            anim?.ResetTrigger("consume");
+            anim?.SetTrigger("consume");
+            yield return new WaitForSeconds(0.2f);
             if (consume is ICooldown) 
             { 
                 m_cooldowns.Remove(used); 

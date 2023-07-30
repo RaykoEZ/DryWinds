@@ -469,6 +469,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_resource: {fileID: 11400000, guid: ff2d89b6157bec44d946853e597430c4, type: 2}
+  m_vfx: {fileID: 9007956347597217153}
   m_deadEyeCheck:
     m_targetLayer:
       serializedVersion: 2
@@ -493,6 +494,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_resource: {fileID: 11400000, guid: 1cef420186ba1364e966a20c7d032b48, type: 2}
+  m_vfx: {fileID: 9007956347597217153}
   m_preparedBuff:
     m_resource: {fileID: 11400000, guid: d35ad2a242aed6045a7bd685e1b75599, type: 2}
     m_maxStack: 3

@@ -12,13 +12,11 @@ namespace Curry.Explore
         {
             m_healing = effect.m_healing;
         }
-
         // Card Effect
         public override IEnumerator ActivateEffect(ICharacter user, GameStateContext context)
         {
-            yield return PlayVfx(user, user.WorldPosition);
+            yield return user.TriggerVfx(m_vfx, m_vfxTimeLine);
             m_healing?.Healing?.ApplyEffect(user);
-            yield return null;
         }
         public IEnumerator OnExpend()
         {

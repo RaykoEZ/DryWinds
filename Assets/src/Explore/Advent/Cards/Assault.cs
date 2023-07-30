@@ -16,12 +16,15 @@ namespace Curry.Explore
         {
             m_dealDamage = effect.m_dealDamage;
         }
-        public override bool ConditionsSatisfied => m_targeting.Satisfied;
+        public override bool ConditionsSatisfied => m_targeting != null && m_targeting.TryGetCurrentTarget<IEnemy>(out _) && m_targeting.Satisfied;
         public override IEnumerator ActivateEffect(ICharacter user, GameStateContext context)
         {
-            yield return PlayVfx(user, m_targeting.Target);
-            yield return m_targeting.
-                ActivateWithTargets<ICharacter, ICharacter>(user, m_dealDamage.DamageModule.ApplyEffect);
+            if (m_targeting.TryGetCurrentTarget(out ICharacter result))
+            {
+                yield return result.TriggerVfx(m_vfx, m_vfxTimeLine);
+                yield return m_targeting.
+    ActivateWithTargets<ICharacter, ICharacter>(user, m_dealDamage.DamageModule.ApplyEffect);
+            }
         }
     }
 }

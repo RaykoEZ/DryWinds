@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Curry.Explore;
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Playables;
@@ -11,7 +12,7 @@ namespace Curry.Vfx
     [RequireComponent(typeof(PlayableDirector))]
     [RequireComponent(typeof(VisualEffect))]
     [RequireComponent(typeof(TimelineSignalListener))]
-    public class VfxHandler : MonoBehaviour
+    public class VfxSequencePlayer : MonoBehaviour
     {
         public TimelineSignalListener Trigger => GetComponent<TimelineSignalListener>();
         public PlayableDirector Director => GetComponent<PlayableDirector>();
@@ -25,7 +26,8 @@ namespace Curry.Vfx
         public void SetupAsset(VisualEffectAsset vfx, TimelineAsset timeline) 
         {
             // prevent null and duplicate setup
-            if (timeline != null && vfx != null &&
+            if (timeline != null && 
+                vfx != null &&
                 Vfx.visualEffectAsset != vfx &&
                 Director.playableAsset != timeline) 
             {
@@ -58,6 +60,22 @@ namespace Curry.Vfx
             yield return new WaitUntil(() => m_trigger);
             m_trigger = false;
             Trigger.OnTriggered -= OnSequenceTriggered;
+        }
+        // play vfx at a location with user gameobject as the parent
+        public IEnumerator PlaySequenceAt(Transform playAt, Vector3 targetWorldPosition)
+        {
+            Transform origin = transform.parent;
+            transform.SetParent(playAt, false);
+            transform.position = targetWorldPosition;
+            yield return PlaySequence();
+            transform.SetParent(origin, false);
+        }
+        public static IEnumerator PlaySequenceAt(VfxSequencePlayer handler,
+            Transform playAt, Vector3 targetWorldPosition) 
+        {
+            if (handler == null) yield break;
+
+            yield return handler.PlaySequenceAt(playAt, targetWorldPosition);
         }
     }
 }

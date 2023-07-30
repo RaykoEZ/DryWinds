@@ -480,6 +480,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_resource: {fileID: 11400000, guid: 6eac2e99aa32a8144855441fbfc66b6d, type: 2}
+  m_vfx: {fileID: 6518547537355401021}
   m_basicAttack: {fileID: 11400000, guid: a475a4478ceead44781a8d0ca1fb3ac5, type: 2}
 --- !u!114 &5589669711737713594
 MonoBehaviour:

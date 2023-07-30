@@ -60,7 +60,8 @@ namespace Curry.Explore
                 // Check for Dead Eye activation condition, activate if we can activate
                 if (m_deadEye.TryActivate<IPlayer>(this, out _)) 
                 {
-                    StartCoroutine(TriggerVfxOnCharacter(m_deadEye.Vfx, m_deadEye.VfxTimeline));
+                    m_vfxHandler.SetupAsset(m_deadEye.Vfx, m_deadEye.VfxTimeline);
+                    StartCoroutine(m_vfxHandler.PlaySequence());
                 }
                 yield return StartCoroutine(m_currentProjectileInstance.FireAt(target.WorldPosition));
                 break;

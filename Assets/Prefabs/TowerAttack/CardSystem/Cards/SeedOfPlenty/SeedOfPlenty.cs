@@ -24,36 +24,35 @@ namespace Curry.Explore
             m_vfx_Heal = effect.m_vfx_Heal;
             m_vfxTimeLine_Heal = effect.m_vfxTimeLine_Heal;
         }
-        public void OnEndOfTurn(GameStateContext c)
+        public IEnumerator OnEndOfTurn(GameStateContext c)
         {
-            m_vfxHandler.SetupAsset(m_vfx_Heal, m_vfxTimeLine_Heal);
-            m_vfxHandler.StartCoroutine(EndOfTurn_Internal(c.Player));
+            yield return EndOfTurn_Internal(c.Player);
         }
         IEnumerator EndOfTurn_Internal(IPlayer player)
         {
-            yield return m_vfxHandler.StartCoroutine(PlayVfx(player, player.WorldPosition));
+            yield return player.TriggerVfx(m_vfx_Heal, m_vfxTimeLine_Heal);
             m_heal.Healing.ApplyEffect(player);
         }
         IEnumerator HandEffect_Internal(IPlayer player) 
         {
-            yield return m_vfxHandler.StartCoroutine(PlayVfx(player, player.WorldPosition));
             if (player is IModifiable mod)
             {
+                yield return player.TriggerVfx(m_vfx, m_vfxTimeLine);
                 m_currentModifier = new StatUp(m_gainStats.Effect);
                 mod.CurrentStats.ApplyModifier(m_currentModifier);
             }
         }
-        public void HandEffect(GameStateContext c)
+        public IEnumerator HandEffect(GameStateContext c)
         {
-            m_vfxHandler.SetupAsset(m_vfx, m_vfxTimeLine);
-            m_vfxHandler.StartCoroutine(HandEffect_Internal(c.Player));
+            yield return HandEffect_Internal(c.Player);
         }
-        public void OnLeaveHand(GameStateContext c)
+        public IEnumerator OnLeaveHand(GameStateContext c)
         {
             if (c.Player is IModifiable mod)
             {
                 mod.CurrentStats.RemoveModifier(m_currentModifier);
             }
+            yield return null;
         }
     }
 }

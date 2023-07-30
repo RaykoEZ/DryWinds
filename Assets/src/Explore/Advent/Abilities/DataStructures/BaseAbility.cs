@@ -1,4 +1,5 @@
 ﻿using Curry.Util;
+using Curry.Vfx;
 using System;
 using UnityEngine;
 using UnityEngine.Timeline;

@@ -35,7 +35,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: -1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!2083052967 &5904666822870257358
 VisualEffect:
@@ -129,7 +129,7 @@ PlayableDirector:
   m_GameObject: {fileID: 5904666822870257355}
   m_Enabled: 1
   serializedVersion: 3
-  m_PlayableAsset: {fileID: 0}
+  m_PlayableAsset: {fileID: 11400000, guid: 49a2694614603334ba800b474ba7519e, type: 2}
   m_InitialState: 0
   m_WrapMode: 2
   m_DirectorUpdateMode: 1
@@ -153,6 +153,12 @@ PlayableDirector:
     value: {fileID: 8811750356202014498}
   - key: {fileID: -4290389432243565851, guid: 8c75471042ad1bd4fab0d7a3c564f84b, type: 2}
     value: {fileID: 5222462972926093315}
+  - key: {fileID: 970894598510349697, guid: 3af050811644fa3419ab4c9eea59f99b, type: 2}
+    value: {fileID: 0}
+  - key: {fileID: 2537122115444636521, guid: 3af050811644fa3419ab4c9eea59f99b, type: 2}
+    value: {fileID: 0}
+  - key: {fileID: -7059006991390856199, guid: 3af050811644fa3419ab4c9eea59f99b, type: 2}
+    value: {fileID: 0}
   m_ExposedReferences:
     m_References:
     - 01f37ab2f4f898b45976bc5d4f1e2d70: {fileID: 5904666822870257355}
@@ -291,6 +297,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 5904666822870257355}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6c065c2822d927c409e3eee9e1ac79e2, type: 3}
+  m_Script: {fileID: 11500000, guid: 086bf99bf68ddfd42adeec4bb02d0951, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

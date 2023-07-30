@@ -59,11 +59,11 @@ namespace Curry.Explore
         }
         public void ActivateHandEffect(IHandEffect handEffect) 
         {
-            handEffect?.HandEffect(m_contextRef);
+            StartCoroutine(handEffect?.HandEffect(m_contextRef));
         }
         public void RevertHandEffect(IHandEffect handEffect) 
         {
-            handEffect?.OnLeaveHand(m_contextRef);
+            StartCoroutine(handEffect?.OnLeaveHand(m_contextRef));
         }
         public void ShowDropZones() 
         {
@@ -83,7 +83,7 @@ namespace Curry.Explore
         }
         public void EndOfTurnEffect(IEndOfTurnEffect card) 
         {
-            card?.OnEndOfTurn(m_contextRef);
+            StartCoroutine(card?.OnEndOfTurn(m_contextRef));
         }
     }
 }

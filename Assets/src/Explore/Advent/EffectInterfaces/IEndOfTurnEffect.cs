@@ -1,7 +1,9 @@
-﻿namespace Curry.Explore
+﻿using System.Collections;
+
+namespace Curry.Explore
 {
     public interface IEndOfTurnEffect
     {
-        void OnEndOfTurn(GameStateContext c);
+        IEnumerator OnEndOfTurn(GameStateContext c);
     }
 }

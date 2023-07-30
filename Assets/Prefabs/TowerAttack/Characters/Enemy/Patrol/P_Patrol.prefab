@@ -647,6 +647,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_resource: {fileID: 11400000, guid: f8e385357822a9f48a406ad58643b94c, type: 2}
+  m_vfx: {fileID: 9200900586014420141}
   m_basicAttack: {fileID: 11400000, guid: 1ea5ea2e670d33643bec9b97b58623fd, type: 2}
 --- !u!1 &8671641298351939189
 GameObject:

@@ -33,19 +33,19 @@ namespace Curry.Explore
             m_instance?.ResetStack();
         }
         // Activate this once on spawn
-        protected void Activate(IModifiable applyTo, bool activate)
+        protected void Activate(ICharacter user, IModifiable applyTo, bool activate)
         {
             if (!m_activated && activate) 
             {
                 OnMessage?.Invoke($"{AbilityDetail.Name} Activated");
-                StartCoroutine((applyTo as TacticalCharacter).TriggerVfxOnCharacter(Vfx, VfxTimeline));
+                user.TriggerVfx(Vfx, VfxTimeline);
                 m_instance = new TakeAim(m_preparedBuff);
                 applyTo?.CurrentStats.ApplyModifier(m_instance);
                 m_activated = true;
             }
             else if (m_activated && activate)
             {
-                StartCoroutine((applyTo as TacticalCharacter).TriggerVfxOnCharacter(Vfx, VfxTimeline));
+                user.TriggerVfx(Vfx, VfxTimeline);
                 m_instance.AddStack();
             }
             else if (m_activated && !activate)
@@ -58,7 +58,7 @@ namespace Curry.Explore
         {
             if (enemy is IModifiable mod) 
             {
-                Activate(mod, enemy.SpotsTarget);
+                Activate(enemy, mod, enemy.SpotsTarget);
             }
             yield return null;
         }

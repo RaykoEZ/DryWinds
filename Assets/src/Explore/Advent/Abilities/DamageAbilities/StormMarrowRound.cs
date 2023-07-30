@@ -1,5 +1,6 @@
 ﻿using Curry.Game;
 using Curry.Util;
+using Curry.Vfx;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -73,12 +74,13 @@ namespace Curry.Explore
                 LayerMask.GetMask(MovementManager.s_gameplayCollisionFilters));
             foreach (Collider2D item in hit)
             {
-                if(item.TryGetComponent(out TacticalCharacter character)) 
+                if(item.TryGetComponent(out ICharacter character)) 
                 {
-                    yield return character.TriggerVfxOnCharacter(Vfx, VfxTimeline);
+                    yield return character.TriggerVfx(Vfx, VfxTimeline);
                     OnHit(character);
                 }
-            }        
+            }
+            yield return null;
         }
         protected virtual void OnHit(ICharacter hit) 
         {

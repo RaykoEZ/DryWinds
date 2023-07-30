@@ -19,8 +19,6 @@ namespace Curry.Explore
         [SerializeField] protected TimelineAsset m_vfxTimeLine = default;
         protected PositionTargetingModule m_targeting = default;
         protected CooldownModule m_cooldownState = default;
-        // For controlling card Vfx to time effect activation and visuals
-        protected VfxHandler m_vfxHandler = default;
         bool m_activatable = true;
         public string Name => m_properties.Name;
         public string Description => m_properties.Description;
@@ -41,36 +39,16 @@ namespace Curry.Explore
             m_vfx = effect.m_vfx;
             m_vfxTimeLine = effect.m_vfxTimeLine;
         }
-        public virtual void Init(CooldownModule cd, PositionTargetingModule targeting, VfxHandler vfxHandler) 
+        public virtual void Init(CooldownModule cd, PositionTargetingModule targeting) 
         {
             m_cooldownState = cd;
             m_targeting = targeting;
-            m_vfxHandler = vfxHandler;
-            // setup vfx for card vfx sequences 
-            SetupVfxAsset(m_vfx, m_vfxTimeLine);
         }
         public virtual bool IsActivatable(GameStateContext c)
         { return m_activatable; }
         public virtual IEnumerator ActivateEffect(ICharacter user, GameStateContext context)
         {
             yield return null;
-        }
-        protected void SetupVfxAsset(VisualEffectAsset vfx, TimelineAsset timeline) 
-        {
-            // setup vfx for card vfx sequences 
-            if (m_vfxHandler != null)
-            {
-                m_vfxHandler.SetupAsset(vfx, timeline);
-            }
-        }
-        // play vfx at a location with user gameobject as the parent
-        protected virtual IEnumerator PlayVfx(ICharacter user, Vector3 target)
-        {
-            Transform origin = m_vfxHandler.transform.parent;
-            m_vfxHandler.transform.SetParent(user.GetTransform(), false);
-            m_vfxHandler.transform.position = target;
-            yield return m_vfxHandler?.PlaySequence();
-            m_vfxHandler.transform.SetParent(origin, false);
         }
         // Cooldown operation, if a card has cooldown (follows ICooldown)
         public void TriggerCooldown()
