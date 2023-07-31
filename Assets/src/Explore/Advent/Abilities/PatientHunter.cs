@@ -38,14 +38,14 @@ namespace Curry.Explore
             if (!m_activated && activate) 
             {
                 OnMessage?.Invoke($"{AbilityDetail.Name} Activated");
-                user.TriggerVfx(Vfx, VfxTimeline);
+                StartCoroutine(user.TriggerVfx(Vfx, VfxTimeline));
                 m_instance = new TakeAim(m_preparedBuff);
                 applyTo?.CurrentStats.ApplyModifier(m_instance);
                 m_activated = true;
             }
             else if (m_activated && activate)
             {
-                user.TriggerVfx(Vfx, VfxTimeline);
+                StartCoroutine(user.TriggerVfx(Vfx, VfxTimeline));
                 m_instance.AddStack();
             }
             else if (m_activated && !activate)

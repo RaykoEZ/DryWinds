@@ -20,11 +20,6 @@ namespace Curry.UI
         Coroutine m_currentResultTransition = default;
         public void SetBarValue(float val, bool forceInstantChange = false) 
         {
-            if(val == m_result.value || val == m_currentTargetVal) 
-            { 
-                return; 
-            }
-
             if (!m_smoothValueChange || forceInstantChange) 
             {
                 m_result.value = val;
@@ -41,10 +36,6 @@ namespace Curry.UI
 
         public void SetMaxValue(float val) 
         {
-            if (val == m_result.maxValue) 
-            { 
-                return; 
-            }
             m_result.maxValue = val;
         }
 

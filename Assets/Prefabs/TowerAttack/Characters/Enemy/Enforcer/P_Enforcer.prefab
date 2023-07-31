@@ -480,7 +480,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_resource: {fileID: 11400000, guid: 6eac2e99aa32a8144855441fbfc66b6d, type: 2}
-  m_vfx: {fileID: 6518547537355401021}
   m_basicAttack: {fileID: 11400000, guid: a475a4478ceead44781a8d0ca1fb3ac5, type: 2}
 --- !u!114 &5589669711737713594
 MonoBehaviour:
@@ -675,7 +674,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8333955292466166901}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -787,7 +786,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6c065c2822d927c409e3eee9e1ac79e2, type: 3}
+  m_Script: {fileID: 11500000, guid: 086bf99bf68ddfd42adeec4bb02d0951, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &2941800484145809742

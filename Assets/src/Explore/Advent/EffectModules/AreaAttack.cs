@@ -26,6 +26,10 @@ namespace Curry.Explore
                     yield return new WaitForEndOfFrame();
                 }
             }
+            else 
+            { 
+                yield break; 
+            }
         }
     }
 }

@@ -18,8 +18,8 @@ namespace Curry.Explore
 
         public override bool IsActivatable(GameStateContext c)
         {
-            bool isBloacked = c.Movement.IsPathObstructed(m_targeting.Target, c.Player.WorldPosition);
-            return !isBloacked;
+            bool isBlocked = c.Movement.IsPathObstructed(m_targeting.Target, c.Player.WorldPosition);
+            return !isBlocked;
         }
         public override IEnumerator ActivateEffect(ICharacter user, GameStateContext context)
         {

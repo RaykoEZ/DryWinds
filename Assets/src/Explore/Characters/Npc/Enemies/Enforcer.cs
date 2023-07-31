@@ -35,6 +35,7 @@ namespace Curry.Explore
             yield return base.ExecuteAction_Internal();
             foreach (IPlayer player in TargetsInSight)
             {
+                m_vfxHandler.SetupAsset(m_basicAttack.Vfx, m_basicAttack.VfxTimeline);
                 yield return m_vfxHandler.PlaySequence();
                 m_basicAttack.Activate(player);
                 break;

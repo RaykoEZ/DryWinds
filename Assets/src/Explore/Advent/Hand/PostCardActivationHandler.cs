@@ -83,7 +83,8 @@ namespace Curry.Explore
         }
         protected virtual IEnumerator ReturnToInventory_Internal(AdventCard card)
         {
-            card?.GetComponent<Animator>()?.SetBool("returnInventory", true);
+            card?.GetComponent<Animator>()?.ResetTrigger("returnInventory");
+            card?.GetComponent<Animator>()?.SetTrigger("returnInventory");
             yield return new WaitForSeconds(0.3f);
             if (card.Resource is ICooldown cd)
             {
@@ -103,7 +104,8 @@ namespace Curry.Explore
             Animator anim = used?.GetComponent<Animator>();
             anim?.ResetTrigger("consume");
             anim?.SetTrigger("consume");
-            yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSeconds(0.25f);
+            anim?.ResetTrigger("consume");
             if (consume is ICooldown) 
             { 
                 m_cooldowns.Remove(used); 

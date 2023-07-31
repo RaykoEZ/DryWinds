@@ -1,7 +1,5 @@
-﻿using Curry.Util;
-using System;
+﻿using System;
 using System.Collections;
-using UnityEditor.VersionControl;
 using UnityEngine;
 
 namespace Curry.Explore

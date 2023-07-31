@@ -148,13 +148,13 @@ namespace Curry.Explore
             DraggableCard draggable = card.GetComponent<DraggableCard>();
             OnCardLeavesHandParent(draggable);
             m_activation.HideDropZone();
-            yield return StartCoroutine(m_hand.PlayCard(c, card, m_player));
+            yield return m_hand.PlayCard(c, card, m_player);
             // after effect activation, we spend the card
             if (card.Resource is IConsumable) 
             {
                 m_audio?.OnCardConsume();
             }
-            yield return StartCoroutine(m_postActivation.OnCardUse(card, IsHandOverloaded));
+            yield return m_postActivation.OnCardUse(card, IsHandOverloaded);
         }
         // When card is trying to actvated after it is dropped...
         void OnCardPlay(GameStateContext c, AdventCard card, Action onPlay, Action onCancel)
