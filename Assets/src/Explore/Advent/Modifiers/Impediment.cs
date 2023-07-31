@@ -27,9 +27,9 @@ namespace Curry.Explore
         }
         public void Inflict(ICharacter target)
         {
-            if(target is IModifiable modifiable) 
+            if (target is IModifiable modifiable) 
             {
-                modifiable.CurrentStats.ApplyModifier(this);
+                modifiable.ApplyModifier(this, Vfx, VfxTimeline);
             }
         }
         public virtual void OnCharacterMoved(TacticalStats stat)

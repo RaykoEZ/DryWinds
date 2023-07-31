@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using Curry.Game;
 using Curry.Util;
 using UnityEngine;
+using UnityEngine.Timeline;
+using UnityEngine.VFX;
 
 namespace Curry.Explore
 {
@@ -27,6 +29,8 @@ namespace Curry.Explore
     {
         [SerializeField] protected ModifierResource m_resource = default;
         public virtual ModifierContent Content => m_resource.Content;
+        public VisualEffectAsset Vfx => m_resource.Vfx;
+        public TimelineAsset VfxTimeline => m_resource.VfxTimeline;
         public event OnModifierExpire<TacticalStats> OnExpire;
         public event OnModifierTrigger<TacticalStats> OnTrigger;
         public TacticalModifier() { }

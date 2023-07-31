@@ -44,7 +44,7 @@ namespace Curry.Explore
                 {
                     m_enhanceInstance = new Enhancement(m_enhancedBuff);
                     // apply damage up
-                    modify?.CurrentStats.ApplyModifier(m_enhanceInstance);
+                    modify?.ApplyModifier(m_enhanceInstance, m_enhanceInstance.Vfx, m_enhanceInstance.VfxTimeline);
                 }
             }
             return rangeCheck;

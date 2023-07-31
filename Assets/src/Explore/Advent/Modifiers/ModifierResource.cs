@@ -13,5 +13,7 @@ namespace Curry.Explore
         [SerializeField] VisualEffectAsset m_vfx = default;
         [SerializeField] TimelineAsset m_vfxTimeline = default;
         public virtual ModifierContent Content => m_content;
+        public VisualEffectAsset Vfx => m_vfx;
+        public TimelineAsset VfxTimeline => m_vfxTimeline;
     }
 }

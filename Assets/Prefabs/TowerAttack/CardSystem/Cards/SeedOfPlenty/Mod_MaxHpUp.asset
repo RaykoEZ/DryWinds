@@ -16,3 +16,5 @@ MonoBehaviour:
     Icon: {fileID: 7482667652216324306, guid: 8546c1b55c20c42438e2e981104c9a5b, type: 3}
     Name: Max Hp + 5
     Description: Gain 5 Max Hp.
+  m_vfx: {fileID: 8926484042661614526, guid: 2b34459176d328946bca545a3a818479, type: 3}
+  m_vfxTimeline: {fileID: 11400000, guid: 8c75471042ad1bd4fab0d7a3c564f84b, type: 2}

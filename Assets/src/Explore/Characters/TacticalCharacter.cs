@@ -13,6 +13,7 @@ namespace Curry.Explore
     public interface IModifiable
     {
         IModifierContainer<TacticalStats> CurrentStats { get; }
+        void ApplyModifier(IStatModifier<TacticalStats> mod, VisualEffectAsset vfx, TimelineAsset timeline);
         bool ContainsModifier(IStatModifier<TacticalStats> mod);
         void Refresh();
     }
@@ -79,6 +80,11 @@ namespace Curry.Explore
             // setup vfx to trigger
             m_vfxHandler.SetupAsset(vfx, timeline);
             yield return m_vfxHandler.PlaySequence();
+        }
+        public void ApplyModifier(IStatModifier<TacticalStats> mod, VisualEffectAsset vfx, TimelineAsset timeline)
+        {
+            StartCoroutine(TriggerVfx(vfx, timeline));
+            m_statManager.ApplyModifier(mod);
         }
         public virtual void Move(Vector3 target)
         {
@@ -167,6 +173,7 @@ namespace Curry.Explore
         {
             return m_statManager.ContainsModifier(mod);
         }
+
     }
 
 }
