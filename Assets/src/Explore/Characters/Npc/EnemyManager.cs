@@ -156,7 +156,7 @@ namespace Curry.Explore
             {
                 // returns true if countdown reached, add to execution list
                 if (enemy.UpdateAction(dt, out EnemyIntent intent) && 
-                    intent.Call != null)
+                    intent.Call != null && intent != EnemyIntent.None)
                 {
                     calls.Add(intent.Call);
                 }
@@ -176,7 +176,7 @@ namespace Curry.Explore
         IEnumerator FinishActionPhase() 
         {
             OnActionFinish?.Invoke();
-            yield return new WaitForEndOfFrame();           
+            yield return null;           
         }
         #endregion
     }

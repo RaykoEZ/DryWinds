@@ -37,7 +37,7 @@ namespace Curry.Explore
         void OnEnemyAction(List<IEnumerator> actions)
         {
             m_interruptBuffer.Push(actions);
-            StartCoroutine(Evaluate_Internal(false));
+            StartCoroutine(EnemyAction());
         }
         protected IEnumerator PlayerAction_Internal()
         {
@@ -53,7 +53,7 @@ namespace Curry.Explore
                     currentAction.ResourceSpent, out List<IEnumerator> resp) &&
                     resp != null)
                 {
-                    m_interruptBuffer?.Push(resp);
+                    m_interruptBuffer.Push(resp);
                 }
             }
         }
@@ -75,15 +75,18 @@ namespace Curry.Explore
                 yield return StartCoroutine(PlayerAction_Internal());
                 yield return new WaitForEndOfFrame();
             }
-            // If we need to resolve interrupts from activated enemies, do it first
+            yield return EnemyAction();
+            if (giveBackPlayControl)
+            {
+                EndInterrupt();
+            }
+        }
+        protected IEnumerator EnemyAction() 
+        {
             while (m_interruptBuffer.Count > 0)
             {
                 yield return StartCoroutine(CallActions(m_interruptBuffer.Pop()));
                 yield return new WaitForEndOfFrame();
-            }
-            if (giveBackPlayControl)
-            {
-                EndInterrupt();
             }
         }
         protected IEnumerator CallActions(List<IEnumerator> actions)

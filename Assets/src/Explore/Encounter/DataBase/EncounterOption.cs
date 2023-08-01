@@ -34,12 +34,12 @@ namespace Curry.Explore
         // Implement conditions to lock/unlock an option
         public bool IsOptionAvailable(GameStateContext context) 
         {
-            bool ret = true;
+            bool ret = false;
             foreach (var condition in m_validUnlockConditions)
             {
                 ret |= condition.AreConditionsMet(context);
             }
-            return ret;
+            return ret || m_validUnlockConditions.Count == 0;
         }
         public static IEnumerator Activate(GameStateContext context, List<BaseEffectResource> effects)
         {

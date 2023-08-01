@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Timeline;
 using UnityEngine.VFX;
+using System;
 
 namespace Curry.Explore
 {
@@ -29,7 +30,7 @@ namespace Curry.Explore
         void Hide();
         void Recover(int val);
         void TakeHit(int hitVal);
-        IEnumerator TriggerVfx(VisualEffectAsset vfx, TimelineAsset timeline);
+        void TriggerVfx(VisualEffectAsset vfx, TimelineAsset timeline, Action onTrigger = null);
         IEnumerator OnDefeated();
         void Despawn();
         // returns if warp was successful

@@ -19,10 +19,12 @@ namespace Curry.Explore
         {
             if (m_targeting.TryGetCurrentTarget(out ICharacter result))
             {
-                yield return result.TriggerVfx(m_vfx, m_vfxTimeLine);
-                yield return m_targeting.
-    ActivateWithTargets<ICharacter, ICharacter>(user, m_dealDamage.DamageModule.ApplyEffect);
+                result.TriggerVfx(m_vfx, m_vfxTimeLine, () =>
+                {
+                    m_dealDamage.DamageModule.ApplyEffect(result);
+                });
             }
+            yield return null;
         }
     }
 }

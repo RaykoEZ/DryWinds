@@ -76,7 +76,7 @@ namespace Curry.Explore
             {
                 if(item.TryGetComponent(out ICharacter character)) 
                 {
-                    yield return character.TriggerVfx(Vfx, VfxTimeline);
+                    character.TriggerVfx(Vfx, VfxTimeline);
                     OnHit(character);
                 }
             }

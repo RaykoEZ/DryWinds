@@ -169,9 +169,8 @@ namespace Curry.Explore
             yield return null;
         }
 
-        public IEnumerator TriggerVfx(VisualEffectAsset vfx, TimelineAsset timeline)
+        public void TriggerVfx(VisualEffectAsset vfx, TimelineAsset timeline, Action onTrigger = null)
         {
-            throw new NotImplementedException();
         }
     }
 }

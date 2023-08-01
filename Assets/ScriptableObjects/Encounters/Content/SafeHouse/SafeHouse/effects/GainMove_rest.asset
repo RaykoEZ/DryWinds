@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a49cf181f8d978f439c31267df0e2dfd, type: 3}
   m_Name: GainMove_rest
   m_EditorClassIdentifier: 
-  m_movePointChange:
+  m_gain:
     m_changeValue: 1

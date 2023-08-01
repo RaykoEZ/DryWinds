@@ -14,8 +14,10 @@ namespace Curry.Explore
         }
         public override IEnumerator ActivateEffect(ICharacter user, GameStateContext context)
         {
-            yield return user.TriggerVfx(m_vfx, m_vfxTimeLine);
-            m_actionGain?.Activate(context);
+            user.TriggerVfx(m_vfx, m_vfxTimeLine, () => 
+            {
+                m_actionGain?.Activate(context);
+            });
             yield return null;
         }
         public IEnumerator OnExpend()

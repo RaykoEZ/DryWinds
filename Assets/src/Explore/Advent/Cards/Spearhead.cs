@@ -28,7 +28,7 @@ namespace Curry.Explore
         }
         protected IEnumerator AreaAttack(ICharacter user) 
         {
-            yield return user.TriggerVfx(m_vfx, m_vfxTimeLine);
+            user.TriggerVfx(m_vfx, m_vfxTimeLine);
             yield return m_attack.Effect.ApplyEffect(user);
         }
     }

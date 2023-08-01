@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using Curry.Events;
+using System.Collections;
 
 namespace Curry.Explore
 {
@@ -81,9 +82,9 @@ namespace Curry.Explore
             m_selection.CancelSelection();
             m_playZone.SetPlayZoneActive(false);
         }
-        public void EndOfTurnEffect(IEndOfTurnEffect card) 
+        public IEnumerator EndOfTurnEffect(IEndOfTurnEffect card) 
         {
-            StartCoroutine(card?.OnEndOfTurn(m_contextRef));
+            yield return card?.OnEndOfTurn(m_contextRef);
         }
     }
 }

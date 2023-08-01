@@ -1,5 +1,5 @@
 ﻿using Curry.Game;
-using Curry.Util;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -75,15 +75,15 @@ namespace Curry.Explore
         {
             ReturnToPool();
         }
-        public virtual IEnumerator TriggerVfx(VisualEffectAsset vfx, TimelineAsset timeline) 
+        public virtual void TriggerVfx(VisualEffectAsset vfx, TimelineAsset timeline, Action onTrigger = null) 
         {
             // setup vfx to trigger
             m_vfxHandler.SetupAsset(vfx, timeline);
-            yield return m_vfxHandler.PlaySequence();
+            StartCoroutine(m_vfxHandler.PlaySequence(onTrigger));
         }
         public void ApplyModifier(IStatModifier<TacticalStats> mod, VisualEffectAsset vfx, TimelineAsset timeline)
         {
-            StartCoroutine(TriggerVfx(vfx, timeline));
+            TriggerVfx(vfx, timeline);
             m_statManager.ApplyModifier(mod);
         }
         public virtual void Move(Vector3 target)

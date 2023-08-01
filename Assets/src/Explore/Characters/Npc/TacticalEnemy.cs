@@ -57,7 +57,13 @@ namespace Curry.Explore
         protected virtual bool UpdatAction_Internal(int dt, out EnemyIntent reaction) 
         {
             reaction = new EnemyIntent(AbilityContent.None, Reaction_Internal());
-            return m_reactions.Count > 0;
+            bool ret = false;
+            // Check if reaction is active
+            foreach (var item in m_reactions)
+            {
+                ret |= item.CanReact(this);
+            }
+            return ret;
         }
         protected virtual IEnumerator ExecuteAction_Internal()
         {

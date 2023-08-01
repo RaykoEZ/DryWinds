@@ -53,29 +53,30 @@ namespace Curry.Vfx
                 }
             }
         }
-        public IEnumerator PlaySequence() 
+        public IEnumerator PlaySequence(Action onTrigger = null)
         {
             Trigger.OnTriggered += OnSequenceTriggered;
             Director?.Play();
             yield return new WaitUntil(() => m_trigger);
             m_trigger = false;
             Trigger.OnTriggered -= OnSequenceTriggered;
+            onTrigger?.Invoke();
         }
         // play vfx at a location with user gameobject as the parent
-        public IEnumerator PlaySequenceAt(Transform playAt, Vector3 targetWorldPosition)
+        public IEnumerator PlaySequenceAt(Transform playAt, Vector3 targetWorldPosition, Action onTrigger = null)
         {
             Transform origin = transform.parent;
             transform.SetParent(playAt, false);
             transform.position = targetWorldPosition;
-            yield return PlaySequence();
+            yield return PlaySequence(onTrigger);
             transform.SetParent(origin, false);
         }
         public static IEnumerator PlaySequenceAt(VfxSequencePlayer handler,
-            Transform playAt, Vector3 targetWorldPosition) 
+            Transform playAt, Vector3 targetWorldPosition, Action onTrigger = null) 
         {
             if (handler == null) yield break;
 
-            yield return handler.PlaySequenceAt(playAt, targetWorldPosition);
+            yield return handler.PlaySequenceAt(playAt, targetWorldPosition, onTrigger);
         }
     }
 }

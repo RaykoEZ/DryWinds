@@ -15,8 +15,11 @@ namespace Curry.Explore
         // Card Effect
         public override IEnumerator ActivateEffect(ICharacter user, GameStateContext context)
         {
-            yield return user.TriggerVfx(m_vfx, m_vfxTimeLine);
-            m_healing?.Healing?.ApplyEffect(user);
+            user.TriggerVfx(m_vfx, m_vfxTimeLine, () => 
+            {
+                m_healing?.Healing?.ApplyEffect(user);
+            });
+            yield return null;
         }
         public IEnumerator OnExpend()
         {

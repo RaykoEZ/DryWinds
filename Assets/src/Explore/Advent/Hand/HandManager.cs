@@ -85,13 +85,18 @@ namespace Curry.Explore
                 CardInteractMode.Play | CardInteractMode.Inspect);
         }
         void OnTurnEndEffect() 
-        { 
-            foreach(AdventCard card in CardsInHand) 
+        {
+            StartCoroutine(TurnEndEffect_Internal());
+        }
+        IEnumerator TurnEndEffect_Internal() 
+        {
+            foreach (AdventCard card in CardsInHand)
             {
-                if (card.Resource is IEndOfTurnEffect effect) 
+                if (card.Resource is IEndOfTurnEffect effect)
                 {
                     m_abilityMessage.TriggerGameMessage(card.Resource.Name, Color.blue);
-                    m_activation.EndOfTurnEffect(effect);
+                    yield return m_activation.EndOfTurnEffect(effect);
+                    yield return new WaitForEndOfFrame();
                 }
             }
         }

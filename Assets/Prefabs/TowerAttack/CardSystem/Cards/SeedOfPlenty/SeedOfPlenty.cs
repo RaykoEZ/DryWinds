@@ -25,8 +25,9 @@ namespace Curry.Explore
         }
         IEnumerator EndOfTurn_Internal(IPlayer player)
         {
-            yield return player.TriggerVfx(m_vfx, m_vfxTimeLine);
+            player.TriggerVfx(m_vfx, m_vfxTimeLine);
             m_heal.Healing.ApplyEffect(player);
+            yield return null;
         }
         IEnumerator HandEffect_Internal(IPlayer player) 
         {
