@@ -8,7 +8,7 @@ namespace Curry.Explore
     // Handles AI actions and reactions
     public class InteractionManager : SceneInterruptBehaviour
     {
-        protected class PlayerActionItem 
+        protected class PlayerActionItem
         {
             public ActionCost ResourceSpent;
             public List<IEnumerator> Actions;
@@ -19,7 +19,6 @@ namespace Curry.Explore
         Stack<List<IEnumerator>> m_interruptBuffer = new Stack<List<IEnumerator>>();
         Stack<PlayerActionItem> m_characterActionStack = new Stack<PlayerActionItem>();
         List<PlayerActionItem> m_actionsToAdd = new List<PlayerActionItem>();
-        bool m_inProgress = false;
         void Start()
         {
             m_cardPlay.OnActivate += OnPlayerAction;
@@ -28,29 +27,21 @@ namespace Curry.Explore
         }
         void OnPlayerAction(ActionCost spent, List<IEnumerator> actions = null)
         {
-            if (actions != null) 
+            if (actions != null)
             {
-                var newItem = new PlayerActionItem { ResourceSpent = spent, Actions = actions};
+                var newItem = new PlayerActionItem { ResourceSpent = spent, Actions = actions };
                 m_actionsToAdd.Add(newItem);
             }
-            if (!m_inProgress) 
-            {
-                m_inProgress = true;
-                StartCoroutine(Evaluate_Internal());
-            }
+            StartCoroutine(Evaluate_Internal());        
         }
-        void OnEnemyAction(List<IEnumerator> actions) 
+        void OnEnemyAction(List<IEnumerator> actions)
         {
             m_interruptBuffer.Push(actions);
-            if (!m_inProgress)
-            {
-                m_inProgress = true;
-                StartCoroutine(Evaluate_Internal());
-            }
+            StartCoroutine(EnemyAction());
         }
-        protected IEnumerator PlayerAction_Internal() 
+        protected IEnumerator PlayerAction_Internal()
         {
-            while(m_characterActionStack.Count > 0) 
+            while (m_characterActionStack.Count > 0)
             {
                 var currentAction = m_characterActionStack.Pop();
                 yield return CallActions(currentAction.Actions);
@@ -62,19 +53,19 @@ namespace Curry.Explore
                     currentAction.ResourceSpent, out List<IEnumerator> resp) &&
                     resp != null)
                 {
-                    m_interruptBuffer?.Push(resp);
+                    m_interruptBuffer.Push(resp);
                 }
             }
         }
         void UpdateCalltack()
         {
-            foreach(var toAdd in m_actionsToAdd) 
+            foreach (var toAdd in m_actionsToAdd)
             {
                 m_characterActionStack.Push(toAdd);
             }
             m_actionsToAdd.Clear();
         }
-        protected IEnumerator Evaluate_Internal()
+        protected IEnumerator Evaluate_Internal(bool giveBackPlayControl = true)
         {
             StartInterrupt();
             UpdateCalltack();
@@ -84,20 +75,25 @@ namespace Curry.Explore
                 yield return StartCoroutine(PlayerAction_Internal());
                 yield return new WaitForEndOfFrame();
             }
-            // If we need to resolve interrupts from activated enemies, do it first
+            yield return EnemyAction();
+            if (giveBackPlayControl)
+            {
+                EndInterrupt();
+            }
+        }
+        protected IEnumerator EnemyAction() 
+        {
             while (m_interruptBuffer.Count > 0)
             {
                 yield return StartCoroutine(CallActions(m_interruptBuffer.Pop()));
                 yield return new WaitForEndOfFrame();
             }
-            m_inProgress = false;
-            EndInterrupt();
         }
-        protected IEnumerator CallActions(List<IEnumerator> actions) 
+        protected IEnumerator CallActions(List<IEnumerator> actions)
         {
             foreach (IEnumerator call in actions)
             {
-                if (call != null) 
+                if (call != null)
                 {
                     yield return StartCoroutine(call);
                 }

@@ -38,5 +38,3 @@ MonoBehaviour:
   m_possibleEncounters:
   - m_weight: 1
     m_entry: {fileID: 11400000, guid: 58cc72b1836d0e24b9d831b8e8003279, type: 2}
-  - m_weight: 1
-    m_entry: {fileID: 11400000, guid: 0903784eee8802241b4d28d14afda8cd, type: 2}

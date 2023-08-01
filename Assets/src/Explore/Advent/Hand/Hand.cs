@@ -53,7 +53,7 @@ namespace Curry.Explore
         {
             if (m_cardsInHand.Contains(card))
             {
-                yield return card.StartCoroutine(card.Resource.ActivateEffect(player, context));
+                yield return card.Resource.ActivateEffect(player, context);
             }
         }        
     }

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using Curry.Events;
+using System.Collections;
 
 namespace Curry.Explore
 {
@@ -59,11 +60,11 @@ namespace Curry.Explore
         }
         public void ActivateHandEffect(IHandEffect handEffect) 
         {
-            handEffect?.HandEffect(m_contextRef);
+            StartCoroutine(handEffect?.HandEffect(m_contextRef));
         }
         public void RevertHandEffect(IHandEffect handEffect) 
         {
-            handEffect?.OnLeaveHand(m_contextRef);
+            StartCoroutine(handEffect?.OnLeaveHand(m_contextRef));
         }
         public void ShowDropZones() 
         {
@@ -81,9 +82,9 @@ namespace Curry.Explore
             m_selection.CancelSelection();
             m_playZone.SetPlayZoneActive(false);
         }
-        public void EndOfTurnEffect(IEndOfTurnEffect card) 
+        public IEnumerator EndOfTurnEffect(IEndOfTurnEffect card) 
         {
-            card?.OnEndOfTurn(m_contextRef);
+            yield return card?.OnEndOfTurn(m_contextRef);
         }
     }
 }

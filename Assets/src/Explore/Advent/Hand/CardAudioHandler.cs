@@ -11,10 +11,6 @@ namespace Curry.Explore
         {
             StartCoroutine(CardAudio_Internal(numberDrawn, "cardDraw"));
         }
-        public void OnCardPlay() 
-        {
-            StartCoroutine(CardAudio_Internal(1, "cardPlay"));
-        }
         public void OnCardConsume() 
         {
             StartCoroutine(CardAudio_Internal(1, "cardConsume"));

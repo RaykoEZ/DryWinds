@@ -18,13 +18,18 @@ namespace Curry.Explore
 
         public override bool IsActivatable(GameStateContext c)
         {
-            bool isBloacked = c.Movement.IsPathObstructed(m_targeting.Target, c.Player.WorldPosition);
-            return !isBloacked;
+            bool isBlocked = c.Movement.IsPathObstructed(m_targeting.Target, c.Player.WorldPosition);
+            return !isBlocked;
         }
         public override IEnumerator ActivateEffect(ICharacter user, GameStateContext context)
         {
-            m_moveTo?.Effect?.ApplyEffect(user, m_targeting.Target, context.Movement, m_attack.Effect.ApplyEffect(user));
+            m_moveTo?.Effect?.ApplyEffect(user, m_targeting.Target, context.Movement, AreaAttack(user));
             yield return null;
+        }
+        protected IEnumerator AreaAttack(ICharacter user) 
+        {
+            user.TriggerVfx(m_vfx, m_vfxTimeLine);
+            yield return m_attack.Effect.ApplyEffect(user);
         }
     }
 }

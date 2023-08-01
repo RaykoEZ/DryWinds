@@ -9,7 +9,6 @@ namespace Curry.UI
     {
         string m_message = default;
         public string Message => m_message;
-
         public GameMessageInfo(string message)
         {
             m_message = message;
@@ -33,7 +32,7 @@ namespace Curry.UI
         }
         protected IEnumerator DisplayMessage_Internal(string message) 
         {
-            m_textField.text = message;
+            m_textField.text = $"{message}";
             m_anim.ResetTrigger("show");
             m_anim.SetTrigger("show");
             yield return new WaitForSeconds(1.5f);

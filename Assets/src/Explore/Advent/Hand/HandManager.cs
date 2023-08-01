@@ -4,8 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using Curry.Events;
 using Assets.src.UI;
-using UnityEditor;
-using Newtonsoft.Json.Linq;
 using Curry.UI;
 
 namespace Curry.Explore
@@ -87,13 +85,18 @@ namespace Curry.Explore
                 CardInteractMode.Play | CardInteractMode.Inspect);
         }
         void OnTurnEndEffect() 
-        { 
-            foreach(AdventCard card in CardsInHand) 
+        {
+            StartCoroutine(TurnEndEffect_Internal());
+        }
+        IEnumerator TurnEndEffect_Internal() 
+        {
+            foreach (AdventCard card in CardsInHand)
             {
-                if (card.Resource is IEndOfTurnEffect effect) 
+                if (card.Resource is IEndOfTurnEffect effect)
                 {
                     m_abilityMessage.TriggerGameMessage(card.Resource.Name, Color.blue);
-                    m_activation.EndOfTurnEffect(effect);
+                    yield return m_activation.EndOfTurnEffect(effect);
+                    yield return new WaitForEndOfFrame();
                 }
             }
         }
@@ -143,19 +146,20 @@ namespace Curry.Explore
         #region Playing a card
         IEnumerator PlayCard(GameStateContext c, AdventCard card)
         {
+            m_cost.TrySpend(card.Resource.Cost);
             m_abilityMessage.TriggerGameMessage(card.Resource.Name, Color.blue);
             // Reset pending card
             m_activation.ResetDragTarget();
             DraggableCard draggable = card.GetComponent<DraggableCard>();
             OnCardLeavesHandParent(draggable);
             m_activation.HideDropZone();
-            yield return StartCoroutine(m_hand.PlayCard(c, card, m_player));
+            yield return m_hand.PlayCard(c, card, m_player);
             // after effect activation, we spend the card
             if (card.Resource is IConsumable) 
             {
                 m_audio?.OnCardConsume();
             }
-            yield return StartCoroutine(m_postActivation.OnCardUse(card, IsHandOverloaded));
+            yield return m_postActivation.OnCardUse(card, IsHandOverloaded);
         }
         // When card is trying to actvated after it is dropped...
         void OnCardPlay(GameStateContext c, AdventCard card, Action onPlay, Action onCancel)
@@ -169,7 +173,6 @@ namespace Curry.Explore
             }
             else
             {
-                m_cost.TrySpend(card.Resource.Cost);
                 m_cost.CancelPreview();
                 onPlay?.Invoke();
                 // Make a container for the callstack and trigger it. 
@@ -178,7 +181,6 @@ namespace Curry.Explore
                     PlayCard(c, card)
                 };
                 OnActivate?.Invoke(card.Resource.Cost, actions);
-                m_audio?.OnCardPlay();
             }
         }
         #endregion

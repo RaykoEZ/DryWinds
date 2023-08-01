@@ -21,6 +21,7 @@ namespace Curry.Explore
         }
         public override IEnumerator ActivateEffect(ICharacter user, GameStateContext context)
         {
+            user.TriggerVfx(m_vfx, m_vfxTimeLine);
             bool targetFound = m_targeting.TryGetCurrentTarget(out ICharacter found) && found != null;
             if (targetFound && m_powerUp) 
             {

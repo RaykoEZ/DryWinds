@@ -19,7 +19,7 @@ MonoBehaviour:
       - {fileID: 11400000, guid: 422d2a60528e45f4a8aee5487acd887e, type: 2}
     - m_oddsWeight: 1
       m_lootItems:
-      - {fileID: 11400000, guid: aed5d6eb51da5e44396684d1ff7c02f4, type: 2}
+      - {fileID: 11400000, guid: b555cca2d83b8da4ab543328dfe485b2, type: 2}
     - m_oddsWeight: 1
       m_lootItems:
       - {fileID: 11400000, guid: 422d2a60528e45f4a8aee5487acd887e, type: 2}

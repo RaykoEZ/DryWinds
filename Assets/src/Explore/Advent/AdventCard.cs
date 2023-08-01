@@ -1,12 +1,14 @@
 ﻿using UnityEngine;
 using Curry.Game;
 using System.Collections.Generic;
+using Curry.Vfx;
 
 namespace Curry.Explore
 {
     // Base class for all playable cards
     public class AdventCard : PoolableBehaviour, IPoolable
     {
+        [SerializeField] protected VfxSequencePlayer m_vfxHandler = default;
         [SerializeField] protected CooldownModule m_cooldown = default;
         [SerializeField] protected CardContentSetter m_contentSetter = default;
         [SerializeField] protected PositionTargetingModule m_targeting = default;
@@ -17,7 +19,7 @@ namespace Curry.Explore
         public virtual CardResource Resource => m_cardResource;
         // Whether keep card upon moving to a new tile
         public virtual bool IsActivatable(GameStateContext c)
-        { return m_activatable; }
+        { return m_activatable && m_cardResource.ConditionsSatisfied; }
         public override void Prepare()
         {
         }

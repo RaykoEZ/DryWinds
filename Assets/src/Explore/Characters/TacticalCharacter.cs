@@ -1,15 +1,19 @@
 ﻿using Curry.Game;
-using Curry.Util;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Curry.UI;
+using Curry.Vfx;
+using UnityEngine.Timeline;
+using UnityEngine.VFX;
 
 namespace Curry.Explore
 {
     public interface IModifiable
     {
         IModifierContainer<TacticalStats> CurrentStats { get; }
+        void ApplyModifier(IStatModifier<TacticalStats> mod, VisualEffectAsset vfx, TimelineAsset timeline);
         bool ContainsModifier(IStatModifier<TacticalStats> mod);
         void Refresh();
     }
@@ -18,6 +22,7 @@ namespace Curry.Explore
         [SerializeField] protected string m_name = default;
         [SerializeField] TacticalStats m_initStats = default;
         [SerializeField] AudioManager m_audio = default;
+        [SerializeField] protected VfxSequencePlayer m_vfxHandler = default;
         protected TacticalStatManager m_statManager;
         protected bool m_blocked = false;
         protected bool m_moving = false;
@@ -70,6 +75,17 @@ namespace Curry.Explore
         {
             ReturnToPool();
         }
+        public virtual void TriggerVfx(VisualEffectAsset vfx, TimelineAsset timeline, Action onTrigger = null) 
+        {
+            // setup vfx to trigger
+            m_vfxHandler.SetupAsset(vfx, timeline);
+            StartCoroutine(m_vfxHandler.PlaySequence(onTrigger));
+        }
+        public void ApplyModifier(IStatModifier<TacticalStats> mod, VisualEffectAsset vfx, TimelineAsset timeline)
+        {
+            TriggerVfx(vfx, timeline);
+            m_statManager.ApplyModifier(mod);
+        }
         public virtual void Move(Vector3 target)
         {
             StartCoroutine(Move_Internal(target));
@@ -88,7 +104,6 @@ namespace Curry.Explore
         public virtual void Recover(int val)
         {
             m_statManager.RecoverHp(val);
-            m_audio.Play("heal");
             RecoverHp?.Invoke(val, CurrentHp);
         }
         public void TakeHit(int hitVal) 
@@ -158,6 +173,7 @@ namespace Curry.Explore
         {
             return m_statManager.ContainsModifier(mod);
         }
+
     }
 
 }

@@ -32,10 +32,13 @@ namespace Curry.Explore
             // dialogues and events when player chooses an option
             foreach(EncounterOptionAttribute option in detail.Options) 
             {
-                EncounterOptionDisplay instance = Instantiate(m_optionRef, m_optionParent);
-                instance.Init(option, context);
-                instance.OnChosen += OnOptionChosen; 
-                m_currentOptions.Add(instance);
+                if (option.OptionDetail.IsOptionAvailable(context)) 
+                {
+                    EncounterOptionDisplay instance = Instantiate(m_optionRef, m_optionParent);
+                    instance.Init(option, context);
+                    instance.OnChosen += OnOptionChosen;
+                    m_currentOptions.Add(instance);
+                }
             }
             StartCoroutine(BeginAnimation(detail));
         }

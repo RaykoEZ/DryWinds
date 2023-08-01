@@ -1,5 +1,7 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.Timeline;
+using UnityEngine.VFX;
 
 namespace Curry.Explore
 {
@@ -8,6 +10,10 @@ namespace Curry.Explore
     public class ModifierResource : ScriptableObject 
     {
         [SerializeField] ModifierContent m_content = default;
+        [SerializeField] VisualEffectAsset m_vfx = default;
+        [SerializeField] TimelineAsset m_vfxTimeline = default;
         public virtual ModifierContent Content => m_content;
+        public VisualEffectAsset Vfx => m_vfx;
+        public TimelineAsset VfxTimeline => m_vfxTimeline;
     }
 }

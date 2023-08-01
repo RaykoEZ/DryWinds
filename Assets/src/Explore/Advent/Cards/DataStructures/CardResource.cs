@@ -1,7 +1,11 @@
 ﻿using Curry.Util;
+using Curry.Vfx;
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Playables;
+using UnityEngine.Timeline;
+using UnityEngine.VFX;
 
 namespace Curry.Explore
 {
@@ -10,6 +14,9 @@ namespace Curry.Explore
     public class CardResource 
     {
         [SerializeField] protected CardProperties m_properties = default;
+        // A vfx and director to insert into a card instance for effect sequence when activating a card
+        [SerializeField] protected VisualEffectAsset m_vfx = default;
+        [SerializeField] protected TimelineAsset m_vfxTimeLine = default;
         protected PositionTargetingModule m_targeting = default;
         protected CooldownModule m_cooldownState = default;
         bool m_activatable = true;
@@ -25,21 +32,23 @@ namespace Curry.Explore
         // Whether this card has satisfied activation conditions, if the card has any
         public virtual bool ConditionsSatisfied => true;
         public virtual CardProperties Properties => m_properties;
+        public CardResource(CardResource effect) 
+        {
+            m_activatable = effect.m_activatable;
+            m_properties = effect.m_properties;
+            m_vfx = effect.m_vfx;
+            m_vfxTimeLine = effect.m_vfxTimeLine;
+        }
+        public virtual void Init(CooldownModule cd, PositionTargetingModule targeting) 
+        {
+            m_cooldownState = cd;
+            m_targeting = targeting;
+        }
         public virtual bool IsActivatable(GameStateContext c)
         { return m_activatable; }
         public virtual IEnumerator ActivateEffect(ICharacter user, GameStateContext context)
         {
             yield return null;
-        }
-        public CardResource(CardResource effect) 
-        {
-            m_activatable = effect.m_activatable;
-            m_properties = effect.m_properties;
-        }
-        public void Init(CooldownModule cd, PositionTargetingModule targeting) 
-        {
-            m_cooldownState = cd;
-            m_targeting = targeting;
         }
         // Cooldown operation, if a card has cooldown (follows ICooldown)
         public void TriggerCooldown()

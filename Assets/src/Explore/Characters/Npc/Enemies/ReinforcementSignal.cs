@@ -5,6 +5,8 @@ using System;
 using System.Collections.Generic;
 using TMPro;
 using Curry.Util;
+using UnityEngine.VFX;
+using UnityEngine.Timeline;
 
 namespace Curry.Explore
 {
@@ -165,6 +167,10 @@ namespace Curry.Explore
         {
             OnDefeat?.Invoke(this);
             yield return null;
+        }
+
+        public void TriggerVfx(VisualEffectAsset vfx, TimelineAsset timeline, Action onTrigger = null)
+        {
         }
     }
 }

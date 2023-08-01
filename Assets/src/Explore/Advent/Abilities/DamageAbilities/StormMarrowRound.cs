@@ -1,8 +1,10 @@
 ﻿using Curry.Game;
 using Curry.Util;
+using Curry.Vfx;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 
 namespace Curry.Explore
 {
@@ -56,7 +58,7 @@ namespace Curry.Explore
             transform.rotation = Quaternion.identity;
             m_anim?.Play(m_onImpact.name);
             yield return new WaitForSeconds(0.25f * m_onImpact.length);
-            OnImpact();
+            yield return OnImpact();
             Stop();
         }
         public void Stop()
@@ -64,7 +66,7 @@ namespace Curry.Explore
             Destroy(gameObject);
         }
         // When projectile lands, loonk for characters to hit on position
-        protected virtual void OnImpact() 
+        protected virtual IEnumerator OnImpact() 
         {
             var hit = Physics2D.OverlapCircleAll(
                 transform.position, 
@@ -74,9 +76,11 @@ namespace Curry.Explore
             {
                 if(item.TryGetComponent(out ICharacter character)) 
                 {
+                    character.TriggerVfx(Vfx, VfxTimeline);
                     OnHit(character);
                 }
-            }        
+            }
+            yield return null;
         }
         protected virtual void OnHit(ICharacter hit) 
         {

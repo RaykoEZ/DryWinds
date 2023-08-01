@@ -2,7 +2,6 @@
 using System;
 using System.Collections;
 using UnityEngine;
-
 namespace Curry.Explore
 {
     [Serializable]
@@ -21,6 +20,7 @@ namespace Curry.Explore
             TargetingRange = RangeMapping.GetRangeMap(3),
             Icon = m_resource.Content.Icon
         };
+
         public void AddStack(int addVal = 1) 
         {
             m_instance?.AddStack(addVal);
@@ -34,34 +34,39 @@ namespace Curry.Explore
             m_instance?.ResetStack();
         }
         // Activate this once on spawn
-        protected void Activate(IModifiable applyTo, bool activate)
+        protected void Activate(ICharacter user)
         {
-            if (!m_activated && activate) 
+            IModifiable applyTo = user as IModifiable;
+            if (applyTo == null) { return; }
+
+            if (!m_activated) 
             {
                 OnMessage?.Invoke($"{AbilityDetail.Name} Activated");
                 m_instance = new TakeAim(m_preparedBuff);
-                applyTo?.CurrentStats.ApplyModifier(m_instance);
+                applyTo?.ApplyModifier(m_instance, m_instance.Vfx, m_instance.VfxTimeline);
                 m_activated = true;
             }
-            else if (m_activated && activate)
+            else
             {
+                user.TriggerVfx(Vfx, VfxTimeline);
                 m_instance.AddStack();
-                OnMessage?.Invoke($"{AbilityDetail.Name} x {m_instance.CurrentStack}");
-            }
-            else if (m_activated && !activate)
-            {
-                applyTo.CurrentStats.RemoveModifier(m_instance);
-                OnMessage?.Invoke($"{AbilityDetail.Name} Reset");
-                m_activated = false;
             }
         }
         public IEnumerator OnPlayerAction(IEnemy enemy)
         {
-            if (enemy is IModifiable mod) 
-            {
-                Activate(mod, enemy.SpotsTarget);
-            }
+            Activate(enemy);         
             yield return null;
+        }
+        public bool CanReact(IEnemy user)
+        {
+            bool ret = user.SpotsTarget;
+            // reset modifier
+            if (m_activated && !ret)
+            {
+                (user as IModifiable).CurrentStats.RemoveModifier(m_instance);
+                m_activated = false;
+            }
+            return ret;
         }
     }
 }

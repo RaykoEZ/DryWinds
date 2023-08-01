@@ -22,4 +22,4 @@ MonoBehaviour:
     - m_description: Leave it alone
       m_optionDetail: {fileID: 11400000, guid: c4a7028edd8ba31459178faf792f380e, type: 2}
     - m_description: Give it some water (require Just Water)
-      m_optionDetail: {fileID: 0}
+      m_optionDetail: {fileID: 11400000, guid: 1990997aaa6c742428af9da417b61ef0, type: 2}

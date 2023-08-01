@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
+using UnityEngine.Timeline;
+using UnityEngine.VFX;
 
 namespace Curry.Explore
 {
@@ -16,24 +19,37 @@ namespace Curry.Explore
             m_heal = effect.m_heal;
             m_gainStats = effect.m_gainStats;
         }
-        public void OnEndOfTurn(GameStateContext c)
+        public IEnumerator OnEndOfTurn(GameStateContext c)
         {
-            m_heal.Activate(c);
+            yield return EndOfTurn_Internal(c.Player);
         }
-        public void HandEffect(GameStateContext c)
+        IEnumerator EndOfTurn_Internal(IPlayer player)
         {
-            if (c.Player is IModifiable mod)
+            player.TriggerVfx(m_vfx, m_vfxTimeLine);
+            m_heal.Healing.ApplyEffect(player);
+            yield return null;
+        }
+        IEnumerator HandEffect_Internal(IPlayer player) 
+        {
+            if (player is IModifiable mod)
             {
                 m_currentModifier = new StatUp(m_gainStats.Effect);
-                mod.CurrentStats.ApplyModifier(m_currentModifier);
+                mod.ApplyModifier(m_currentModifier, 
+                    m_currentModifier.Vfx, m_currentModifier.VfxTimeline);
+                yield return null;
             }
         }
-        public void OnLeaveHand(GameStateContext c)
+        public IEnumerator HandEffect(GameStateContext c)
+        {
+            yield return HandEffect_Internal(c.Player);
+        }
+        public IEnumerator OnLeaveHand(GameStateContext c)
         {
             if (c.Player is IModifiable mod)
             {
                 mod.CurrentStats.RemoveModifier(m_currentModifier);
             }
+            yield return null;
         }
     }
 }

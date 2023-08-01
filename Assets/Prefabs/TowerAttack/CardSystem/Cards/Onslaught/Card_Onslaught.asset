@@ -25,6 +25,8 @@ MonoBehaviour:
       m_cooldown: 0
       m_holdingValue: 2
       m_isInitiallyOnCooldown: 0
+    m_vfx: {fileID: 8926484042661614526, guid: 90c26d58a4661ff4ea5f0dadaec1bc3e, type: 3}
+    m_vfxTimeLine: {fileID: 11400000, guid: 3af050811644fa3419ab4c9eea59f99b, type: 2}
     m_damage: {fileID: 11400000, guid: 7da228c8b9ddbf548a9b20d7ea9229b7, type: 2}
     m_gainAp: {fileID: 11400000, guid: 076727aef6f9e394684694d324c0c3f9, type: 2}
     m_damageIncrease: 4

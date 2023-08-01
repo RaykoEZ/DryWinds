@@ -114,7 +114,6 @@ namespace Curry.UI
         {
             if (m_buffer.Buffering) return;
             Animator anim = GetComponent<Animator>();
-            anim?.SetBool("selected", Choosable);
             if ((InteractMode & CardInteractMode.Inspect) != 0) 
             {
                 anim?.SetBool("inspecting", true);
