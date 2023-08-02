@@ -10239,6 +10239,7 @@ MonoBehaviour:
   m_movement: {fileID: 1773398998}
   m_selectInput: {fileID: 1334039897}
   m_cardPlay: {fileID: 615583783}
+  m_countdown: {fileID: 537909833204776850}
   m_toControl:
   - {fileID: 1845217772}
   m_interruptors:
@@ -13665,7 +13666,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 537909833278201035, guid: a8c7292d353e01143a7212dcb75665f7, type: 3}
       propertyPath: m_timeToClear
-      value: 150
+      value: 360
       objectReference: {fileID: 0}
     - target: {fileID: 858425703597714414, guid: a8c7292d353e01143a7212dcb75665f7, type: 3}
       propertyPath: m_AnchorMax.x
@@ -13682,10 +13683,29 @@ PrefabInstance:
     - target: {fileID: 6929260595591169722, guid: a8c7292d353e01143a7212dcb75665f7, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8774921230806584739, guid: a8c7292d353e01143a7212dcb75665f7, type: 3}
+      propertyPath: m_text
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 9190860667059394814, guid: a8c7292d353e01143a7212dcb75665f7, type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 983295
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: a8c7292d353e01143a7212dcb75665f7, type: 3}
+--- !u!114 &537909833204776850 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2648139554296966884, guid: a8c7292d353e01143a7212dcb75665f7, type: 3}
+  m_PrefabInstance: {fileID: 537909833204776849}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1eba9f986fbc5844eb424939c6ed0a08, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1124223147549685764
 MonoBehaviour:
   m_ObjectHideFlags: 0
