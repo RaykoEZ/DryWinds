@@ -42,7 +42,7 @@ namespace Curry.Explore
             }
             StartCoroutine(BeginAnimation(detail));
         }
-        IEnumerator BeginAnimation(EncounterDetail detail) 
+        protected IEnumerator BeginAnimation(EncounterDetail detail) 
         {
             m_anim.SetBool("active", true);
             yield return new WaitForSeconds(0.5f);
