@@ -2,7 +2,7 @@
 using TMPro;
 using UnityEngine;
 
-namespace Assets.src.UI
+namespace Curry.UI
 {
     public class HandCapacityDisplay : MonoBehaviour
     {

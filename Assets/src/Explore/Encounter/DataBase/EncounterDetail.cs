@@ -15,7 +15,7 @@ namespace Curry.Explore
         public string Title => m_title;
         public string Description => m_description;
         public Sprite CoverImage => m_coverImage;
-        public IReadOnlyList<EncounterOptionAttribute> Options => m_options;
+        public List<EncounterOptionAttribute> Options => m_options;
     }
 
 }

@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using Curry.UI;
+
 namespace Curry.Explore
 {
 
@@ -10,8 +12,8 @@ namespace Curry.Explore
         [SerializeField] MoveToggle m_movement = default;
         [SerializeField] SelectionManager m_selectInput = default;
         [SerializeField] HandManager m_cardPlay = default;
+        [SerializeField] RealtimeCountdown m_countdown = default;
         [SerializeField] List<CanvasGroup> m_toControl = default;
-
         // Collection of interruptors
         [SerializeField] SceneInterruptCollection m_interruptors = default;
         static bool m_sceneInterrupted = false;
@@ -25,6 +27,7 @@ namespace Curry.Explore
         protected virtual void EnableScene()
         {
             if (!m_sceneInterrupted) return;
+            m_countdown.BeginCountdown();
             m_movement.EnablePlay();
             m_selectInput?.EnableSelection();
             m_cardPlay?.EnablePlay();
@@ -39,6 +42,7 @@ namespace Curry.Explore
         {
             // Don't disable if already disabled
             if (m_sceneInterrupted) return;
+            m_countdown.StopCountdown();
             m_movement.DisablePlay();
             m_selectInput?.DisableSelection();
             m_cardPlay?.DisablePlay();

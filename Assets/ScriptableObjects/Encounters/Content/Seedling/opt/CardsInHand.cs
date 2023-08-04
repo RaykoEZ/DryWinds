@@ -13,12 +13,12 @@ namespace Curry.Explore
         public override bool IsConditionMet(GameStateContext context) 
         {
             bool ret = true;
-            var hand = context.CardsInHand;
+            var hand = context.Hand;
             DeckManager deck = context.Deck;
             List<AdventCard> searchFor = deck.InstantiateCards_FromAsset(m_needTheseInHand);
             foreach (var need in searchFor) 
             {                
-                ret &= hand.Contains(need, m_compareByName);
+                ret &= hand.CardsInHand.Contains(need, m_compareByName);
             }
             return ret;
         }

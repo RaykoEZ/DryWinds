@@ -1,15 +1,13 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
 using System;
 using Curry.UI;
-using Assets.src.UI;
 
 namespace Curry.Explore
 {
     // Updates UI when organizing cards in reformulate mode
     public delegate void OnReformulateFinish(List<AdventCard> inventoryToHand, List<AdventCard> handToInventory);
-    public class ReformulateUIHandler : MonoBehaviour 
+    public class ReformulateUIHandler : SceneInterruptBehaviour 
     {
         [SerializeField] Animator m_anim = default;
         [SerializeField] PlayZone m_inventoryZone = default;
@@ -34,6 +32,7 @@ namespace Curry.Explore
         }
         public void Show(HandManager hand, Inventory inventory) 
         {
+            StartInterrupt();
             IsDisplaying = true;
             ResetHandler();
             m_inventoryRef = inventory;
@@ -79,6 +78,7 @@ namespace Curry.Explore
                 ResetHandler();
                 Hide();
             }
+            EndInterrupt();
         }
         void ResolveHand() 
         {
@@ -105,6 +105,7 @@ namespace Curry.Explore
             ResolveInventory();
             ResetHandler();
             Hide();
+            EndInterrupt();
         }
         void ResetHandler() 
         {

@@ -5,6 +5,8 @@ using UnityEngine;
 using Curry.Events;
 using Assets.src.UI;
 using Curry.UI;
+using System.Linq;
+using Curry.Util;
 
 namespace Curry.Explore
 {
@@ -79,7 +81,7 @@ namespace Curry.Explore
                 card.GetComponent<DraggableCard>().OnDragBegin += m_activation.TargetGuide;
             }
             // If card is on cool down, apply cooldown tracking
-            m_postActivation.TryApplyCoolDown(card);
+            m_postActivation.ApplyCoolDown(card);
             card.transform.SetParent(transform, false);
             card.GetComponent<CardInteractionController>()?.SetInteractionMode(
                 CardInteractMode.Play | CardInteractMode.Inspect);
@@ -134,6 +136,48 @@ namespace Curry.Explore
             if (info is CardDrawInfo draw)
             {
                 AddCardsToHand(draw.CardsDrawn as List<AdventCard>);
+            }
+        }
+        //Discard a card with specified card name
+        public void DiscardCardByName(string name) 
+        {
+            foreach (var item in m_hand.CardsInHand)
+            {
+                if (item.Resource.Name == name) 
+                {
+                    m_hand.TakeCard(item);
+                    m_postActivation.RemoveFromCooldownUpdate(new List<AdventCard> { item });
+                    item.ReturnToPool();
+                    break;
+                }
+            }
+        }
+        // discard random card(s) in hand
+        public void DiscardRandom(int numToDiscard = 1) 
+        {
+            List<AdventCard> toDiscard = SamplingUtil.SampleFromList(m_hand.CardsInHand.ToList(), numToDiscard);
+            DiscardCards(toDiscard);
+        }
+        // discard all card in hand
+        public void DiscardAll()
+        {
+            DiscardCards(m_hand.CardsInHand.ToList());
+        }
+
+        void DiscardCards(List<AdventCard> cards)
+        {
+            var toDiscard = TakeCards(cards);
+            m_postActivation.RemoveFromCooldownUpdate(toDiscard);
+            foreach (var item in toDiscard)
+            {
+                item.ReturnToPool();
+            }
+        }
+        public void TriggerAllCooldowns()
+        {
+            foreach (var item in m_hand.CardsInHand)
+            {
+                m_postActivation.ApplyCoolDown(item, forceApply: true);
             }
         }
         protected virtual void OnCardLeavesHandParent(DraggableCard draggable)

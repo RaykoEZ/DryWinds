@@ -7,7 +7,6 @@ using System.Collections;
 using Curry.UI;
 using System.Collections.Generic;
 using System.Linq;
-
 namespace Curry.Explore
 {
     // A snapshot of the current game state
@@ -15,16 +14,19 @@ namespace Curry.Explore
     {
         public int TimeLeft { get; private set; }
         public IPlayer Player { get; private set; }
-        public IReadOnlyList<AdventCard> CardsInHand { get; private set; }
+        public TimeManager Time { get; private set; }
+        public HandManager Hand { get; private set; }
         public DeckManager Deck { get; private set; }
         public MovementManager Movement { get; private set; }
         public LootManager LootManager { get; private set; }
         public ActionCounter ActionCount { get; private set; }
+        
         public GameConditionAttribute Milestones { get; private set; }
         public GameStateContext(
             int timeLeft, 
             IPlayer player,
-            IEnumerable<AdventCard> hand,
+            TimeManager time,
+            HandManager hand,
             DeckManager deck,
             MovementManager move,
             LootManager loot,
@@ -33,7 +35,8 @@ namespace Curry.Explore
         {
             TimeLeft = timeLeft;
             Player = player;
-            CardsInHand = hand.ToList();
+            Time = time;
+            Hand = hand;
             Movement = move;
             Deck = deck;
             LootManager = loot;
@@ -41,16 +44,6 @@ namespace Curry.Explore
             Milestones = milestones;
         }
     }
-    public class GameConditionEvent : EventInfo 
-    { 
-        public GameConditionAttribute ConditionsFulfilled { get; protected set; }
-
-        public GameConditionEvent(GameConditionAttribute conditions) 
-        {
-            ConditionsFulfilled = conditions;
-        }
-    }
-
     public class GameStateManager : MonoBehaviour
     {
         [SerializeField] Adventurer m_player = default;
@@ -60,6 +53,7 @@ namespace Curry.Explore
         [SerializeField] GameIntroduction m_intro = default;
         [SerializeField] CardActivationHandler m_cardTargeting = default;
         [SerializeField] TimeManager m_time = default;
+        [SerializeField] TimeDealerManager m_timeDealer = default;
         [SerializeField] HandManager m_hand = default;
         [SerializeField] DeckManager m_deck = default;
         [SerializeField] LootManager m_loot = default;
@@ -76,7 +70,8 @@ namespace Curry.Explore
             GameStateContext ret = new GameStateContext(
                 timeLeft,
                 m_player,
-                m_hand.CardsInHand,
+                m_time,
+                m_hand,
                 m_deck,
                 m_movement,
                 m_loot,
@@ -89,6 +84,7 @@ namespace Curry.Explore
             m_onConditionAchieved?.Init();
             m_gameResult.gameObject.SetActive(false);
             m_player.OnDefeat += OnPlayerDefeat;
+            m_time.OnOutOfTimeTrigger += OnOutOfTime;
             m_objectives.OnCriticalFailure += OnCriticalFail;
             m_objectives.AllCriticalComplete += OnGameCleared;
             StartCoroutine(StartGame_Interal());
@@ -114,6 +110,11 @@ namespace Curry.Explore
             {
                 m_mileStones.Flag |= conditions.ConditionsFulfilled.Flag;
             }
+        }
+        void OnOutOfTime() 
+        {
+            m_time.MultiplyCountdownSpeed(1.2f);
+            m_timeDealer.Begin(GetCurrent());
         }
         void OnPlayerDefeat(ICharacter player) 
         {

@@ -24,6 +24,7 @@ namespace Curry.Explore
         [SerializeField] CurryGameEventListener m_onSpendTime = default;
         [SerializeField] CurryGameEventTrigger m_onTimeSpent = default;
         [SerializeField] ResourceDisplayHandler m_gauge = default;
+        [SerializeField] RealtimeCountdown m_countdown = default;
         [SerializeField] TextMeshProUGUI m_clearTimer = default;
         [SerializeField] TextMeshProUGUI m_costDiff = default;
         int m_timeLeftToClear;
@@ -36,6 +37,7 @@ namespace Curry.Explore
         void Start()
         {
             ResetTime();
+            m_countdown.OnFinish += DecrementTime;
             m_onSpendTime?.Init();
             m_gauge?.SetMaxValue(TimeLeftToClear);
             m_gauge?.SetCurrentValue(TimeToClear, true);
@@ -51,6 +53,10 @@ namespace Curry.Explore
             m_gauge.SetMaxValue(maxTime);
             m_gauge.SetCurrentValue(time);
         }
+        public void MultiplyCountdownSpeed(float multiplier) 
+        {
+            m_countdown.MultiplyCoundownSpeed(multiplier);
+        }
         // spend time and check if we run out of time
         public void SpendTime(EventInfo time)
         {
@@ -62,6 +68,8 @@ namespace Curry.Explore
         public void AddTime(int time) 
         {
             m_timeLeftToClear += time;
+            UpdateTurnTimer();
+            m_gauge.SetCurrentValue(m_timeLeftToClear);
         }
         // spend time and check if we run out of time
         public bool TrySpendTime(int timeToSpend) 
@@ -73,11 +81,19 @@ namespace Curry.Explore
             }
             return enoughTime;
         }
+        void DecrementTime() 
+        {
+            if (TrySpendTime(1)) 
+            {
+                m_countdown.ResetCountdown();
+                m_countdown.BeginCountdown();
+            }
+        }
         public void PreviewCost(int cost) 
         {
             int newVal = Mathf.Clamp(m_timeLeftToClear - cost, 0, m_timeToClear);
             m_gauge?.Preview(newVal);
-            m_costDiff.text = $"-> {newVal}";
+            m_costDiff.text = $" - {cost}";
             m_costDiff.color = Color.red;
         }
         public void CancelPreview() 

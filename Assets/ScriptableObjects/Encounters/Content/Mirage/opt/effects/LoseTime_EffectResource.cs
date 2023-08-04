@@ -10,7 +10,7 @@ namespace Curry.Explore
         [SerializeField] LoseTime m_effect = default;
         public override void Activate(GameStateContext context)
         {
-            m_effect?.ApplyEffect();
+            m_effect?.ApplyEffect(context.Time);
         }
 
     }

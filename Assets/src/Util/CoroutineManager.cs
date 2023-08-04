@@ -59,9 +59,16 @@ namespace Curry.Util
         public void StopCurrentCoroutine()
         {
             StopCoroutine(StartCurrentCoroutine());
-            StopCoroutine(m_currentCoroutine);
+            if (m_currentCoroutine != null) 
+            {
+                StopCoroutine(m_currentCoroutine);
+            }
         }
-
+        public void StopAll() 
+        {
+            StopAllCoroutines();
+            m_coroutineInProgress = false;
+        }
         void OnCoroutineInterrupted(IEnumerator runThis)
         {
             if (CoroutineInProgress)
