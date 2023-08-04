@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d1556d503bc03346ac6bfa05461b9b5, type: 3}
+  m_Name: EncOpt_timedeal2
+  m_EditorClassIdentifier: 
+  m_detail: 
+  m_validUnlockConditions: []
+  m_outcome:
+    m_effects:
+    - {fileID: 11400000, guid: 05864d677afcce54c9cf8a0d019d8a7d, type: 2}
+    - {fileID: 11400000, guid: e84873e0dd68b1d4ba6ef42653096dff, type: 2}
+    m_dialogue: []

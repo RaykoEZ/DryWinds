@@ -1,6 +1,7 @@
 ﻿using Curry.Game;
 using System;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 
 namespace Curry.Explore
@@ -60,6 +61,10 @@ namespace Curry.Explore
             }
             UpdateModifierState();
             return Mathf.Max(0, ret);
+        }
+        public void SetCurrentHp(int newHp)
+        { 
+            m_current.Hp = Mathf.Max(newHp, 1);
         }
         public void SetMaxHp(int maxHp) 
         {

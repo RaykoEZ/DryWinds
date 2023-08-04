@@ -29,7 +29,14 @@ namespace Curry.Explore
         public Vector3 WorldPosition => transform.position;
         public string Name => m_name;
         public int MaxHp => m_statManager.Current.MaxHp;
-        public int CurrentHp => m_statManager.Current.Hp;      
+        public int CurrentHp { 
+            get { return m_statManager.Current.Hp; }
+            set 
+            {
+                TakeDamage?.Invoke(value - CurrentHp, value);
+                m_statManager.SetCurrentHp(value);
+            }
+        }   
         public int MoveRange => m_statManager.Current.MoveRange;     
         public int Speed => m_statManager.Current.Speed;
         public IModifierContainer<TacticalStats> CurrentStats => m_statManager;

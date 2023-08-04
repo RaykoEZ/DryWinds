@@ -363,6 +363,7 @@ MonoBehaviour:
   - {fileID: 7344941788680767172}
   - {fileID: 8016035174775994325}
   - {fileID: 6765247160861502767}
+  m_sacrificeOptions: {fileID: 11400000, guid: 982eb8e6723c96d46b2d6d98718e5167, type: 2}
 --- !u!225 &7568431316020437250
 CanvasGroup:
   m_ObjectHideFlags: 0

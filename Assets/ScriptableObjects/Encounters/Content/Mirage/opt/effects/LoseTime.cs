@@ -7,11 +7,9 @@ namespace Curry.Explore
     public class LoseTime : PropertyAttribute
     {
         [SerializeField] int m_timeLoss = default;
-        [SerializeField] CurryGameEventTrigger m_onLoseTime = default;
-        public void ApplyEffect()
+        public void ApplyEffect(TimeManager time)
         {
-            TimeInfo info = new TimeInfo(m_timeLoss);
-            m_onLoseTime?.TriggerEvent(info);
+            time?.TrySpendTime(m_timeLoss);
         }
     }
 }

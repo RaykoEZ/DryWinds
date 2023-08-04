@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.XR;
 using static UnityEngine.UIElements.UxmlAttributeDescription;
 
 namespace Curry.Explore
@@ -25,10 +24,10 @@ namespace Curry.Explore
         {
             m_time.OnTimeSpent -= OnCooldownTick;
         }
-        public void TryApplyCoolDown(AdventCard card) 
+        public void ApplyCoolDown(AdventCard card, bool forceApply = false) 
         {
-            if (card.Resource is ICooldown cd && 
-                cd.IsOnCooldown &&
+            if (card.Resource is ICooldown cd &&
+                (forceApply || cd.IsOnCooldown) &&
                 !m_cooldowns.Contains(card))
             {
                 StartCoroutine(HandleCooldown(cd, card));
@@ -61,6 +60,13 @@ namespace Curry.Explore
             }
             yield return new WaitForEndOfFrame();
         }
+        public void RemoveFromCooldownUpdate(List<AdventCard> cardsToClear)
+        {
+            foreach (AdventCard card in cardsToClear)
+            {
+                m_cooldowns.Remove(card);
+            }
+        }
         protected void OnCooldownTick(int spent, int timeLeft) 
         {
             List<AdventCard> cardsToReturn = new List<AdventCard>();
@@ -75,10 +81,7 @@ namespace Curry.Explore
                     cardsToReturn.Add(card);
                 }
             }
-            foreach(AdventCard card in cardsToReturn) 
-            {
-                m_cooldowns.Remove(card);
-            }
+            RemoveFromCooldownUpdate(cardsToReturn);
             OnReturnToHand?.Invoke(cardsToReturn);
         }
         protected virtual IEnumerator ReturnToInventory_Internal(AdventCard card)

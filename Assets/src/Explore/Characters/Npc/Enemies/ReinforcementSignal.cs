@@ -47,7 +47,7 @@ namespace Curry.Explore
         public IEnumerator Reaction => OnSpawnReinforcement();
         public string Name => "Reinforcement";
         public int MaxHp => 1;
-        public int CurrentHp => 1;
+        public int CurrentHp { get { return 1; } set { } }
         public int MoveRange => 0;
         public int Speed => 0;
         public Vector3 WorldPosition => transform.position;

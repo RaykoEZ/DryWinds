@@ -20,7 +20,7 @@ namespace Curry.Explore
         event OnMovementBlocked OnBlocked;
         string Name { get; }
         int MaxHp { get; }
-        int CurrentHp { get; }
+        int CurrentHp { get; set; }
         int MoveRange { get; }
         int Speed { get; }
         Vector3 WorldPosition { get; }

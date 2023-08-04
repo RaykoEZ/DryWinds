@@ -53,6 +53,10 @@ namespace Curry.Explore
             m_gauge.SetMaxValue(maxTime);
             m_gauge.SetCurrentValue(time);
         }
+        public void MultiplyCountdownSpeed(float multiplier) 
+        {
+            m_countdown.MultiplyCoundownSpeed(multiplier);
+        }
         // spend time and check if we run out of time
         public void SpendTime(EventInfo time)
         {
