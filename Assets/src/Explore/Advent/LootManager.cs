@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 namespace Curry.Explore
 {
-    public class LootManager : MonoBehaviour 
+    public class LootManager : SceneInterruptBehaviour 
     {
         [SerializeField] DeckManager m_deck = default;
         [SerializeField] ChoicePrompter m_prompter = default;
+        OnChoiceFinish m_onFinish;
         public void ReceiveLoot_FromAsset(List<CardAsset> items) 
         {
             if (items == null || items.Count == 0) return;
@@ -19,7 +20,14 @@ namespace Curry.Explore
         }
         public void ChooseLoot(List<IChoice> items, ChoiceConditions conditions, OnChoiceFinish onFinish) 
         {
-            m_prompter.MakeChoice(conditions, items, onFinish);
+            StartInterrupt();
+            m_onFinish = onFinish;
+            m_prompter.MakeChoice(conditions, items, OnLootChosen);
+        }
+        void OnLootChosen(ChoiceResult result) 
+        {
+            m_onFinish?.Invoke(result);
+            EndInterrupt();
         }
     }
 }

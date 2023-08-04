@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Curry.UI
 {
-    public class TimeDealerManager : MonoBehaviour
+    public class TimeDealerManager : SceneInterruptBehaviour
     {
         [SerializeField] Animator m_anim = default;
         [SerializeField] List<EncounterOptionDisplay> m_optionDisplays = default;
@@ -14,6 +14,7 @@ namespace Curry.UI
         GameStateContext m_contextRef;
         public void Begin(GameStateContext context) 
         {
+            StartInterrupt();
             m_contextRef = context;
             List<EncounterOptionAttribute> optionContent =
                 SamplingUtil.SampleFromList(m_sacrificeOptions.Detail.Options, m_optionDisplays.Count);
@@ -41,6 +42,7 @@ namespace Curry.UI
             yield return StartCoroutine(EncounterOption.Activate(m_contextRef, content.Effects));
             yield return new WaitForEndOfFrame();
             m_anim.SetBool("active", false);
+            EndInterrupt();
         }
     }
 }

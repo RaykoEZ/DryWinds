@@ -17,15 +17,15 @@ MonoBehaviour:
     m_description: 
     m_coverImage: {fileID: 0}
     m_options:
-    - m_description: Discard 1 random card in hand.
+    - m_description: + 20 time. Discard 1 random card in hand.
       m_optionDetail: {fileID: 11400000, guid: 36c55d4943d428a4e9c468585cdf05a3, type: 2}
-    - m_description: Half your current HP.
+    - m_description: + 20 time. Half your current HP.
       m_optionDetail: {fileID: 11400000, guid: e7388ef4ad8a0974a9b65643a905aaf2, type: 2}
-    - m_description: Set your HP to 1.
+    - m_description: + 50 time. Set your HP to 1.
       m_optionDetail: {fileID: 11400000, guid: dfe28a072761e1a4c90cfe2e2b8790d7, type: 2}
-    - m_description: Discard all cards in hand.
+    - m_description: + 50 time. Discard all cards in hand.
       m_optionDetail: {fileID: 11400000, guid: 26e1d11ca34ce344ca40433d24e0ad15, type: 2}
-    - m_description: Trigger cooldown for all cards in hand.
+    - m_description: + 30 time. Trigger cooldown for all cards in hand.
       m_optionDetail: {fileID: 11400000, guid: fae5be12a1e8166418fb50239d376368, type: 2}
-    - m_description: 2x time countdown speed.
+    - m_description: + 20 time. 2x time countdown speed.
       m_optionDetail: {fileID: 11400000, guid: ac784608d9210f848a7c3d51c1cfc85b, type: 2}

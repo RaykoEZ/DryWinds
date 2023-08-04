@@ -44,8 +44,8 @@ namespace Curry.Util
             //Sample probability variables
             float p;
             float sample;
-            int numToGet = numToSample;
-            int numLeftInRange = pool.Count;
+            float numToGet = numToSample;
+            float numLeftInRange = pool.Count;
             foreach (T v in pool)
             {
                 p = numToGet / numLeftInRange;

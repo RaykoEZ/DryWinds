@@ -181,7 +181,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Adventure!
+  m_text: Move
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -10130,6 +10130,11 @@ MonoBehaviour:
     - {fileID: 1190344612}
     - {fileID: 62530894}
     - {fileID: 653269627}
+    - {fileID: 649382612}
+    - {fileID: 452360001}
+    - {fileID: 2069251241}
+    - {fileID: 1071136224}
+    - {fileID: 482587160343691970}
 --- !u!1 &1678595318
 GameObject:
   m_ObjectHideFlags: 0
@@ -13421,6 +13426,10 @@ PrefabInstance:
     - target: {fileID: 858425703597714414, guid: a8c7292d353e01143a7212dcb75665f7, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2648139554296966884, guid: a8c7292d353e01143a7212dcb75665f7, type: 3}
+      propertyPath: m_initTimerValueInSeconds
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 6929260595591169722, guid: a8c7292d353e01143a7212dcb75665f7, type: 3}
       propertyPath: m_AnchorMax.x

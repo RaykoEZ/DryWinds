@@ -4,12 +4,11 @@ using UnityEngine;
 using UnityEngine.UI;
 using Curry.UI;
 using System.Collections.Generic;
-using System;
 
 namespace Curry.Explore
 {
     public delegate void OnEncounterUpdate();
-    public class EncounterUIHandler : MonoBehaviour
+    public class EncounterUIHandler : SceneInterruptBehaviour
     {
         [SerializeField] Animator m_anim = default;
         [SerializeField] TextMeshProUGUI m_title = default;
@@ -22,6 +21,7 @@ namespace Curry.Explore
         GameStateContext m_contextRef;
         public void BeginEncounter(EncounterDetail detail, GameStateContext context) 
         {
+            StartInterrupt();
             m_contextRef = context;
             // Set backgound image
             // Set Title & Description text
@@ -63,6 +63,7 @@ namespace Curry.Explore
         // Do dialogues
         IEnumerator OnChosen_Internal(EncounterOption outcome) 
         {
+            EndInterrupt();
             var content = outcome.GetOutcomeContent();
             m_dialogue.OpenDialogue(content.Dialogue, "");
             // call option effect when we finish dialogue

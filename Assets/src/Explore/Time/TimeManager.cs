@@ -68,6 +68,8 @@ namespace Curry.Explore
         public void AddTime(int time) 
         {
             m_timeLeftToClear += time;
+            UpdateTurnTimer();
+            m_gauge.SetCurrentValue(m_timeLeftToClear);
         }
         // spend time and check if we run out of time
         public bool TrySpendTime(int timeToSpend) 
