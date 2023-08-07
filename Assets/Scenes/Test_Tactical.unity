@@ -13417,7 +13417,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 537909833278201035, guid: a8c7292d353e01143a7212dcb75665f7, type: 3}
       propertyPath: m_timeToClear
-      value: 2
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 858425703597714414, guid: a8c7292d353e01143a7212dcb75665f7, type: 3}
       propertyPath: m_AnchorMax.x
@@ -13429,7 +13429,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2648139554296966884, guid: a8c7292d353e01143a7212dcb75665f7, type: 3}
       propertyPath: m_initTimerValueInSeconds
-      value: 3
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 6929260595591169722, guid: a8c7292d353e01143a7212dcb75665f7, type: 3}
       propertyPath: m_AnchorMax.x

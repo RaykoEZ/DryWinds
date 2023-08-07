@@ -12,6 +12,7 @@
 *.cache
 *.log
 *.wav
+*.mp4
 Assets/TextMesh Pro*
 Assets/Art/SFXPackages*
 Assets/Samples/*
