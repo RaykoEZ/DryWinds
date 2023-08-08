@@ -18,9 +18,15 @@ namespace Curry.UI.Tutorial
         }
         public void BeginDisplay() 
         {
-            UIAnim?.Show();
             m_currentPage = 0;
+            UIAnim?.Show();
             m_pages[m_currentPage]?.Play();
+        }
+        public void EndDisplay() 
+        {
+            m_pages[m_currentPage]?.Stop();
+            UIAnim?.Hide();
+            m_currentPage = 0;
         }
         public void NextPage() 
         {
