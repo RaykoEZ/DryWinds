@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace Curry.Explore
 {
+    // This triggers multiple ui elements to show/hide at the same time.
     [Serializable]
     public class HideableUITrigger
     {
