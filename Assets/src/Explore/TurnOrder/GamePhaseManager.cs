@@ -1,8 +1,6 @@
-﻿using Curry.Util;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditorInternal;
 using UnityEngine;
 
 namespace Curry.Explore
