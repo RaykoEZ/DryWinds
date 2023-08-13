@@ -19,11 +19,13 @@ namespace Curry.UI.Tutorial
         public void BeginDisplay() 
         {
             m_currentPage = 0;
+            m_pageIndicator?.PageIcons[m_currentPage]?.Highlight();
             UIAnim?.Show();
             m_pages[m_currentPage]?.Play();
         }
         public void EndDisplay() 
         {
+            m_pageIndicator?.PageIcons[m_currentPage]?.StopHighlight();
             m_pages[m_currentPage]?.Stop();
             UIAnim?.Hide();
             m_currentPage = 0;
