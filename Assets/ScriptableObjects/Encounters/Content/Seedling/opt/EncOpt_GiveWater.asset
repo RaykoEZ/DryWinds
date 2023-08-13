@@ -20,6 +20,7 @@ MonoBehaviour:
     m_effects:
     - {fileID: 11400000, guid: 4bc38434974068c4589ecf0c139f6fc7, type: 2}
     - {fileID: 11400000, guid: 19c4bfbfef970f84e9e6191eb7a55122, type: 2}
+    - {fileID: 11400000, guid: 070fe76de5d8ef147a041b3f1c82513c, type: 2}
     m_dialogue:
     - With just some water, the vegetation grew in a blink of an eye.
     - A bean-like fruiting body falls on your head.

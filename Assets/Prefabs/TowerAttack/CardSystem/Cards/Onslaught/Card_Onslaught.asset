@@ -15,7 +15,7 @@ MonoBehaviour:
   m_resource:
     m_properties:
       m_name: Onslaught
-      m_description: Deal 4 damage to target enemy, if it dies,, gain 1 AP, and +
+      m_description: Deal 4 damage to target enemy, if it dies, gain 1 AP, and +
         4 damage next time you activate this card.
       m_cardArt: {fileID: 21300000, guid: 01fab61f53c0e924b9b2bf4a49a8f9e5, type: 3}
       m_targetingRange: {fileID: 11400000, guid: 9854b15ca8b244d4f941a1ada2f81708, type: 2}
