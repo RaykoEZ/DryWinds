@@ -2,13 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Curry.UI.Tutorial
+namespace Curry.UI
 {
+    public delegate void OnTopicChosen(PageTopicManager sender);
     [RequireComponent(typeof(HideableUI))]
     public class PageTopicManager : MonoBehaviour
     {
         [SerializeField] List<UIPage> m_pages = default;
         [SerializeField] PageIndicator m_pageIndicator = default;
+        public event OnTopicChosen OnChosen;
         HideableUI UIAnim => GetComponent<HideableUI>();
         int m_currentPage = 0;
         void Start()
@@ -22,6 +24,7 @@ namespace Curry.UI.Tutorial
             m_pageIndicator?.PageIcons[m_currentPage]?.Highlight();
             UIAnim?.Show();
             m_pages[m_currentPage]?.Play();
+            OnChosen?.Invoke(this);
         }
         public void EndDisplay() 
         {

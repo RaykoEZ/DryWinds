@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace Curry.UI.Tutorial
+namespace Curry.UI
 {
     public class PageIndicator : MonoBehaviour
     {

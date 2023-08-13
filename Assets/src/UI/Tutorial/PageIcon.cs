@@ -1,7 +1,7 @@
 ﻿using Curry.Explore;
 using UnityEngine;
 
-namespace Curry.UI.Tutorial
+namespace Curry.UI
 {
     [RequireComponent(typeof(HideableUI))]
     public class PageIcon : MonoBehaviour 
