@@ -6,6 +6,7 @@ namespace Assets.src.UI
     public class OptionToggle : SceneInterruptBehaviour
     {
         [SerializeField] CanvasGroup m_canvasGroup = default;
+        [SerializeField]
         protected bool IsOn = false;
         void Start()
         {
