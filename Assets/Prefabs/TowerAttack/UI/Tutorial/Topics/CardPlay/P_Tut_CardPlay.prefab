@@ -34,13 +34,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2302161360218645685, guid: 52f0ec30e6a1ee049aebd76a88f3c7c4, type: 3}
       propertyPath: m_text
-      value: " If the card requires a target, the game will highlight valid targets
-        when you begin dragging the card. \n\nDrag the card and point the guide arrow
-        onto a valid position."
+      value: " If the card needs to choose a target, the game will highlight the
+        valid target tiles when you begin to drag the card. \n\nDrag the card and
+        point the guide arrow onto a valid position."
       objectReference: {fileID: 0}
     - target: {fileID: 2302161360218645685, guid: 52f0ec30e6a1ee049aebd76a88f3c7c4, type: 3}
       propertyPath: m_fontSize
-      value: 38.95
+      value: 37
       objectReference: {fileID: 0}
     - target: {fileID: 2302161360857643454, guid: 52f0ec30e6a1ee049aebd76a88f3c7c4, type: 3}
       propertyPath: m_Name
@@ -161,10 +161,6 @@ PrefabInstance:
     serializedVersion: 2
     m_TransformParent: {fileID: 6402629417848537983}
     m_Modifications:
-    - target: {fileID: 1591768533878233863, guid: 5bbc66536d254e948aa30db4cc38e130, type: 3}
-      propertyPath: m_Alpha
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 7786275763366740006, guid: 5bbc66536d254e948aa30db4cc38e130, type: 3}
       propertyPath: m_SizeDelta.x
       value: 1080
@@ -586,10 +582,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7761773370254739201, guid: 52f0ec30e6a1ee049aebd76a88f3c7c4, type: 3}
-      propertyPath: m_Alpha
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 52f0ec30e6a1ee049aebd76a88f3c7c4, type: 3}
@@ -643,7 +635,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2302161360218645685, guid: 52f0ec30e6a1ee049aebd76a88f3c7c4, type: 3}
       propertyPath: m_text
-      value: Drag card into the green region to activate a card.
+      value: Use <b>[LMB]</b> to drag the card into the green region to activate
+        its effect.
       objectReference: {fileID: 0}
     - target: {fileID: 2302161360218645685, guid: 52f0ec30e6a1ee049aebd76a88f3c7c4, type: 3}
       propertyPath: m_fontSize
@@ -735,10 +728,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2302161360857643455, guid: 52f0ec30e6a1ee049aebd76a88f3c7c4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7761773370254739201, guid: 52f0ec30e6a1ee049aebd76a88f3c7c4, type: 3}
-      propertyPath: m_Alpha
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

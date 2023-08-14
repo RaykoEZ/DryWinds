@@ -15,7 +15,7 @@ MonoBehaviour:
   m_assault:
     m_properties:
       m_name: Assault
-      m_description: Deal 3 damage to target enemy.
+      m_description: Deal 3 damage to a target enemy.
       m_cardArt: {fileID: 21300000, guid: 487d29cbebfcc644892e243904556b2b, type: 3}
       m_targetingRange: {fileID: 11400000, guid: 9854b15ca8b244d4f941a1ada2f81708, type: 2}
       m_cost:
