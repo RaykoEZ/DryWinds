@@ -21,7 +21,7 @@ namespace Curry.Explore
     {
         [SerializeField] protected string m_name = default;
         [SerializeField] TacticalStats m_initStats = default;
-        [SerializeField] AudioManager m_audio = default;
+        [SerializeField] protected AudioManager m_audio = default;
         [SerializeField] protected VfxSequencePlayer m_vfxHandler = default;
         protected TacticalStatManager m_statManager;
         protected bool m_blocked = false;

@@ -5,7 +5,6 @@ using UnityEngine;
 using Curry.Events;
 using Curry.Game;
 using Curry.UI;
-using static UnityEngine.EventSystems.EventTrigger;
 
 namespace Curry.Explore
 {
