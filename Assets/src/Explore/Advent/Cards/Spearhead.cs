@@ -15,10 +15,9 @@ namespace Curry.Explore
             m_attack = effect.m_attack;
             m_moveTo = effect.m_moveTo;
         }
-
         public override bool IsActivatable(GameStateContext c)
         {
-            bool isBlocked = c.Movement.IsPathObstructed(m_targeting.Target, c.Player.WorldPosition);
+            bool isBlocked = c.Movement.IsPathObstructed(m_targeting.Target, c.Player.WorldPosition, true);
             return !isBlocked;
         }
         public override IEnumerator ActivateEffect(ICharacter user, GameStateContext context)

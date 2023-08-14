@@ -12,6 +12,7 @@ namespace Curry.Explore
     public class MovementManager: SceneInterruptBehaviour 
     {
         [SerializeField] protected Adventurer m_player = default;
+        [SerializeField] protected ObstacleAlertHandler m_alert = default;
         [SerializeField] protected EncounterManager m_encounter = default;
         [SerializeField] protected Tilemap m_terrain = default;
         [SerializeField] protected FogOfWar m_fog = default;
@@ -54,20 +55,23 @@ namespace Curry.Explore
             MoveCharacter(toMove, worldPos, ActionCostHandler.BaseMovementCost, onMoveFinish);
         }
         // Do a collision check for direct path ahead, if there are hidden obstaclesm we allow the move
-        public bool IsPathObstructed(Vector3 targetCellCenterWorld, Vector3 origin) 
+        public bool IsPathObstructed(Vector3 targetCellCenterWorld, Vector3 origin, bool alertPlayer = false) 
         {
             // find any obstacles between player and destination
             Vector3 diff = targetCellCenterWorld - origin;
+            Vector3 diffnorm = diff.normalized;
             var hit = Physics2D.CircleCastAll
                 (origin, 
-                0.5f, 
-                diff.normalized, 
+                0.5f,
+                diffnorm, 
                 Vector2.Distance(origin, 
                 targetCellCenterWorld), 
                 LayerMask.GetMask(s_gameplayCollisionFilters));
             bool allObstaclesAreUnKnown = true;
             Vector3 pos;
             Vector3Int coord;
+            // used to access the obstructing grid when collision hits an edge on a tile map
+            Vector2 gridPosShift = new Vector2(0.1f * diffnorm.x, 0.1f * diffnorm.y);
             foreach (var obstacle in hit)
             {
                 // If even one obstacle is visible, we prevent movement
@@ -79,13 +83,15 @@ namespace Curry.Explore
                 }
                 else
                 {
+
                     //check if fog of war is active on this obstacle position
-                    pos = obstacle.point;
+                    pos = obstacle.point + gridPosShift;
                     coord = m_terrain.WorldToCell(pos);
                     bool isClear = m_fog.IsCellClear(coord);
                     if (isClear)
                     {
                         allObstaclesAreUnKnown = false;
+                        m_alert.AlertObstacle(m_terrain.GetCellCenterWorld(coord), alertPlayer);
                         break;
                     }
                 }
@@ -104,7 +110,7 @@ namespace Curry.Explore
             // Trigger player to move to selected tile
             Vector3Int cell = m_terrain.WorldToCell(destination);
             Vector3 cellCenter = m_terrain.GetCellCenterWorld(cell);
-            bool isBlocked = IsPathObstructed(cellCenter, m_player.WorldPosition);
+            bool isBlocked = IsPathObstructed(cellCenter, m_player.WorldPosition, true);
             bool eneoughResource = m_actionCost.HasEnoughResource(cost, true);
             // Check for visible obstructions and time
             if (tileExist && !isBlocked && eneoughResource)
