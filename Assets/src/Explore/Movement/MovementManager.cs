@@ -15,6 +15,7 @@ namespace Curry.Explore
         [SerializeField] protected ObstacleAlertHandler m_alert = default;
         [SerializeField] protected EncounterManager m_encounter = default;
         [SerializeField] protected Tilemap m_terrain = default;
+        [SerializeField] protected Tilemap m_wall = default;
         [SerializeField] protected FogOfWar m_fog = default;
         [SerializeField] protected ActionCostHandler m_actionCost = default;
         [SerializeField] protected CurryGameEventListener m_onAdventure = default;
@@ -87,11 +88,13 @@ namespace Curry.Explore
                     //check if fog of war is active on this obstacle position
                     pos = obstacle.point + gridPosShift;
                     coord = m_terrain.WorldToCell(pos);
+                    bool wallCheck = m_wall.HasTile(coord);
                     bool isClear = m_fog.IsCellClear(coord);
-                    if (isClear)
+                    if (wallCheck || isClear)
                     {
                         allObstaclesAreUnKnown = false;
                         m_alert.AlertObstacle(m_terrain.GetCellCenterWorld(coord), alertPlayer);
+                        m_fog.SetFogOfWar(pos);
                         break;
                     }
                 }

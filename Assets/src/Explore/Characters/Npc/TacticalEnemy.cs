@@ -8,6 +8,7 @@ namespace Curry.Explore
     public abstract class TacticalEnemy : TacticalCharacter, IEnemy, IMovableEnemy, IPoolable
     {
         [SerializeField] protected Animator m_anim = default;
+        [SerializeField] protected Animator m_detectTrigger = default;
         [SerializeField] protected CharacterDetector m_detect = default;
         public event OnEnemyMove OnMove;
         public event OnAbilityMessage OnAbility;
@@ -128,6 +129,9 @@ namespace Curry.Explore
         {
             if (TargetsInSight.Count > 0)
             {
+                m_audio?.Play("detect");
+                m_detectTrigger?.ResetTrigger("detectTrigger");
+                m_detectTrigger?.SetTrigger("detectTrigger");
                 OnCombat();
                 Reveal();
             }
