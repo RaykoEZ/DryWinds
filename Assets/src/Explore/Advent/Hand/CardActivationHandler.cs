@@ -1,12 +1,14 @@
 ﻿using UnityEngine;
 using Curry.Events;
 using System.Collections;
+using Curry.UI;
 
 namespace Curry.Explore
 {
     // Handles card activation triggers after a card finishes targeting a position
     public class CardActivationHandler : MonoBehaviour
     {
+        [SerializeField] TacticalCameraManager m_camera = default;
         [SerializeField] Transform m_playerTransform = default;
         [SerializeField] PlayZone m_playZone = default;
         [SerializeField] SelectionManager m_selection = default;
@@ -43,6 +45,7 @@ namespace Curry.Explore
         }
         public void TargetGuide(DraggableCard draggable)
         {
+            m_camera?.FocusCamera(m_playerTransform.position);
             AdventCard card = draggable.Card;
             if (card.Resource is ITargetsPosition)
             {
