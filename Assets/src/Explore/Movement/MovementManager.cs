@@ -5,6 +5,7 @@ using Curry.Events;
 using System.Collections.Generic;
 using TMPro;
 using Curry.Game;
+using Curry.UI;
 
 namespace Curry.Explore
 {
@@ -12,6 +13,7 @@ namespace Curry.Explore
     public class MovementManager: SceneInterruptBehaviour 
     {
         [SerializeField] protected Adventurer m_player = default;
+        [SerializeField] protected TextMessageDisplay m_message = default;
         [SerializeField] protected ObstacleAlertHandler m_alert = default;
         [SerializeField] protected EncounterManager m_encounter = default;
         [SerializeField] protected Tilemap m_terrain = default;
@@ -129,8 +131,8 @@ namespace Curry.Explore
             }
             else
             {
+                m_message?.OnGameMessage(new GameMessageInfo("Cannot move there"));
                 EndInterrupt();
-                Debug.Log("Unable to move there.");
             }
         }
         IEnumerator StartMovement(ICharacter toMove, Vector3 destination, IEnumerator onFinish = null) 

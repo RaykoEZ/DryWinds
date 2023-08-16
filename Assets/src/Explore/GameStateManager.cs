@@ -19,8 +19,7 @@ namespace Curry.Explore
         public DeckManager Deck { get; private set; }
         public MovementManager Movement { get; private set; }
         public LootManager LootManager { get; private set; }
-        public ActionCounter ActionCount { get; private set; }
-        
+        public ActionCounter ActionCount { get; private set; }       
         public GameConditionAttribute Milestones { get; private set; }
         public GameStateContext(
             int timeLeft, 
@@ -86,7 +85,7 @@ namespace Curry.Explore
             m_player.OnDefeat += OnPlayerDefeat;
             m_time.OnOutOfTimeTrigger += OnOutOfTime;
             m_objectives.OnCriticalFailure += OnCriticalFail;
-            m_objectives.AllCriticalComplete += OnGameCleared;
+            m_objectives.OnCriticalComplete += OnGameCleared;
             StartCoroutine(StartGame_Interal());
         }
         IEnumerator StartGame_Interal() 
