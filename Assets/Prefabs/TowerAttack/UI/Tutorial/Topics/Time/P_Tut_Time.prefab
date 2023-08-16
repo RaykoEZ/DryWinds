@@ -19,7 +19,7 @@ PrefabInstance:
     - target: {fileID: 7786275763366740007, guid: 5bbc66536d254e948aa30db4cc38e130, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: da2947f7691dce1429ba208dbedd6596, type: 3}
+      objectReference: {fileID: 21300000, guid: 1a705e90cdbc23b45bbe779ef914ba90, type: 3}
     - target: {fileID: 8357699055628493516, guid: 5bbc66536d254e948aa30db4cc38e130, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -110,9 +110,9 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8357699056002170822, guid: 5bbc66536d254e948aa30db4cc38e130, type: 3}
       propertyPath: m_text
-      value: "When the green countdown reaches 0, 1 unit of time is spent. \n\nMany
-        aspects of the game requires spending time, manage your time effeciently
-        to succeed."
+      value: "Many aspects of the game requires spending time, manage your time effeciently
+        to succeed.\n\nThe green countdown is your time left before you run out of
+        time... \n"
       objectReference: {fileID: 0}
     - target: {fileID: 8357699056002170822, guid: 5bbc66536d254e948aa30db4cc38e130, type: 3}
       propertyPath: m_fontSize

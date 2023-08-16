@@ -1,4 +1,5 @@
-﻿using Curry.Util;
+﻿using Curry.Explore;
+using Curry.Util;
 using System.Collections;
 using TMPro;
 using UnityEngine;
@@ -6,29 +7,41 @@ using UnityEngine;
 namespace Curry.UI
 {
     public delegate void OnCountdownFinish();
+    public interface ICountdown 
+    {
+        event OnCountdownFinish OnFinish;
+        void BeginCountdown();
+        void MultiplyCountdownSpeed(float multiplier);
+        void StopCountdown();
+        void ResetCountdown(int newInitTime = 0);
+    }
     [RequireComponent(typeof(CoroutineManager))]
     // Handles displaying a countdown timer with TextMeshPro in seconds in game time (second)
-    public class RealtimeCountdown : MonoBehaviour
+    public class RealtimeCountdown : TimeManager, ICountdown
     {
-        [SerializeField] protected int m_initTimerValueInSeconds = default;
+        [SerializeField] protected int m_defaultTimeInSeconds = default;
         [SerializeField] protected TextMeshProUGUI m_display = default;
         [SerializeField] protected CoroutineManager m_coroutineManager = default;
         protected const float c_baseWaitTime = 1f;
         protected float m_speedMultipier = 1f;
         protected int m_currentTimer = 0;
         public event OnCountdownFinish OnFinish;
+        event OnCountdownFinish OnFinish_Internal;
         protected float CurrentCountdownTimeInterval => 
             Mathf.Clamp(c_baseWaitTime/m_speedMultipier, 0.1f, 5f);
+        public override int TimeToClear => m_defaultTimeInSeconds;
+        public override int TimeLeftToClear => m_currentTimer;
         void Start()
         {
-            m_currentTimer = m_initTimerValueInSeconds;     
+            m_currentTimer = m_defaultTimeInSeconds;
+            OnFinish_Internal += ReplayCountdown;
         }
         // Use this for initialization
         public void BeginCountdown()
         {
             m_coroutineManager.ScheduleCoroutine(Countdown_Internal(), true);
         }
-        public void MultiplyCoundownSpeed(float multiplier) 
+        public void MultiplyCountdownSpeed(float multiplier) 
         {
             m_speedMultipier *= multiplier >= 0f ? multiplier : 1f;
         }
@@ -39,8 +52,11 @@ namespace Curry.UI
                 m_display.text = m_currentTimer.ToString();
                 yield return new WaitForSeconds(CurrentCountdownTimeInterval);
                 m_currentTimer--;
+                NotifyTimeSpent(1);
             }
+            OnFinish_Internal?.Invoke();
             OnFinish?.Invoke();
+            OnOutOfTime();
         }
         // Update is called once per frame
         public void StopCountdown()
@@ -51,7 +67,42 @@ namespace Curry.UI
         {
             m_coroutineManager.StopAllCoroutines();
             m_speedMultipier = 1f;
-            m_currentTimer = newInitTime <= 0 ? m_initTimerValueInSeconds : newInitTime;
+            m_currentTimer = newInitTime <= 0 ? m_defaultTimeInSeconds : newInitTime;
+        }
+        public override void AddTime(int time)
+        {
+            m_currentTimer += time;
+        }
+        public override bool TrySpendTime(int timeToSpend)
+        {
+            bool enoughTime = TimeLeftToClear >= timeToSpend;
+            if (enoughTime)
+            {
+                m_currentTimer -= timeToSpend;
+                NotifyTimeSpent(timeToSpend);
+            }
+            return enoughTime;
+        }
+        public override void SpendTime(int timeToSpend)
+        {
+            int temp = m_currentTimer;
+            m_currentTimer = Mathf.Max(m_currentTimer - timeToSpend, 0);
+            NotifyTimeSpent(temp - m_currentTimer);
+
+        }
+        public override void SetTime(int time)
+        {
+            m_currentTimer = time;
+        }
+
+        public override void SetMaxTime(int maxTime)
+        {
+            m_defaultTimeInSeconds = maxTime;
+        }
+        protected void ReplayCountdown() 
+        {
+            ResetCountdown();
+            BeginCountdown();
         }
     }
 }

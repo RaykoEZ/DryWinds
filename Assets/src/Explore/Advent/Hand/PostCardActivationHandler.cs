@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.UIElements.UxmlAttributeDescription;
 
 namespace Curry.Explore
 {

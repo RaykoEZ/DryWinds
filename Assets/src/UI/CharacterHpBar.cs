@@ -40,9 +40,15 @@ namespace Curry.UI
         }
         void UpdateHpStats(TacticalStats newStats)
         {
-            m_bar?.SetMaxValue(newStats.MaxHp);
-            UpdateHp(0, newStats.Hp);
-            SetHpText(newStats.Hp, newStats.MaxHp);
+            if (newStats.MaxHp != m_bar.Max) 
+            {
+                m_bar?.SetMaxValue(newStats.MaxHp);
+            }
+            if (newStats.Hp != m_bar.Current) 
+            {
+                UpdateHp(0, newStats.Hp);
+                SetHpText(newStats.Hp, newStats.MaxHp);
+            }
         }
     }
 }

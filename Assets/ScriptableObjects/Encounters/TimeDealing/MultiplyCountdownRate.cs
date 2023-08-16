@@ -7,11 +7,11 @@ namespace Curry.Explore
     public class MultiplyCountdownRate : PropertyAttribute
     {
         [SerializeField] float m_multiplier = default;
-        public void ApplyEffect(TimeManager time)
+        public void ApplyEffect(ICountdown time)
         {
             time.MultiplyCountdownSpeed(m_multiplier);
         }
-        public void ApplyEffect(TimeManager time, float mult)
+        public void ApplyEffect(ICountdown time, float mult)
         {
             time.MultiplyCountdownSpeed(mult);
         }

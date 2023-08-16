@@ -13,7 +13,6 @@ namespace Curry.Explore
         [SerializeField] GameMessageTrigger m_message = default;
         public static readonly ActionCost BaseMovementCost = 
             new ActionCost { ActionPoint = 1, Time = 1 };
-
         public bool HasEnoughResource(ActionCost cost, bool errorMessage = false) 
         {
             bool enoughTime = cost.Time <= m_time.TimeLeftToClear;
@@ -41,12 +40,10 @@ namespace Curry.Explore
         }
         public void BeginPreview(ActionCost cost) 
         {
-            m_time?.PreviewCost(cost.Time);
             m_actionCounter?.PreviewCost(cost.ActionPoint);
         }
         public void CancelPreview() 
         {
-            m_time?.CancelPreview();
             m_actionCounter?.CancelPreview();
         }
     }

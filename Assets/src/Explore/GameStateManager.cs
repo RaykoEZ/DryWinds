@@ -112,7 +112,7 @@ namespace Curry.Explore
         }
         void OnOutOfTime() 
         {
-            m_time.MultiplyCountdownSpeed(1.2f);
+            (m_time as ICountdown)?.MultiplyCountdownSpeed(1.2f);
             m_timeDealer.Begin(GetCurrent());
         }
         void OnPlayerDefeat(ICharacter player) 
@@ -127,7 +127,7 @@ namespace Curry.Explore
         }
         void OnGameCleared()
         {
-            m_resultText.text = "Main Objectives Complete";
+            m_resultText.text = "Main Objectives Complete. Thank you for playing!";
             StartCoroutine(UpdateResultPanel());
         }
         IEnumerator UpdateResultPanel() 

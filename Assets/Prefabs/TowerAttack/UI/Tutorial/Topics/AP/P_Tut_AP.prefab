@@ -104,7 +104,7 @@ PrefabInstance:
       propertyPath: m_text
       value: "- AP is consumed in multiple ways (e.g. moving your character, playing
         certain cards, organizing cards between inventory and hand, etc) \n- You
-        can hold 3 AP maximum, and AP is restored to full after you end your turn."
+        can hold 3 AP maximum, and AP is restored over time."
       objectReference: {fileID: 0}
     - target: {fileID: 8357699056002170822, guid: 5bbc66536d254e948aa30db4cc38e130, type: 3}
       propertyPath: m_fontSize

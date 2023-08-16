@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: GainTime_S
   m_EditorClassIdentifier: 
   m_effect:
-    m_toGain: 20
+    m_toGain: 30

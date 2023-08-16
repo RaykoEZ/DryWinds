@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Curry.UI;
+using System;
 using UnityEngine;
 namespace Curry.Explore
 {
@@ -11,11 +12,17 @@ namespace Curry.Explore
         MultiplyCountdownRate Effect => m_effect;
         public override void Activate(GameStateContext context)
         {
-            Effect.ApplyEffect(context.Time);
+            if(context.Time is ICountdown coutdown)
+            {
+                Effect.ApplyEffect(coutdown);
+            }
         }
         public void Activate(GameStateContext context, float multiplier)
         {
-            Effect.ApplyEffect(context.Time, multiplier);
+            if (context.Time is ICountdown coutdown)
+            {
+                Effect.ApplyEffect(coutdown, multiplier);
+            }
         }
     }
 }

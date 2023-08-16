@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using TMPro;
+using Curry.UI;
 
 namespace Curry.Explore
 {
@@ -8,25 +9,28 @@ namespace Curry.Explore
         [SerializeField] int m_maxMovePoint = default;
         [SerializeField] protected TextMeshProUGUI m_apValueField = default;
         [SerializeField] protected TextMeshProUGUI m_diff = default;
-        [SerializeField] TurnEnd m_turnEnd = default;
+        [SerializeField] ResourceBar m_apChargeBar = default;
         bool m_onPreview = false;
         int m_previous;
         int m_current = 0;
         public int CurrentActionPoint => m_onPreview? m_previous : m_current;
         void Start()
         {
-            m_turnEnd.OnTurnEnding += FullRecovery;
+            m_apChargeBar.OnFinish += RecoverAp;
+            m_apChargeBar.SetMaxValue(m_maxMovePoint);
+            m_apChargeBar.SetBarValue(0f, true);
             UpdateMoveCountDisplay(m_maxMovePoint);
         }
-        public void FullRecovery() 
+        public void RecoverAp() 
         {
-            UpdateMoveCountDisplay(m_maxMovePoint);
+            m_apChargeBar.SetBarValue(0f, true);
+            UpdateMoveCountDisplay(m_current + 1);
         }
         public void Empty() 
         {
             UpdateMoveCountDisplay(0);
         }
-        public void UpdateMoveCountDisplay(int current)
+        public void UpdateMoveCountDisplay(int current, bool preview = false)
         {
             m_previous = m_current;
             m_current = Mathf.Clamp(current, 0, m_maxMovePoint);
@@ -36,6 +40,15 @@ namespace Curry.Explore
                 m_diff.text = "";
                 m_onPreview = false;
             }
+            // Charge Ap until Ap reaches maximum value
+            if (m_current < m_maxMovePoint && !preview) 
+            {
+                StartChargingAp();
+            }
+        }
+        void StartChargingAp() 
+        {
+            m_apChargeBar.SetBarValue(m_apChargeBar.Max);
         }
         public void PreviewFullRecovery()
         {
@@ -63,7 +76,7 @@ namespace Curry.Explore
                     display = $"<color=green>( + {-toSpend})</color>";
                 }
                 m_diff.text = display;
-                UpdateMoveCountDisplay(newCurrent);
+                UpdateMoveCountDisplay(newCurrent, true);
                 m_onPreview = true;
             }
         }
@@ -71,7 +84,7 @@ namespace Curry.Explore
         {
             if (m_onPreview)
             {
-                UpdateMoveCountDisplay(m_previous);
+                UpdateMoveCountDisplay(m_previous, true);
             }
         }
     }
