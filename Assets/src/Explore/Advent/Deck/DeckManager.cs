@@ -8,7 +8,7 @@ namespace Curry.Explore
 {
     // Contained database for all available advent(cards and decks)
     // Quiries Tile info for a tile in its tilemap coordinate
-    public class DeckManager : MonoBehaviour
+    public class DeckManager : SceneInterruptBehaviour
     {
         [SerializeField] protected Inventory m_inventory = default;
         [SerializeField] protected CardDatabase m_cardPool = default;
@@ -32,7 +32,9 @@ namespace Curry.Explore
             {
                 OnCardChosen(result);
                 onChosen?.Invoke();
+                EndInterrupt();
             };
+            StartInterrupt();
             m_prompter.MakeChoice(conditions, choices, onChosenCallback);
         }
         // Instantiate a clone of cards for selection and inspection

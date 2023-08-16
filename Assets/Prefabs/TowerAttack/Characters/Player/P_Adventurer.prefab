@@ -192,6 +192,7 @@ GameObject:
   - component: {fileID: 2571672766922976635}
   - component: {fileID: 2571672766922976583}
   - component: {fileID: 2556439810352026894}
+  - component: {fileID: 332434650917241209}
   m_Layer: 10
   m_Name: P_Adventurer
   m_TagString: Untagged
@@ -371,6 +372,18 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
+--- !u!225 &332434650917241209
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2571672766922976576}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1001 &2571672768313233080
 PrefabInstance:
   m_ObjectHideFlags: 0
