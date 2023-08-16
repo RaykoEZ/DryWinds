@@ -18,7 +18,7 @@ namespace Curry.Game
         protected List<IObjective> m_completed = new List<IObjective>();
         protected List<IObjective> m_failed = new List<IObjective>();
 
-        public event OnAllComplete AllCriticalComplete;
+        public event OnAllComplete OnCriticalComplete;
         public event OnObjectiveComplete ObjectiveCompleted;
         public event OnObjectiveFail OnFailure;
         public event OnObjectiveFail OnCriticalFailure;
@@ -75,13 +75,13 @@ namespace Curry.Game
         }
         protected virtual void OnObjectiveComplete(IObjective completed) 
         {
+            if (m_critical.Contains(completed))
+            {
+                OnCriticalComplete?.Invoke();
+            }
             CleanupObjective(completed);
             m_completed.Add(completed);
             ObjectiveCompleted?.Invoke(completed);
-            if(m_critical.Count == 0) 
-            {
-                AllCriticalComplete?.Invoke();
-            }
             // Do some animation/notification:
         }
 

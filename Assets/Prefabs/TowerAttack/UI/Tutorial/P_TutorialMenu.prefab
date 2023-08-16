@@ -369,7 +369,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 923518070561812549}
   m_Enabled: 1
-  m_Alpha: 1
+  m_Alpha: 0
   m_Interactable: 1
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
@@ -1206,6 +1206,14 @@ PrefabInstance:
     serializedVersion: 2
     m_TransformParent: {fileID: 923518070341838897}
     m_Modifications:
+    - target: {fileID: 1336875448727907894, guid: 8613acb63fb10594787278fae8896b07, type: 3}
+      propertyPath: m_text
+      value: Organizing Loadout - Hand to Inventory
+      objectReference: {fileID: 0}
+    - target: {fileID: 3904771367607846279, guid: 8613acb63fb10594787278fae8896b07, type: 3}
+      propertyPath: m_text
+      value: Organizing Loadout - Inventory to Hand
+      objectReference: {fileID: 0}
     - target: {fileID: 6830935012409787860, guid: 8613acb63fb10594787278fae8896b07, type: 3}
       propertyPath: m_Name
       value: P_Tut_OrganizeHand

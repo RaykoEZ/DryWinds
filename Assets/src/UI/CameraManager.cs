@@ -6,6 +6,7 @@ namespace Curry.UI
     public class CameraManager : MonoBehaviour
     {
         [SerializeField] Camera m_camera = default;
+        [SerializeField] Vector3 m_defaultFocalPoint = default;
         [Range(0.001f, 5f)]
         [SerializeField] float m_animTime = 0.2f;
         [SerializeField] float m_zoomOrthographSize = 3.5f;
@@ -29,7 +30,7 @@ namespace Curry.UI
         {
             if (!Mathf.Approximately(m_camera.orthographicSize, m_defaultOrthographSize))
             {
-                m_coroutineManager.ScheduleCoroutine(OnCameraFocus(m_currentFocalPoint, m_defaultOrthographSize), interruptNow: true);
+                m_coroutineManager.ScheduleCoroutine(OnCameraFocus(m_defaultFocalPoint, m_defaultOrthographSize), interruptNow: true);
             }
         }
 

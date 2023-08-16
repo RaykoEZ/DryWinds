@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
-using Curry.Events;
+using System.Collections;
+using Curry.UI;
+
 namespace Curry.Explore
 {
     public delegate void OnPlayerTurnEnd();

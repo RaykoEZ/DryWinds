@@ -21,7 +21,6 @@ namespace Curry.Events
         }
         public virtual void OnFailure()
         {
-            Debug.Log("Oof, you failed to rescue VIP in time.");
             OnFailCallback();
         }
     }

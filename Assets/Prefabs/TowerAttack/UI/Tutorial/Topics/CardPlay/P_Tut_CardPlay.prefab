@@ -272,11 +272,11 @@ PrefabInstance:
 
         - Cards have a space occupancy value in
         your hand, if the sum of this value exceeds your hand''s capacity, card will
-        return to your inventory (unless consumed).'
+        return to your inventory when played (unless consumed).'
       objectReference: {fileID: 0}
     - target: {fileID: 8357699056002170822, guid: 5bbc66536d254e948aa30db4cc38e130, type: 3}
       propertyPath: m_fontSize
-      value: 24.3
+      value: 22.55
       objectReference: {fileID: 0}
     - target: {fileID: 8357699056002170822, guid: 5bbc66536d254e948aa30db4cc38e130, type: 3}
       propertyPath: m_HorizontalAlignment

@@ -527,8 +527,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_name: Border Patrol
   m_initStats:
-    maxHp: 7
-    hp: 7
+    maxHp: 10
+    hp: 10
     moveRange: 1
     speed: 1
   m_audio: {fileID: 5768770230270259994}

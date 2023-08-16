@@ -14,7 +14,6 @@ namespace Curry.Explore
         // Happens when player finds clue/comms locations
         public virtual void Rescue() 
         {
-            Debug.Log("tyty");
             m_objective.OnRescue();
         }
         public void Trigger(ICharacter overlapping)
