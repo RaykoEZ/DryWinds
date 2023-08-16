@@ -15,6 +15,7 @@ namespace Curry.Explore
         [SerializeField] CurryGameEventListener m_onDropTileSelected = default;
         [SerializeField] CurryGameEventListener m_onCardActivate = default;
         [SerializeField] ActionCostHandler m_cost = default;
+        [SerializeField] PositionConfirmDisplay m_confirmMovement = default;
         GameStateContext m_contextRef;
         public void Init(GameStateContext c)
         {
@@ -46,6 +47,7 @@ namespace Curry.Explore
         public void TargetGuide(DraggableCard draggable)
         {
             m_camera?.FocusCamera(m_playerTransform.position);
+            m_confirmMovement?.Hide();
             AdventCard card = draggable.Card;
             if (card.Resource is ITargetsPosition)
             {

@@ -4572,6 +4572,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 260086587}
+        m_TargetAssemblyTypeName: Curry.Explore.PositionConfirmDisplay, Assembly-CSharp
+        m_MethodName: Hide
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: a8b346cf-4092-4dca-88f8-8e0653fabdd2
     m_ActionName: UI/Unfocus Camera[/Mouse/rightButton]
   - m_PersistentCalls:
@@ -14169,6 +14181,10 @@ PrefabInstance:
       propertyPath: m_selection
       value: 
       objectReference: {fileID: 1334039897}
+    - target: {fileID: 7774845029451196478, guid: 750af7f6d4fdfe44fb559603f07edcd9, type: 3}
+      propertyPath: m_confirmMovement
+      value: 
+      objectReference: {fileID: 260086587}
     - target: {fileID: 7774845029451196478, guid: 750af7f6d4fdfe44fb559603f07edcd9, type: 3}
       propertyPath: m_playerTransform
       value: 
