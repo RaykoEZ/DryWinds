@@ -6,10 +6,11 @@ using UnityEngine;
 
 namespace Curry.UI
 {
-    public delegate void OnCountdownFinish();
+    public delegate void OnCountdownUpdate();
     public interface ICountdown 
     {
-        event OnCountdownFinish OnFinish;
+        event OnCountdownUpdate OnFinish;
+        event OnCountdownUpdate OnTick;
         void BeginCountdown();
         void MultiplyCountdownSpeed(float multiplier);
         void StopCountdown();
@@ -25,8 +26,10 @@ namespace Curry.UI
         protected const float c_baseWaitTime = 1f;
         protected float m_speedMultipier = 1f;
         protected int m_currentTimer = 0;
-        public event OnCountdownFinish OnFinish;
-        event OnCountdownFinish OnFinish_Internal;
+        public event OnCountdownUpdate OnFinish;
+        event OnCountdownUpdate OnFinish_Internal;
+        public event OnCountdownUpdate OnTick;
+
         protected float CurrentCountdownTimeInterval => 
             Mathf.Clamp(c_baseWaitTime/m_speedMultipier, 0.1f, 5f);
         public override int TimeToClear => m_defaultTimeInSeconds;
@@ -52,6 +55,7 @@ namespace Curry.UI
                 m_display.text = m_currentTimer.ToString();
                 yield return new WaitForSeconds(CurrentCountdownTimeInterval);
                 m_currentTimer--;
+                OnTick?.Invoke();
                 NotifyTimeSpent(1);
             }
             OnFinish_Internal?.Invoke();

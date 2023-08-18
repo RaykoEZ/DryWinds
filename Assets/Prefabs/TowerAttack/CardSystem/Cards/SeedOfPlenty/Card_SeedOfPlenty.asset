@@ -15,8 +15,8 @@ MonoBehaviour:
   m_resource:
     m_properties:
       m_name: Seed of Plenty
-      m_description: 'Cannot be activated. +5 Max HP while in hand. Heals 2 HP at
-        the end of turn. '
+      m_description: 'Cannot be activated. +5 Max HP while in hand. Heals 2 HP every
+        3 seconds. '
       m_cardArt: {fileID: 21300000, guid: 72c350feb323aef47997553416d26af2, type: 3}
       m_targetingRange: {fileID: 0}
       m_cost:
@@ -29,3 +29,4 @@ MonoBehaviour:
     m_vfxTimeLine: {fileID: 11400000, guid: 49a2694614603334ba800b474ba7519e, type: 2}
     m_heal: {fileID: 11400000, guid: a4f325cc6b7ba7f4abaf22c1bf17b8cd, type: 2}
     m_gainStats: {fileID: 11400000, guid: 5e827d8675a852d499aa3c29d0d45afb, type: 2}
+    m_baseRegenTimeInterval: 3

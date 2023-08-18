@@ -26,7 +26,7 @@ namespace Curry.Explore
         [SerializeField] CardActivationHandler m_activation = default;
         [SerializeField] HandCapacityDisplay m_capacity = default;
         [SerializeField] CardAudioHandler m_audio = default;
-        [SerializeField] TurnEnd m_turnEnd = default;
+        [SerializeField] RealtimeCountdown m_countdown = default;
         [SerializeField] protected Hand m_hand = default;
         public int TotalHandHoldingValue => m_hand.TotalHandHoldingValue;
         public int MaxCapacity => m_hand.MaxCapacity;
@@ -40,7 +40,7 @@ namespace Curry.Explore
             m_postActivation.OnReturnToHand += PrepareCards;
             m_postActivation.OnReturnToInventory += ReturnCardsToInventory;
             m_postActivation.OnTakeFromHand += TakeCards;
-            m_turnEnd.OnTurnEnding += OnTurnEndEffect;
+            m_countdown.OnTick += OnTimeTick;
             // get starting hand
             AdventCard[] cards = m_cardHolderRoot.GetComponentsInChildren<AdventCard>();
             m_hand.AddCards(cards);
@@ -86,18 +86,17 @@ namespace Curry.Explore
             card.GetComponent<CardInteractionController>()?.SetInteractionMode(
                 CardInteractMode.Play | CardInteractMode.Inspect);
         }
-        void OnTurnEndEffect() 
+        void OnTimeTick() 
         {
-            StartCoroutine(TurnEndEffect_Internal());
+            StartCoroutine(OverTimeEffect_Internal());
         }
-        IEnumerator TurnEndEffect_Internal() 
+        IEnumerator OverTimeEffect_Internal() 
         {
             foreach (AdventCard card in CardsInHand)
             {
-                if (card.Resource is IEndOfTurnEffect effect)
+                if (card.Resource is IEffectOverTime effect)
                 {
-                    m_abilityMessage.TriggerGameMessage(card.Resource.Name, Color.blue);
-                    yield return m_activation.EndOfTurnEffect(effect);
+                    yield return m_activation.EffectOverTime(effect);
                     yield return new WaitForEndOfFrame();
                 }
             }

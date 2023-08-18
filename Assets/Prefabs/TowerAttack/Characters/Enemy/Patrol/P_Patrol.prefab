@@ -108,7 +108,7 @@ Canvas:
   m_PlaneDistance: 100
   m_PixelPerfect: 1
   m_ReceivesEvents: 1
-  m_OverrideSorting: 1
+  m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 25
@@ -461,6 +461,8 @@ GameObject:
   - component: {fileID: 8231386241522679744}
   - component: {fileID: 7394046197572877155}
   - component: {fileID: 4075219535851998224}
+  - component: {fileID: 6390143337426193097}
+  - component: {fileID: 1298887785394979185}
   m_Layer: 9
   m_Name: P_Patrol
   m_TagString: Untagged
@@ -656,6 +658,40 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_resource: {fileID: 11400000, guid: f8e385357822a9f48a406ad58643b94c, type: 2}
   m_basicAttack: {fileID: 11400000, guid: 1ea5ea2e670d33643bec9b97b58623fd, type: 2}
+--- !u!225 &6390143337426193097
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4063988590427125918}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
+--- !u!223 &1298887785394979185
+Canvas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4063988590427125918}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_RenderMode: 2
+  m_Camera: {fileID: 0}
+  m_PlaneDistance: 100
+  m_PixelPerfect: 0
+  m_ReceivesEvents: 1
+  m_OverrideSorting: 1
+  m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
+  m_AdditionalShaderChannelsFlag: 0
+  m_UpdateRectTransformForStandalone: 0
+  m_SortingLayerID: -852664857
+  m_SortingOrder: 10
+  m_TargetDisplay: 0
 --- !u!1 &8671641298351939189
 GameObject:
   m_ObjectHideFlags: 0

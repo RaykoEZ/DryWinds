@@ -32,12 +32,18 @@ namespace Curry.Explore
         }
         protected IEnumerator Provision_Internal(ChoiceConditions conditions) 
         {
+            StartInterrupt();
             yield return new WaitForEndOfFrame();
             m_deck.ChooseToAddFromInventory(
                 conditions,
                 cardPoolFilter: null,
                 onChosen: TransitionTo);
             yield return null;
+        }
+        protected override void TransitionTo()
+        {
+            base.TransitionTo();
+            EndInterrupt();
         }
         public void OnProvisionTrigger(EventInfo info) 
         {
@@ -49,6 +55,10 @@ namespace Curry.Explore
             {
                 StartCoroutine(Provision_Internal(m_condition));
             }
+        }
+        public void BeginProvision() 
+        {
+            StartCoroutine(Provision_Internal(m_condition));
         }
     }
 }

@@ -58,7 +58,7 @@ namespace Curry.Explore
         [SerializeField] LootManager m_loot = default;
         [SerializeField] MovementManager m_movement = default;
         [SerializeField] ActionCounter m_actionCount = default;
-        [SerializeField] GamePhaseManager m_gamePhase = default;
+        [SerializeField] Provision m_provision = default;
         [SerializeField] TextMeshProUGUI m_resultText = default;
         [SerializeField] GameConditionAttribute m_mileStones = default;
         [SerializeField] CurryGameEventListener m_onConditionAchieved = default;
@@ -96,7 +96,7 @@ namespace Curry.Explore
             GameStateContext c = GetCurrent();
             m_cardPlayZone?.Init(c);
             m_cardTargeting?.Init(c);
-            m_gamePhase.StartGame();
+            m_provision.BeginProvision();
         }
         public void OnGameConditionFulfilled(EventInfo info) 
         {
@@ -112,7 +112,6 @@ namespace Curry.Explore
         }
         void OnOutOfTime() 
         {
-            (m_time as ICountdown)?.MultiplyCountdownSpeed(1.2f);
             m_timeDealer.Begin(GetCurrent());
         }
         void OnPlayerDefeat(ICharacter player) 

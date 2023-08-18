@@ -103,7 +103,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1eba9f986fbc5844eb424939c6ed0a08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_defaultTimeInSeconds: 1001
+  m_defaultTimeInSeconds: 120
   m_display: {fileID: 6856055099905177855}
   m_coroutineManager: {fileID: 3234231154794497260}
 --- !u!1 &3374875612520217274

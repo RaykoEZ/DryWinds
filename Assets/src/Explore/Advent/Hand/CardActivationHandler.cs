@@ -87,9 +87,9 @@ namespace Curry.Explore
             m_selection.CancelSelection();
             m_playZone.SetPlayZoneActive(false);
         }
-        public IEnumerator EndOfTurnEffect(IEndOfTurnEffect card) 
+        public IEnumerator EffectOverTime(IEffectOverTime card) 
         {
-            yield return card?.OnEndOfTurn(m_contextRef);
+            yield return card?.OnTick(m_contextRef);
         }
     }
 }

@@ -31,7 +31,7 @@ namespace Curry.Explore
         public override int TimeLeftToClear => m_timeLeftToClear;
         public ICountdown Countdown => m_countdown;
 
-        public event OnCountdownFinish OnFinish
+        public event OnCountdownUpdate OnFinish
         {
             add
             {
@@ -41,6 +41,19 @@ namespace Curry.Explore
             remove
             {
                 m_countdown.OnFinish -= value;
+            }
+        }
+
+        public event OnCountdownUpdate OnTick
+        {
+            add
+            {
+                m_countdown.OnTick += value;
+            }
+
+            remove
+            {
+                m_countdown.OnTick -= value;
             }
         }
 

@@ -28,6 +28,14 @@ namespace Curry.Explore
         public override void Reveal()
         {
             m_anim.SetBool("hidden", false);
+            if (TryGetComponent(out Canvas canvas)) 
+            {
+                canvas.sortingOrder = FogOfWar.s_fogOfWarRenderSortLayer + 1;
+            }
+            if (TryGetComponent(out Renderer rend))
+            {
+                rend.sortingOrder = FogOfWar.s_fogOfWarRenderSortLayer + 1;
+            }
             base.Reveal();
         }
         public override void Hide()
@@ -98,6 +106,14 @@ namespace Curry.Explore
         public override void Prepare()
         {
             base.Prepare();
+            if (TryGetComponent(out Canvas canvas))
+            {
+                canvas.sortingOrder = 10; 
+            }
+            if (TryGetComponent(out Renderer rend))
+            {
+                rend.sortingOrder = 5;
+            }
             // Get new id for enemy
             Id = new EnemyId(gameObject.name);
             m_detect.OnPlayerEnterDetection += OnDetectEnter;
