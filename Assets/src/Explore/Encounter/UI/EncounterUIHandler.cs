@@ -63,7 +63,6 @@ namespace Curry.Explore
         // Do dialogues
         IEnumerator OnChosen_Internal(EncounterOption outcome) 
         {
-            EndInterrupt();
             var content = outcome.GetOutcomeContent();
             m_dialogue.OpenDialogue(content.Dialogue, "");
             // call option effect when we finish dialogue
@@ -77,6 +76,7 @@ namespace Curry.Explore
         void OnFinish()
         {
             OnEncounterFinished?.Invoke();
+            EndInterrupt();
         }
     }
 }

@@ -93,7 +93,8 @@ namespace Curry.Explore
             }
         }
         IEnumerator CombatActionLoop()
-        {              
+        {
+            yield return new WaitForSeconds(0.1f);
             while (m_intendingAction.Call != null && m_intendingAction != EnemyIntent.None) 
             {
                 yield return StartCoroutine(m_intendingAction.Call);
