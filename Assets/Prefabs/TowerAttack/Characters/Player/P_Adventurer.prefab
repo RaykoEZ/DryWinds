@@ -308,8 +308,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_name: Player
   m_initStats:
-    maxHp: 27
-    hp: 27
+    maxHp: 80
+    hp: 80
     moveRange: 2
     speed: 1
   m_audio: {fileID: 8969740111618581860}

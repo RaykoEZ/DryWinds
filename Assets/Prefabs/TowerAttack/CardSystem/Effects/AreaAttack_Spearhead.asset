@@ -16,7 +16,7 @@ MonoBehaviour:
     m_uniqueTargets: 1
     m_numToTarget: 3
     m_attackRange: {fileID: 11400000, guid: 9854b15ca8b244d4f941a1ada2f81708, type: 2}
-    m_dealDamage: {fileID: 11400000, guid: 1ea5ea2e670d33643bec9b97b58623fd, type: 2}
+    m_dealDamage: {fileID: 11400000, guid: c24c60cf391258d45a3988e4168960cb, type: 2}
     m_targetLayer:
       serializedVersion: 2
       m_Bits: 512

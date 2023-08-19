@@ -31,7 +31,7 @@ namespace Curry.Explore
         {
             Fire?.Invoke();
         }
-        protected override EnemyIntent UpdateIntent(ActionCost dt)
+        protected override EnemyIntent UpdateIntent()
         {
             return SpotsTarget ? new EnemyIntent(m_stormAmmo.AbilityDetail, ExecuteAction_Internal()) : 
                 EnemyIntent.None;

@@ -21,11 +21,12 @@ namespace Curry.Explore
     public delegate void OnAbilityMessage(string message);
     public interface IEnemy : ICharacter
     {
-        event OnAbilityMessage OnAbility;
         bool SpotsTarget { get; }
         EnemyId Id { get; }
         EnemyIntent IntendingAction { get; }
-        bool UpdateAction(ActionCost dt, out EnemyIntent action);
+        bool Reaction(ActionCost dt, out EnemyIntent action);
+        void StartCombat();
+        void StopCombat();
     }
     public delegate void OnMovementBlocked(Vector3 blockedWorldPos);
     public interface IMovable 

@@ -4,25 +4,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using Curry.Events;
 using Curry.Game;
-using Curry.UI;
-
 namespace Curry.Explore
 {
     public delegate void OnEnemyActionFinish();
     public delegate void OnEnemyActionStart(List<IEnumerator> actions);
     // Monitors all spawned enemies, triggers enemy action phases
-    public partial class EnemyManager : SceneInterruptBehaviour
+    public partial class EnemyManager : MonoBehaviour
     {
         #region Serialize Fields & Members
-        [SerializeField] GameMessageTrigger m_abilityMessage = default;
         [SerializeField] MovementManager m_movement = default;
         [SerializeField] EnemySpawnHandler m_spawning = default;
         [SerializeField] FogOfWar m_fog = default;
-        [SerializeField] AudioManager m_audio = default;
         EnemyContainer m_enemies = new EnemyContainer();
-        // Comparer for enemy priority
-        public event OnEnemyActionFinish OnActionFinish;
-        public event OnEnemyActionStart OnActionBegin;
         #endregion
         #region Class Body
         void Awake()
@@ -65,7 +58,6 @@ namespace Curry.Explore
                 movable.OnMove += OnEnemyMovement;
                 movable.OnBlocked += m_fog.OnMovementBlocked;
             }
-            spawn.OnAbility += DisplayEnemyAbility;
             spawn.OnDefeat += OnEnemyRemove;
             spawn.OnReveal += m_fog.OnEnemyReveal;
             spawn.OnHide += m_fog.OnEnemyHide;
@@ -78,17 +70,11 @@ namespace Curry.Explore
                 movable.OnMove -= OnEnemyMovement;
                 movable.OnBlocked -= m_fog.OnMovementBlocked;
             }
-            (remove as IEnemy).OnAbility -= DisplayEnemyAbility;
             remove.OnDefeat -= OnEnemyRemove;
             remove.OnReveal -= m_fog.OnEnemyReveal;
             remove.OnHide -= m_fog.OnEnemyHide;
             m_enemies.ScheduleRemove(remove as IEnemy);
             remove.Despawn();
-        }
-        void DisplayEnemyAbility(string message) 
-        {
-            m_audio.Play("enemyAbility");
-            m_abilityMessage.TriggerGameMessage(message, Color.red);
         }
         #endregion
         #region IEnemy event handlers
@@ -97,54 +83,37 @@ namespace Curry.Explore
             if(!m_movement.IsPathObstructed(destination, move.WorldPosition)) 
             {
                 call?.Invoke(destination);
-            }          
+            }
         }
         #endregion
+        public void StopEnemyActions() 
+        {
+            m_enemies.UpdateActivity();
+            foreach (var item in m_enemies.ActiveEnemies)
+            {
+                item.StopCombat();
+            }
+        }
+        public void ResumeEnemyActions() 
+        {
+            m_enemies.UpdateActivity();
+            foreach (var item in m_enemies.ActiveEnemies)
+            {             
+                item.StartCombat();
+            }
+        }
         // Whenever player spends time, update all enemies with countdowns
         // Updates enemy action choice after player ends turn
         // returns: whether there are Responses from active enemies
         // out: enemy responses
-        public bool UpdateEnemyAction(ActionCost resourceSpent, out List<IEnumerator> reactions)
+        public bool EnemyReaction(ActionCost resourceSpent, out List<IEnumerator> reactions)
         {
             // Update all enemy countdowns here and get all responses
-            reactions = UpdateEnemyAction(resourceSpent);
+            reactions = UpdateEnemyReaction(resourceSpent);
             return reactions.Count > 0;
         }
-        // Notifies call stack for enemy action calls
-        public bool OnEnemyAction() 
-        {
-            List<IEnumerator> actions = GetCurrentEnemyAction();
-            bool hasActions = actions.Count > 0;
-            if (hasActions) 
-            {
-                OnActionBegin?.Invoke(actions);
-            }
-            return actions.Count > 0;
-        }
-        // Get current intended enemy actons
-        List<IEnumerator> GetCurrentEnemyAction() 
-        {
-            List<IEnumerator> ret = new List<IEnumerator>();
-            m_enemies.UpdateActivity();
-            m_enemies.SortActiveEnemyPriorities();
-            foreach (var enemy in m_enemies.ActiveEnemies)
-            {
-                EnemyIntent intent = enemy.IntendingAction;
-                if(intent != null && intent.Call != null) 
-                {
-                    ret.Add(ShowAbilityMessage(enemy));
-                    ret.Add(intent.Call);
-                }
-            }
-            if (ret.Count > 0)
-            {
-                ret.Add(FinishActionPhase());
-            }
-            m_enemies.UpdateActivity();
-            return ret;
-        }
         // Call all active enemies to respond to player action
-        List<IEnumerator> UpdateEnemyAction(ActionCost dt) 
+        List<IEnumerator> UpdateEnemyReaction(ActionCost dt) 
         {
             // make sure list is up to date before and after
             m_enemies.UpdateActivity();
@@ -154,28 +123,14 @@ namespace Curry.Explore
             foreach (IEnemy enemy in m_enemies.ActiveEnemies)
             {
                 // returns true if countdown reached, add to execution list
-                if (enemy.UpdateAction(dt, out EnemyIntent intent) && 
-                    intent.Call != null && intent != EnemyIntent.None)
+                if (enemy.Reaction(dt, out EnemyIntent reaction) && 
+                    reaction.Call != null && reaction != EnemyIntent.None)
                 {
-                    calls.Add(intent.Call);
+                    calls.Add(reaction.Call);
                 }
-            }
-            if (calls.Count > 0) 
-            {
-                calls.Add(FinishActionPhase());
             }
             m_enemies.UpdateActivity();
             return calls;
-        }
-        IEnumerator ShowAbilityMessage(IEnemy enemy) 
-        {
-            DisplayEnemyAbility($"{enemy.Name}: {enemy.IntendingAction.Ability.Name}");
-            yield return null;
-        }
-        IEnumerator FinishActionPhase() 
-        {
-            OnActionFinish?.Invoke();
-            yield return null;           
         }
         #endregion
     }

@@ -10,13 +10,16 @@ namespace Curry.Explore
         [SerializeField] protected Animator m_anim = default;
         [SerializeField] protected Animator m_detectTrigger = default;
         [SerializeField] protected CharacterDetector m_detect = default;
+        // senconds to wait until next action animation
+        [Range(0.1f, 5f)]
+        [SerializeField] protected float m_actionTimeInterval = default;
         public event OnEnemyMove OnMove;
-        public event OnAbilityMessage OnAbility;
         protected IReadOnlyCollection<IPlayer> TargetsInSight => m_detect.TargetsInSight;
         protected IReadOnlyCollection<IEnemy> EnemiesInSight => m_detect.Enemies;
         protected virtual List<IEnemyReaction> m_reactions { get; } = 
             new List<IEnemyReaction>();
         EnemyIntent m_intendingAction = EnemyIntent.None;
+        Coroutine m_actionLoop;
         #region ICharacter & IEnemy interface 
         public bool SpotsTarget => TargetsInSight.Count > 0;
         public virtual EnemyId Id { get; protected set; }
@@ -53,19 +56,16 @@ namespace Curry.Explore
         }
         // returns true if we decide to act,
         // BasicAction & Reaction fields need to not be null before returning
-        public bool UpdateAction(ActionCost dt, out EnemyIntent action)
+        public bool Reaction(ActionCost dt, out EnemyIntent action)
         {
             bool ret;
-            // Setup action to carry out after player end turn
-            var newIntent = UpdateIntent(dt);
-            ret = UpdatAction_Internal(dt.Time, out EnemyIntent result);
-            m_intendingAction = newIntent == null ? EnemyIntent.None : newIntent;
+            ret = Reaction_Internal(dt.Time, out EnemyIntent result);
             action = result == null? EnemyIntent.None : result;
             return ret;
         }
-        protected virtual bool UpdatAction_Internal(int dt, out EnemyIntent reaction) 
+        protected virtual bool Reaction_Internal(int dt, out EnemyIntent reaction) 
         {
-            reaction = new EnemyIntent(AbilityContent.None, Reaction_Internal());
+            reaction = new EnemyIntent(AbilityContent.None, ExecuteReaction_Internal());
             bool ret = false;
             // Check if reaction is active
             foreach (var item in m_reactions)
@@ -73,6 +73,34 @@ namespace Curry.Explore
                 ret |= item.CanReact(this);
             }
             return ret;
+        }
+        // start enemy actions (e.g. attack anim, buff)
+        public void StartCombat() 
+        {
+            if (m_actionLoop == null) 
+            {
+                m_intendingAction = UpdateIntent();
+                m_actionLoop = StartCoroutine(CombatActionLoop());
+            }
+        }
+        // stop current action
+        public void StopCombat() 
+        {
+            if (m_actionLoop != null) 
+            {
+                StopCoroutine(m_actionLoop);
+                m_actionLoop = null;
+            }
+        }
+        IEnumerator CombatActionLoop()
+        {              
+            while (m_intendingAction.Call != null && m_intendingAction != EnemyIntent.None) 
+            {
+                yield return StartCoroutine(m_intendingAction.Call);
+                // decide next action in loop
+                m_intendingAction = UpdateIntent();
+                yield return new WaitForSeconds(m_actionTimeInterval);
+            }
         }
         protected virtual IEnumerator ExecuteAction_Internal()
         {
@@ -82,7 +110,7 @@ namespace Curry.Explore
             // reset pending ability
             yield return null;
         }
-        protected virtual IEnumerator Reaction_Internal()
+        protected virtual IEnumerator ExecuteReaction_Internal()
         {
             CurrentStats.Refresh();
             foreach (IEnemyReaction onAction in m_reactions )
@@ -93,15 +121,11 @@ namespace Curry.Explore
             // reset pending ability
             yield return new WaitForEndOfFrame();
         }
-        protected virtual EnemyIntent UpdateIntent(ActionCost dt)
+        protected virtual EnemyIntent UpdateIntent()
         {
             return EnemyIntent.None;
         }
         #endregion
-        protected virtual void OnAbilityMessageTrigger(string message) 
-        {
-            OnAbility?.Invoke(message);
-        }
         #region pooling implementation
         public override void Prepare()
         {
@@ -120,10 +144,6 @@ namespace Curry.Explore
             m_detect.OnPlayerExitDetection += OnDetectExit;
             m_detect.OnEnemyEnterDetection += OnOtherEnemyEnter;
             m_detect.OnEnemyExitDetection += OnOtherEnemyExit;
-            foreach (var item in m_reactions)
-            {
-                item.OnMessage += OnAbilityMessageTrigger;
-            }
         }
         public override void ReturnToPool()
         {
@@ -132,10 +152,6 @@ namespace Curry.Explore
             m_detect.OnPlayerExitDetection -= OnDetectExit;
             m_detect.OnEnemyEnterDetection -= OnOtherEnemyEnter;
             m_detect.OnEnemyExitDetection -= OnOtherEnemyExit;
-            foreach (var item in m_reactions)
-            {
-                item.OnMessage -= OnAbilityMessageTrigger;
-            }
             base.ReturnToPool();
         }
         #endregion
@@ -155,9 +171,13 @@ namespace Curry.Explore
         protected virtual void OnCombat()
         {
             m_anim?.SetBool("combat", true);
+            // start combat action loop
+            StartCombat();
         }
         protected virtual void Standby()
         {
+            // stop combat action
+            StopCombat();
             //reset anim state and countdown
             m_anim?.SetBool("combat", false);
         }

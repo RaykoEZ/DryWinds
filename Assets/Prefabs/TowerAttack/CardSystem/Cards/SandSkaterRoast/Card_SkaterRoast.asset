@@ -15,11 +15,11 @@ MonoBehaviour:
   m_resource:
     m_properties:
       m_name: Sandskater Roast
-      m_description: Heal 10 HP.
+      m_description: Heal 50 HP.
       m_cardArt: {fileID: 21300000, guid: 3b93455592006fa458c73c30059e1806, type: 3}
       m_targetingRange: {fileID: 0}
       m_cost:
-        Time: 10
+        Time: 5
         ActionPoint: 0
       m_cooldown: 0
       m_holdingValue: 1

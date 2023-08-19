@@ -15,7 +15,7 @@ MonoBehaviour:
   m_resource:
     m_properties:
       m_name: Repair Kit
-      m_description: Heal 3 HP.
+      m_description: Heal 30 HP.
       m_cardArt: {fileID: 21300000, guid: 82801dfbcea0a0d4da9e1d6f29d1855a, type: 3}
       m_targetingRange: {fileID: 0}
       m_cost:

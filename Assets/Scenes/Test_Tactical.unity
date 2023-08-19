@@ -10007,6 +10007,7 @@ MonoBehaviour:
   m_movement: {fileID: 1773398998}
   m_selectInput: {fileID: 1334039897}
   m_cardPlay: {fileID: 615583783}
+  m_enemies: {fileID: 2096668154}
   m_countdown: {fileID: 537909833204776850}
   m_toControl:
   - {fileID: 1845217772}
@@ -10136,6 +10137,12 @@ MonoBehaviour:
     Loop: 0
     Volume: 1
     Pitch: 1
+    Source: {fileID: 0}
+  - Name: timeRedAlert
+    Clip: {fileID: 8300000, guid: 89e6bc608da7b47d4914f3d9c2484e48, type: 3}
+    Loop: 0
+    Volume: 1
+    Pitch: 1.2
     Source: {fileID: 0}
 --- !u!82 &1736801562
 AudioSource:
@@ -12563,7 +12570,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 302892f51e777a34dac6c6fedd9c893d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_abilityMessage: {fileID: 781545047}
   m_movement: {fileID: 1190344612}
   m_spawning:
     m_spawnProperties:
@@ -12593,7 +12599,6 @@ MonoBehaviour:
           m_numToPool: 3
           m_defaultParent: {fileID: 1968542685}
   m_fog: {fileID: 2017579930}
-  m_audio: {fileID: 1736801561}
 --- !u!1001 &2101503359
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13421,6 +13426,10 @@ PrefabInstance:
     serializedVersion: 2
     m_TransformParent: {fileID: 1818126518}
     m_Modifications:
+    - target: {fileID: 154043172778990520, guid: 76a9f920d2cc63f4e8d8b916bf10cfb6, type: 3}
+      propertyPath: m_audio
+      value: 
+      objectReference: {fileID: 1736801561}
     - target: {fileID: 154043172778990520, guid: 76a9f920d2cc63f4e8d8b916bf10cfb6, type: 3}
       propertyPath: m_initTimerValueInSeconds
       value: 10
@@ -15217,7 +15226,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_result: {fileID: 331127765479328400}
-  m_transitionDuration: 3
+  m_transitionDuration: 5
   m_resultFill: {fileID: 8157690178026516318}
   m_warningGradient:
     serializedVersion: 2

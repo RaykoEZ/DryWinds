@@ -538,6 +538,7 @@ MonoBehaviour:
   m_anim: {fileID: 3642215462890439483}
   m_detectTrigger: {fileID: 1738173818476025786}
   m_detect: {fileID: 9158939930621903418}
+  m_actionTimeInterval: 1.2
   m_standardAttack: {fileID: 4075219535851998224}
 --- !u!50 &4063988590427125916
 Rigidbody2D:

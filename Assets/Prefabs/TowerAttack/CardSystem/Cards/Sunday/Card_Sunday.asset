@@ -19,7 +19,7 @@ MonoBehaviour:
       m_cardArt: {fileID: 21300000, guid: 2f6ad8210c8f9094db71b54c8d9f086f, type: 3}
       m_targetingRange: {fileID: 0}
       m_cost:
-        Time: 20
+        Time: 5
         ActionPoint: 0
       m_cooldown: 0
       m_holdingValue: 0

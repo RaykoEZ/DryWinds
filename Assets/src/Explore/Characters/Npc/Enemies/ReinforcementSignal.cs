@@ -43,8 +43,6 @@ namespace Curry.Explore
         public event OnAbilityMessage OnAbility;
         public bool SpotsTarget => false;
         public EnemyId Id { get { return new EnemyId(gameObject.name); } }
-        public IEnumerator BasicAction => OnSpawnReinforcement();
-        public IEnumerator Reaction => OnSpawnReinforcement();
         public string Name => "Reinforcement";
         public int MaxHp => 1;
         public int CurrentHp { get { return 1; } set { } }
@@ -81,7 +79,7 @@ namespace Curry.Explore
         {
             m_countdownTimer = 0;
         }
-        public virtual bool UpdateAction(ActionCost dt, out EnemyIntent action)
+        public virtual bool Reaction(ActionCost dt, out EnemyIntent action)
         {
             m_countdownTimer += dt.Time;
             action = CanSpawn ? new EnemyIntent(AbilityDetails[0], OnSpawnReinforcement()) : null;
@@ -170,6 +168,14 @@ namespace Curry.Explore
         }
 
         public void TriggerVfx(VisualEffectAsset vfx, TimelineAsset timeline, Action onTrigger = null)
+        {
+        }
+
+        public void StartCombat()
+        {
+        }
+
+        public void StopCombat()
         {
         }
     }

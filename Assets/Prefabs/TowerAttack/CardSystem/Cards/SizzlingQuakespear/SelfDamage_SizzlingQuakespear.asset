@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: SelfDamage_SizzlingQuakespear
   m_EditorClassIdentifier: 
   m_dealDamage:
-    m_baseDamage: 5
+    m_baseDamage: 10

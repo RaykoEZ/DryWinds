@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using System.Collections;
-
 namespace Curry.Explore
 {
     // Handles player card/adventure plays
@@ -23,7 +22,6 @@ namespace Curry.Explore
         {
             m_cardPlay.OnActivate += OnPlayerAction;
             m_playerMovement.OnStart += OnPlayerAction;
-            m_enemy.OnActionBegin += OnEnemyAction;
         }
         void OnPlayerAction(ActionCost spent, List<IEnumerator> actions = null)
         {
@@ -33,11 +31,6 @@ namespace Curry.Explore
                 m_actionsToAdd.Add(newItem);
             }
             StartCoroutine(Evaluate_Internal());        
-        }
-        void OnEnemyAction(List<IEnumerator> actions)
-        {
-            m_interruptBuffer.Push(actions);
-            StartCoroutine(EnemyAction());
         }
         protected IEnumerator PlayerAction_Internal()
         {
@@ -49,7 +42,7 @@ namespace Curry.Explore
                 // check for any generated actions after invoking current action
                 UpdateCalltack();
                 // Check if there are enemy responses for this player action
-                if (m_enemy.UpdateEnemyAction(
+                if (m_enemy.EnemyReaction(
                     currentAction.ResourceSpent, out List<IEnumerator> resp) &&
                     resp != null)
                 {

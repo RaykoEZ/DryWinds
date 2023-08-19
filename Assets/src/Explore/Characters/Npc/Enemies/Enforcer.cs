@@ -17,7 +17,7 @@ namespace Curry.Explore
             base.Prepare();
             m_vfxHandler.SetupAsset(m_basicAttack.Vfx, m_basicAttack.VfxTimeline);
         }
-        protected override EnemyIntent UpdateIntent(ActionCost dt)
+        protected override EnemyIntent UpdateIntent()
         {
             EnemyIntent ret;
             if (SpotsTarget) 

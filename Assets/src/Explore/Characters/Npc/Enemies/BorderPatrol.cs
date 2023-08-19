@@ -17,7 +17,7 @@ namespace Curry.Explore
             base.Prepare();
             m_vfxHandler.SetupAsset(m_standardAttack.Vfx, m_standardAttack.VfxTimeline);
         }
-        protected override EnemyIntent UpdateIntent(ActionCost dt)
+        protected override EnemyIntent UpdateIntent()
         {
             return SpotsTarget? new EnemyIntent(m_standardAttack.AbilityDetail, ExecuteAction_Internal()) :
                 EnemyIntent.None;

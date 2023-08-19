@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Heal_SandskaterRoast
   m_EditorClassIdentifier: 
   m_healing:
-    m_healAmount: 10
+    m_healAmount: 50

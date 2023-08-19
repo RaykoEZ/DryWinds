@@ -15,14 +15,14 @@ MonoBehaviour:
   m_resource:
     m_properties:
       m_name: Disengage
-      m_description: Exhaust AP (spend as much as possible) , Heal 5 HP for every
+      m_description: Exhaust AP (spend as much as possible) , Heal 25 HP for every
         AP spent.
       m_cardArt: {fileID: 21300000, guid: ff0fd450c72f41b43bfcc59c3956f2f7, type: 3}
       m_targetingRange: {fileID: 0}
       m_cost:
         Time: 0
         ActionPoint: 0
-      m_cooldown: 10
+      m_cooldown: 40
       m_holdingValue: 1
       m_isInitiallyOnCooldown: 0
     m_vfx: {fileID: 8926484042661614526, guid: 789cc6a48b166eb47a95ec5e85f194a9, type: 3}

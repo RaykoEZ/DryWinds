@@ -12,6 +12,7 @@ namespace Curry.Explore
         [SerializeField] MoveToggle m_movement = default;
         [SerializeField] SelectionManager m_selectInput = default;
         [SerializeField] HandManager m_cardPlay = default;
+        [SerializeField] EnemyManager m_enemies = default;
         [SerializeField] RealtimeCountdown m_countdown = default;
         [SerializeField] List<CanvasGroup> m_toControl = default;
         // Collection of interruptors
@@ -31,6 +32,7 @@ namespace Curry.Explore
             m_movement.EnablePlay();
             m_selectInput?.EnableSelection();
             m_cardPlay?.EnablePlay();
+            m_enemies?.ResumeEnemyActions();
             m_sceneInterrupted = false;
             foreach(var item in m_toControl) 
             {
@@ -46,6 +48,7 @@ namespace Curry.Explore
             m_movement.DisablePlay();
             m_selectInput?.DisableSelection();
             m_cardPlay?.DisablePlay();
+            m_enemies?.StopEnemyActions();
             m_sceneInterrupted = true;
             foreach (var item in m_toControl)
             {

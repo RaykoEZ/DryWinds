@@ -15,7 +15,7 @@ MonoBehaviour:
   m_gainStats:
     m_resource: {fileID: 11400000, guid: 9e19cf34d1197e44d9372db89a5b3958, type: 2}
     m_toGain:
-      maxHp: 5
+      maxHp: 10
       hp: 0
       moveRange: 0
       speed: 0
