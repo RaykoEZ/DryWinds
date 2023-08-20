@@ -11,7 +11,7 @@ PrefabInstance:
     - target: {fileID: 2302161358976357777, guid: 52f0ec30e6a1ee049aebd76a88f3c7c4, type: 3}
       propertyPath: m_VideoClip
       value: 
-      objectReference: {fileID: 32900000, guid: 941b9393a982949438bc10792d00e5e8, type: 3}
+      objectReference: {fileID: 32900000, guid: faad3538e9b9ac24bb9fe7731929aa37, type: 3}
     - target: {fileID: 2302161358985783899, guid: 52f0ec30e6a1ee049aebd76a88f3c7c4, type: 3}
       propertyPath: m_text
       value: Enemy Action

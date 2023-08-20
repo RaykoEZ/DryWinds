@@ -86,7 +86,7 @@ namespace Curry.Explore
         {
             // setup vfx to trigger
             m_vfxHandler.SetupAsset(vfx, timeline);
-            StartCoroutine(m_vfxHandler.PlaySequence(onTrigger));
+            StartCoroutine(m_vfxHandler.PlayVfxSequence(onTrigger));
         }
         public void ApplyModifier(IStatModifier<TacticalStats> mod, VisualEffectAsset vfx, TimelineAsset timeline)
         {

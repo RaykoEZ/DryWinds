@@ -1,11 +1,9 @@
-﻿using Curry.Explore;
-using System;
+﻿using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.Timeline;
 using UnityEngine.VFX;
-
 namespace Curry.Vfx
 {
     // To handle playing timeline animation sequences and propogate timeline signal callbacks
@@ -53,7 +51,16 @@ namespace Curry.Vfx
                 }
             }
         }
-        public IEnumerator PlaySequence(Action onTrigger = null)
+        public void PlaySequence() 
+        {
+            if (!m_trigger && 
+                Vfx.visualEffectAsset != null &&
+                Director.playableAsset != null) 
+            {
+                StartCoroutine(PlayVfxSequence());
+            }
+        }
+        public IEnumerator PlayVfxSequence(Action onTrigger = null)
         {
             Trigger.OnTriggered += OnSequenceTriggered;
             Director?.Play();
@@ -68,7 +75,7 @@ namespace Curry.Vfx
             Transform origin = transform.parent;
             transform.SetParent(playAt, false);
             transform.position = targetWorldPosition;
-            yield return PlaySequence(onTrigger);
+            yield return PlayVfxSequence(onTrigger);
             transform.SetParent(origin, false);
         }
         public static IEnumerator PlaySequenceAt(VfxSequencePlayer handler,

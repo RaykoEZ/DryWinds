@@ -98,10 +98,10 @@ namespace Curry.Explore
         {
             while (m_intendingAction.Call != null && m_intendingAction != EnemyIntent.None) 
             {
+                yield return new WaitForSeconds(m_actionTimeInterval);
                 yield return StartCoroutine(m_intendingAction.Call);
                 // decide next action in loop
                 m_intendingAction = UpdateIntent();
-                yield return new WaitForSeconds(m_actionTimeInterval);
             }
         }
         protected virtual IEnumerator ExecuteAction_Internal()

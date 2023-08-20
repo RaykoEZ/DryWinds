@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Curry.Game;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,11 +13,6 @@ namespace Curry.Explore
             new List<AbilityContent>{
                 m_basicAttack.AbilityDetail,
             };
-        public override void Prepare()
-        {
-            base.Prepare();
-            m_vfxHandler.SetupAsset(m_basicAttack.Vfx, m_basicAttack.VfxTimeline);
-        }
         protected override EnemyIntent UpdateIntent()
         {
             EnemyIntent ret;
@@ -30,17 +26,18 @@ namespace Curry.Explore
             }
             return ret;
         }
-        protected override IEnumerator ExecuteAction_Internal()
+        public void Strike() 
         {
-            yield return base.ExecuteAction_Internal();
+            m_vfxHandler.SetupAsset(m_basicAttack.Vfx, m_basicAttack.VfxTimeline);
+            StartCoroutine(m_vfxHandler.PlayVfxSequence(OnImpact));
+        }
+        void OnImpact() 
+        {
             foreach (IPlayer player in TargetsInSight)
             {
-                m_vfxHandler.SetupAsset(m_basicAttack.Vfx, m_basicAttack.VfxTimeline);
-                yield return m_vfxHandler.PlaySequence();
                 m_basicAttack.Activate(player);
                 break;
             }
-            yield return null;
         }
     }
 }

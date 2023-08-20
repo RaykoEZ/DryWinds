@@ -131,6 +131,10 @@ namespace Curry.Explore
         }
         IEnumerator UpdateResultPanel() 
         {
+            m_player.OnDefeat -= OnPlayerDefeat;
+            m_time.OnOutOfTimeTrigger -= OnOutOfTime;
+            m_objectives.OnCriticalFailure -= OnCriticalFail;
+            m_objectives.OnCriticalComplete -= OnGameCleared;
             StartInterrupt();
             m_intro?.GameEnd();
             yield return new WaitForEndOfFrame();
