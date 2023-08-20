@@ -4,6 +4,12 @@ using System.Collections;
 using UnityEngine;
 namespace Curry.Explore
 {
+    public interface IEnemyReaction
+    {
+        bool CanReact(IEnemy user);
+        AbilityContent AbilityDetail { get; }
+        public IEnumerator OnPlayerAction(IEnemy enemy);
+    }
     [Serializable]
     public class PatientHunter : BaseAbility, IStackableEffect, IEnemyReaction
     {
@@ -11,7 +17,6 @@ namespace Curry.Explore
         bool m_activated = false;
         TakeAim m_instance;
         public int CurrentStack => m_instance != null ? m_instance.CurrentStack : 0;
-        public event OnAbilityMessage OnMessage;
 
         public override AbilityContent AbilityDetail => new AbilityContent
         { 
@@ -41,12 +46,11 @@ namespace Curry.Explore
 
             if (!m_activated) 
             {
-                OnMessage?.Invoke($"{AbilityDetail.Name} Activated");
                 m_instance = new TakeAim(m_preparedBuff);
                 applyTo?.ApplyModifier(m_instance, m_instance.Vfx, m_instance.VfxTimeline);
                 m_activated = true;
             }
-            else
+            else if (m_instance.CurrentStack < m_instance.MaxStack)
             {
                 user.TriggerVfx(Vfx, VfxTimeline);
                 m_instance.AddStack();

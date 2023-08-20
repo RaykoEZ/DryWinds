@@ -30,7 +30,6 @@ namespace Curry.UI
         protected float m_speedMultipier = 1f;
         protected int m_currentTimer = 0;
         public event OnCountdownUpdate OnFinish;
-        event OnCountdownUpdate OnFinish_Internal;
         public event OnCountdownUpdate OnTick;
 
         protected float CurrentCountdownTimeInterval => 
@@ -40,10 +39,6 @@ namespace Curry.UI
         void Awake() 
         {
             m_currentTimer = m_defaultTimeInSeconds;
-        }
-        void Start()
-        {
-            OnFinish_Internal += ReplayCountdown;
         }
         // Use this for initialization
         public void BeginCountdown()
@@ -75,7 +70,6 @@ namespace Curry.UI
                 NotifyTimeSpent(1);
             }
             alertTime = false;
-            OnFinish_Internal?.Invoke();
             OnFinish?.Invoke();
             OnOutOfTime();
         }
@@ -119,11 +113,6 @@ namespace Curry.UI
         public override void SetMaxTime(int maxTime)
         {
             m_defaultTimeInSeconds = maxTime;
-        }
-        protected void ReplayCountdown() 
-        {
-            ResetCountdown();
-            BeginCountdown();
         }
     }
 }

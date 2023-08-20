@@ -18,7 +18,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2302161360218645685, guid: 52f0ec30e6a1ee049aebd76a88f3c7c4, type: 3}
       propertyPath: m_text
-      value: When you end your turn, it's the enemies' chance to strike back.
+      value: Enemies will enter combat on sight.
       objectReference: {fileID: 0}
     - target: {fileID: 2302161360218645685, guid: 52f0ec30e6a1ee049aebd76a88f3c7c4, type: 3}
       propertyPath: m_fontSize
@@ -271,9 +271,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2302161360218645685, guid: 52f0ec30e6a1ee049aebd76a88f3c7c4, type: 3}
       propertyPath: m_text
-      value: Select the enemy character to preview its status. If they intend to
-        attack, you will see a danger zone forecasting their attacks after your turn
-        ends.
+      value: Enemies may have different behaviours. Select the enemy character to
+        preview its status, a danger zone shows up if they are in combat.
       objectReference: {fileID: 0}
     - target: {fileID: 2302161360218645685, guid: 52f0ec30e6a1ee049aebd76a88f3c7c4, type: 3}
       propertyPath: m_fontSize

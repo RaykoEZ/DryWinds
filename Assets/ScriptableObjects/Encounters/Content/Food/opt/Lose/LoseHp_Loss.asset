@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: LoseHp_Loss
   m_EditorClassIdentifier: 
   m_dealDamage:
-    m_baseDamage: 3
+    m_baseDamage: 15

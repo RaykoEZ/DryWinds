@@ -43,7 +43,7 @@ namespace Curry.Explore
             Milestones = milestones;
         }
     }
-    public class GameStateManager : MonoBehaviour
+    public class GameStateManager : SceneInterruptBehaviour
     {
         [SerializeField] Adventurer m_player = default;
         [SerializeField] Animator m_gameResult = default;
@@ -131,6 +131,7 @@ namespace Curry.Explore
         }
         IEnumerator UpdateResultPanel() 
         {
+            StartInterrupt();
             m_intro?.GameEnd();
             yield return new WaitForEndOfFrame();
             yield return new WaitUntil(() => GameReadyToContinue);

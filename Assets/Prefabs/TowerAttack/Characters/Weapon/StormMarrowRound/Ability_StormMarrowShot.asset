@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Ability_StormMarrowShot
   m_EditorClassIdentifier: 
   m_content:
-    Name: Stormmarrow Strike
-    Description: Deal 3 damage to target.
+    Name: Stormmarrow Snipe
+    Description: When target moved within range, deal 10 damage to target.
     TargetingRange:
       m_offsetList:
       - {x: 0, y: -3, z: 0}

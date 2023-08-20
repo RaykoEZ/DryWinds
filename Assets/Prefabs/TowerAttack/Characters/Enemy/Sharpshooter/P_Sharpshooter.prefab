@@ -358,7 +358,7 @@ MonoBehaviour:
   m_anim: {fileID: 5293342025262486339}
   m_detectTrigger: {fileID: 8556126931117616520}
   m_detect: {fileID: 5032173810866119701}
-  m_actionTimeInterval: 5
+  m_actionTimeInterval: 3
   m_stormAmmo: {fileID: 1210613774268447844, guid: e2d4209ebe1a5894ba92c5883f0d5bc7, type: 3}
   m_deadEye: {fileID: 1390615627}
   m_patient: {fileID: 4560052167075255862}
@@ -506,8 +506,8 @@ MonoBehaviour:
   m_resource: {fileID: 11400000, guid: 1cef420186ba1364e966a20c7d032b48, type: 2}
   m_preparedBuff:
     m_resource: {fileID: 11400000, guid: d35ad2a242aed6045a7bd685e1b75599, type: 2}
-    m_maxStack: 3
-    m_damageUpPerStack: 5
+    m_maxStack: 5
+    m_damageUpPerStack: 3
 --- !u!225 &2197081987059910385
 CanvasGroup:
   m_ObjectHideFlags: 0

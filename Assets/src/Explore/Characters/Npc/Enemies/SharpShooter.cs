@@ -7,19 +7,17 @@ namespace Curry.Explore
     public interface IRangedUnit 
     {
         IProjectile RangedAttack { get; }
+
+        IEnumerator FireWeapon();
     }
     public delegate void FireWeapon();
     public class SharpShooter : TacticalEnemy, IRangedUnit
     {
-        [SerializeField] protected StormMarrowRound m_stormAmmo;
-        [SerializeField] protected Deadeye m_deadEye;
-        [SerializeField] protected PatientHunter m_patient;
+        [SerializeField] protected StormMarrowRound m_stormAmmo = default;
+        [SerializeField] protected Deadeye m_deadEye = default;
+        [SerializeField] protected PatientHunter m_patient = default;
         StormMarrowRound m_currentProjectileInstance;
         protected event FireWeapon Fire;
-        protected override List<IEnemyReaction> m_reactions => new List<IEnemyReaction> 
-        { 
-            m_patient
-        };
         public override IReadOnlyList<AbilityContent> AbilityDetails => new List<AbilityContent> 
         {
             m_stormAmmo.AbilityDetail,
@@ -27,16 +25,36 @@ namespace Curry.Explore
             m_patient.AbilityDetail
         };
         public IProjectile RangedAttack => m_currentProjectileInstance;
+        public override void Prepare()
+        {
+            base.Prepare();
+            OnTargetMoved += FireAtMovingTarget;
+        }
+        public override void ReturnToPool()
+        {
+            OnTargetMoved -= FireAtMovingTarget;
+            base.ReturnToPool();
+        }
         protected void FiringWeapon() 
         {
             Fire?.Invoke();
         }
         protected override EnemyIntent UpdateIntent()
         {
-            return SpotsTarget ? new EnemyIntent(m_stormAmmo.AbilityDetail, ExecuteAction_Internal()) : 
+            return m_patient.CanReact(this) ? new EnemyIntent(m_patient.AbilityDetail, Enhance()) : 
                 EnemyIntent.None;
         }
-        protected override IEnumerator ExecuteAction_Internal()
+        // Trigger PatientHunter stack
+        protected IEnumerator Enhance()
+        {
+            // Listen to fore trigger in animation
+            yield return m_patient?.OnPlayerAction(this);
+        }
+        void FireAtMovingTarget(ICharacter target)
+        {
+            StartCoroutine(FireWeapon());
+        }
+        public IEnumerator FireWeapon()
         {
             // Listen to fore trigger in animation
             Fire += OnFireWeapon;
@@ -58,10 +76,7 @@ namespace Curry.Explore
                 m_currentProjectileInstance = Instantiate(m_stormAmmo, transform.position, rot, transform.parent);
                 m_currentProjectileInstance.Setup(this);
                 // Check for Dead Eye activation condition, activate if we can activate
-                if (m_deadEye.TryActivate<IPlayer>(this, out _)) 
-                {
-                    StartCoroutine(m_vfxHandler.PlaySequence());
-                }
+                m_deadEye.TryActivate<IPlayer>(this, out _);
                 yield return StartCoroutine(m_currentProjectileInstance.FireAt(target.WorldPosition));
                 break;
             }

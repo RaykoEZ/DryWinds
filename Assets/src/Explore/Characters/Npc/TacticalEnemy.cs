@@ -14,8 +14,9 @@ namespace Curry.Explore
         [Range(0.1f, 5f)]
         [SerializeField] protected float m_actionTimeInterval = default;
         public event OnEnemyMove OnMove;
-        protected IReadOnlyCollection<IPlayer> TargetsInSight => m_detect.TargetsInSight;
-        protected IReadOnlyCollection<IEnemy> EnemiesInSight => m_detect.Enemies;
+        protected event OnCharacterUpdate OnTargetMoved;
+        public IReadOnlyCollection<IPlayer> TargetsInSight => m_detect.TargetsInSight;
+        public IReadOnlyCollection<IEnemy> EnemiesInSight => m_detect.Enemies;
         protected virtual List<IEnemyReaction> m_reactions { get; } = 
             new List<IEnemyReaction>();
         EnemyIntent m_intendingAction = EnemyIntent.None;
@@ -89,12 +90,12 @@ namespace Curry.Explore
             if (m_actionLoop != null) 
             {
                 StopCoroutine(m_actionLoop);
+                m_intendingAction = UpdateIntent();
                 m_actionLoop = null;
             }
         }
         IEnumerator CombatActionLoop()
         {
-            yield return new WaitForSeconds(0.1f);
             while (m_intendingAction.Call != null && m_intendingAction != EnemyIntent.None) 
             {
                 yield return StartCoroutine(m_intendingAction.Call);
@@ -114,10 +115,14 @@ namespace Curry.Explore
         protected virtual IEnumerator ExecuteReaction_Internal()
         {
             CurrentStats.Refresh();
-            foreach (IEnemyReaction onAction in m_reactions )
+            foreach (IEnemyReaction onAction in m_reactions)
             {
-                yield return onAction?.OnPlayerAction(this);
-                yield return new WaitForSeconds(0.5f);
+                if (onAction.CanReact(this)) 
+                {
+                    yield return onAction?.OnPlayerAction(this);
+                    yield return new WaitForSeconds(0.1f);
+                }
+                yield return null;
             }
             // reset pending ability
             yield return new WaitForEndOfFrame();
@@ -203,11 +208,17 @@ namespace Curry.Explore
         void OnDetectEnter(IPlayer adv)
         {
             OnDetect();
+            adv.OnMoveFinished += OnVisibleTargetMoved;
+        }
+        void OnVisibleTargetMoved(ICharacter target) 
+        {
+            OnTargetMoved?.Invoke(target);
         }
         void OnDetectExit(IPlayer adv)
         {
             // Do some animation here
             Standby();
+            adv.OnMoveFinished -= OnVisibleTargetMoved;
         }
         protected virtual void OnOtherEnemyEnter(IEnemy other) { }
         protected virtual void OnOtherEnemyExit(IEnemy other) { }

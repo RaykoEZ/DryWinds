@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Heal_rest
   m_EditorClassIdentifier: 
   m_healing:
-    m_healAmount: 5
+    m_healAmount: 20

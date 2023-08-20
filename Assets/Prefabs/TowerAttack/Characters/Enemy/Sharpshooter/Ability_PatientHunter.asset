@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_content:
     Name: Take Aim
-    Description: 'Reaction: Gain [Prepared] stack when target is inside detection
-      range. Stacks reset upon first attack [OR] Target leaves line of sight.'
+    Description: Gain [Prepared] stack over time when target is inside detection
+      range. Stacks reset upon first attack [OR] Target leaves line of sight.
     TargetingRange:
       m_offsetList: []
     Icon: {fileID: 21300000, guid: 3a9961a111e6aa5438fee4250c5f5c47, type: 3}

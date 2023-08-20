@@ -65,7 +65,6 @@ namespace Curry.Explore
             } 
         };
         public EnemyIntent IntendingAction => EnemyIntent.None;
-
         public void Setup(Reinforcement_EffectResource reinforce)
         {
             m_spawn = reinforce.ReinforcementModule;

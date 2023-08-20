@@ -4,13 +4,6 @@ using UnityEngine;
 
 namespace Curry.Explore
 {
-    public interface IEnemyReaction 
-    {
-        event OnAbilityMessage OnMessage;
-        bool CanReact(IEnemy user);
-        AbilityContent AbilityDetail { get; }
-        public IEnumerator OnPlayerAction(IEnemy enemy);
-    }
     [Serializable]
     public class TakeAim : StackableModifier, IAttackModifier, IStackableEffect
     {
