@@ -17,6 +17,13 @@ namespace Curry.UI
         }
         public void SetDisplayTarget(TacticalCharacter target) 
         {
+            if (m_currentTarget != null) 
+            {
+                m_currentTarget.CurrentStats.OnStatUpdated -= UpdateHpStats;
+                m_currentTarget.TakeDamage -= UpdateHp;
+                m_currentTarget.RecoverHp -= UpdateHp;
+            }
+
             if (target != null)
             {
                 m_currentTarget = target;

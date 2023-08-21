@@ -24,6 +24,7 @@ namespace Curry.Explore
                 // Look for available pooled instances
                 PoolableBehaviour newBehaviour = SpawnProperties.InstanceManager.
                     GetInstanceFromAsset(behaviour.gameObject, parent);
+                newBehaviour.transform.position = position;
                 // setup new spawn instance
                 setup?.Invoke(newBehaviour);
                 return newBehaviour;

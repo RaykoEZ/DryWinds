@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Card_Sunday
   m_EditorClassIdentifier: 
   m_resource:
+    m_consumedOnPlay: 1
     m_properties:
       m_name: Sunday
       m_description: Gain 1 AP.

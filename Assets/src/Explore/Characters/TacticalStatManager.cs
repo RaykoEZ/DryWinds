@@ -48,7 +48,6 @@ namespace Curry.Explore
             }
             UpdateModifierState();
         }
-
         public int CalculateDamageToTake(int hitVal) 
         {
             int ret = hitVal;

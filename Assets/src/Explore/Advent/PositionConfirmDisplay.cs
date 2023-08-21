@@ -1,17 +1,17 @@
 ﻿using UnityEngine;
 using Curry.Events;
-
+using UnityEngine.Events;
 namespace Curry.Explore
 {
     public class PositionConfirmDisplay : MonoBehaviour
     {
         [SerializeField] SpriteRenderer m_display = default;
         [SerializeField] Collider2D m_collider = default;
-        [SerializeField] CurryGameEventListener m_onPositionConfirm = default;
+        [SerializeField] CurryGameEventListener m_activateDisplay = default;
         [SerializeField] Color m_onHighlightColour = default;
         void Start()
         {
-            m_onPositionConfirm?.Init();
+            m_activateDisplay?.Init();
         }
         public void OnChoosePosition(EventInfo info)
         {

@@ -26,11 +26,10 @@ namespace Curry.Explore
         public virtual void InitResource(CardResource resource) 
         {
             m_cardResource = resource;
-            string cdText = Resource is ICooldown cd ? cd.CooldownTime.ToString() : "-";
+            string cdText = resource.CooldownTime > 0? resource.CooldownTime.ToString() : "-";
             m_contentSetter?.SetCooldown(cdText);
             m_cardResource?.Init(m_cooldown, m_targeting);
-            bool isConsume = Resource is IConsumable;
-            m_contentSetter?.SetConsumableIcon(isConsume);
+            m_contentSetter?.SetConsumableIcon(Resource.ConsumedOnPlay);
             m_contentSetter?.Setup(m_cardResource.Properties);
             foreach (CardStartupModules startup in m_startupModulesModules)
             {

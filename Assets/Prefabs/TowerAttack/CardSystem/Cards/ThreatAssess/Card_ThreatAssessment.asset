@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Card_ThreatAssessment
   m_EditorClassIdentifier: 
   m_resource:
+    m_consumedOnPlay: 0
     m_properties:
       m_name: Threat Assessment
       m_description: Reveal nearby hidden enemies.
@@ -24,4 +25,6 @@ MonoBehaviour:
       m_cooldown: 20
       m_holdingValue: 1
       m_isInitiallyOnCooldown: 0
+    m_vfx: {fileID: 0}
+    m_vfxTimeLine: {fileID: 0}
     m_scan: {fileID: 11400000, guid: 94a1daac1fd471541aebe8e6f06573e0, type: 2}

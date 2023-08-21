@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Curry.Events;
-using Assets.src.UI;
 using Curry.UI;
 using System.Linq;
 using Curry.Util;
@@ -32,6 +31,7 @@ namespace Curry.Explore
         public int MaxCapacity => m_hand.MaxCapacity;
         public bool IsHandOverloaded => m_hand.IsHandOverloaded;
         public IEnumerable<AdventCard> CardsInHand => new List<AdventCard>(m_hand.CardsInHand);
+        DraggableCard m_currentlyDragging;
         public event OnActionStart OnActivate;
         public event OnCardReturn OnReturnToInventory;
         protected void Start()
@@ -77,14 +77,23 @@ namespace Curry.Explore
             }
             else 
             {
-                card.GetComponent<DraggableCard>().OnReturn += m_activation.OnCardReturn;
-                card.GetComponent<DraggableCard>().OnDragBegin += m_activation.TargetGuide;
+                card.GetComponent<DraggableCard>().OnReturn += OnCardReturn;
+                card.GetComponent<DraggableCard>().OnDragBegin += OnCardDrag;
             }
             // If card is on cool down, apply cooldown tracking
             m_postActivation.ApplyCoolDown(card);
             card.transform.SetParent(transform, false);
             card.GetComponent<CardInteractionController>()?.SetInteractionMode(
                 CardInteractMode.Play | CardInteractMode.Inspect);
+        }
+        void OnCardDrag(DraggableCard card) 
+        {
+            m_currentlyDragging = card;
+            m_activation.TargetGuide(card);
+        }
+        void OnCardReturn(DraggableCard card) 
+        {
+            m_activation.OnCardReturn(card);
         }
         void OnTimeTick() 
         {
@@ -240,6 +249,7 @@ namespace Curry.Explore
         }
         public void DisablePlay()
         {
+            m_currentlyDragging?.OnCancel();
             foreach (AdventCard card in m_hand.CardsInHand)
             {
                 card.GetComponent<CardInteractionController>()?.

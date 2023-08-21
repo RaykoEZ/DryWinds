@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Card_Repair
   m_EditorClassIdentifier: 
   m_resource:
+    m_consumedOnPlay: 1
     m_properties:
       m_name: Repair Kit
       m_description: Heal 30 HP.

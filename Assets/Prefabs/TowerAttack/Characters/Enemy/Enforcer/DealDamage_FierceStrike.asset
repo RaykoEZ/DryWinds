@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: DealDamage_FierceStrike
   m_EditorClassIdentifier: 
   m_dealDamage:
-    m_baseDamage: 2
+    m_baseDamage: 3

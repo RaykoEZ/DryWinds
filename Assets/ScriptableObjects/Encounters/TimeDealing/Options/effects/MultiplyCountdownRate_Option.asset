@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: MultiplyCountdownRate_Option
   m_EditorClassIdentifier: 
   m_effect:
-    m_multiplier: 2
+    m_multiplier: 1.2

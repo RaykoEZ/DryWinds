@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_content:
     Name: Standard Strike
-    Description: Deal 1 damage to target.
+    Description: Deal 3 damage to target.
     TargetingRange:
       m_offsetList:
       - {x: 1, y: 0, z: 0}

@@ -15,7 +15,7 @@ MonoBehaviour:
   m_detail: .............
   m_validUnlockConditions: []
   m_potentialOutcomes:
-  - m_probabilityWeight: 0
+  - m_probabilityWeight: 1
     m_content:
       m_effects:
       - {fileID: 11400000, guid: 08092c9ce2147024c9a98b9a16a36b62, type: 2}
@@ -27,7 +27,7 @@ MonoBehaviour:
       - An abandoned shelter.
       - Though the entrance is blocked by a complex mechanism, you are able to obtain
         tools left by the previous visitors.
-  - m_probabilityWeight: 0
+  - m_probabilityWeight: 1
     m_content:
       m_effects:
       - {fileID: 11400000, guid: 32a1c6451eb24ae4f8ebaaf3a94a6162, type: 2}

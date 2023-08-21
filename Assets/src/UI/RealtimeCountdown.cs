@@ -55,10 +55,10 @@ namespace Curry.UI
             bool alertTime = false;
             while (m_currentTimer > 0) 
             {
-                t = (float)m_currentTimer / (float)m_defaultTimeInSeconds;
+                t = (float)m_currentTimer / m_defaultTimeInSeconds;
                 m_display.color = m_colorOverTime.Evaluate(t);
                 // alert on < 10% time
-                if (t < 0.1f && !alertTime) 
+                if (m_currentTimer < 11 && !alertTime) 
                 {
                     alertTime = true;
                     m_audio?.Play("timeRedAlert");

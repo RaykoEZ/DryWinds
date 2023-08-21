@@ -16,6 +16,6 @@ MonoBehaviour:
   m_validUnlockConditions: []
   m_outcome:
     m_effects:
-    - {fileID: 11400000, guid: fbc26ec6f786c64458e252473f33d3b6, type: 2}
+    - {fileID: 11400000, guid: 55b91aa10b958f14488636039ac7d6de, type: 2}
     - {fileID: 11400000, guid: fbb7a81141f2a1c4e8d0ea6b0a06816c, type: 2}
     m_dialogue: []

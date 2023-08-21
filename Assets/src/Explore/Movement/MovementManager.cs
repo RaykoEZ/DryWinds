@@ -110,7 +110,6 @@ namespace Curry.Explore
             ActionCost cost,
             IEnumerator onMoveFinish = null)
         {
-            StartInterrupt();
             bool tileExist = WorldTile.TryGetTile(m_terrain, destination, out WorldTile tile);
             // Trigger player to move to selected tile
             Vector3Int cell = m_terrain.WorldToCell(destination);
@@ -132,7 +131,6 @@ namespace Curry.Explore
             else
             {
                 m_message?.OnGameMessage(new GameMessageInfo("Cannot move there"));
-                EndInterrupt();
             }
         }
         IEnumerator StartMovement(ICharacter toMove, Vector3 destination, IEnumerator onFinish = null) 
@@ -151,7 +149,6 @@ namespace Curry.Explore
         }
         IEnumerator StartAdventure(ICharacter toMove, Vector3 targetPos, ActionCost payCost, IEnumerator onFinish = null)
         {
-            StartInterrupt();
             m_actionCost?.TrySpend(payCost);
             m_encounter.DisableEncounter();
             yield return StartCoroutine(StartMovement(toMove, targetPos, onFinish));
@@ -163,7 +160,6 @@ namespace Curry.Explore
                 // after movement, trigger any events
                 m_encounter.CheckForEncounter(toMove.WorldPosition);
             }
-            EndInterrupt();
         }
         void OnPlayerBlocked(Vector3 blocked)
         {

@@ -58,9 +58,8 @@ namespace Curry.Explore
             }
             m_actionsToAdd.Clear();
         }
-        protected IEnumerator Evaluate_Internal(bool giveBackPlayControl = true)
+        protected IEnumerator Evaluate_Internal()
         {
-            StartInterrupt();
             UpdateCalltack();
             if (m_characterActionStack.Count > 0)
             {
@@ -69,10 +68,6 @@ namespace Curry.Explore
                 yield return new WaitForEndOfFrame();
             }
             yield return EnemyAction();
-            if (giveBackPlayControl)
-            {
-                EndInterrupt();
-            }
         }
         protected IEnumerator EnemyAction() 
         {

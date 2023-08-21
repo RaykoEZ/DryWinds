@@ -407,7 +407,7 @@ MonoBehaviour:
   m_anim: {fileID: 4140017887156134203}
   m_detectTrigger: {fileID: 2523135388220005062}
   m_detect: {fileID: 8423108616808915002}
-  m_actionTimeInterval: 1
+  m_actionTimeInterval: 1.5
   m_basicAttack: {fileID: 8396154132716270725}
 --- !u!212 &739967294596036872
 SpriteRenderer:
