@@ -17,13 +17,13 @@ namespace Curry.UI
             m_title.text = isPaused ? "Resume" : "Pause";
             if (isPaused) 
             {
-                OnGamePause?.Invoke();
                 m_anim?.SetBool("pause", true);
+                OnGamePause?.Invoke();
             }
             else 
             {
-                OnGameResume?.Invoke();
                 m_anim?.SetBool("pause", false);
+                OnGameResume?.Invoke();
             }
         }
         public void TogglePause() 

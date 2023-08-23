@@ -19,8 +19,11 @@ namespace Curry.Explore
         [SerializeField] List<CanvasGroup> m_toControl = default;
         // Collection of interruptors
         [SerializeField] SceneInterruptCollection m_interruptors = default;
-        static bool m_sceneInterrupted = false;
-        static bool m_playerPausedScene = false;
+        static bool s_sceneInterrupted = false;
+        static bool s_playerPausedScene = false;
+        public static bool SceneInterrupted => s_sceneInterrupted;
+        public static bool PlayerPausedScene => s_playerPausedScene;
+
         private void Start()
         {
             m_interruptors.Init();
@@ -28,28 +31,27 @@ namespace Curry.Explore
             m_interruptors.OnInterruptEnd += EnableScene;
             m_pauseToggle.OnGamePause += PauseGame;
             m_pauseToggle.OnGameResume += ResumeGame;
-            DisableScene();
         }
         protected void PauseGame() 
         {
-            m_playerPausedScene = true;
+            s_playerPausedScene = true;
             DisableScene();
         }
         protected void ResumeGame() 
         {
-            m_playerPausedScene = false;
+            s_playerPausedScene = false;
             EnableScene();
         }
         protected virtual void EnableScene()
         {
-            if (!m_sceneInterrupted || m_playerPausedScene) return;
+            if (!SceneInterrupted || s_playerPausedScene) return;
             m_countdown.BeginCountdown();
             m_movement.EnablePlay();
             m_selectInput?.EnableSelection();
             m_cardPlay?.EnablePlay();
             m_enemies?.ResumeEnemyActions();
             m_apCounter?.StartChargingAp();
-            m_sceneInterrupted = false;
+            s_sceneInterrupted = false;
             foreach(var item in m_toControl) 
             {
                 item.alpha = 1f;
@@ -59,14 +61,14 @@ namespace Curry.Explore
         protected virtual void DisableScene()
         {
             // Don't disable if already disabled
-            if (m_sceneInterrupted) return;
+            if (SceneInterrupted) return;
             m_countdown.StopCountdown();
             m_movement.DisablePlay();
             m_selectInput?.DisableSelection();
             m_apCounter?.PauseApCharging();
             m_cardPlay?.DisablePlay();
             m_enemies?.StopEnemyActions();
-            m_sceneInterrupted = true;
+            s_sceneInterrupted = true;
             foreach (var item in m_toControl)
             {
                 item.alpha = 0.2f;
