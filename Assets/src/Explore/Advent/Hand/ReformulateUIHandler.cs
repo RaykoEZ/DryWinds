@@ -70,6 +70,7 @@ namespace Curry.Explore
             if (IsHandOverloaded)
             {
                 m_error.TriggerGameMessage(ErrorMessages.s_handLimitExceed);
+                return;
             }
             else if (m_costHandle.TrySpend(s_cost))
             {
@@ -77,6 +78,10 @@ namespace Curry.Explore
                 ResolveInventory();
                 ResetHandler();
                 Hide();
+            }
+            else
+            {
+                return;
             }
             EndInterrupt();
         }

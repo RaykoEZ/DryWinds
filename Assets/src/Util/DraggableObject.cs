@@ -20,7 +20,7 @@ namespace Curry.Util
         {
             GetComponent<CanvasGroup>().blocksRaycasts = true;
         }
-        protected virtual void SetDropPosition(Transform parent, int siblingIndex = 0)
+        public virtual void SetDropOrigin(Transform parent, int siblingIndex = 0)
         {
             m_origin = parent;
             m_originIndex = siblingIndex;
@@ -33,7 +33,7 @@ namespace Curry.Util
         protected virtual void LeaveOrigin(PointerEventData eventData)
         {
             // Set default drop to return to hand
-            SetDropPosition(transform.parent, transform.GetSiblingIndex());
+            SetDropOrigin(transform.parent, transform.GetSiblingIndex());
             // move parent to intermediate parent until we see a drop zone/return to original parent 
             transform.SetParent(OnDragParent);
             Vector2 objectPos = eventData.pressEventCamera.WorldToScreenPoint(transform.position);
