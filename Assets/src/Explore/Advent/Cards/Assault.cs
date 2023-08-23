@@ -19,10 +19,12 @@ namespace Curry.Explore
         {
             if (m_targeting.TryGetCurrentTarget(out ICharacter result))
             {
-                result.TriggerVfx(m_vfx, m_vfxTimeLine, () =>
+                var vfx = result.AddVfx(m_vfx, m_vfxTimeLine);
+                yield return vfx?.PlayerVfx(() =>
                 {
                     m_dealDamage.DamageModule.ApplyEffect(result);
                 });
+                vfx?.StopVfx();
             }
             yield return null;
         }

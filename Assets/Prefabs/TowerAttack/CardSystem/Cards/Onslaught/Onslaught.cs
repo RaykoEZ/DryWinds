@@ -21,7 +21,8 @@ namespace Curry.Explore
         }
         public override IEnumerator ActivateEffect(ICharacter user, GameStateContext context)
         {
-            user.TriggerVfx(m_vfx, m_vfxTimeLine);
+            var vfx = user.AddVfx(m_vfx, m_vfxTimeLine);
+            yield return vfx?.PlayerVfx();
             bool targetFound = m_targeting.TryGetCurrentTarget(out ICharacter found) && found != null;
             if (targetFound && m_powerUp) 
             {
@@ -39,7 +40,8 @@ namespace Curry.Explore
                 m_gainAp.Activate(context);
                 m_powerUp = true;
             }
-            yield return new WaitForEndOfFrame();
+            yield return new WaitForSeconds(0.1f);
+            vfx?.StopVfx();
         }
     }
 }

@@ -11,7 +11,8 @@
                     "id": "a8b346cf-4092-4dca-88f8-8e0653fabdd2",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "Press"
+                    "interactions": "Press",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Options",
@@ -19,7 +20,17 @@
                     "id": "8c759fa2-d703-43c4-9a69-dbe18ceadf07",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Pause Game",
+                    "type": "Button",
+                    "id": "a44f9f45-ad29-4180-85c1-f0a43df1e183",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -42,6 +53,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Options",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "95bd9645-63c5-41c9-826d-13fa2db36b6c",
+                    "path": "<Keyboard>/p",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Pause Game",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

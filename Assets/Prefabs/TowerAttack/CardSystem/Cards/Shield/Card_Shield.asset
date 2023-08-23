@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04221d65fe95590419584da15399c631, type: 3}
+  m_Name: Card_Shield
+  m_EditorClassIdentifier: 
+  m_resource:
+    m_consumedOnPlay: 0
+    m_properties:
+      m_name: Shield
+      m_description: Reduce Damage Taken by 2 for 10 seconds.
+      m_cardArt: {fileID: 21300000, guid: a4cf7e7325468b4418dcfc82a8f49425, type: 3}
+      m_targetingRange: {fileID: 0}
+      m_cost:
+        Time: 0
+        ActionPoint: 0
+      m_cooldown: 20
+      m_holdingValue: 0
+      m_isInitiallyOnCooldown: 0
+    m_vfx: {fileID: 8926484042661614526, guid: 299c8c7d6a022e2458d8cb4247ce43d2, type: 3}
+    m_vfxTimeLine: {fileID: 11400000, guid: 0fc43b60aac807244a2f4752757a071c, type: 2}
+    m_damageReduction: {fileID: 11400000, guid: 086d8350f0801d4439b2d14c02621069, type: 2}

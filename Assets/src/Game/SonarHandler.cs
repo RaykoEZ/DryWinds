@@ -23,7 +23,7 @@ namespace Curry.Explore
     }
     #endregion
     // Displays sonar visual effects and do detection checks
-    public class SonarHandler : SceneInterruptBehaviour
+    public class SonarHandler : MonoBehaviour
     {
         [SerializeField] ParticleSystem m_scanRender = default;
         [SerializeField] ParticleSystem m_hitRender = default;
@@ -103,7 +103,6 @@ namespace Curry.Explore
         }
         IEnumerator OnSonarScan()
         {
-            StartInterrupt();
             ClearHits();
             List<Collider2D> results = new List<Collider2D>();
             m_scanCollider.enabled = true;
@@ -121,7 +120,6 @@ namespace Curry.Explore
                 }
             }
             DisplayHits();
-            EndInterrupt();
             m_currentUser = null;
             m_currentDetectionLevel = 0;
             m_scanCollider.enabled = false;

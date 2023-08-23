@@ -1,8 +1,7 @@
-﻿using System;
+﻿using Curry.Vfx;
+using System;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.Timeline;
-using UnityEngine.VFX;
 
 namespace Curry.Explore
 {
@@ -37,8 +36,10 @@ namespace Curry.Explore
         {
             if (player.CurrentHp < player.MaxHp) 
             {
-                player.TriggerVfx(m_vfx, m_vfxTimeLine);
+                var vfx = player.AddVfx(m_vfx, m_vfxTimeLine);
+                yield return vfx?.PlayerVfx();
                 m_heal.Healing.ApplyEffect(player);
+                vfx?.StopVfx();
             }
             yield return null;
         }
@@ -48,8 +49,9 @@ namespace Curry.Explore
             {
                 m_currentModifier = new StatUp(m_gainStats.Effect);
                 mod.ApplyModifier(m_currentModifier, 
-                    m_currentModifier.Vfx, m_currentModifier.VfxTimeline);
-                yield return null;
+                    m_currentModifier.Vfx, m_currentModifier.VfxTimeline, out VfxManager.VfxHandle vfxHandle);
+                yield return vfxHandle?.PlayerVfx();
+                vfxHandle?.StopVfx();
             }
         }
         public IEnumerator HandEffect(GameStateContext c)

@@ -83,6 +83,7 @@ namespace Curry.Explore
             m_onConditionAchieved?.Init();
             m_gameResult.gameObject.SetActive(false);
             m_player.OnDefeat += OnPlayerDefeat;
+            m_time.OnTimeSpent += UpdatePlayerTimer;
             m_time.OnOutOfTimeTrigger += OnOutOfTime;
             m_objectives.OnCriticalFailure += OnCriticalFail;
             m_objectives.OnCriticalComplete += OnGameCleared;
@@ -110,6 +111,11 @@ namespace Curry.Explore
                 m_mileStones.Flag |= conditions.ConditionsFulfilled.Flag;
             }
         }
+        // Call player timer event
+        void UpdatePlayerTimer(int dt, int timeLeft) 
+        {
+            m_player?.OnTimeElapsed(dt);
+        }
         void OnOutOfTime() 
         {
             m_timeDealer.Begin(GetCurrent());
@@ -133,8 +139,10 @@ namespace Curry.Explore
         {
             m_player.OnDefeat -= OnPlayerDefeat;
             m_time.OnOutOfTimeTrigger -= OnOutOfTime;
+            m_time.OnTimeSpent -= UpdatePlayerTimer;
             m_objectives.OnCriticalFailure -= OnCriticalFail;
             m_objectives.OnCriticalComplete -= OnGameCleared;
+
             StartInterrupt();
             m_intro?.GameEnd();
             yield return new WaitForEndOfFrame();

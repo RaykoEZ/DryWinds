@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
 using Curry.Events;
-using UnityEngine.InputSystem;
 using System.Collections.Generic;
 
 namespace Curry.Explore

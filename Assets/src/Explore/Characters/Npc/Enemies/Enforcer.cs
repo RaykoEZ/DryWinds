@@ -1,8 +1,6 @@
-﻿using Curry.Game;
-using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
+using Curry.Vfx;
 
 namespace Curry.Explore
 {
@@ -13,6 +11,17 @@ namespace Curry.Explore
             new List<AbilityContent>{
                 m_basicAttack.AbilityDetail,
             };
+        VfxManager.VfxHandle m_slash;
+        public override void Prepare()
+        {
+            base.Prepare();
+            m_slash = m_vfx.AddVfx(m_basicAttack.Vfx, m_basicAttack.VfxTimeline);
+        }
+        public override void ReturnToPool()
+        {
+            m_slash?.StopVfx();
+            base.ReturnToPool();
+        }
         protected override EnemyIntent UpdateIntent()
         {
             EnemyIntent ret;
@@ -28,8 +37,7 @@ namespace Curry.Explore
         }
         public void Strike() 
         {
-            m_vfxHandler.SetupAsset(m_basicAttack.Vfx, m_basicAttack.VfxTimeline);
-            StartCoroutine(m_vfxHandler.PlayVfxSequence(OnImpact));
+            StartCoroutine(m_slash?.PlayerVfx(OnImpact));
         }
         void OnImpact() 
         {

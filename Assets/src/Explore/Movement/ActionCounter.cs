@@ -46,9 +46,16 @@ namespace Curry.Explore
                 StartChargingAp();
             }
         }
-        void StartChargingAp() 
+        public void StartChargingAp() 
         {
-            m_apChargeBar.SetBarValue(m_apChargeBar.Max);
+            if(CurrentActionPoint < m_maxMovePoint) 
+            {
+                m_apChargeBar.SetBarValue(m_apChargeBar.Max);
+            }
+        }
+        public void PauseApCharging() 
+        {
+            m_apChargeBar.StopAllCoroutines();
         }
         public void PreviewFullRecovery()
         {

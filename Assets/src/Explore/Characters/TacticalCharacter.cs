@@ -7,13 +7,13 @@ using Curry.UI;
 using Curry.Vfx;
 using UnityEngine.Timeline;
 using UnityEngine.VFX;
-
+using static Curry.Vfx.VfxManager;
 namespace Curry.Explore
 {
     public interface IModifiable
     {
         IModifierContainer<TacticalStats> CurrentStats { get; }
-        void ApplyModifier(IStatModifier<TacticalStats> mod, VisualEffectAsset vfx, TimelineAsset timeline);
+        void ApplyModifier(IStatModifier<TacticalStats> mod, VisualEffectAsset vfx, TimelineAsset timeline, out VfxHandle handler);
         bool ContainsModifier(IStatModifier<TacticalStats> mod);
         void Refresh();
     }
@@ -22,7 +22,7 @@ namespace Curry.Explore
         [SerializeField] protected string m_name = default;
         [SerializeField] TacticalStats m_initStats = default;
         [SerializeField] protected AudioManager m_audio = default;
-        [SerializeField] protected VfxSequencePlayer m_vfxHandler = default;
+        [SerializeField] protected VfxManager m_vfx = default;
         protected TacticalStatManager m_statManager;
         protected bool m_blocked = false;
         protected bool m_moving = false;
@@ -82,15 +82,16 @@ namespace Curry.Explore
         {
             ReturnToPool();
         }
-        public virtual void TriggerVfx(VisualEffectAsset vfx, TimelineAsset timeline, Action onTrigger = null) 
+        // Instantiate a vfx object to render the new vfx, kill the vfx with an event handle
+        public virtual VfxHandle AddVfx(VisualEffectAsset vfx, TimelineAsset timeline) 
         {
             // setup vfx to trigger
-            m_vfxHandler.SetupAsset(vfx, timeline);
-            StartCoroutine(m_vfxHandler.PlayVfxSequence(onTrigger));
+            var ret = m_vfx.AddVfx(vfx, timeline);
+            return ret;
         }
-        public void ApplyModifier(IStatModifier<TacticalStats> mod, VisualEffectAsset vfx, TimelineAsset timeline)
+        public void ApplyModifier(IStatModifier<TacticalStats> mod, VisualEffectAsset vfx, TimelineAsset timeline, out VfxHandle handle)
         {
-            TriggerVfx(vfx, timeline);
+            handle = AddVfx(vfx, timeline);
             m_statManager.ApplyModifier(mod);
         }
         public virtual void Move(Vector3 target)

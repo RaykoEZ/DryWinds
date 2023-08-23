@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Curry.Game;
-using Curry.Util;
 using UnityEngine;
 using UnityEngine.Timeline;
 using UnityEngine.VFX;

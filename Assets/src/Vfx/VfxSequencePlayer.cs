@@ -20,6 +20,14 @@ namespace Curry.Vfx
         {
             m_trigger = true;
         }
+        public void ResetVfx() 
+        {
+            StopAllCoroutines();
+            Director?.Stop();
+            Vfx?.Stop();
+            Vfx.visualEffectAsset = null;
+            Director.playableAsset = null;
+        }
         // set vfx and sequence assets and bind components to PlayableDirector
         public void SetupAsset(VisualEffectAsset vfx, TimelineAsset timeline) 
         {

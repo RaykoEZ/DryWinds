@@ -4,7 +4,6 @@ using UnityEngine;
 using Curry.Util;
 namespace Curry.Explore
 {
-
     // A collection of all cards to be loaded
     // Also contains all decks  
     [Serializable]

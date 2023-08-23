@@ -1,4 +1,5 @@
 ﻿using Curry.Util;
+using Curry.Vfx;
 using System;
 using System.Collections;
 using UnityEngine;
@@ -16,6 +17,7 @@ namespace Curry.Explore
         [SerializeField] TakeAim m_preparedBuff = default;
         bool m_activated = false;
         TakeAim m_instance;
+        VfxManager.VfxHandle m_buffVfx;
         public int CurrentStack => m_instance != null ? m_instance.CurrentStack : 0;
 
         public override AbilityContent AbilityDetail => new AbilityContent
@@ -47,12 +49,13 @@ namespace Curry.Explore
             if (!m_activated) 
             {
                 m_instance = new TakeAim(m_preparedBuff);
-                applyTo?.ApplyModifier(m_instance, m_instance.Vfx, m_instance.VfxTimeline);
+                applyTo.ApplyModifier(m_instance, m_instance.Vfx, m_instance.VfxTimeline, out m_buffVfx);
+                m_buffVfx?.PlayVfx();
                 m_activated = true;
             }
             else if (m_instance.CurrentStack < m_instance.MaxStack)
             {
-                user.TriggerVfx(Vfx, VfxTimeline);
+                m_buffVfx?.PlayVfx();
                 m_instance.AddStack();
             }
         }
@@ -68,6 +71,8 @@ namespace Curry.Explore
             if (m_activated && !ret)
             {
                 (user as IModifiable).CurrentStats.RemoveModifier(m_instance);
+                m_buffVfx?.StopVfx();
+                m_buffVfx = null;
                 m_activated = false;
             }
             return ret;

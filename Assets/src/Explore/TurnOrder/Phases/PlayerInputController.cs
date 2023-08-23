@@ -9,30 +9,46 @@ namespace Curry.Explore
     public class PlayerInputController : MonoBehaviour
     {
         // Scripts to disable/enable upon interrupting the scene
+        [SerializeField] ActionCounter m_apCounter = default;
         [SerializeField] MoveToggle m_movement = default;
         [SerializeField] SelectionManager m_selectInput = default;
         [SerializeField] HandManager m_cardPlay = default;
         [SerializeField] EnemyManager m_enemies = default;
         [SerializeField] RealtimeCountdown m_countdown = default;
+        [SerializeField] PauseGame m_pauseToggle = default;
         [SerializeField] List<CanvasGroup> m_toControl = default;
         // Collection of interruptors
         [SerializeField] SceneInterruptCollection m_interruptors = default;
         static bool m_sceneInterrupted = false;
+        static bool m_playerPausedScene = false;
         private void Start()
         {
             m_interruptors.Init();
             m_interruptors.OnInterruptBegin += DisableScene;
             m_interruptors.OnInterruptEnd += EnableScene;
+            m_pauseToggle.OnGamePause += PauseGame;
+            m_pauseToggle.OnGameResume += ResumeGame;
             DisableScene();
+        }
+        protected void PauseGame() 
+        {
+            m_playerPausedScene = true;
+            DisableScene();
+        }
+        protected void ResumeGame() 
+        {
+            m_playerPausedScene = false;
+            EnableScene();
         }
         protected virtual void EnableScene()
         {
-            if (!m_sceneInterrupted) return;
+            if (!m_sceneInterrupted || m_playerPausedScene) return;
             m_countdown.BeginCountdown();
             m_movement.EnablePlay();
             m_selectInput?.EnableSelection();
             m_cardPlay?.EnablePlay();
             m_enemies?.ResumeEnemyActions();
+            m_apCounter?.StartChargingAp();
             m_sceneInterrupted = false;
             foreach(var item in m_toControl) 
             {
@@ -47,6 +63,7 @@ namespace Curry.Explore
             m_countdown.StopCountdown();
             m_movement.DisablePlay();
             m_selectInput?.DisableSelection();
+            m_apCounter?.PauseApCharging();
             m_cardPlay?.DisablePlay();
             m_enemies?.StopEnemyActions();
             m_sceneInterrupted = true;

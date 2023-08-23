@@ -7,6 +7,7 @@ using TMPro;
 using Curry.Util;
 using UnityEngine.VFX;
 using UnityEngine.Timeline;
+using Curry.Vfx;
 
 namespace Curry.Explore
 {
@@ -165,17 +166,17 @@ namespace Curry.Explore
             OnDefeat?.Invoke(this);
             yield return null;
         }
-
-        public void TriggerVfx(VisualEffectAsset vfx, TimelineAsset timeline, Action onTrigger = null)
-        {
-        }
-
         public void StartCombat()
         {
         }
 
         public void StopCombat()
         {
+        }
+
+        VfxManager.VfxHandle ICharacter.AddVfx(VisualEffectAsset vfx, TimelineAsset timeline)
+        {
+            return null;
         }
     }
 }

@@ -76,8 +76,10 @@ namespace Curry.Explore
             {
                 if(item.TryGetComponent(out ICharacter character)) 
                 {
-                    character.TriggerVfx(Vfx, VfxTimeline);
+                    var vfx = character.AddVfx(Vfx, VfxTimeline);
+                    yield return vfx?.PlayerVfx();
                     OnHit(character);
+                    vfx?.StopVfx();
                 }
             }
             yield return null;

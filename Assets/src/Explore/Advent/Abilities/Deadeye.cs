@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Curry.Game;
+using Curry.Vfx;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,6 +13,7 @@ namespace Curry.Explore
         [SerializeField] protected Impediment m_impediment = default;
         [SerializeField] protected Enhancement m_enhancedBuff = default;
         Enhancement m_enhanceInstance;
+        VfxManager.VfxHandle m_debuffVfx;
         public override AbilityContent AbilityDetail
         {
             get
@@ -43,11 +46,19 @@ namespace Curry.Explore
                 if( m_enhanceInstance == null || !modify.ContainsModifier(m_enhanceInstance)) 
                 {
                     m_enhanceInstance = new Enhancement(m_enhancedBuff);
+                    m_enhancedBuff.OnExpire += OnDebuffExpire;
                     // apply damage up
-                    modify?.ApplyModifier(m_enhanceInstance, m_enhanceInstance.Vfx, m_enhanceInstance.VfxTimeline);
+                    modify.ApplyModifier(m_enhanceInstance, m_enhanceInstance.Vfx, m_enhanceInstance.VfxTimeline, out m_debuffVfx);
+                    m_debuffVfx?.PlayVfx();
                 }
             }
             return rangeCheck;
+        }
+        void OnDebuffExpire(IStatModifier<TacticalStats> _)
+        {
+            m_enhancedBuff.OnExpire -= OnDebuffExpire;
+            m_debuffVfx?.StopVfx();
+            m_enhanceInstance = null;
         }
     }
 }

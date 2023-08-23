@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab06a9a3706533b4bbd03df9fb6f105f, type: 3}
+  m_Name: Mod_Shield
+  m_EditorClassIdentifier: 
+  m_content:
+    Icon: {fileID: 21300000, guid: a4cf7e7325468b4418dcfc82a8f49425, type: 3}
+    Name: Shield
+    Description: Damage Taken - 2
+  m_vfx: {fileID: 8926484042661614526, guid: 3056d556a8638754abaa90e35b94c7c5, type: 3}
+  m_vfxTimeline: {fileID: 11400000, guid: c3049d2b07938684f94be506dee3a53d, type: 2}

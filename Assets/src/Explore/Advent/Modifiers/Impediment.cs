@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Curry.Vfx;
+using System;
 using UnityEngine;
+using static Curry.Vfx.VfxManager;
 
 namespace Curry.Explore
 {
@@ -9,6 +11,7 @@ namespace Curry.Explore
     {
         [SerializeField] int m_numBeforeExpiry = default;
         [SerializeField] int m_rangeDecrease = default;
+        VfxHandle vfxHandle;
         public override ModifierContent Content => new ModifierContent
         {
             Name = m_resource.Content.Name,
@@ -29,7 +32,8 @@ namespace Curry.Explore
         {
             if (target is IModifiable modifiable) 
             {
-                modifiable.ApplyModifier(this, Vfx, VfxTimeline);
+                modifiable.ApplyModifier(this, Vfx, VfxTimeline, out vfxHandle);
+                vfxHandle?.PlayVfx();
             }
         }
         public virtual void OnCharacterMoved(TacticalStats stat)
@@ -37,6 +41,7 @@ namespace Curry.Explore
             m_numBeforeExpiry--;
             if( m_numBeforeExpiry <= 0) 
             {
+                vfxHandle?.StopVfx();
                 Expire();
             }
         }

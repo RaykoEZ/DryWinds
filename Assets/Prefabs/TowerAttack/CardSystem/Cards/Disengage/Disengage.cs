@@ -17,13 +17,16 @@ namespace Curry.Explore
 
         public override IEnumerator ActivateEffect(ICharacter user, GameStateContext context)
         {
-            user.TriggerVfx(m_vfx, m_vfxTimeLine, () => 
+            Action onVfxTrigger = () =>
             {
                 m_exhaustActionPoint.Effect.ApplyEffect(context.ActionCount, out int numSpent);
                 // heal for [base healing value] * num. of actions exhausted
                 m_heal.Healing.ApplyEffect(context.Player, numSpent * m_heal.Healing.HealAmount);
-            });
-            yield return null;
+            };
+            var handle = user.AddVfx(m_vfx, m_vfxTimeLine);
+            yield return handle?.PlayerVfx(onVfxTrigger);
+            yield return new WaitForSeconds(1f);
+            handle?.StopVfx();
         }
     }
 }
