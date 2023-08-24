@@ -1,4 +1,4 @@
-# Project Curry
+# Project Dry Winds
 
 This is a Unity project for a 2D turn-based tactical game with cards and grid-based movement.
 
