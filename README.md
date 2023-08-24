@@ -1,6 +1,6 @@
 # Project Curry
 
-This is a Unity project for a 2D turn-based strategy game with card-based interactions and grid-based movement.
+This is a Unity project for a 2D turn-based tactical game with cards and grid-based movement.
 
 The player character needs to reach specific locations on the map while enemies and encounters await them. 
 
